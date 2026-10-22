@@ -101,7 +101,10 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false;
     guarded(vaultApi.status())
-      .then((status) => {
+      .then(async (status) => {
+        if (cancelled) return;
+        // Fenêtre rechargée sur un compte déjà ouvert (changement de langue) : noms de départ à jour.
+        if (status.unlocked) await localizeDefaults().catch(() => undefined);
         if (cancelled) return;
         setInitialWait(status.waitSeconds);
         exists.current = status.exists;
