@@ -33,29 +33,28 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --sky: radial-gradient(60% 40% at 85% 0%, rgba(140, 100, 255, 0.3), rgba(140, 100, 255, 0) 70%),
-      linear-gradient(180deg, #050f2e 0%, #0a1a48 30%, #112c68 62%, #18387f 84%, #1d4492 100%);
-    --sky-base: #0a1a48;
-    --sky-soft: rgba(225, 236, 255, 0.86);
-    --sky-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
-    --ink: #e8f1ff;
-    --soft: #b4c6e6;
-    --accent: #8adbff;
-    --heading: #cfe6ff;
-    --glass: rgba(18, 36, 92, 0.72);
-    --glass-strong: rgba(18, 36, 92, 0.86);
-    --glass-edge: rgba(140, 180, 255, 0.3);
-    --gloss: linear-gradient(180deg, rgba(150, 190, 255, 0.16) 0%, rgba(150, 190, 255, 0) 45%);
-    --shadow: 0 22px 44px -26px rgba(0, 0, 0, 0.7);
-    --code: rgba(120, 180, 255, 0.18);
-    --heart: #ff8fb6;
-    --glow-1: #6c4fd8;
-    --glow-2: #1f8fd6;
-    --glow-3: #2a6fb0;
-    color-scheme: dark;
-  }
+/* Nuit : choisie par le bouton, sinon celle de l'ordinateur (script en tête de page). */
+:root[data-theme="dark"] {
+  --sky: radial-gradient(60% 40% at 85% 0%, rgba(140, 100, 255, 0.3), rgba(140, 100, 255, 0) 70%),
+    linear-gradient(180deg, #050f2e 0%, #0a1a48 30%, #112c68 62%, #18387f 84%, #1d4492 100%);
+  --sky-base: #0a1a48;
+  --sky-soft: rgba(225, 236, 255, 0.86);
+  --sky-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+  --ink: #e8f1ff;
+  --soft: #b4c6e6;
+  --accent: #8adbff;
+  --heading: #cfe6ff;
+  --glass: rgba(18, 36, 92, 0.72);
+  --glass-strong: rgba(18, 36, 92, 0.86);
+  --glass-edge: rgba(140, 180, 255, 0.3);
+  --gloss: linear-gradient(180deg, rgba(150, 190, 255, 0.16) 0%, rgba(150, 190, 255, 0) 45%);
+  --shadow: 0 22px 44px -26px rgba(0, 0, 0, 0.7);
+  --code: rgba(120, 180, 255, 0.18);
+  --heart: #ff8fb6;
+  --glow-1: #6c4fd8;
+  --glow-2: #1f8fd6;
+  --glow-3: #2a6fb0;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -104,6 +103,7 @@ img { max-width: 100%; height: auto; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .bubble { animation: none; }
+  .theme-toggle, .theme-toggle svg { transition: none; }
 }
 
 /* ——— Barre du haut ——— */
@@ -184,6 +184,43 @@ main { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
 .meta { margin: 16px 0 0; color: var(--sky-soft); font-size: 15px; font-weight: 600; text-shadow: var(--sky-shadow); }
 .hero-shot { display: block; margin: 44px auto 0; max-width: 1080px; }
 .hero-shot img { display: block; width: 100%; border-radius: 28px; filter: drop-shadow(0 30px 50px rgba(6, 40, 110, 0.4)); }
+.hero-shot .shot-dark, :root[data-theme="dark"] .hero-shot .shot-light { display: none; }
+:root[data-theme="dark"] .hero-shot .shot-dark { display: block; }
+
+/* ——— Bouton jour / nuit, sur le côté ——— */
+
+.theme-toggle {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-top: -23px;
+  padding: 0;
+  border: 1px solid var(--glass-edge);
+  border-radius: 50%;
+  color: var(--heading);
+  background: var(--gloss), var(--glass-strong);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.theme-toggle:hover { transform: scale(1.06); }
+.theme-toggle:focus-visible { outline: 3px solid #ffd58c; outline-offset: 3px; }
+.theme-toggle svg { grid-area: 1 / 1; transition: opacity 0.3s ease, transform 0.4s ease; }
+.theme-toggle .sun { color: #f2a51c; opacity: 0; transform: rotate(-90deg) scale(0.6); }
+.theme-toggle .moon { color: #3b6fd6; }
+:root[data-theme="dark"] .theme-toggle .sun { opacity: 1; transform: none; }
+:root[data-theme="dark"] .theme-toggle .moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
+/* Quand le contenu touche les bords, le bouton descend dans le coin. */
+@media (max-width: 1240px) {
+  .theme-toggle { top: auto; bottom: 18px; margin-top: 0; }
+}
 
 /* ——— Sections ——— */
 
@@ -292,4 +329,5 @@ kbd, code { padding: 1px 6px; border-radius: 6px; background: var(--code); color
   .modules p { font-size: 14px; }
   .panel { padding: 26px 22px; }
   .hero { padding-top: 40px; }
+
 }

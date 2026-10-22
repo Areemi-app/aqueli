@@ -16,6 +16,15 @@
 <meta property="og:url" content="https://areemi-app.github.io/aqueli/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="style.css">
+<script>
+  // Jour ou nuit avant l'affichage : le choix enregistré, sinon celui de l'ordinateur.
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem("theme"); } catch (e) {}
+    var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+  })();
+</script>
 </head>
 <body>
 <div class="sky" aria-hidden="true">
@@ -49,10 +58,10 @@
       <a class="btn btn-glass" href="https://github.com/Areemi-app/aqueli">View the source</a>
     </div>
     <p class="meta">Free and open source · Windows 11 · 17 languages · <a href="https://ko-fi.com/areemi">Support the project</a></p>
-    <picture class="hero-shot">
-      <source media="(prefers-color-scheme: dark)" srcset="images/hero-dark.webp">
-      <img src="images/hero.webp" alt="Aqueli's home screen with today's tasks, appointments, habits and a pinned note" width="1200" height="720">
-    </picture>
+    <div class="hero-shot">
+      <img class="shot-light" src="images/hero.webp" alt="Aqueli's home screen with today's tasks, appointments, habits and a pinned note" width="1200" height="720">
+      <img class="shot-dark" src="images/hero-dark.webp" alt="Aqueli's home screen in the Midnight theme" width="1200" height="720" loading="lazy">
+    </div>
   </section>
 
   <section id="features" class="section">
@@ -138,6 +147,34 @@
     </div>
   </section>
 </main>
+
+<button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme">
+  <svg class="moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+  <svg class="sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</button>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var button = document.querySelector(".theme-toggle");
+    var label = function () {
+      var text = root.dataset.theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+      button.setAttribute("aria-label", text);
+      button.title = text;
+    };
+    label();
+    button.addEventListener("click", function () {
+      root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+      try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+      label();
+    });
+    // Sans choix enregistré, le site suit l'ordinateur quand il change.
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (event) {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      if (!saved) { root.dataset.theme = event.matches ? "dark" : "light"; label(); }
+    });
+  })();
+</script>
 
 <footer class="footer">
   <p>Aqueli is free software, released under the <a href="https://github.com/Areemi-app/aqueli/blob/main/LICENSE">GNU GPL v3.0 or later</a>. Made by Areemi.</p>
