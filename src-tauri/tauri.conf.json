@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Aqueli",
-  "version": "1.21.2",
+  "version": "1.21.3",
   "identifier": "fr.aqueli.desktop",
   "build": {
     "frontendDist": "../dist",
