@@ -125,9 +125,6 @@ fn show_inactive(window: &tauri::WebviewWindow) -> tauri::Result<()> {
     window.show()
 }
 
-/// Retire à la fenêtre sa barre de titre et ses boutons Agrandir et Réduire : sous Windows, une
-/// fenêtre sans cadre peut sinon les faire réapparaître, et passer en plein écran. Alt+F4 la
-/// ferme toujours.
 /// Cache le mini-lecteur. Sous Windows, il est montré directement par Windows (voir
 /// `show_inactive`) : Tauri le croit donc toujours caché et ignorerait `hide()`. Il est caché de
 /// la même façon.
@@ -144,16 +141,25 @@ fn hide_window(window: &tauri::WebviewWindow) {
     let _ = window.hide();
 }
 
+/// Retire à la fenêtre ses boutons Agrandir, Réduire et Fermer de Windows : une fenêtre sans
+/// cadre peut sinon les faire apparaître au survol, et passer en plein écran. Sans menu système,
+/// Windows ne dessine aucun bouton. La barre de titre invisible reste en place : Tauri s'en sert
+/// pour effacer le cadre, et la retirer laissait une fine bande au-dessus du lecteur. Windows ne
+/// peint plus rien autour de la fenêtre (ni bord, ni barre). Échap et Alt+F4 la ferment toujours.
 #[cfg(windows)]
 fn strip_caption(window: &tauri::WebviewWindow) {
+    use windows::Win32::Graphics::Dwm::{DwmSetWindowAttribute, DWMNCRP_DISABLED, DWMWA_NCRENDERING_POLICY};
     use windows::Win32::UI::WindowsAndMessaging::{
         GetWindowLongPtrW, SetWindowLongPtrW, SetWindowPos, GWL_STYLE, SWP_FRAMECHANGED, SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOSIZE, SWP_NOZORDER,
-        WS_CAPTION, WS_MAXIMIZEBOX, WS_MINIMIZEBOX,
+        WS_MAXIMIZEBOX, WS_MINIMIZEBOX, WS_SYSMENU,
     };
     let Ok(hwnd) = window.hwnd() else { return };
-    let remove = (WS_CAPTION.0 | WS_MAXIMIZEBOX.0 | WS_MINIMIZEBOX.0) as isize;
-    // SAFETY: `hwnd` est la fenêtre du mini-lecteur, vivante ; on ne retire que des styles.
+    let remove = (WS_SYSMENU.0 | WS_MAXIMIZEBOX.0 | WS_MINIMIZEBOX.0) as isize;
+    // SAFETY: `hwnd` est la fenêtre du mini-lecteur, vivante ; on ne retire que des styles et on
+    // passe un entier de 4 octets, comme l'attend l'attribut.
     unsafe {
+        let policy = DWMNCRP_DISABLED;
+        let _ = DwmSetWindowAttribute(hwnd, DWMWA_NCRENDERING_POLICY, std::ptr::from_ref(&policy).cast(), std::mem::size_of_val(&policy) as u32);
         let style = GetWindowLongPtrW(hwnd, GWL_STYLE);
         if style & remove != 0 {
             SetWindowLongPtrW(hwnd, GWL_STYLE, style & !remove);
@@ -229,9 +235,10 @@ pub fn open(app: &AppHandle, size: &str) -> tauri::Result<()> {
     let target = window.clone();
     let handle = app.clone();
     window.on_window_event(move |event| match event {
+        // Alt+F4 : comme le bouton Fermer (caché et désépinglé).
         WindowEvent::CloseRequested { api, .. } => {
             api.prevent_close();
-            hide_window(&target);
+            command(&handle, "detacher");
         }
         WindowEvent::Resized(_) => keep_size(&handle, &target),
         _ => {}
