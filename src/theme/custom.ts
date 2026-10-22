@@ -15,9 +15,9 @@ export interface CustomTheme {
   base: ThemeId;
   /** Couleur d'accent choisie ; nulle : celle du thème de départ. */
   accent: string | null;
-  /** Flou du verre, en pixels (0 à 40). */
+  /** Flou du verre, en pixels (0 à 60). */
   blur: number;
-  /** Opacité des panneaux, en % (30 à 100). */
+  /** Opacité des panneaux, en % (0 à 100) : libre, l'éditeur prévient seulement si le texte devient peu lisible. */
   opacity: number;
   /** Voile posé sur le fond d'écran pour la lisibilité, en % (0 à 70). */
   dim: number;
@@ -31,8 +31,8 @@ export interface CustomTheme {
 
 export const MAX_CUSTOM_THEMES = 12;
 export const MAX_NAME_CHARS = 40;
-export const BLUR_RANGE = [0, 40] as const;
-export const OPACITY_RANGE = [30, 100] as const;
+export const BLUR_RANGE = [0, 60] as const;
+export const OPACITY_RANGE = [0, 100] as const;
 export const DIM_RANGE = [0, 70] as const;
 /** Fond d'écran : image réduite (côté le plus long) et taille maximale enregistrée. */
 export const WALLPAPER_MAX_SIDE = 2560;

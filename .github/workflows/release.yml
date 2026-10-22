@@ -1,0 +1,40 @@
+# Fabrique l'installateur Windows quand une étiquette de version (v1.2.3) est poussée,
+# puis prépare la version GitHub en brouillon, avec ses notes et l'empreinte SHA-256.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    env:
+      # Perl de Strawberry, présent sur les machines Windows de GitHub (OpenSSL pour SQLCipher).
+      OPENSSL_SRC_PERL: C:\Strawberry\perl\bin\perl.exe
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build the installer
+        run: npx --no-install tauri build --bundles nsis
+      - name: Create the draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $version = $tag.TrimStart("v")
+          $exe = "src-tauri/target/release/bundle/nsis/Aqueli_${version}_x64-setup.exe"
+          $hash = (Get-FileHash $exe -Algorithm SHA256).Hash
+          $notes = Get-Content ".github/release-notes/$tag.md" -Raw
+          $notes = $notes.TrimEnd() + "`n`nSHA-256: ``$hash``"
+          Set-Content -Path notes.md -Value $notes -Encoding utf8
+          gh release create $tag $exe --draft --title "Aqueli $version" --notes-file notes.md

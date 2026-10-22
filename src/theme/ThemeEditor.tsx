@@ -113,7 +113,6 @@ export function ThemeEditor({ initial, isNew, onClose }: { initial: CustomTheme;
       setError(tr("Saisissez un nom."));
       return;
     }
-    if (problems.length > 0) return;
     setBusy(true);
     try {
       if (draft.wallpaper && picture.data) {
@@ -228,8 +227,9 @@ export function ThemeEditor({ initial, isNew, onClose }: { initial: CustomTheme;
           </div>
         </div>
 
+        {/* Un avertissement, pas un blocage : la personne garde le dernier mot sur son thème. */}
         {problems.length > 0 && (
-          <p className="form-error" role="alert">
+          <p className="form-warning" role="status">
             {draft.wallpaper
               ? tr("Texte peu lisible sur ce fond. Augmentez l'opacité des panneaux ou le voile.")
               : tr("Texte peu lisible sur ce fond. Augmentez l'opacité des panneaux.")}
@@ -244,7 +244,7 @@ export function ThemeEditor({ initial, isNew, onClose }: { initial: CustomTheme;
           <button type="button" className="btn-glass" onClick={onClose}>
             {tr("Annuler")}
           </button>
-          <button type="submit" className="btn-gel" disabled={busy || problems.length > 0}>
+          <button type="submit" className="btn-gel" disabled={busy}>
             {isNew ? tr("Créer") : tr("Enregistrer")}
           </button>
         </div>

@@ -31,7 +31,7 @@ describe("thèmes personnels", () => {
   });
 
   it("ne gardent que des réglages valides", () => {
-    expect(cleanCustomTheme({ ...draft(), blur: 99, opacity: 5, dim: -4, accent: "rouge" })).toMatchObject({ blur: 40, opacity: 30, dim: 0, accent: null });
+    expect(cleanCustomTheme({ ...draft(), blur: 99, opacity: 5, dim: -4, accent: "rouge" })).toMatchObject({ blur: 60, opacity: 5, dim: 0, accent: null });
     expect(cleanCustomTheme({ ...draft(), id: "aqua" })).toBeNull();
     expect(cleanCustomTheme({ ...draft(), base: "inconnu" })).toBeNull();
     expect(cleanCustomTheme({ ...draft(), name: "   " })).toBeNull();

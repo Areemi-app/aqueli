@@ -179,7 +179,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const create = useCallback(async (password: string) => {
     const { recoveryKey } = await guarded(vaultApi.create(password));
     exists.current = true;
-    // Compte créé en anglais : espaces et catégories de départ en anglais (sans bloquer la création).
+    // Espaces et catégories de départ dans la langue de l'interface (sans bloquer la création).
     await localizeDefaults().catch(() => undefined);
     // Le coffre est ouvert, mais l'assistant continue (clé de récupération, thème).
     setVerified(false);
@@ -196,6 +196,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     await guarded(vaultApi.unlock(password));
     play("deverrouillage");
     setHello((h) => ({ ...h, ready: h.enabled }));
+    // La langue a pu changer depuis la dernière ouverture : noms de départ à jour.
+    await localizeDefaults().catch(() => undefined);
     setPhase("ouvert");
   }, [play]);
 
@@ -203,6 +205,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
     await guarded(vaultApi.recover(recoveryKey, newPassword));
     play("deverrouillage");
     setHello((h) => ({ ...h, ready: h.enabled }));
+    // La langue a pu changer depuis la dernière ouverture : noms de départ à jour.
+    await localizeDefaults().catch(() => undefined);
     setPhase("ouvert");
   }, [play]);
 
@@ -229,6 +233,8 @@ export function VaultProvider({ children }: { children: ReactNode }) {
   const unlockWithHello = useCallback(async () => {
     await guarded(vaultApi.unlockWithHello());
     play("deverrouillage");
+    // La langue a pu changer depuis la dernière ouverture : noms de départ à jour.
+    await localizeDefaults().catch(() => undefined);
     setPhase("ouvert");
   }, [play]);
 
