@@ -73,6 +73,7 @@ export function applyMiniAction(action: string): void {
   else if (action === "arreter") focusStore.stop();
   else if (action === "passer") focusStore.skip();
   else if (action === "detacher") pinMiniWindow(false);
+  else if (action === "afficher") backInAqueli();
   else if (action === "taille") nextMiniSize();
 }
 
@@ -95,19 +96,29 @@ export interface MiniWindowState {
 let mini: MiniWindowState = { pinned: readPref(PINNED, false, (v): v is boolean => typeof v === "boolean"), shown: false };
 const listeners = new Set<() => void>();
 
+// Ouvrir et fermer la petite fenêtre se font l'un après l'autre, chaque fois d'après l'état voulu
+// à ce moment : un ordre arrivé en retard ne peut plus la laisser affichée en plus du lecteur
+// intégré, ni la rouvrir après « Fermer ».
+let windowQueue: Promise<unknown> = Promise.resolve();
+
+function syncWindow(): void {
+  windowQueue = windowQueue.then(async () => {
+    if (!mini.shown) return invoke("focus_mini_close");
+    await invoke("focus_mini_publish", { state: miniStateOf(focusStore.get()) });
+    return invoke("focus_mini_open", { size: miniSize() });
+  }).catch(() => {
+    if (mini.shown) setMini({ shown: false });
+  });
+}
+
 function setMini(next: Partial<MiniWindowState>): void {
   const merged = { ...mini, ...next };
   if (merged.pinned === mini.pinned && merged.shown === mini.shown) return;
   if (merged.pinned !== mini.pinned) writePref(PINNED, merged.pinned);
-  const show = merged.shown !== mini.shown ? merged.shown : null;
+  const changed = merged.shown !== mini.shown;
   mini = merged;
   listeners.forEach((l) => l());
-  if (show === null || !inTauri) return;
-  if (show) {
-    void invoke("focus_mini_publish", { state: miniStateOf(focusStore.get()) })
-      .then(() => invoke("focus_mini_open", { size: miniSize() }))
-      .catch(() => setMini({ shown: false }));
-  } else void invoke("focus_mini_close").catch(() => undefined);
+  if (changed && inTauri) syncWindow();
 }
 
 export const miniWindowState = (): MiniWindowState => mini;
@@ -123,6 +134,15 @@ export function pinMiniWindow(on: boolean): void {
 }
 
 let started = false;
+/** La fenêtre principale a le premier plan. */
+let focused = typeof document !== "undefined" && document.hasFocus();
+
+/** « Ouvrir Aqueli » : la fenêtre principale revient, son lecteur intégré prend le relais, même si
+ * Windows tarde à lui donner le premier plan. */
+function backInAqueli(): void {
+  focused = true;
+  setMini({ shown: false });
+}
 
 /** Fenêtre principale : transmet chaque changement du minuteur, reçoit les boutons, et montre la
  * petite fenêtre seulement quand on a quitté Aqueli. */
@@ -130,7 +150,7 @@ export function startMiniBridge(): void {
   if (started || !inTauri) return;
   started = true;
   let last = "";
-  let focused = document.hasFocus();
+  focused = document.hasFocus();
   focusStore.subscribe(() => {
     const t = focusStore.get();
     const state = miniStateOf(t);

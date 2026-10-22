@@ -59,6 +59,40 @@ pub fn is_action(action: &str) -> bool {
     ACTIONS.contains(&action)
 }
 
+/// Le mini-lecteur garde la place où la personne l'a posé : il ne retourne dans le coin de
+/// l'écran qu'à sa première ouverture, ou si sa place n'est plus sur aucun écran.
+fn visible_somewhere(window: &tauri::WebviewWindow) -> bool {
+    let (Ok(pos), Ok(size), Ok(monitors)) = (window.outer_position(), window.outer_size(), window.available_monitors()) else {
+        return false;
+    };
+    let (cx, cy) = (pos.x + size.width as i32 / 2, pos.y + size.height as i32 / 2);
+    monitors.iter().any(|m| {
+        let a = m.work_area();
+        cx >= a.position.x && cx < a.position.x + a.size.width as i32 && cy >= a.position.y && cy < a.position.y + a.size.height as i32
+    })
+}
+
+/// Nouvelle taille, en gardant le coin en bas à droite là où il était (le lecteur reste à sa
+/// place), sans sortir de l'écran.
+fn set_size_anchored(app: &AppHandle, window: &tauri::WebviewWindow, w: f64, h: f64) {
+    let before = window.outer_position().ok().zip(window.outer_size().ok());
+    let _ = window.set_size(LogicalSize::new(w, h));
+    let (Some((pos, old)), Ok(new)) = (before, window.outer_size()) else {
+        return place(app, window);
+    };
+    let mut x = pos.x + old.width as i32 - new.width as i32;
+    let mut y = pos.y + old.height as i32 - new.height as i32;
+    if let Ok(Some(monitor)) = window.current_monitor() {
+        let a = monitor.work_area();
+        x = x.clamp(a.position.x, (a.position.x + a.size.width as i32 - new.width as i32).max(a.position.x));
+        y = y.clamp(a.position.y, (a.position.y + a.size.height as i32 - new.height as i32).max(a.position.y));
+    }
+    let _ = window.set_position(PhysicalPosition::new(x, y));
+    if !visible_somewhere(window) {
+        place(app, window);
+    }
+}
+
 /// En bas à droite de l'écran de la fenêtre principale, au-dessus de la barre des tâches.
 fn place(app: &AppHandle, window: &tauri::WebviewWindow) {
     let monitor = app
@@ -130,21 +164,19 @@ fn keep_size(app: &AppHandle, window: &tauri::WebviewWindow) {
     if let Ok(size) = window.inner_size() {
         let current = (f64::from(size.width) / scale, f64::from(size.height) / scale);
         if (current.0 - wanted.0).abs() > 1.0 || (current.1 - wanted.1).abs() > 1.0 {
-            let _ = window.set_size(LogicalSize::new(wanted.0, wanted.1));
-            place(app, window);
+            set_size_anchored(app, window, wanted.0, wanted.1);
         }
     }
 }
 
-/// Change la taille du mini-lecteur parmi les trois prévues, en le gardant dans son coin.
+/// Change la taille du mini-lecteur parmi les trois prévues, sans le déplacer.
 pub fn resize(app: &AppHandle, name: &str) {
     let (w, h) = size_of(name);
     if let Ok(mut size) = app.state::<MiniSize>().0.lock() {
         *size = Some((w, h));
     }
     if let Some(window) = app.get_webview_window(WINDOW) {
-        let _ = window.set_size(LogicalSize::new(w, h));
-        place(app, &window);
+        set_size_anchored(app, &window, w, h);
     }
 }
 
@@ -152,6 +184,9 @@ pub fn resize(app: &AppHandle, name: &str) {
 pub fn open(app: &AppHandle, size: &str) -> tauri::Result<()> {
     if let Some(window) = app.get_webview_window(WINDOW) {
         resize(app, size);
+        if !visible_somewhere(&window) {
+            place(app, &window);
+        }
         show_inactive(&window)?;
         crate::system::discreet::protect(&window);
         return Ok(());
@@ -206,13 +241,15 @@ pub fn publish(app: &AppHandle, state: MiniState) {
     }
 }
 
-/// Bouton du mini-lecteur : transmis à la fenêtre principale ; « afficher » la ramène.
+/// Bouton du mini-lecteur : transmis à la fenêtre principale ; « afficher » la ramène (son
+/// lecteur intégré prend alors le relais) ; « detacher » le ferme. Dans les deux cas, la petite
+/// fenêtre se cache tout de suite, sans attendre la fenêtre principale.
 pub fn command(app: &AppHandle, action: &str) {
+    if action == "afficher" || action == "detacher" {
+        close(app);
+    }
     if action == "afficher" {
         background::show_main(app);
-    }
-    if action == "detacher" {
-        close(app);
     }
     let _ = app.emit_to("main", COMMAND_EVENT, action.to_string());
 }
