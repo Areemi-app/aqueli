@@ -77,7 +77,7 @@ Fifteen modules, grouped in the sidebar. Hide the ones you do not use in Setting
 
 And around them:
 
-- **Encrypted by default.** Each account is a SQLCipher database (AES-256), opened by a key derived from your password with Argon2id. A 24-character recovery key is the only other way in. Windows Hello unlocks it day to day.
+- **Encrypted by default.** Each account is a SQLCipher database (AES-256), opened by a key derived from your password with Argon2id. A 24-character recovery key is the only other way in. Windows Hello can unlock it day to day, if you choose to turn it on.
 - **Works offline.** Aqueli makes no network connections. Nothing is sent anywhere, and no internet connection is ever needed.
 - **Keyboard first.** A command palette (<kbd>Ctrl</kbd>+<kbd>K</kbd>), shortcuts you can change, <kbd>Ctrl</kbd>+<kbd>Z</kbd> for every change to your data, and a quick capture window from anywhere in Windows (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>A</kbd>).
 - **Everything connected.** Link a task to a note, an event to a contact, a bill to its contract, and find anything from one search bar.
