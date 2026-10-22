@@ -39,6 +39,8 @@ export const SHORTCUT_GROUPS: readonly { title: string; shortcuts: readonly Shor
       { command: "shortcuts" },
       { keys: ["Ctrl", "P"], label: tr("Imprimer la vue affichée : liste de tâches, semaine, liste, note, obligations, rapport du mois") },
       { keys: [tr("Échap")], label: tr("Fermer une fenêtre ou un menu") },
+      { keys: ["Ctrl", tr("Maj droite")], label: tr("Écrire de droite à gauche dans le champ ou le paragraphe de note en cours") },
+      { keys: ["Ctrl", tr("Maj gauche")], label: tr("Écrire de gauche à droite dans le champ ou le paragraphe de note en cours") },
     ],
   },
   {

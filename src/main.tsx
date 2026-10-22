@@ -23,11 +23,14 @@ import "./styles/signature.css";
 import { initLanguage, lang } from "./i18n/i18n";
 import { prefsBackend } from "./lib/prefsBackend";
 import { flushPrefs, loadPrefs } from "./lib/storage";
+import { installTextDirection } from "./lib/textDirection";
 import { installTruncationTitles } from "./lib/truncationTitles";
 import { noteWindowId } from "./notes/noteWindows";
 
 // Texte coupé par « … » : son contenu entier au survol, dans toutes les fenêtres.
 installTruncationTitles();
+// Ctrl+Maj droite ou gauche : écrire de droite à gauche, ou de gauche à droite.
+installTextDirection();
 
 // Le reste du code est lu une fois la langue connue : les textes calculés au chargement la suivent.
 // Fenêtre d'une note : son code (l'éditeur) n'est lu que là, jamais au démarrage d'Aqueli.

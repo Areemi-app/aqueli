@@ -13,6 +13,7 @@ import { Placeholder } from "@tiptap/extensions";
 import { StarterKit } from "@tiptap/starter-kit";
 import type { SuggestionKeyDownProps, SuggestionProps } from "@tiptap/suggestion";
 import { CONTACT_MENTION, NOTE_LINK } from "../notes";
+import { BlockDirection } from "./direction";
 import { slashCommands, type SlashHandlers } from "./slash";
 import { tr } from "../../i18n/i18n";
 
@@ -261,6 +262,7 @@ export function noteExtensions({ placeholder, links, contacts, slash }: Extensio
     Placeholder.configure({ placeholder }),
     noteLink(links),
     contactMention(contacts ?? NO_CONTACTS),
+    BlockDirection,
     ...(slash ? [slashCommands(slash)] : []),
   ];
 }

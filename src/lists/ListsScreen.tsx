@@ -295,85 +295,92 @@ function ListEditor({ list, onClose, onSaved }: { list?: List; onClose: () => vo
     onClose();
   };
   return (
-    <Dialog title={list ? tr("Liste") : tr("Nouvelle liste · {label}", { label: template.label })} onClose={onClose}>
+    <Dialog title={list ? tr("Liste") : tr("Nouvelle liste · {label}", { label: template.label })} onClose={onClose} className="dialog--list-form">
       <form className="settings-form" onSubmit={(e) => void submit(e)} noValidate>
-        <div className="field">
-          <label htmlFor={`${ids}-nom`} className="field-label">
-            {tr("Nom")}
-          </label>
-          <div className="field-box" data-invalid={error && !form.name.trim() ? true : undefined}>
-            <input id={`${ids}-nom`} className="field-input" value={form.name} maxLength={100} placeholder={tr("Courses de la semaine…")} onChange={(e) => set({ name: e.target.value })} data-autofocus />
-          </div>
-        </div>
-        <div className="field">
-          <span className="field-label">{tr("Colonnes")}</span>
-          <div className="list-columns-editor">
-            {form.columns.map((c, i) => (
-              <div key={c.id} className="list-column-row">
-                <div className="field-box">
-                  <input className="field-input" value={c.name} maxLength={40} aria-label={tr("Nom de la colonne {x}", { x: i + 1 })} onChange={(e) => setColumn(i, { name: e.target.value })} />
-                </div>
-                <Select value={c.kind} options={COLUMN_KINDS.map((k) => ({ value: k.id, label: k.label }))} label={tr("Sorte de la colonne {x}", { x: i + 1 })} onChange={(kind) => setColumn(i, { kind: kind as ColumnKind })} />
-                <button type="button" className="icon-btn icon-btn--sm" aria-label={tr("Retirer la colonne « {name} »", { name: c.name })} title={tr("Retirer")} onClick={() => set({ columns: form.columns.filter((_, j) => j !== i) })}>
-                  <Icon d={ICONS.close} size={12} stroke={2.6} />
-                </button>
+        {/* Deux colonnes : la liste (nom, colonnes, sections), puis son apparence. */}
+        <div className="list-form-grid">
+          <div className="list-form-col">
+            <div className="field">
+              <label htmlFor={`${ids}-nom`} className="field-label">
+                {tr("Nom")}
+              </label>
+              <div className="field-box" data-invalid={error && !form.name.trim() ? true : undefined}>
+                <input id={`${ids}-nom`} className="field-input" value={form.name} maxLength={100} placeholder={tr("Courses de la semaine…")} onChange={(e) => set({ name: e.target.value })} data-autofocus />
               </div>
-            ))}
-            {form.columns.length < 12 && (
-              <button type="button" className="link-btn" onClick={() => set({ columns: [...form.columns, { id: columnId("Colonne", form.columns), name: "", kind: "texte" }] })}>
-                <Icon d={ICONS.plus} size={12} stroke={2.6} />{tr(" Ajouter une colonne")}
-              </button>
-            )}
+            </div>
+            <div className="field">
+              <span className="field-label">{tr("Colonnes")}</span>
+              <div className="list-columns-editor">
+                {form.columns.map((c, i) => (
+                  <div key={c.id} className="list-column-row">
+                    <div className="field-box">
+                      <input className="field-input" value={c.name} maxLength={40} aria-label={tr("Nom de la colonne {x}", { x: i + 1 })} onChange={(e) => setColumn(i, { name: e.target.value })} />
+                    </div>
+                    <Select value={c.kind} options={COLUMN_KINDS.map((k) => ({ value: k.id, label: k.label }))} label={tr("Sorte de la colonne {x}", { x: i + 1 })} onChange={(kind) => setColumn(i, { kind: kind as ColumnKind })} />
+                    <button type="button" className="icon-btn icon-btn--sm" aria-label={tr("Retirer la colonne « {name} »", { name: c.name })} title={tr("Retirer")} onClick={() => set({ columns: form.columns.filter((_, j) => j !== i) })}>
+                      <Icon d={ICONS.close} size={12} stroke={2.6} />
+                    </button>
+                  </div>
+                ))}
+                {form.columns.length < 12 && (
+                  <button type="button" className="link-btn" onClick={() => set({ columns: [...form.columns, { id: columnId("Colonne", form.columns), name: "", kind: "texte" }] })}>
+                    <Icon d={ICONS.plus} size={12} stroke={2.6} />{tr(" Ajouter une colonne")}
+                  </button>
+                )}
+              </div>
+              {list && <p className="settings-hint">{tr("Une colonne retirée efface ses valeurs (Ctrl+Z les rétablit).")}</p>}
+            </div>
+            <div className="field">
+              <span className="field-label">{form.template === "courses" ? tr("Rayons") : tr("Sections")}</span>
+              <div className="list-sections-editor">
+                {form.sections.map((s) => (
+                  <span key={s} className="pill list-section-pill">
+                    {s}
+                    <button type="button" aria-label={tr("Retirer « {s} »", { s })} onClick={() => set({ sections: form.sections.filter((x) => x !== s) })}>
+                      <Icon d={ICONS.close} size={10} stroke={2.8} />
+                    </button>
+                  </span>
+                ))}
+                <span className="field-box list-section-add">
+                  <input
+                    className="field-input"
+                    value={newSection}
+                    maxLength={60}
+                    placeholder={form.template === "courses" ? tr("Nouveau rayon") : tr("Nouvelle section")}
+                    aria-label={form.template === "courses" ? tr("Nouveau rayon") : tr("Nouvelle section")}
+                    onChange={(e) => setNewSection(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key !== "Enter") return;
+                      e.preventDefault();
+                      const s = newSection.trim();
+                      if (s && !form.sections.some((x) => x.toLowerCase() === s.toLowerCase())) set({ sections: [...form.sections, s] });
+                      setNewSection("");
+                    }}
+                  />
+                </span>
+              </div>
+            </div>
           </div>
-          {list && <p className="settings-hint">{tr("Une colonne retirée efface ses valeurs (Ctrl+Z les rétablit).")}</p>}
-        </div>
-        <div className="field">
-          <span className="field-label">{form.template === "courses" ? tr("Rayons") : tr("Sections")}</span>
-          <div className="list-sections-editor">
-            {form.sections.map((s) => (
-              <span key={s} className="pill list-section-pill">
-                {s}
-                <button type="button" aria-label={tr("Retirer « {s} »", { s })} onClick={() => set({ sections: form.sections.filter((x) => x !== s) })}>
-                  <Icon d={ICONS.close} size={10} stroke={2.8} />
-                </button>
-              </span>
-            ))}
-            <span className="field-box list-section-add">
-              <input
-                className="field-input"
-                value={newSection}
-                maxLength={60}
-                placeholder={form.template === "courses" ? tr("Nouveau rayon") : tr("Nouvelle section")}
-                aria-label={form.template === "courses" ? tr("Nouveau rayon") : tr("Nouvelle section")}
-                onChange={(e) => setNewSection(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key !== "Enter") return;
-                  e.preventDefault();
-                  const s = newSection.trim();
-                  if (s && !form.sections.some((x) => x.toLowerCase() === s.toLowerCase())) set({ sections: [...form.sections, s] });
-                  setNewSection("");
-                }}
-              />
-            </span>
+          <div className="list-form-col">
+            <div className="field">
+              <span className="field-label">{tr("Vue")}</span>
+              <Segmented value={form.view} options={[{ value: "liste", label: tr("Liste") }, { value: "galerie", label: tr("Galerie") }]} label={tr("Vue")} onChange={(view) => set({ view })} />
+            </div>
+            <div className="field">
+              <span className="field-label">{tr("Symbole")}</span>
+              <SymbolPicker value={form.icon} onChange={(icon) => set({ icon })} label={tr("Symbole de la liste")} color={form.color} />
+            </div>
+            <div className="field">
+              <span className="field-label">{tr("Couleur")}</span>
+              <ColorChoices value={form.color} onChange={(color) => set({ color })} label={tr("Couleur de la liste")} />
+            </div>
+            <div className="field">
+              <label htmlFor={`${ids}-espace`} className="field-label">
+                {tr("Espace")}
+              </label>
+              <Select id={`${ids}-espace`} value={form.spaceId ?? ""} options={[{ value: "", label: tr("Tous les espaces") }, ...spaces.map((s) => ({ value: s.id, label: s.name }))]} onChange={(v) => set({ spaceId: v || null })} />
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <span className="field-label">{tr("Vue")}</span>
-          <Segmented value={form.view} options={[{ value: "liste", label: tr("Liste") }, { value: "galerie", label: tr("Galerie") }]} label={tr("Vue")} onChange={(view) => set({ view })} />
-        </div>
-        <div className="field">
-          <span className="field-label">{tr("Symbole")}</span>
-          <SymbolPicker value={form.icon} onChange={(icon) => set({ icon })} label={tr("Symbole de la liste")} color={form.color} />
-        </div>
-        <div className="field">
-          <span className="field-label">{tr("Couleur")}</span>
-          <ColorChoices value={form.color} onChange={(color) => set({ color })} label={tr("Couleur de la liste")} />
-        </div>
-        <div className="field">
-          <label htmlFor={`${ids}-espace`} className="field-label">
-            {tr("Espace")}
-          </label>
-          <Select id={`${ids}-espace`} value={form.spaceId ?? ""} options={[{ value: "", label: tr("Tous les espaces") }, ...spaces.map((s) => ({ value: s.id, label: s.name }))]} onChange={(v) => set({ spaceId: v || null })} />
         </div>
         {error && (
           <p className="form-error" role="alert">

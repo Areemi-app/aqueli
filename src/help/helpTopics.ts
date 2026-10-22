@@ -379,6 +379,7 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
         text: [
           tr("Sélectionnez du texte pour utiliser la barre d'outils."),
           tr("Vous pouvez aussi commencer une ligne par « # » pour un titre, « - » pour une liste ou « [ ] » pour une case à cocher, suivi d'Espace."),
+          tr("Un paragraphe en arabe ou en hébreu s'écrit de droite à gauche de lui-même. Ctrl+Maj droite impose ce sens au paragraphe, et Ctrl+Maj gauche le remet de gauche à droite."),
         ],
       },
       {

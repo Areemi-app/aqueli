@@ -8072,6 +8072,31 @@
   "en": "Close a window or a menu"
  },
  {
+  "id": "1sa5ixk",
+  "fr": "Maj droite",
+  "en": "Right Shift"
+ },
+ {
+  "id": "035s7vy",
+  "fr": "Maj gauche",
+  "en": "Left Shift"
+ },
+ {
+  "id": "1nktzmi",
+  "fr": "Écrire de droite à gauche dans le champ ou le paragraphe de note en cours",
+  "en": "Write right to left in the current field or note paragraph"
+ },
+ {
+  "id": "0gnl8gy",
+  "fr": "Écrire de gauche à droite dans le champ ou le paragraphe de note en cours",
+  "en": "Write left to right in the current field or note paragraph"
+ },
+ {
+  "id": "01qm0bl",
+  "fr": "Un paragraphe en arabe ou en hébreu s'écrit de droite à gauche de lui-même. Ctrl+Maj droite impose ce sens au paragraphe, et Ctrl+Maj gauche le remet de gauche à droite.",
+  "en": "A paragraph in Arabic or Hebrew is written right to left on its own. Ctrl+Right Shift sets that direction for the paragraph, and Ctrl+Left Shift sets it back to left to right."
+ },
+ {
   "id": "06len5l",
   "fr": "Élément d'une liste",
   "en": "List item"

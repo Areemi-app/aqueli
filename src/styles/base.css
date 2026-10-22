@@ -63,6 +63,22 @@ textarea,
   user-select: text;
 }
 
+/* Sens d'écriture : chaque texte (champ, titre, paragraphe) prend celui de sa première lettre.
+   Une ligne en arabe ou en hébreu s'écrit et s'aligne à droite. Un sens choisi avec Ctrl+Maj
+   droite ou gauche (src/lib/textDirection.ts) l'emporte. La mise en page, elle, ne change pas. */
+:where(body *) {
+  unicode-bidi: plaintext;
+}
+
+/* Un sens choisi vaut aussi pour tout ce que l'élément contient (texte d'un élément de liste). */
+:where([dir="rtl"] *, [dir="ltr"] *) {
+  unicode-bidi: normal;
+}
+
+:where([dir="rtl"], [dir="ltr"]) {
+  unicode-bidi: isolate;
+}
+
 button,
 input,
 textarea,
