@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Galerie des thèmes Aqueli</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1692px; height: 1796px; box-sizing: border-box; padding: 48px; display: flex; flex-direction: column; gap: 32px; background: radial-gradient(60% 30% at 85% 0%, rgba(255,255,255,0.9), rgba(255,255,255,0) 70%), linear-gradient(180deg, #d6f0fc 0%, #eef8fe 40%, #f7fbff 100%); font-family: 'Figtree', 'Segoe UI Variable', 'Segoe UI', sans-serif; font-variant-numeric: tabular-nums; color: #0b2a45">
+<div style="height: 96px; display: flex; align-items: center; gap: 20px">
+<img src="/_blob/858e20c7d306c68197423b1098f549f3" alt="" style="width: 80px; height: 80px">
+<div style="flex-grow: 1">
+<h1 style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em">Galerie des thèmes</h1>
+<p style="margin: 4px 0 0 0; font-size: 17px; font-weight: 500; color: #3a5870">20 thèmes, chacun en clair ou en sombre · changement automatique possible selon la saison, les fêtes, l'heure ou l'humeur du Journal</p>
+</div>
+</div>
+<sc-for list="{{families}}" as="fam" hint-placeholder-count="5">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; height: 24px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #3a5870">{{fam.label}}</h2>
+<div style="display: flex; gap: 24px">
+<sc-for list="{{fam.themes}}" as="th" hint-placeholder-count="5">
+<article style="width: 300px; height: 256px; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 18px; background: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.95); box-shadow: 0 10px 30px rgba(6,68,120,0.12); overflow: hidden">
+<div style="position: relative; width: 300px; height: 180px; overflow: hidden; background: {{th.sky}}">
+<sc-for list="{{th.motifs}}" as="m" hint-placeholder-count="6">
+<svg aria-hidden="true" width="{{m.s}}" height="{{m.s}}" viewBox="0 0 24 24" style="position: absolute; left: {{m.x}}px; top: {{m.y}}px; opacity: {{m.o}}"><path d="{{m.d}}" fill="{{m.fill}}" stroke="{{m.stroke}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</sc-for>
+<div style="position: absolute; left: 0; top: 0; width: 300px; height: 22px; box-sizing: border-box; display: flex; align-items: center; gap: 6px; padding: 0 10px; background: {{th.bar}}; border-bottom: 1px solid {{th.border}}; color: {{th.ink}}; font-size: 10px; font-weight: 700">
+<span style="width: 10px; height: 10px; border-radius: 5px; background: {{th.gel}}"></span>Aqueli
+</div>
+<div style="position: absolute; left: 12px; top: 32px; width: 176px; height: 136px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border-radius: 12px; background: {{th.card}}; backdrop-filter: blur(10px); border: 1px solid {{th.border}}; color: {{th.ink}}">
+<div style="font-size: 11px; font-weight: 700">Aujourd'hui</div>
+<div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 500"><span style="width: 10px; height: 10px; flex-shrink: 0; border-radius: 5px; background: {{th.gel}}"></span><span style="color: {{th.soft}}; text-decoration: line-through">Arroser les plantes</span></div>
+<div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 600"><span style="width: 10px; height: 10px; box-sizing: border-box; flex-shrink: 0; border-radius: 5px; border: 1.2px solid {{th.soft}}"></span>Appeler le garage</div>
+<div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 600"><span style="width: 10px; height: 10px; box-sizing: border-box; flex-shrink: 0; border-radius: 5px; border: 1.2px solid {{th.soft}}"></span>Préparer la réunion</div>
+<span style="margin-top: auto; align-self: flex-start; height: 22px; padding: 0 12px; border-radius: 11px; background: {{th.gel}}; border: 1px solid rgba(255,255,255,0.28); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 6px 12px -6px {{th.glow}}; color: #ffffff; font-size: 10px; font-weight: 700; line-height: 22px">Planifier</span>
+</div>
+<div style="position: absolute; left: 198px; top: 32px; width: 90px; height: 60px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; background: {{th.card}}; backdrop-filter: blur(10px); border: 1px solid {{th.border}}; color: {{th.ink}}">
+<span style="font-size: 17px; font-weight: 700; line-height: 1">25:00</span>
+<span style="margin-top: 3px; font-size: 9px; font-weight: 600; color: {{th.accent}}">Focus</span>
+</div>
+</div>
+<div style="flex-grow: 1; display: flex; align-items: center; gap: 10px; padding: 0 16px">
+<div style="flex-grow: 1; min-width: 0">
+<div style="display: flex; align-items: center; gap: 8px"><span style="font-size: 16px; font-weight: 700">{{th.name}}</span><sc-if value="{{th.dark}}" hint-placeholder-val="{{false}}"><span style="padding: 1px 7px; border-radius: 8px; background: #0b2a45; color: #ffffff; font-size: 10px; font-weight: 700">sombre</span></sc-if></div>
+<div style="margin-top: 2px; font-size: 12px; font-weight: 500; color: #3a5870; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{th.auto}}</div>
+</div>
+<div style="display: flex; gap: 4px" aria-label="Palette" role="img">
+<sc-for list="{{th.swatches}}" as="c" hint-placeholder-count="4">
+<span style="width: 16px; height: 16px; border-radius: 8px; background: {{c.color}}; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12)"></span>
+</sc-for>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+</section>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1692,"height":1796}}'>
+const GLOSS = 'radial-gradient(120% 90% at 50% -20%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0) 70%)';
+const LIGHT = { card: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 40%), rgba(255,255,255,0.66)', bar: 'rgba(255,255,255,0.72)', border: 'rgba(255,255,255,0.9)' };
+const DARK = { card: 'linear-gradient(180deg, rgba(200,220,255,0.14) 0%, rgba(200,220,255,0) 40%), rgba(10,20,50,0.55)', bar: 'rgba(10,20,50,0.55)', border: 'rgba(200,220,255,0.28)' };
+const PATHS = {
+  bulles: 'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0z',
+  feuilles: 'M5 19C5 10 11 5 20 4c-1 9-6 15-15 15z M5 19l8-8',
+  flocons: 'M12 2v20 M3.3 7l17.4 10 M3.3 17L20.7 7 M10 3.5l2 2 2-2 M10 20.5l2-2 2 2',
+  etoiles: 'M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z',
+  coeurs: 'M12 21s-7-4.5-9.3-9A5 5 0 0 1 12 6.5 5 5 0 0 1 21.3 12C19 16.5 12 21 12 21z',
+  petales: 'M12 2c3.5 3 3.5 8 0 11c-3.5-3-3.5-8 0-11z M12 13c2 3 6 4 9 3c-2-3-6-4-9-3z',
+  oeufs: 'M12 3c4 0 6.5 6 6.5 10a6.5 6.5 0 0 1-13 0C5.5 9 8 3 12 3z',
+  chauvesouris: 'M1 9c2.5-1 5-0.5 6 1.5c1-2 3-3 5-3s4 1 5 3c1-2 3.5-2.5 6-1.5c-2.5 1.5-3.5 4-3.5 6.5c-1.5-1.5-4-1.5-5 0c-1-1.5-3.5-1.5-5 0c-1-1.5-3.5-1.5-5 0C4.5 13 3.5 10.5 1 9z'
+};
+const SPOTS = [
+  { x: 262, y: 100, s: 22 }, { x: 222, y: 108, s: 14 }, { x: 244, y: 136, s: 28 },
+  { x: 200, y: 146, s: 14 }, { x: 278, y: 150, s: 12 }, { x: 150, y: 150, s: 16 }
+];
+function t(o) {
+  const base = o.dark ? DARK : LIGHT;
+  const motifs = SPOTS.map((p) => ({
+    ...p,
+    d: PATHS[o.motif],
+    fill: o.motifStroke ? 'none' : o.motifColor,
+    stroke: o.motifStroke ? o.motifColor : (o.motif === 'bulles' ? o.motifColor : 'none'),
+    o: o.motif === 'bulles' ? 0.55 : 0.8
+  }));
+  if (o.motif === 'bulles') motifs.forEach((m) => { m.fill = 'rgba(255,255,255,0.18)'; });
+  return {
+    card: o.card || base.card, bar: o.bar || base.bar, border: base.border,
+    ...o,
+    gel: GLOSS + ', linear-gradient(180deg, ' + o.g1 + ' 0%, ' + o.g2 + ' 100%)',
+    motifs,
+    swatches: o.pal.map((c) => ({ color: c }))
+  };
+}
+const FAMILIES = [
+  { label: 'Couleurs et nature', themes: [
+    t({ name: 'Aqua', auto: 'Thème par défaut', sky: 'radial-gradient(70% 45% at 85% 0%, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%), linear-gradient(180deg, #3aaee9 0%, #8fd8fa 45%, #e4f8ff 100%)', ink: '#0b2a45', soft: '#3a5870', accent: '#07609f', g1: '#2b9ee4', g2: '#0b5dab', glow: 'rgba(11,93,171,0.6)', motif: 'bulles', motifColor: '#ffffff', pal: ['#3aaee9', '#8fd8fa', '#0b5dab', '#c9f1dc'] }),
+    t({ name: 'Prairie', auto: 'Collines vertes sous le ciel', sky: 'radial-gradient(130% 55% at 25% 112%, #58b52c 0%, #58b52c 55%, rgba(88,181,44,0) 55.4%), radial-gradient(100% 45% at 88% 110%, #86cf49 0%, #86cf49 58%, rgba(134,207,73,0) 58.4%), linear-gradient(180deg, #34a8e6 0%, #9edcf9 45%, #eefaff 100%)', ink: '#12321a', soft: '#3a5a40', accent: '#1d6e10', g1: '#47ab27', g2: '#1b6810', glow: 'rgba(27,104,16,0.55)', motif: 'feuilles', motifColor: '#2f8f1c', pal: ['#34a8e6', '#86cf49', '#1b6810', '#eefaff'] }),
+    t({ name: 'Lagon', auto: 'Eau turquoise et corail', sky: 'linear-gradient(180deg, #13bcd4 0%, #7fe6e0 55%, #fdf1d6 100%)', ink: '#073b44', soft: '#2e5f66', accent: '#0b6f7c', g1: '#ff8a65', g2: '#d8452c', glow: 'rgba(216,69,44,0.55)', motif: 'bulles', motifColor: '#ffffff', pal: ['#13bcd4', '#7fe6e0', '#ff8a65', '#fdf1d6'] }),
+    t({ name: 'Tropiques', auto: 'Jungle, mangue et soleil', sky: 'radial-gradient(70% 50% at 85% 10%, rgba(255,220,120,0.85), rgba(255,220,120,0) 70%), linear-gradient(180deg, #1fbfa2 0%, #8ee07a 55%, #f7d774 100%)', ink: '#0f3a28', soft: '#34604b', accent: '#0b6b4a', g1: '#ff9f1c', g2: '#d9570a', glow: 'rgba(217,87,10,0.55)', motif: 'feuilles', motifColor: '#0f7a45', pal: ['#1fbfa2', '#8ee07a', '#ff9f1c', '#f7d774'] }),
+    t({ name: 'Aurore boréale', dark: true, auto: 'Voiles verts et violets', sky: 'radial-gradient(80% 50% at 30% 20%, rgba(80,255,170,0.45), rgba(80,255,170,0) 70%), radial-gradient(60% 45% at 75% 15%, rgba(170,90,255,0.45), rgba(170,90,255,0) 70%), linear-gradient(180deg, #07142e 0%, #0c2a4a 60%, #123b5a 100%)', ink: '#eafcff', soft: '#a9cfe0', accent: '#7ff5c8', g1: '#35d69f', g2: '#117384', glow: 'rgba(60,230,170,0.6)', motif: 'etoiles', motifColor: '#ffffff', pal: ['#07142e', '#50ffaa', '#aa5aff', '#123b5a'] })
+  ] },
+  { label: 'Saisons', themes: [
+    t({ name: 'Printemps', auto: 'Auto : 20 mars → 20 juin', sky: 'linear-gradient(180deg, #bfe8ff 0%, #fde2ec 55%, #e3f7cf 100%)', ink: '#3a1f33', soft: '#6b4a5f', accent: '#a8326a', g1: '#f07aab', g2: '#b8346c', glow: 'rgba(184,52,108,0.5)', motif: 'petales', motifColor: '#f59bbf', pal: ['#bfe8ff', '#fde2ec', '#f07aab', '#e3f7cf'] }),
+    t({ name: 'Été', auto: 'Auto : 21 juin → 22 sept.', sky: 'radial-gradient(60% 45% at 80% 8%, rgba(255,240,150,0.95), rgba(255,240,150,0) 65%), linear-gradient(180deg, #1fa6f0 0%, #7fd6ff 50%, #ffe6a8 82%, #ffd27a 100%)', ink: '#0c2f4a', soft: '#3a5a72', accent: '#0a5e99', g1: '#ffa92e', g2: '#d9650b', glow: 'rgba(217,101,11,0.55)', motif: 'bulles', motifColor: '#ffffff', pal: ['#1fa6f0', '#7fd6ff', '#ffa92e', '#ffe6a8'] }),
+    t({ name: 'Automne', auto: 'Auto : 23 sept. → 20 déc.', sky: 'radial-gradient(60% 45% at 82% 4%, rgba(255,240,190,0.95), rgba(255,240,190,0) 70%), linear-gradient(180deg, #f7cd7a 0%, #efa059 45%, #d9713c 75%, #a8452a 100%)', card: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 40%), rgba(255,247,236,0.72)', ink: '#3a1a0a', soft: '#6a3b22', accent: '#9a3b0a', g1: '#e07833', g2: '#983b0c', glow: 'rgba(152,59,12,0.55)', motif: 'feuilles', motifColor: '#b8481c', pal: ['#f7cd7a', '#efa059', '#983b0c', '#a8452a'] }),
+    t({ name: 'Hiver', auto: 'Auto : 21 déc. → 19 mars', sky: 'linear-gradient(180deg, #9fd3f5 0%, #dff1fc 55%, #ffffff 100%)', ink: '#10304a', soft: '#45627a', accent: '#1f5f99', g1: '#5eaee8', g2: '#2462a8', glow: 'rgba(36,98,168,0.5)', motif: 'flocons', motifStroke: true, motifColor: '#6aa8da', pal: ['#9fd3f5', '#dff1fc', '#2462a8', '#ffffff'] })
+  ] },
+  { label: 'Fêtes', themes: [
+    t({ name: 'Noël', dark: true, auto: 'Auto : 1er → 25 déc.', sky: 'radial-gradient(60% 50% at 50% 0%, rgba(255,220,150,0.35), rgba(255,220,150,0) 70%), linear-gradient(180deg, #0f3d2e 0%, #145c3f 55%, #1f7a4f 100%)', ink: '#fff8ec', soft: '#e6d8bd', accent: '#ffd36b', g1: '#e8403a', g2: '#a3161a', glow: 'rgba(232,64,58,0.6)', motif: 'flocons', motifStroke: true, motifColor: '#ffffff', pal: ['#145c3f', '#e8403a', '#ffd36b', '#fff8ec'] }),
+    t({ name: 'Nouvel An', dark: true, auto: 'Auto : 26 déc. → 2 janv.', sky: 'radial-gradient(50% 40% at 50% 0%, rgba(255,215,120,0.35), rgba(255,215,120,0) 70%), linear-gradient(180deg, #0b0b24 0%, #1c1845 60%, #2b2560 100%)', ink: '#fffaf0', soft: '#d8d0f0', accent: '#ffd76b', g1: '#e0a82e', g2: '#94620a', glow: 'rgba(240,190,70,0.6)', motif: 'etoiles', motifColor: '#ffd76b', pal: ['#0b0b24', '#2b2560', '#e0a82e', '#fffaf0'] }),
+    t({ name: 'Saint-Valentin', auto: 'Auto : 7 → 14 févr.', sky: 'linear-gradient(180deg, #ffb3c7 0%, #ffd6e0 50%, #fff0f3 100%)', ink: '#4a0f24', soft: '#7a3a50', accent: '#b0164f', g1: '#ff5a8a', g2: '#c2185b', glow: 'rgba(194,24,91,0.5)', motif: 'coeurs', motifColor: '#ff6f98', pal: ['#ffb3c7', '#ff5a8a', '#c2185b', '#fff0f3'] }),
+    t({ name: 'Pâques', auto: 'Auto : semaine de Pâques', sky: 'linear-gradient(180deg, #cdeeff 0%, #f3e8ff 50%, #fff6cc 100%)', ink: '#2e2a4a', soft: '#5a5577', accent: '#5a45c8', g1: '#9b8cff', g2: '#5f49d0', glow: 'rgba(95,73,208,0.5)', motif: 'oeufs', motifColor: '#ffd36b', pal: ['#cdeeff', '#f3e8ff', '#9b8cff', '#fff6cc'] }),
+    t({ name: 'Halloween', dark: true, auto: 'Auto : 24 → 31 oct.', sky: 'radial-gradient(22% 30% at 82% 22%, #fff1c2 0%, #ffd98a 55%, rgba(255,217,138,0) 58%), linear-gradient(180deg, #1b0f33 0%, #3a1a4f 55%, #5a2a2a 100%)', ink: '#fff3e6', soft: '#d9c2e6', accent: '#ffb04d', g1: '#ff8c1a', g2: '#c24c08', glow: 'rgba(255,140,26,0.6)', motif: 'chauvesouris', motifColor: '#f28a2e', pal: ['#1b0f33', '#3a1a4f', '#ff8c1a', '#ffd98a'] })
+  ] },
+  { label: 'Humeurs', themes: [
+    t({ name: 'Zen', auto: 'Auto : humeur « calme »', sky: 'linear-gradient(180deg, #dfeee4 0%, #eef3e8 55%, #e9e2d3 100%)', ink: '#22352b', soft: '#52665a', accent: '#3a6a4e', g1: '#77a888', g2: '#3a6a4e', glow: 'rgba(58,106,78,0.45)', motif: 'bulles', motifColor: '#9ab5a3', pal: ['#dfeee4', '#e9e2d3', '#77a888', '#3a6a4e'] }),
+    t({ name: 'Énergie', auto: 'Auto : humeur « motivé »', sky: 'radial-gradient(60% 50% at 20% 10%, rgba(255,255,255,0.5), rgba(255,255,255,0) 60%), linear-gradient(135deg, #ffcf3f 0%, #ff8a3d 50%, #ff4f6d 100%)', ink: '#3a0d0d', soft: '#6b2a22', accent: '#a3122f', g1: '#ff4f6d', g2: '#b8173c', glow: 'rgba(184,23,60,0.55)', motif: 'etoiles', motifColor: '#ffffff', pal: ['#ffcf3f', '#ff8a3d', '#ff4f6d', '#b8173c'] }),
+    t({ name: 'Cocon', auto: 'Auto : humeur « fatigué »', sky: 'linear-gradient(180deg, #ffd9c4 0%, #f3d9f0 55%, #fff4e6 100%)', ink: '#3e2433', soft: '#6e5063', accent: '#7a45b8', g1: '#c09af0', g2: '#7f52c2', glow: 'rgba(127,82,194,0.5)', motif: 'bulles', motifColor: '#ffffff', pal: ['#ffd9c4', '#f3d9f0', '#c09af0', '#fff4e6'] }),
+    t({ name: 'Bulles irisées', auto: 'Reflets nacrés de bulle de savon', sky: 'linear-gradient(135deg, #d7f5ff 0%, #f3dcff 35%, #fff3d1 65%, #d9ffe9 100%)', ink: '#243049', soft: '#55607a', accent: '#4a4ad0', g1: '#4fb4ff', g2: '#7a5cf0', glow: 'rgba(122,92,240,0.5)', motif: 'bulles', motifColor: '#b8a8ff', pal: ['#d7f5ff', '#f3dcff', '#fff3d1', '#7a5cf0'] })
+  ] },
+  { label: 'Nuit', themes: [
+    t({ name: 'Nuit étoilée', dark: true, auto: 'Auto : après 21 h', sky: 'radial-gradient(55% 45% at 85% 8%, rgba(140,100,255,0.35), rgba(140,100,255,0) 70%), radial-gradient(55% 45% at 8% 95%, rgba(0,190,255,0.28), rgba(0,190,255,0) 70%), linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%)', ink: '#eef5ff', soft: '#b4c8e8', accent: '#8adbff', g1: '#3c92f2', g2: '#1a45b5', glow: 'rgba(70,150,255,0.65)', motif: 'etoiles', motifColor: '#ffffff', pal: ['#050b2a', '#173f96', '#3c92f2', '#8adbff'] }),
+    t({ name: 'Abysses', dark: true, auto: 'Fond marin lumineux', sky: 'radial-gradient(50% 40% at 50% 0%, rgba(80,220,255,0.35), rgba(80,220,255,0) 70%), linear-gradient(180deg, #03324a 0%, #03172b 60%, #010b18 100%)', ink: '#e6fbff', soft: '#9cc7d6', accent: '#5ff0ff', g1: '#17c5dc', g2: '#0a5f94', glow: 'rgba(40,220,240,0.6)', motif: 'bulles', motifColor: '#5ff0ff', pal: ['#010b18', '#03324a', '#17c5dc', '#5ff0ff'] })
+  ] }
+];
+class Component extends DCLogic {
+  renderVals() {
+    return { families: FAMILIES };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2775 @@
+/* ——— Liens entre éléments ——— */
+
+.links-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.links-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.links-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px 4px 5px;
+  border-radius: 12px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.link-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.link-title:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.link-name {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-title[data-closed] .link-name {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.link-detail {
+  overflow: hidden;
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-remove {
+  opacity: 0;
+}
+
+.link-row:hover .link-remove,
+.link-row:focus-within .link-remove {
+  opacity: 1;
+}
+
+.links-empty {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.dialog--links {
+  width: min(560px, 100%);
+}
+
+.link-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.link-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 10px;
+  color: var(--aq-soft);
+}
+
+.link-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.link-results {
+  max-height: min(380px, 50vh);
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link-result[data-closed] .palette-label {
+  color: var(--aq-soft);
+}
+
+/* ——— Projets ——— */
+
+.projects-screen {
+  height: 100%;
+  min-height: 0;
+}
+
+.projects-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.projects-body[data-task] {
+  grid-template-columns: 290px minmax(0, 1fr) 360px;
+}
+
+.project-task-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-task-panel .subtasks-panel {
+  flex: 0 1 auto;
+  max-height: 45%;
+}
+
+.project-task-panel .task-detail {
+  flex: 1;
+  min-height: 0;
+}
+
+.project-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 2px 0;
+  list-style: none;
+}
+
+.project-row {
+  --row-color: var(--aq-row);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px 9px 9px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  cursor: pointer;
+}
+
+.project-row:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.project-row[data-selected] {
+  border-color: color-mix(in srgb, var(--row-color) 55%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--row-color) 30%, transparent);
+}
+
+.project-row:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.project-row[data-status="termine"] .project-row-name {
+  color: var(--aq-soft);
+}
+
+.project-row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.project-row-name {
+  overflow: hidden;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-row-meta {
+  overflow: hidden;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-row-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.project-row-percent {
+  min-width: 34px;
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: right;
+}
+
+.project-progress {
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--aq-ink) 9%, transparent);
+}
+
+.project-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--aq-chip-gloss), var(--row-color, var(--aq-row));
+  transition: width var(--aq-fast) ease;
+}
+
+.project-view {
+  --row-color: var(--aq-row);
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 20px;
+}
+
+.project-view.habit-detail--empty {
+  align-items: center;
+  justify-content: center;
+}
+
+.project-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.project-title {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title h2 {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.project-subtitle {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.project-head .btn-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.project-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.project-summary .project-progress {
+  height: 9px;
+  border-radius: 5px;
+}
+
+.project-summary-text {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.project-description {
+  max-height: 72px;
+  overflow-y: auto;
+  color: var(--aq-ink);
+  font-size: 13.5px;
+  white-space: pre-wrap;
+}
+
+.project-description-input {
+  min-height: 52px;
+}
+
+.project-pane {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Tableau : À faire, En cours, Terminé. */
+.board {
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(190px, 1fr));
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.board[data-dragging] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.board-column {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1.5px dashed transparent;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--row-color) 14%, transparent) 0%, transparent 70px),
+    color-mix(in srgb, var(--row-color) 8%, var(--aq-tint));
+  transition:
+    border-color var(--aq-fast) ease,
+    background var(--aq-fast) ease;
+}
+
+.board-column[data-over] {
+  border-color: color-mix(in srgb, var(--row-color) 60%, transparent);
+  background: color-mix(in srgb, var(--row-color) 16%, var(--aq-tint));
+}
+
+.board-column-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aq-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Colonnes des projets : la couleur de leur étape. */
+.board-column[data-stage="a-faire"] {
+  --row-color: var(--aq-row);
+}
+
+.board-column[data-stage="en-cours"] {
+  --row-color: var(--aq-priority-medium);
+}
+
+.board-column[data-stage="termine"] {
+  --row-color: var(--aq-gain);
+}
+
+.board-count {
+  padding: 1px 7px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--row-color, var(--aq-row)) 20%, var(--aq-tile));
+  color: var(--aq-ink);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.board-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.board-card {
+  --row-color: var(--aq-row);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 9px 11px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 25%, transparent);
+  border-radius: 13px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  box-shadow: 0 2px 6px -4px var(--aq-glow);
+  cursor: grab;
+  touch-action: none;
+}
+
+.board-card:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.board-card:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.board-card[data-done] .board-card-title {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.board-card-title {
+  font-size: 13.5px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.board-card-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.board-empty {
+  padding: 10px 4px;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.board-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--aq-field-border);
+  border-radius: 12px;
+  background: var(--aq-field);
+  color: var(--aq-soft);
+}
+
+.board-add:focus-within {
+  box-shadow: var(--aq-ring);
+}
+
+.board-add-input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  border: 0;
+  background: none;
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.project-list {
+  margin-top: 10px;
+}
+
+/* Jalons. */
+.milestones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.milestone-add {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.milestone-add-title {
+  flex: 1;
+  min-width: 200px;
+}
+
+.milestone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.milestone-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 13px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.milestone-check {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1.5px solid color-mix(in srgb, var(--row-color) 60%, transparent);
+  border-radius: 14px;
+  background: var(--aq-field);
+  color: var(--row-color);
+  cursor: pointer;
+}
+
+.milestone-check[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--aq-chip-gloss), var(--row-color);
+  color: var(--aq-on-accent);
+}
+
+.milestone-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 650;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: text;
+}
+
+.milestone-row[data-done] .milestone-title {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.milestone-title-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.milestone-date {
+  width: 140px;
+}
+
+@media (max-width: 1250px) {
+  .projects-body,
+  .projects-body[data-task] {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+
+  .project-task-panel {
+    position: absolute;
+    inset: 0 0 0 auto;
+    z-index: 5;
+    width: min(380px, 100%);
+    filter: drop-shadow(0 12px 30px var(--aq-glow));
+  }
+}
+
+@media (max-width: 1000px) {
+  .projects-body,
+  .projects-body[data-task] {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .projects-body > .task-panel {
+    flex: none;
+    max-height: 260px;
+  }
+
+  .project-view {
+    flex: none;
+    min-height: 480px;
+  }
+
+}
+
+/* ——— Contacts ——— */
+
+.contacts-screen {
+  height: 100%;
+  min-height: 0;
+}
+
+.contacts-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.avatar {
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 2px var(--aq-tile),
+    0 3px 8px -4px var(--aq-glow);
+}
+
+.avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--aq-chip-gloss), var(--avatar-color);
+  color: var(--aq-on-accent);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.contact-group {
+  margin-bottom: 8px;
+}
+
+.contact-letter {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 4px 6px;
+  color: var(--aq-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.contact-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-row {
+  --row-color: var(--aq-row);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px 6px 6px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 22%, transparent);
+  border-radius: 14px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) 8%, var(--aq-tile));
+  cursor: pointer;
+}
+
+.contact-row:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.contact-row[data-selected] {
+  border-color: color-mix(in srgb, var(--row-color) 40%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.contact-row:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.contact-row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-row-name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-row-detail {
+  overflow: hidden;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-star {
+  color: var(--aq-priority-medium);
+}
+
+.contact-detail {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  padding: 18px 20px;
+  border-radius: 20px;
+}
+
+.contact-birthday-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--aq-priority-medium) 14%, var(--aq-tile));
+  color: var(--aq-ink);
+  font-size: 13.5px;
+}
+
+.contact-birthday-card > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-birthday-next {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.contact-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.contact-notes {
+  font-size: 13.5px;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+/* Fiche à modifier (10/10/2026) : identité en haut, puis « Coordonnées » et « Anniversaire et
+   classement » côte à côte, dans des blocs teintés ; tout passe en colonne en place étroite. */
+.dialog--contact {
+  width: min(860px, 100%);
+  container-type: inline-size;
+}
+
+.contact-editor {
+  gap: 14px;
+}
+
+.contact-editor .field {
+  gap: 4px;
+}
+
+.ce-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+
+.ce-block {
+  --info-color: var(--aq-accent);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px 14px;
+  border: 1px solid color-mix(in srgb, var(--info-color) 30%, transparent);
+  border-radius: 16px;
+  background:
+    var(--aq-row-gloss),
+    linear-gradient(170deg, color-mix(in srgb, var(--info-color) 12%, var(--aq-tile)), color-mix(in srgb, var(--info-color) 4%, var(--aq-tile)));
+}
+
+.ce-block-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--aq-ink);
+  font-size: 13.5px;
+  font-weight: 750;
+}
+
+.ce-block .habit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 14px;
+}
+
+.ce-block .contact-tags {
+  flex: 1 1 100%;
+}
+
+.ce-block .picker-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+@container (max-width: 700px) {
+  .ce-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.contact-identity {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.contact-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.contact-photo-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.contact-names {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px 12px;
+}
+
+.contact-names > .field:last-child {
+  grid-column: 1 / -1;
+}
+
+.contact-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.contact-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-entry-value {
+  flex: 1;
+}
+
+.contact-add-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+}
+
+.contact-birthday {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.contact-birthday legend {
+  margin-bottom: 6px;
+}
+
+.contact-year {
+  width: 90px;
+}
+
+.contact-tags {
+  flex: 1;
+  min-width: 200px;
+}
+
+@media (max-width: 900px) {
+  .contacts-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .contacts-body > .task-panel {
+    flex: none;
+    max-height: 300px;
+  }
+
+  .contact-detail {
+    flex: none;
+    overflow: visible;
+  }
+}
+
+/* ——— Documents ——— */
+
+.documents-screen {
+  height: 100%;
+  min-height: 0;
+}
+
+.documents-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) minmax(300px, 380px);
+  gap: 14px;
+}
+
+.doc-folders {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  padding: 12px 10px;
+  border-radius: 20px;
+}
+
+.doc-folders ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-folders-title {
+  margin: 8px 6px 2px;
+  color: var(--aq-heading);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.doc-folder {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px 5px 5px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.doc-folder:hover {
+  background: var(--aq-hover);
+}
+
+.doc-folder[aria-current="true"] {
+  background: var(--aq-active);
+}
+
+.doc-folder:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.doc-folder-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-folder-count {
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.doc-new-folder {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+  margin: 4px 6px;
+}
+
+.doc-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 2px 0;
+  list-style: none;
+}
+
+.doc-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px 6px 6px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 22%, transparent);
+  border-radius: 14px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) 8%, var(--aq-tile));
+  cursor: pointer;
+}
+
+.doc-row:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.doc-row[data-selected] {
+  border-color: color-mix(in srgb, var(--row-color) 40%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.doc-row:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.doc-row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-row-name {
+  overflow: hidden;
+  font-size: 13.5px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-row-detail {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.doc-badge {
+  padding: 2px 9px;
+  border-radius: 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.doc-badge[data-state="bientot"],
+.doc-expiry[data-state="bientot"] {
+  background: var(--aq-warn-bg);
+  color: var(--aq-warn);
+}
+
+.doc-badge[data-state="expire"],
+.doc-expiry[data-state="expire"] {
+  background: var(--aq-danger-bg);
+  color: var(--aq-danger);
+}
+
+.doc-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.doc-empty > p:first-of-type {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.doc-detail {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 14px 16px;
+  border-radius: 20px;
+}
+
+.doc-preview-button {
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  cursor: zoom-in;
+}
+
+.doc-preview-button:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+.doc-preview-button .doc-preview--pdf {
+  pointer-events: none;
+}
+
+.doc-preview {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--aq-border);
+  border-radius: 14px;
+  background: var(--aq-field);
+}
+
+.doc-preview--none {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.doc-preview--loading {
+  background: linear-gradient(90deg, var(--aq-field), var(--aq-tint), var(--aq-field));
+  background-size: 200% 100%;
+  animation: doc-loading 1.2s linear infinite;
+}
+
+@keyframes doc-loading {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.doc-preview--image {
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-conic-gradient(color-mix(in srgb, var(--aq-ink) 6%, transparent) 0 25%, transparent 0 50%) 0 0 / 16px 16px,
+    var(--aq-field);
+}
+
+.doc-preview--image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.doc-preview--text {
+  margin: 0;
+  padding: 10px 12px;
+  overflow: auto;
+  color: var(--aq-ink);
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 12px;
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+.doc-preview--pdf {
+  background: white;
+}
+
+.dialog--preview {
+  width: min(1000px, 94vw);
+}
+
+.dialog--preview .doc-preview {
+  height: min(78vh, 900px);
+}
+
+.doc-name {
+  display: flex;
+  align-items: center;
+}
+
+.doc-name .field-input {
+  min-width: 0;
+  font-weight: 650;
+}
+
+.doc-meta {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.doc-expiry {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: var(--aq-tint);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.doc-grid {
+  margin-top: 2px;
+}
+
+@media (max-width: 1250px) {
+  .documents-body {
+    grid-template-columns: 190px minmax(0, 1fr) 320px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .documents-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .documents-body > * {
+    flex: none;
+  }
+
+  .doc-list {
+    max-height: 320px;
+  }
+
+  .doc-detail {
+    overflow: visible;
+  }
+}
+
+/* Choix d'un modèle de projet. */
+.dialog--templates {
+  width: min(680px, 100%);
+}
+
+.template-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.template-custom,
+.template-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 16px;
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.template-custom {
+  border: 1.5px dashed color-mix(in srgb, var(--aq-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--aq-accent) 8%, var(--aq-tile));
+}
+
+.template-custom:hover {
+  background: color-mix(in srgb, var(--aq-accent) 15%, var(--aq-tile));
+}
+
+.template-custom-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+}
+
+.template-heading {
+  margin-top: 4px;
+  color: var(--aq-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.template-list {
+  max-height: min(420px, 52vh);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+}
+
+.template-card {
+  height: 100%;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.template-card:hover {
+  border-color: color-mix(in srgb, var(--row-color) 55%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.template-custom:focus-visible,
+.template-card:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+.template-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.template-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.template-desc {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.template-count {
+  margin-top: 2px;
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.template-chosen {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--aq-tint);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.template-chosen > span {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .template-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ——— Fiche contact : carte de visite, mosaïque d'informations, notes ——— */
+
+.contact-detail {
+  container-type: inline-size;
+}
+
+.id-card-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.id-wave--far {
+  fill: color-mix(in srgb, white 14%, transparent);
+}
+
+.id-wave--near {
+  fill: color-mix(in srgb, white 22%, transparent);
+}
+
+.id-bubble {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, white 55%, transparent);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, color-mix(in srgb, white 70%, transparent) 0 14%, color-mix(in srgb, white 12%, transparent) 45%, transparent 70%);
+}
+
+.id-bubble--a {
+  top: -40px;
+  right: 22%;
+  width: 112px;
+  height: 112px;
+}
+
+.id-bubble--b {
+  top: 46%;
+  right: 7%;
+  width: 40px;
+  height: 40px;
+}
+
+.id-bubble--c {
+  bottom: 18%;
+  right: 30%;
+  width: 20px;
+  height: 20px;
+}
+
+.id-card-palette {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  width: max-content;
+  padding: 10px;
+  border-radius: 14px;
+  color: var(--aq-ink);
+  animation: aq-pop var(--aq-fast) var(--aq-ease);
+}
+
+.contact-star-toggle {
+  display: inline-flex;
+  margin-left: 4px;
+  padding: 3px;
+  vertical-align: -4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--aq-soft);
+  cursor: pointer;
+  opacity: 0.75;
+  transition:
+    transform var(--aq-fast) ease,
+    color var(--aq-fast) ease,
+    opacity var(--aq-fast) ease;
+}
+
+.contact-star-toggle:hover {
+  opacity: 1;
+  transform: scale(1.12);
+}
+
+.contact-star-toggle[aria-pressed="true"] {
+  color: var(--aq-priority-medium);
+  opacity: 1;
+  filter: drop-shadow(0 1px 2px color-mix(in srgb, black 30%, transparent));
+}
+
+.contact-star-toggle[aria-pressed="true"] svg {
+  animation: aq-star-pop var(--aq-normal) var(--aq-ease);
+}
+
+@keyframes aq-star-pop {
+  40% {
+    transform: scale(1.25);
+  }
+}
+
+.bento-icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--aq-chip-gloss), var(--info-color);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 7px -3px var(--info-color);
+}
+
+/* Notes : feuille lignée, modifiable sur place. */
+.contact-notes {
+  --info-color: var(--aq-accent);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border: 1px solid color-mix(in srgb, var(--info-color) 34%, transparent);
+  border-radius: 18px;
+  background:
+    var(--aq-row-gloss),
+    linear-gradient(170deg, color-mix(in srgb, var(--info-color) 18%, var(--aq-tile)), color-mix(in srgb, var(--info-color) 6%, var(--aq-tile)));
+}
+
+.contact-notes-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.contact-notes-text {
+  width: 100%;
+  min-height: 72px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 6px;
+  outline: none;
+  background: repeating-linear-gradient(180deg, transparent 0 23px, color-mix(in srgb, var(--info-color) 24%, transparent) 23px 24px);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 14px;
+  line-height: 24px;
+  resize: vertical;
+}
+
+.contact-notes-text:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+/* ——— Anniversaires à venir ——— */
+
+.birthdays-board {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding: 2px 4px 12px;
+}
+
+.birthday-hero {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  overflow: hidden;
+  padding: 22px 28px;
+  border: 1px solid color-mix(in srgb, var(--bday) 35%, transparent);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 25%, transparent), transparent 60%),
+    linear-gradient(120deg, color-mix(in srgb, var(--bday) 30%, var(--aq-tile)), color-mix(in srgb, var(--bday-2) 25%, var(--aq-tile)));
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.birthday-hero:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+.birthday-hero-text {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.birthday-hero-when {
+  align-self: flex-start;
+  padding: 3px 12px;
+  border-radius: 12px;
+  background: var(--aq-chip-gloss), var(--bday);
+  color: white;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.birthday-hero-name {
+  margin-top: 4px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.birthday-hero-detail {
+  color: var(--aq-soft);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.birthday-hero-cake {
+  position: relative;
+  color: color-mix(in srgb, var(--bday) 75%, var(--aq-ink));
+  opacity: 0.85;
+}
+
+.birthday-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.birthday-confetti span {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  opacity: 0.6;
+  transform: rotate(calc(var(--i) * 33deg));
+}
+
+.birthday-hero[data-today] .birthday-confetti span {
+  animation: birthday-float 3s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -0.3s);
+}
+
+@keyframes birthday-float {
+  to {
+    transform: translateY(-8px) rotate(calc(var(--i) * 33deg + 90deg));
+  }
+}
+
+.birthday-month-title {
+  margin: 4px 4px 8px;
+  color: var(--aq-heading);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.birthday-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.birthday-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 10px;
+  border: 1px solid color-mix(in srgb, var(--bday) 22%, transparent);
+  border-radius: 18px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--bday) 7%, var(--aq-tile));
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.birthday-card:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--bday) 14%, var(--aq-tile));
+}
+
+.birthday-card[data-soon] {
+  border-color: color-mix(in srgb, var(--bday) 50%, transparent);
+}
+
+.birthday-card:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.birthday-day {
+  width: 44px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 0;
+  border-radius: 12px;
+  background: var(--aq-chip-gloss), color-mix(in srgb, var(--bday) 80%, var(--aq-ink));
+  color: white;
+}
+
+.birthday-day-number {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.birthday-day-weekday {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.birthday-card-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.birthday-card-name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.birthday-card-detail {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.birthdays-empty {
+  flex: 1;
+}
+
+/* ——— Sous-tâches visibles sur les cartes et la liste d'un projet ——— */
+
+.subtask-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 2px;
+  padding: 7px 8px 6px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--row-color, var(--aq-row)) 7%, var(--aq-tile));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--row-color, var(--aq-row)) 16%, transparent);
+  cursor: default;
+}
+
+.subtask-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtask-progress-bar {
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--aq-tint);
+}
+
+.subtask-progress-bar > span {
+  display: block;
+  width: var(--progress);
+  height: 100%;
+  border-radius: 3px;
+  background: var(--aq-row-gloss), var(--aq-accent);
+  transition: width var(--aq-normal) var(--aq-ease);
+}
+
+.subtask-checklist[data-complete] .subtask-progress-bar > span {
+  background: var(--aq-fresh);
+}
+
+.subtask-progress-text {
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.subtask-items {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 550;
+}
+
+.subtask-item[data-done] .subtask-text {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.subtask-tick {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  padding: 0;
+  border: 1.5px solid color-mix(in srgb, var(--aq-accent) 55%, var(--aq-line-strong));
+  border-radius: 5px;
+  background: var(--aq-field);
+  color: var(--aq-on-accent);
+  cursor: pointer;
+}
+
+.subtask-tick[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--aq-chip-gloss), var(--aq-accent);
+}
+
+.subtask-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.subtask-more {
+  align-self: flex-start;
+  font-size: 12px;
+}
+
+/* Une ligne avec ses sous-tâches grandit : rien ne passe par-dessus le titre ni la date. */
+.project-list-row {
+  height: auto;
+  min-height: 34px;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  row-gap: 0;
+  padding: 2px 0;
+}
+
+/* Première ligne (case, titre, date) à hauteur constante, sous-tâches en dessous. */
+.project-list-row > .today-title {
+  line-height: 30px;
+}
+
+.project-list-subtasks {
+  flex-basis: 100%;
+  padding: 0 0 6px 34px;
+}
+
+.id-bubble--d {
+  top: 18%;
+  left: 38%;
+  width: 26px;
+  height: 26px;
+}
+
+.id-bubble--e {
+  bottom: -30px;
+  left: 8%;
+  width: 80px;
+  height: 80px;
+}
+
+.id-card-texture {
+  position: absolute;
+  inset: 0;
+}
+
+.id-card-texture[data-banner="pois"] {
+  background: radial-gradient(circle, color-mix(in srgb, white 30%, transparent) 2.4px, transparent 3px) 0 0 / 18px 18px;
+  mask-image: linear-gradient(110deg, transparent 20%, black 75%);
+}
+
+.id-card-texture[data-banner="losanges"] {
+  background:
+    repeating-linear-gradient(45deg, color-mix(in srgb, white 14%, transparent) 0 1.5px, transparent 1.5px 18px),
+    repeating-linear-gradient(-45deg, color-mix(in srgb, white 14%, transparent) 0 1.5px, transparent 1.5px 18px);
+  mask-image: linear-gradient(110deg, transparent 10%, black 75%);
+}
+
+.id-card-texture[data-banner="cercles"] {
+  background: repeating-radial-gradient(circle at 100% 100%, color-mix(in srgb, white 18%, transparent) 0 2px, transparent 2px 22px);
+  mask-image: linear-gradient(110deg, transparent 10%, black 70%);
+}
+
+.id-cloud {
+  fill: color-mix(in srgb, white 30%, transparent);
+}
+
+.id-card-texture[data-banner="rayures"] {
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, white 16%, transparent) 0 12px, transparent 12px 26px);
+  mask-image: linear-gradient(110deg, transparent 15%, black 80%);
+}
+
+.id-card-spots {
+  position: absolute;
+  inset: 0;
+}
+
+.id-card-spots svg {
+  position: absolute;
+  fill: color-mix(in srgb, white 34%, transparent);
+}
+
+.id-confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: color-mix(in srgb, white 40%, transparent);
+}
+
+.id-confetti[data-shape="1"] {
+  width: 12px;
+  height: 4px;
+}
+
+.id-confetti[data-shape="2"] {
+  border-radius: 50%;
+}
+
+/* Panneau « Personnaliser la fiche ». */
+.card-styler {
+  position: fixed;
+  z-index: 260;
+  width: min(430px, calc(100vw - 16px));
+  padding: 12px;
+  border-radius: 16px;
+  color: var(--aq-ink);
+  animation: aq-pop var(--aq-fast) var(--aq-ease);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-styler-title {
+  margin-top: 4px;
+  color: var(--aq-heading);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.card-styler-label {
+  font-size: 11px;
+  font-weight: 650;
+}
+
+/* ——— Catégories de contacts : pastilles de filtre ——— */
+
+.contact-categories {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px 6px;
+}
+
+.contact-category {
+  --category-color: var(--aq-accent);
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px 0 8px;
+  border: 1px solid color-mix(in srgb, var(--category-color) 30%, var(--aq-border));
+  border-radius: 14px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--category-color) 10%, var(--aq-tile));
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.contact-category[aria-checked="true"] {
+  border-color: var(--category-color);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--category-color) 24%, var(--aq-tile));
+  box-shadow: 0 0 0 1px var(--category-color);
+}
+
+.contact-category-chip {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--aq-chip-gloss), var(--category-color);
+  color: var(--aq-on-accent);
+}
+
+.contact-category-count {
+  color: var(--aq-soft);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.contact-category--add {
+  width: 28px;
+  justify-content: center;
+  padding: 0;
+  border-style: dashed;
+  color: var(--aq-accent);
+}
+
+/* ——— Carte d'identité d'un contact (02/10/2026) : compacte, colorée selon son thème ——— */
+
+/* Fiche d'un contact (10/10/2026) : pas de grand panneau autour ; la carte d'identité à gauche,
+   le suivi, les notes et les liens à droite, chacun dans son bloc. En place étroite, l'un sous l'autre. */
+.contact-detail:not(.contact-detail--empty) {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.contact-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(240px, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+
+.contact-detail-side {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-detail-side .contact-notes {
+  backdrop-filter: blur(var(--aq-blur));
+}
+
+.contact-links {
+  padding: 12px 14px 14px;
+  border: 1px solid var(--aq-border);
+  border-radius: 18px;
+  background: var(--aq-card);
+  backdrop-filter: blur(var(--aq-blur));
+  box-shadow: var(--aq-shadow);
+}
+
+@container (max-width: 680px) {
+  .contact-detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.idc {
+  --banner-a: var(--aq-accent);
+  --banner-b: var(--aq-accent);
+  position: relative;
+  isolation: isolate;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--banner-b) 45%, var(--aq-border));
+  border-radius: 20px;
+  /* Le thème couvre toute la carte : dégradé et reflet ; seules les cases restent claires. */
+  background:
+    radial-gradient(110% 70% at 0% 0%, color-mix(in srgb, white 26%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--banner-a), var(--banner-b));
+  color: var(--aq-on-accent);
+  box-shadow:
+    0 16px 28px -22px color-mix(in srgb, var(--banner-b) 80%, transparent),
+    var(--aq-control-shadow);
+}
+
+.idc[data-ink="dark"] {
+  color: var(--aq-on-light);
+}
+
+/* Contenu au-dessus du motif. */
+.idc > :not(.idc-banner-pattern) {
+  position: relative;
+  z-index: 1;
+}
+
+.idc-banner {
+  height: 66px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+/* Reflet net sur le haut de la carte, comme les boutons « gel ». */
+.idc-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 40%;
+  z-index: -1;
+  background: linear-gradient(180deg, color-mix(in srgb, white 24%, transparent), transparent);
+  pointer-events: none;
+}
+
+/* Motif du thème sur toute la carte. */
+.idc-banner-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.idc-banner-pattern .id-card-art,
+.idc-banner-pattern .id-bubble,
+.idc-theme-banner .id-card-art,
+.idc-theme-banner .id-bubble {
+  z-index: auto;
+}
+
+.idc-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.idc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.idc-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.idc-btn {
+  height: 30px;
+  min-width: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, currentColor 32%, transparent);
+  border-radius: 15px;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+  color: inherit;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.idc-btn:hover {
+  background: color-mix(in srgb, currentColor 24%, transparent);
+}
+
+.idc-btn--text {
+  padding: 0 12px;
+}
+
+.idc-identity {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: -32px;
+  padding: 0 14px;
+}
+
+/* Photo comme sur une pièce d'identité : carré arrondi, cadre clair. */
+.idc-photo {
+  flex-shrink: 0;
+  padding: 4px;
+  border-radius: 22px;
+  background: var(--aq-tile);
+  box-shadow: 0 8px 16px -10px color-mix(in srgb, var(--banner-b) 80%, black);
+}
+
+.idc-photo .avatar {
+  border-radius: 18px;
+  box-shadow: none;
+}
+
+/* Le texte commence sous le bandeau : seule la photo le chevauche. */
+.idc-names {
+  min-width: 0;
+  padding-top: 38px;
+}
+
+.idc-name {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.idc-company {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 3px 0 0;
+  color: color-mix(in srgb, currentColor 86%, transparent);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.idc-company svg {
+  flex-shrink: 0;
+}
+
+.idc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 6px 0 0;
+}
+
+.idc-tag {
+  padding: 1px 8px;
+  border: 1px solid color-mix(in srgb, currentColor 34%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.idc-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 12px 14px 14px;
+  list-style: none;
+}
+
+/* Une case : liseré et pastille de la couleur de l'information, intitulé discret, valeur lisible. */
+.idc-field {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 8px 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--f) 30%, transparent);
+  border-radius: 12px;
+  /* Bulle claire et opaque : l'information reste lisible sur tout thème de carte. */
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--f) 8%, var(--aq-card-solid));
+  box-shadow:
+    inset 3px 0 0 var(--f),
+    0 6px 14px -10px color-mix(in srgb, black 40%, transparent);
+}
+
+.idc-field[data-wide] {
+  grid-column: 1 / -1;
+}
+
+.idc-field-icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--aq-chip-gloss), var(--f);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 7px -3px var(--f);
+}
+
+.idc-field-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+}
+
+.idc-field-text--button {
+  cursor: pointer;
+}
+
+.idc-field-label {
+  overflow: hidden;
+  color: var(--aq-soft);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.idc-field-value {
+  font-size: 14px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.idc-field-extra {
+  display: block;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.idc-lines {
+  white-space: pre-line;
+}
+
+.idc-copy {
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--aq-fast) ease;
+}
+
+.idc-field:hover .idc-copy,
+.idc-copy:focus-visible {
+  opacity: 1;
+}
+
+.idc-add {
+  grid-column: 1 / -1;
+}
+
+.idc-add button {
+  width: 100%;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1.5px dashed color-mix(in srgb, currentColor 50%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.idc-add button:hover {
+  border-color: currentColor;
+  background: color-mix(in srgb, currentColor 18%, transparent);
+}
+
+/* Liseré multicolore en pied de carte : les couleurs du thème. */
+.idc-stripe {
+  display: flex;
+  height: 6px;
+}
+
+.idc-stripe span {
+  flex: 1;
+}
+
+
+
+/* Panneau « Thème de la carte ». */
+.idc-themes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.idc-theme {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 4px 5px;
+  border: 1px solid var(--aq-border);
+  border-radius: 12px;
+  background: var(--aq-tile);
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.idc-theme[aria-checked="true"] {
+  border-color: var(--aq-accent);
+  box-shadow: 0 0 0 1px var(--aq-accent);
+}
+
+.idc-theme-preview {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--aq-line);
+  border-radius: 8px;
+}
+
+.idc-theme-banner {
+  position: relative;
+  isolation: isolate;
+  height: 30px;
+  overflow: hidden;
+  background: linear-gradient(120deg, var(--banner-a), var(--banner-b));
+}
+
+.idc-theme-banner .id-bubble--a {
+  top: -24px;
+  width: 50px;
+  height: 50px;
+}
+
+.idc-theme-dots {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px 4px;
+  background: var(--aq-tile);
+}
+
+.idc-theme-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.card-styler-hint {
+  margin: -4px 0 0;
+  color: var(--aq-soft);
+  font-size: 11.5px;
+}
+
+.idc-apply-all {
+  align-self: flex-start;
+  font-size: 12.5px;
+}
+
+/* « Rester en contact » (src/contacts/KeepInTouch.tsx). */
+.contact-keep-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.contact-keep-select .select {
+  height: 30px;
+  padding-left: 12px;
+  font-size: 12.5px;
+}
+
+.contact-keep-select .select-chevron {
+  top: 8px;
+}
+
+.contact-keep-status {
+  margin: 0;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* À recontacter : mis en avant, sans la couleur des liens (rien à cliquer ici). */
+.contact-keep-status[data-due] {
+  color: var(--aq-ink);
+  font-weight: 700;
+}
+
+.contact-keep-add {
+  align-self: flex-start;
+}
+
+.contact-keep-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-keep-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.contact-keep-kind {
+  height: 28px;
+  padding: 0 10px;
+}
+
+.contact-keep-kind[aria-checked="true"] {
+  border-color: var(--aq-accent);
+  background: color-mix(in srgb, var(--aq-accent) 16%, var(--aq-tint));
+  color: var(--aq-accent);
+}
+
+.contact-keep-row-form {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.6fr) minmax(0, 1.4fr);
+  gap: 8px;
+}
+
+.contact-keep-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.contact-keep-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-keep-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--info-color) 8%, transparent);
+}
+
+.contact-keep-item:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.contact-keep-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--info-color) 16%, transparent);
+  color: var(--info-color);
+}
+
+.contact-keep-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contact-keep-when {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.contact-keep-note-text {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: pre-wrap;
+}
+
+.contact-keep-more {
+  align-self: flex-start;
+}
+
+/* Documents : tri et sorte au-dessus de la liste. */
+.doc-list-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.doc-tool .select {
+  height: 30px;
+  padding-left: 12px;
+  font-size: 12.5px;
+}
+
+.doc-tool .select-chevron {
+  top: 8px;
+}
+
+/* État d'un projet : dans les temps, à surveiller, en retard. */
+.project-health {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--aq-accent) 14%, transparent);
+  color: var(--aq-accent);
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.project-health[data-level="attention"] {
+  background: color-mix(in srgb, var(--aq-warn) 16%, transparent);
+  color: var(--aq-warn);
+}
+
+.project-health[data-level="retard"] {
+  background: color-mix(in srgb, var(--aq-danger) 14%, transparent);
+  color: var(--aq-danger);
+}
+
+.project-health--small {
+  margin-left: 8px;
+  padding: 0 8px;
+  font-size: 11px;
+  vertical-align: 1px;
+}
+
+/* Frise du projet. */
+.project-timeline {
+  position: relative;
+  height: 74px;
+  margin: 4px 12px 0;
+}
+
+.project-timeline-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 36px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--aq-tint);
+  overflow: hidden;
+}
+
+.project-timeline-done {
+  display: block;
+  height: 100%;
+  background: color-mix(in srgb, var(--row-color, var(--aq-row)) 55%, transparent);
+}
+
+.project-timeline-today {
+  position: absolute;
+  top: 28px;
+  width: 2px;
+  height: 22px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--aq-ink);
+  opacity: 0.55;
+}
+
+.project-timeline-step {
+  position: absolute;
+  top: 31px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 4px;
+  transform: translateX(-50%);
+}
+
+.project-timeline-step[data-below] {
+  flex-direction: column;
+}
+
+.project-timeline-step:not([data-below]) {
+  top: auto;
+  bottom: 31px;
+}
+
+.project-timeline-dot {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: 2px solid var(--row-color, var(--aq-row));
+  border-radius: 50%;
+  background: var(--aq-card-solid);
+}
+
+.project-timeline-step[data-done] .project-timeline-dot {
+  background: var(--row-color, var(--aq-row));
+}
+
+.project-timeline-step[data-late] .project-timeline-dot {
+  border-color: var(--aq-danger);
+}
+
+.project-timeline-label {
+  max-width: 110px;
+  overflow: hidden;
+  color: var(--aq-ink);
+  font-size: 11.5px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-timeline-step[data-late] .project-timeline-label {
+  color: var(--aq-danger);
+}
+
+.project-timeline-edge {
+  position: absolute;
+  bottom: -2px;
+  color: var(--aq-soft);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.project-timeline-edge--start {
+  left: 0;
+}
+
+.project-timeline-edge--end {
+  right: 0;
+}
+
+/* Étoile des favoris sur le dégradé de la carte : à l'encre de la carte. */
+.idc .contact-star-toggle {
+  color: inherit;
+}

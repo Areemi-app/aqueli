@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guida all'importazione · Aqueli</title>
+<style>
+  :root {
+    --ink: #0b2a45;
+    --soft: #3a5870;
+    --accent: #07609f;
+    --card: rgba(255, 255, 255, 0.8);
+    --card-edge: rgba(255, 255, 255, 0.95);
+    --tile: rgba(255, 255, 255, 0.78);
+    --line: rgba(11, 42, 69, 0.12);
+    --tint: rgba(10, 112, 188, 0.1);
+    --code: rgba(10, 112, 188, 0.12);
+    --req: #0b5dab;
+    --warn: #8f3a05;
+    --warn-bg: rgba(240, 120, 40, 0.16);
+    --sky: radial-gradient(70% 45% at 85% 0%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%);
+    --gel: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%), linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%);
+    --shadow: 0 18px 40px -24px rgba(11, 93, 171, 0.45);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8f1ff;
+      --soft: #a9bee0;
+      --accent: #8adbff;
+      --card: rgba(14, 30, 80, 0.86);
+      --card-edge: rgba(140, 180, 255, 0.28);
+      --tile: rgba(30, 56, 130, 0.55);
+      --line: rgba(170, 200, 255, 0.16);
+      --tint: rgba(90, 160, 255, 0.14);
+      --code: rgba(120, 180, 255, 0.18);
+      --req: #8adbff;
+      --warn: #ffc27a;
+      --warn-bg: rgba(255, 170, 80, 0.16);
+      --sky: radial-gradient(55% 45% at 85% 8%, rgba(140, 100, 255, 0.35), rgba(140, 100, 255, 0) 70%),
+        radial-gradient(55% 45% at 8% 95%, rgba(0, 190, 255, 0.28), rgba(0, 190, 255, 0) 70%),
+        linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%);
+      --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { background: #8fd8fa; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+    background: var(--sky) fixed;
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { html { background: #0c1c56; } }
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 34px 40px 40px;
+    border-radius: 28px;
+    border: 1px solid var(--card-edge);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%), var(--card);
+    box-shadow: var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    main { background: linear-gradient(180deg, rgba(120, 160, 255, 0.12) 0%, rgba(120, 160, 255, 0) 30%), var(--card); }
+  }
+  header { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  header svg { flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(11, 93, 171, 0.35)); }
+  h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+  .lead { margin: 4px 0 0; color: var(--soft); font-size: 16px; font-weight: 600; }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 22px 0 8px; padding: 0; list-style: none;
+  }
+  nav a {
+    display: inline-block; padding: 5px 12px; border-radius: 14px;
+    background: var(--tint); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none;
+  }
+  nav a:hover { background: var(--code); }
+  h2 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 36px 0 12px; font-size: 21px; letter-spacing: -0.01em;
+  }
+  h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 15px;
+    background: var(--gel); color: #fff; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 10px -4px rgba(11, 93, 171, 0.6);
+  }
+  h3 { margin: 24px 0 8px; font-size: 16px; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  code, kbd {
+    padding: 1px 6px; border-radius: 6px; background: var(--code);
+    font: 600 13.5px/1.4 "Cascadia Mono", Consolas, monospace; overflow-wrap: anywhere;
+  }
+  kbd { white-space: nowrap; }
+  pre {
+    margin: 10px 0; padding: 14px 16px; border-radius: 14px; overflow-x: auto;
+    background: var(--tile); border: 1px solid var(--line);
+    font: 13.5px/1.6 "Cascadia Mono", Consolas, monospace;
+  }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+  .step {
+    padding: 16px 18px; border-radius: 18px;
+    border: 1px solid var(--line); background: var(--tile);
+  }
+  .step b { display: block; margin-bottom: 4px; font-size: 16px; }
+  .step .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; margin-bottom: 8px; border-radius: 13px;
+    background: var(--gel); color: #fff; font-size: 13px; font-weight: 700;
+  }
+  table { width: 100%; margin: 8px 0 4px; border-collapse: separate; border-spacing: 0 4px; font-size: 14px; }
+  th {
+    padding: 4px 12px; color: var(--soft); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-align: left; text-transform: uppercase;
+  }
+  td { padding: 8px 12px; vertical-align: top; background: var(--tile); }
+  td:first-child { border-radius: 12px 0 0 12px; }
+  td:last-child { border-radius: 0 12px 12px 0; }
+  td.col { width: 24%; font-weight: 700; }
+  td.ex { width: 26%; color: var(--soft); }
+  table.files td.col { width: 36%; white-space: nowrap; }
+  .req {
+    display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 8px;
+    background: var(--tint); color: var(--req); font-size: 11px; font-weight: 700; vertical-align: 1px;
+  }
+  dl { margin: 8px 0; }
+  dt { margin-top: 12px; font-weight: 700; }
+  dd { margin: 2px 0 0; }
+  .note {
+    margin: 14px 0; padding: 12px 16px; border-radius: 14px;
+    background: var(--warn-bg); color: var(--warn); font-weight: 600;
+  }
+  .tr { display: block; font-weight: 400; color: var(--soft); font-size: 13px; }
+  footer { margin-top: 36px; color: var(--soft); font-size: 13px; text-align: center; }
+  @media (max-width: 860px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 24px 18px 28px; }
+    td.ex { display: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    main { box-shadow: none; border: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <radialGradient id="orb" cx="40%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#3c92f2"/>
+          <stop offset="0.55" stop-color="#173f96"/>
+          <stop offset="1" stop-color="#050b2a"/>
+        </radialGradient>
+        <linearGradient id="check" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff6fb5"/>
+          <stop offset="0.35" stop-color="#ffd166"/>
+          <stop offset="0.65" stop-color="#5ce1a5"/>
+          <stop offset="1" stop-color="#6fc8ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30" fill="url(#orb)"/>
+      <ellipse cx="27" cy="16" rx="18" ry="9" fill="#fff" opacity="0.45"/>
+      <path d="M18 33l9 9 19-21" fill="none" stroke="url(#check)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>Guida all'importazione</h1>
+      <p class="lead">Aggiungi attività, eventi, obblighi, note, abitudini e contatti in un colpo solo.</p>
+    </div>
+  </header>
+
+  <nav aria-label="Sommario">
+    <a href="#in-short">In breve</a>
+    <a href="#folder">In questa cartella</a>
+    <a href="#spreadsheet">Con Excel</a>
+    <a href="#columns">Colonne</a>
+    <a href="#values">Valori accettati</a>
+    <a href="#text">Con un file di testo</a>
+    <a href="#calendars">Calendari e contatti</a>
+    <a href="#preview">Anteprima e duplicati</a>
+    <a href="#good-to-know">Da sapere</a>
+  </nav>
+
+  <h2 id="in-short"><span class="n">1</span>In breve</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="n">1</span>
+      <b>Preparare</b>
+      Copia <code>Aqueli template.xlsx</code> fuori da questa cartella, poi compilalo: una riga per elemento.
+    </div>
+    <div class="step">
+      <span class="n">2</span>
+      <b>Importare</b>
+      Metti il file in <code>Documents\Aqueli\Import</code> oppure trascinalo nella finestra di Aqueli.
+    </div>
+    <div class="step">
+      <span class="n">3</span>
+      <b>Verificare</b>
+      Leggi l'anteprima, poi fai clic su «Importa». <kbd>Ctrl+Z</kbd> annulla l'intera importazione.
+    </div>
+  </div>
+  <p>Aqueli rileva in pochi secondi un file messo nella cartella Import. Puoi anche scegliere un file in Impostazioni › Importazione › «Importa un file», oppure con il comando «Importa un file» di <kbd>Ctrl+K</kbd>.</p>
+
+  <h2 id="folder"><span class="n">2</span>In questa cartella</h2>
+  <table class="files">
+    <thead><tr><th>File</th><th>Contenuto</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Aqueli template.xlsx</td><td>Cartella di lavoro vuota: un foglio per tipo, con le colonne già denominate.</td></tr>
+      <tr><td class="col">Aqueli example.xlsx</td><td>La stessa cartella di lavoro, compilata con esempi. Si importa così com'è.</td></tr>
+      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>Le colonne di ogni tipo, per un foglio di calcolo diverso da Excel.</td></tr>
+      <tr><td class="col">Example.txt</td><td>Esempi di file di testo, una riga per elemento.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Questa cartella viene ricreata a ogni apertura di Aqueli. Copia un modello altrove (Desktop, Documenti…) prima di compilarlo.</p>
+
+  <h2 id="spreadsheet"><span class="n">3</span>Con Excel o un altro foglio di calcolo</h2>
+  <ul>
+    <li>Un foglio per tipo, denominato «Tasks» (attività), «Events» (eventi), «Obligations» (obblighi), «Notes» (note), «Habits» (abitudini), «Contacts» (contatti), «Expenses» (spese) o «Lists» (liste).</li>
+    <li>Prima riga: i nomi delle colonne. Poi, una riga per elemento.</li>
+    <li>È obbligatorio solo il titolo (il nome di un'abitudine; il nome, il cognome o l'azienda di un contatto), insieme alla data di un evento, alla scadenza di un obbligo, alla data e all'importo di un movimento e alla lista di un elemento di lista. Lascia vuote le celle che non usi.</li>
+    <li>Le colonne possono essere in qualsiasi ordine. Le colonne sconosciute vengono ignorate. Maiuscole e accenti non fanno differenza.</li>
+    <li>File CSV: un tipo per file, riconosciuto dal nome (<code>tasks.csv</code>) o dalle colonne. Una colonna «Type» (Task, Event, Obligation, Note, Habit, Contact, Expense, Income, List) permette di mescolare i tipi. Separatore <code>;</code> o <code>,</code>.</li>
+    <li>I nomi delle colonne e i valori si scrivono in inglese (o in francese), come nei modelli forniti. In questa guida, la traduzione di ogni colonna compare sotto il suo nome.</li>
+  </ul>
+
+  <h2 id="columns"><span class="n">4</span>Colonne</h2>
+
+  <h3>Attività</h3>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">obbligatorio</span> <span class="tr">(Titolo)</span></td><td>Ciò che c'è da fare.</td><td class="ex">Chiamare l'officina</td></tr>
+      <tr><td class="col">Due date <span class="tr">(Scadenza)</span></td><td>Data, con o senza l'ora. Senza data, l'attività va nella posta in arrivo.</td><td class="ex">03/10/2026</td></tr>
+      <tr><td class="col">Time <span class="tr">(Ora)</span></td><td>Ora della scadenza.</td><td class="ex">14:00</td></tr>
+      <tr><td class="col">Start on <span class="tr">(Inizia il)</span></td><td>Data di inizio, al più tardi quella della scadenza. Fino ad allora, l'attività compare solo in «In arrivo».</td><td class="ex">01/10/2026</td></tr>
+      <tr><td class="col">Priority <span class="tr">(Priorità)</span></td><td>high (alta), medium (media), low (bassa) o none (nessuna).</td><td class="ex">high</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Etichette)</span></td><td>Separate da virgole.</td><td class="ex">auto, officina</td></tr>
+      <tr><td class="col">Space <span class="tr">(Spazio)</span></td><td>Nome di uno spazio di Aqueli.</td><td class="ex">Personale</td></tr>
+      <tr><td class="col">Duration <span class="tr">(Durata)</span></td><td>Durata stimata, al massimo 24 h.</td><td class="ex">1 h 30</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Promemoria)</span></td><td>Quanto tempo prima della scadenza.</td><td class="ex">15 min</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Ripetizione)</span></td><td>Vedi «Valori accettati».</td><td class="ex">every Monday</td></tr>
+      <tr><td class="col">Subtasks <span class="tr">(Sottoattività)</span></td><td>Separate da punto e virgola, al massimo 100.</td><td class="ex">Cucina; Soggiorno</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Note)</span></td><td>Testo libero.</td><td class="ex">Chiedere un preventivo.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Eventi</h3>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">obbligatorio</span> <span class="tr">(Titolo)</span></td><td>Nome dell'evento.</td><td class="ex">Dentista</td></tr>
+      <tr><td class="col">Date<span class="req">obbligatorio</span> <span class="tr">(Data)</span></td><td>Giorno dell'evento. Può includere gli orari.</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
+      <tr><td class="col">Start <span class="tr">(Inizio)</span></td><td>Ora di inizio. Vuoto: tutto il giorno.</td><td class="ex">09:30</td></tr>
+      <tr><td class="col">End <span class="tr">(Fine)</span></td><td>Ora di fine. Vuoto: un'ora dopo l'inizio.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">End date <span class="tr">(Data di fine)</span></td><td>Ultimo giorno di un evento che dura più giorni.</td><td class="ex">18/10/2026</td></tr>
+      <tr><td class="col">Location <span class="tr">(Luogo)</span></td><td>Indirizzo o luogo.</td><td class="ex">Studio Martini</td></tr>
+      <tr><td class="col">Space <span class="tr">(Spazio)</span></td><td>Nome di uno spazio di Aqueli.</td><td class="ex">Salute</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Promemoria)</span></td><td>Quanto tempo prima dell'inizio.</td><td class="ex">1 h</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Ripetizione)</span></td><td>Vedi «Valori accettati».</td><td class="ex">every year</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Note)</span></td><td>Testo libero.</td><td class="ex">Portare la tessera sanitaria.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Obblighi</h3>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">obbligatorio</span> <span class="tr">(Titolo)</span></td><td>Nome dell'obbligo.</td><td class="ex">Assicurazione casa</td></tr>
+      <tr><td class="col">Category <span class="tr">(Categoria)</span></td><td>Taxes and returns (imposte e dichiarazioni), Bills (bollette), Subscriptions (abbonamenti), Insurance (assicurazioni), Contracts (contratti), Warranties (garanzie), Identity papers (documenti d'identità), Health (salute), Vehicle (veicolo), Housing (casa), oppure il nome dato in Aqueli. Vuoto: Bills.</td><td class="ex">Insurance</td></tr>
+      <tr><td class="col">Due date<span class="req">obbligatorio</span> <span class="tr">(Scadenza)</span></td><td>Prossima data da rispettare.</td><td class="ex">15/11/2026</td></tr>
+      <tr><td class="col">Amount <span class="tr">(Importo)</span></td><td>In euro.</td><td class="ex">€45.90</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(Frequenza)</span></td><td>one-off (una tantum), monthly (mensile), every two months (bimestrale), quarterly (trimestrale), half-yearly (semestrale) o yearly (annuale). Vuoto: one-off.</td><td class="ex">yearly</td></tr>
+      <tr><td class="col">Cancel by <span class="tr">(Disdire entro)</span></td><td>Termine di disdetta, al più tardi la data di scadenza.</td><td class="ex">15/10/2026</td></tr>
+      <tr><td class="col">Organisation <span class="tr">(Ente)</span></td><td>Assicuratore, fornitore, ente pubblico…</td><td class="ex">Assicuratore</td></tr>
+      <tr><td class="col">Reference <span class="tr">(Riferimento)</span></td><td>Numero di contratto, codice cliente…</td><td class="ex">HOM-4521</td></tr>
+      <tr><td class="col">Direct debit <span class="tr">(Addebito diretto)</span></td><td><code>yes</code> (sì) per un addebito diretto: l'obbligo viene pagato da solo a ogni scadenza. Vuoto: no.</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Space <span class="tr">(Spazio)</span></td><td>Nome di uno spazio di Aqueli.</td><td class="ex">Personale</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Note)</span></td><td>Testo libero.</td><td class="ex">Sollecitare a ottobre.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Note</h3>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">obbligatorio</span> <span class="tr">(Titolo)</span></td><td>Titolo della nota.</td><td class="ex">Idee regalo</td></tr>
+      <tr><td class="col">Text <span class="tr">(Testo)</span></td><td>Contenuto della nota. La formattazione semplice viene riconosciuta: <code>#</code> titolo, <code>-</code> elenco, <code>- [ ]</code> casella di controllo, <code>**grassetto**</code>, <code>*corsivo*</code>.</td><td class="ex">Libro, sciarpa…</td></tr>
+      <tr><td class="col">Notebook <span class="tr">(Taccuino)</span></td><td>Nome di un taccuino esistente.</td><td class="ex">Casa</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Etichette)</span></td><td>Separate da virgole.</td><td class="ex">regali</td></tr>
+      <tr><td class="col">Space <span class="tr">(Spazio)</span></td><td>Nome di uno spazio di Aqueli.</td><td class="ex">Famiglia</td></tr>
+      <tr><td class="col">Pinned <span class="tr">(Fissata)</span></td><td>yes (sì) o no.</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Abitudini</h3>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Name<span class="req">obbligatorio</span> <span class="tr">(Nome)</span></td><td>Nome dell'abitudine, al massimo 60 caratteri.</td><td class="ex">Bere acqua</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(Frequenza)</span></td><td>Vedi «Valori accettati». Vuoto: ogni giorno.</td><td class="ex">Mon, Wed, Fri</td></tr>
+      <tr><td class="col">Target <span class="tr">(Obiettivo)</span></td><td>Quantità da raggiungere ogni giorno, da 1 a 1000. Vuoto: l'abitudine viene semplicemente spuntata.</td><td class="ex">8</td></tr>
+      <tr><td class="col">Unit <span class="tr">(Unità)</span></td><td>Ciò che si conta.</td><td class="ex">bicchieri</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Promemoria)</span></td><td>Ora del promemoria, nei giorni previsti.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">To break <span class="tr">(Da abbandonare)</span></td><td>yes (sì) per un'abitudine da abbandonare: ogni giorno spuntato è un giorno mantenuto.</td><td class="ex">no</td></tr>
+      <tr><td class="col">Time of day <span class="tr">(Momento della giornata)</span></td><td>morning (mattina), midday (mezzogiorno) o evening (sera): l'elenco del giorno è ordinato per momento della giornata. Vuoto: durante la giornata.</td><td class="ex">morning</td></tr>
+      <tr><td class="col">Space <span class="tr">(Spazio)</span></td><td>Nome di uno spazio di Aqueli.</td><td class="ex">Personale</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Un'abitudine che porta il nome di uno dei modelli di Aqueli (Leggere, Meditare, Sport…) ne prende il simbolo e il colore. Le altre ricevono quelli del modulo Abitudini. Entrambi si possono modificare in seguito in Aqueli.</p>
+
+  <h3>Contatti</h3>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">First name <span class="tr">(Nome)</span></td><td>Nome del contatto.</td><td class="ex">Lea</td></tr>
+      <tr><td class="col">Last name <span class="tr">(Cognome)</span></td><td>Cognome.</td><td class="ex">Bernard</td></tr>
+      <tr><td class="col">Company <span class="tr">(Azienda)</span></td><td>Azienda o organizzazione. Basta da sola per un artigiano o un negozio.</td><td class="ex">Officina Dupont</td></tr>
+      <tr><td class="col">Phone <span class="tr">(Telefono)</span></td><td>Uno o più numeri, separati da punto e virgola.</td><td class="ex">07700 900123</td></tr>
+      <tr><td class="col">Email <span class="tr">(E-mail)</span></td><td>Uno o più indirizzi, separati da punto e virgola.</td><td class="ex">lea.bernard@example.com</td></tr>
+      <tr><td class="col">Address <span class="tr">(Indirizzo)</span></td><td>Indirizzo postale.</td><td class="ex">Via dei Lillà 12, Roma</td></tr>
+      <tr><td class="col">Birthday <span class="tr">(Compleanno)</span></td><td>Data di nascita, oppure solo giorno e mese. Mostrato nel calendario.</td><td class="ex">14/05/2016</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Etichette)</span></td><td>Separate da virgole.</td><td class="ex">famiglia</td></tr>
+      <tr><td class="col">Keep in touch <span class="tr">(Restare in contatto)</span></td><td>Ogni quanto risentirsi: <code>every week</code> (ogni settimana), <code>every 2 weeks</code> (ogni 2 settimane), <code>every month</code> (ogni mese), <code>every 3 months</code> (ogni 3 mesi), <code>every 6 months</code> (ogni 6 mesi) o <code>every year</code> (ogni anno). Il contatto compare in «Da ricontattare» quando arriva il momento. Vuoto: nessun promemoria di contatto.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Space <span class="tr">(Spazio)</span></td><td>Nome di uno spazio di Aqueli.</td><td class="ex">Famiglia</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Note)</span></td><td>Testo libero.</td><td class="ex">Preferisce gli SMS.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Spese</h3>
+  <p>Movimenti del modulo Budget: spese ed entrate. Un estratto conto scaricato dal sito della tua banca (in formato Excel o CSV) si importa così com'è.</p>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Date<span class="req">obbligatorio</span> <span class="tr">(Data)</span></td><td>Giorno del movimento.</td><td class="ex">26/09/2026</td></tr>
+      <tr><td class="col">Description <span class="tr">(Descrizione)</span></td><td>In che cosa consiste il movimento. Vuoto: il nome della categoria.</td><td class="ex">Mercato del sabato</td></tr>
+      <tr><td class="col">Amount<span class="req">obbligatorio</span> <span class="tr">(Importo)</span></td><td>In euro. Un importo negativo è una spesa. In una tabella che contiene importi negativi, come un estratto conto, un importo positivo è un'entrata. Altrimenti, un importo è una spesa.</td><td class="ex">42.50</td></tr>
+      <tr><td class="col">Category <span class="tr">(Categoria)</span></td><td>Nome di una categoria del Budget (Spesa, Casa, Trasporti, Stipendio…). Sconosciuta: movimento senza categoria, segnalato nell'anteprima.</td><td class="ex">Spesa</td></tr>
+      <tr><td class="col">Direction <span class="tr">(Tipo di movimento)</span></td><td><code>expense</code> (spesa) o <code>income</code> (entrata). Prevale sul segno dell'importo.</td><td class="ex">income</td></tr>
+      <tr><td class="col">Debit <span class="tr">(Addebito)</span></td><td>Al posto di Amount, come in un estratto conto: importo di una spesa.</td><td class="ex">21.00</td></tr>
+      <tr><td class="col">Credit <span class="tr">(Accredito)</span></td><td>Al posto di Amount, come in un estratto conto: importo di un'entrata.</td><td class="ex">2,450.00</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Ripetizione)</span></td><td>Un movimento che si ripete (stipendio, affitto…): <code>every month</code> (ogni mese), <code>every 2 months</code> (ogni 2 mesi), <code>quarterly</code> (trimestrale), <code>half-yearly</code> (semestrale) o <code>every year</code> (ogni anno). Ogni rata viene aggiunta al Budget nel suo giorno. Vuoto: una sola volta.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Until <span class="tr">(Fino al)</span></td><td>Ultimo giorno della ripetizione. Vuoto: senza fine.</td><td class="ex">31/12/2027</td></tr>
+      <tr><td class="col">Space <span class="tr">(Spazio)</span></td><td>Nome di uno spazio di Aqueli.</td><td class="ex">Personale</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Note)</span></td><td>Testo libero.</td><td class="ex">Due biglietti.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Liste</h3>
+  <p>Elementi delle liste del modulo Liste: spesa, libri, film, idee regalo…</p>
+  <table>
+    <thead><tr><th>Colonna</th><th>Contenuto</th><th>Esempio</th></tr></thead>
+    <tbody>
+      <tr><td class="col">List<span class="req">obbligatorio</span> <span class="tr">(Lista)</span></td><td>Nome della lista. Una lista esistente riceve l'elemento. Altrimenti la lista viene creata, con il modello che corrisponde al suo nome (Spesa, Libri, Film, Regali, Viaggio, Desideri).</td><td class="ex">Spesa</td></tr>
+      <tr><td class="col">Item<span class="req">obbligatorio</span> <span class="tr">(Elemento)</span></td><td>Nome dell'elemento.</td><td class="ex">Mele</td></tr>
+      <tr><td class="col">Aisle <span class="tr">(Reparto)</span></td><td>Reparto o sezione della lista. Sconosciuto in una lista esistente: l'elemento viene aggiunto senza reparto.</td><td class="ex">Frutta e verdura</td></tr>
+      <tr><td class="col">Done <span class="tr">(Fatto)</span></td><td>yes (sì) per un elemento già spuntato.</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Le altre colonne («Author», «Rating», «Price», «Link»…) compilano le colonne della lista con lo stesso nome. Per una lista creata dall'importazione, diventano le sue colonne: una valutazione da 0 a 5 per «Rating», un prezzo per «Price», una data per «Date», un link per «Link», testo negli altri casi. Al massimo 12 colonne.</p>
+
+  <h2 id="values"><span class="n">5</span>Valori accettati</h2>
+  <dl>
+    <dt>Date</dt>
+    <dd>Prima il giorno, poi il mese: <code>03/10/2026</code>, <code>3/10/26</code>, <code>2026-10-03</code>, <code>3 October 2026</code>. Senza anno (<code>03/10</code>): la prossima data corrispondente. Inoltre: <code>today</code> (oggi), <code>tomorrow</code> (domani), <code>Monday</code> (lunedì), <code>in 3 days</code> (tra 3 giorni). Le date inserite come date in Excel vengono riconosciute.</dd>
+    <dt>Orari</dt>
+    <dd><code>14:00</code>, <code>2pm</code>, <code>2:30pm</code>, <code>noon</code> (mezzogiorno). Fascia oraria: <code>09:30-10:00</code>.</dd>
+    <dt>Durate e promemoria</dt>
+    <dd><code>15 min</code>, <code>1 h</code>, <code>1 h 30</code>, <code>2 days</code> (2 giorni). Per un promemoria, anche <code>on time</code> (all'ora esatta) o <code>none</code> (nessuno). Se non è indicato alcun promemoria, il promemoria predefinito (Impostazioni › Promemoria) si applica agli elementi con un orario fissato.</dd>
+    <dt>Ripetizioni</dt>
+    <dd><code>every day</code>, <code>every 2 days</code>, <code>weekdays</code>, <code>every Monday</code>, <code>every Monday and Thursday</code>, <code>every week</code>, <code>every 2 weeks</code>, <code>every month</code>, <code>every 3 months</code>, <code>the first Monday of the month</code>, <code>every year</code>. Per un'attività, anche <code>3 days after completion</code> (3 giorni dopo il completamento).</dd>
+    <dt>Frequenze delle abitudini</dt>
+    <dd><code>every day</code>, <code>3 times a week</code>, <code>Mon, Wed, Fri</code>, <code>Tuesday and Thursday</code>, <code>weekdays</code>, <code>weekends</code>.</dd>
+    <dt>Compleanni</dt>
+    <dd><code>14/05/1990</code>, <code>1990-05-14</code>, <code>14 May 1990</code>. Senza l'anno: <code>14/05</code>, <code>14 May</code>.</dd>
+    <dt>Importi</dt>
+    <dd><code>312</code>, <code>45.90</code>, <code>€1,234.50</code>. Per un movimento, anche <code>-42.50</code>.</dd>
+    <dt>Etichette</dt>
+    <dd>Lettere, cifre, <code>-</code>, <code>_</code> e <code>/</code>. Al massimo 40 caratteri e 20 etichette.</dd>
+    <dt>Spazi e taccuini</dt>
+    <dd>Il loro nome in Aqueli. Un nome sconosciuto viene segnalato nell'anteprima. L'elemento va allora nello spazio visualizzato, o nel primo.</dd>
+    <dt>Sì o no</dt>
+    <dd><code>yes</code> (sì), <code>no</code>, <code>x</code> per sì.</dd>
+  </dl>
+
+  <h2 id="text"><span class="n">6</span>Con un file di testo</h2>
+  <p>Un file <code>.txt</code> o <code>.md</code> contiene un elemento per riga: il tipo, poi i campi separati da <code>|</code>. Il primo campo è il titolo.</p>
+  <pre>TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
+EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery
+OBLIGATION | Home insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
+NOTE | Gift ideas | Cookbook, scarf
+HABIT | Read | Mon, Wed, Fri | 20 pages | reminder: 21:30
+CONTACT | Lea Bernard | 07700 900123 | lea.bernard@example.com | birthday: 14/05/2016
+EXPENSE | €42.50 | Groceries | 27/09/2026
+INCOME | September salary | €2,450 | Salary | 01/10/2026
+LIST | Milk | Shopping | Fresh</pre>
+  <ul>
+    <li>Tipi: <code>TASK</code> (attività), <code>EVENT</code> (evento, o <code>APPOINTMENT</code>), <code>OBLIGATION</code> (obbligo, o <code>BILL</code>), <code>NOTE</code> (nota), <code>HABIT</code> (abitudine), <code>CONTACT</code> (contatto), <code>EXPENSE</code> (spesa), <code>INCOME</code> (entrata), <code>LIST</code> (lista).</li>
+    <li>Per una spesa o un'entrata, il titolo può essere l'importo. La data, l'importo e la categoria vengono riconosciuti da soli. Per un elemento di lista, il campo dopo il titolo è la lista, poi il reparto.</li>
+    <li>Date, orari, <code>#etichette</code>, priorità (<code>!high</code>, <code>!medium</code>, <code>!low</code>), importi, frequenze, categorie e ripetizioni vengono riconosciuti da soli. Per un'abitudine, la frequenza, l'obiettivo (<code>20 pages</code>) e l'ora del promemoria. Per un contatto, i numeri di telefono, gli indirizzi e-mail e la data di nascita.</li>
+    <li>Gli altri campi si scrivono <code>nome: valore</code>, con i nomi delle colonne: <code>location: Studio Martini</code>, <code>space: Lavoro</code>, <code>reminder: 1 h</code>, <code>subtasks: Cucina; Soggiorno</code>. Un campo non riconosciuto finisce nelle note dell'elemento.</li>
+    <li>Una riga senza tipo è un'attività, scritta come nell'aggiunta rapida: <code>Chiamare l'officina tomorrow 2pm #auto !high</code>. Sono accettati punti elenco (<code>-</code>, <code>*</code>, <code>1.</code>) e caselle di controllo (<code>- [ ]</code>) a inizio riga.</li>
+    <li>Le righe vuote, i titoli (<code># Titolo</code>) e le righe che iniziano con <code>//</code> vengono ignorati.</li>
+    <li>Un file <code>.md</code> senza tipi diventa una sola nota: il primo titolo (<code># Titolo</code>) è il suo titolo, altrimenti il nome del file. La formattazione viene mantenuta: titoli, elenchi, caselle di controllo, citazioni, blocchi di codice, <code>**grassetto**</code>, <code>*corsivo*</code>, <code>~~barrato~~</code>, <code>==evidenziato==</code> e <code>`codice`</code>. Una nota esportata da Aqueli in Markdown può essere reimportata in questo modo. Nell'anteprima, un file senza tipi può anche essere letto come un elenco di attività, di eventi o come una sola nota.</li>
+  </ul>
+
+  <h2 id="calendars"><span class="n">7</span>Calendari e contatti</h2>
+  <ul>
+    <li>Un file di calendario <code>.ics</code> (esportato da Outlook, Google Calendar o Calendario di Apple) diventa eventi: titolo, date e orari, luogo, descrizione, ripetizione e promemoria.</li>
+    <li>Un file di contatti <code>.vcf</code> (esportato da un telefono, da Gmail o da Outlook) diventa contatti: nome, azienda, numeri, indirizzi e-mail, indirizzo, compleanno, note ed etichette.</li>
+    <li>Gli orari scritti in tempo universale vengono convertiti nell'ora di questo PC. Una ripetizione troppo insolita non viene riportata: l'anteprima la segnala e puoi impostarla poi nel calendario.</li>
+    <li>Gli eventi annullati e le foto dei contatti non vengono importati.</li>
+  </ul>
+
+  <h2 id="preview"><span class="n">8</span>Anteprima, errori e duplicati</h2>
+  <ul>
+    <li>Ogni riga compare nell'anteprima prima dell'importazione. Non viene aggiunto nulla prima che tu faccia clic su «Importa».</li>
+    <li>Una riga con un errore è mostrata in rosso, con la spiegazione. Non viene importata: correggi il file, poi importalo di nuovo.</li>
+    <li>Un duplicato ha lo stesso tipo, titolo e data (lo stesso nome per un'abitudine o un contatto) di un elemento di Aqueli o di una riga precedente. Per un movimento, anche lo stesso importo. Per un elemento di lista, la stessa lista. Compare non spuntato. Se lo spunti, viene importato comunque.</li>
+    <li>Togliere la spunta a una riga la esclude dall'importazione. Il menu «Contenuto» cambia il tipo di un foglio o di un file.</li>
+    <li>Dopo l'importazione, «Annulla» o <kbd>Ctrl+Z</kbd> rimuove in una volta tutti gli elementi importati.</li>
+  </ul>
+
+  <h3>Aggiornare elementi esistenti</h3>
+  <ul>
+    <li>Le tabelle esportate da Aqueli (attività, contatti, movimenti del budget) hanno un'ultima colonna <code>ID</code>. Anche i file <code>.ics</code> e <code>.vcf</code> esportati la contengono. Non modificarla.</li>
+    <li>Quando viene importato di nuovo, il file aggiorna gli elementi che portano questo ID invece di crearne di nuovi: la riga è contrassegnata come «Aggiornamento di un elemento esistente.». Prima dell'importazione, una finestra elenca gli elementi che verranno sostituiti e ti chiede di confermare.</li>
+    <li>Ciò che il file non descrive viene mantenuto: il colore, il progetto e le sottoattività spuntate di un'attività. La foto, la categoria e la scheda di un contatto. Le occorrenze rimosse da una serie di eventi.</li>
+    <li>Una riga senza ID, o il cui ID non esiste in questo account (un file di un altro PC), crea un nuovo elemento.</li>
+    <li>«Annulla», dopo l'importazione, ripristina anche i valori precedenti degli elementi aggiornati.</li>
+  </ul>
+
+  <h2 id="good-to-know"><span class="n">9</span>Da sapere</h2>
+  <ul>
+    <li>Un file messo nella cartella Import viene eliminato dopo l'importazione, perché questa cartella non è crittografata. Per conservarlo invece in <code>Import\Traités</code>: Impostazioni › Importazione › «Dopo l'importazione». Un file trascinato nella finestra o scelto altrove resta dov'è.</li>
+    <li>Al massimo 10 MB e 5.000 elementi per file.</li>
+    <li>Excel: le formule non vengono ricalcolate, viene letto l'ultimo valore salvato. Le macro non vengono mai eseguite.</li>
+    <li>Le cartelle di lavoro in formato <code>.xls</code> e quelle protette da password non possono essere lette: salvale in formato <code>.xlsx</code>, senza password.</li>
+  </ul>
+
+  <footer>Aqueli · Guida all'importazione</footer>
+</main>
+</body>
+</html>

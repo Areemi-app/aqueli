@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가져오기 안내서 · Aqueli</title>
+<style>
+  :root {
+    --ink: #0b2a45;
+    --soft: #3a5870;
+    --accent: #07609f;
+    --card: rgba(255, 255, 255, 0.8);
+    --card-edge: rgba(255, 255, 255, 0.95);
+    --tile: rgba(255, 255, 255, 0.78);
+    --line: rgba(11, 42, 69, 0.12);
+    --tint: rgba(10, 112, 188, 0.1);
+    --code: rgba(10, 112, 188, 0.12);
+    --req: #0b5dab;
+    --warn: #8f3a05;
+    --warn-bg: rgba(240, 120, 40, 0.16);
+    --sky: radial-gradient(70% 45% at 85% 0%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%);
+    --gel: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%), linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%);
+    --shadow: 0 18px 40px -24px rgba(11, 93, 171, 0.45);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8f1ff;
+      --soft: #a9bee0;
+      --accent: #8adbff;
+      --card: rgba(14, 30, 80, 0.86);
+      --card-edge: rgba(140, 180, 255, 0.28);
+      --tile: rgba(30, 56, 130, 0.55);
+      --line: rgba(170, 200, 255, 0.16);
+      --tint: rgba(90, 160, 255, 0.14);
+      --code: rgba(120, 180, 255, 0.18);
+      --req: #8adbff;
+      --warn: #ffc27a;
+      --warn-bg: rgba(255, 170, 80, 0.16);
+      --sky: radial-gradient(55% 45% at 85% 8%, rgba(140, 100, 255, 0.35), rgba(140, 100, 255, 0) 70%),
+        radial-gradient(55% 45% at 8% 95%, rgba(0, 190, 255, 0.28), rgba(0, 190, 255, 0) 70%),
+        linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%);
+      --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { background: #8fd8fa; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+    background: var(--sky) fixed;
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { html { background: #0c1c56; } }
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 34px 40px 40px;
+    border-radius: 28px;
+    border: 1px solid var(--card-edge);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%), var(--card);
+    box-shadow: var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    main { background: linear-gradient(180deg, rgba(120, 160, 255, 0.12) 0%, rgba(120, 160, 255, 0) 30%), var(--card); }
+  }
+  header { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  header svg { flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(11, 93, 171, 0.35)); }
+  h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+  .lead { margin: 4px 0 0; color: var(--soft); font-size: 16px; font-weight: 600; }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 22px 0 8px; padding: 0; list-style: none;
+  }
+  nav a {
+    display: inline-block; padding: 5px 12px; border-radius: 14px;
+    background: var(--tint); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none;
+  }
+  nav a:hover { background: var(--code); }
+  h2 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 36px 0 12px; font-size: 21px; letter-spacing: -0.01em;
+  }
+  h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 15px;
+    background: var(--gel); color: #fff; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 10px -4px rgba(11, 93, 171, 0.6);
+  }
+  h3 { margin: 24px 0 8px; font-size: 16px; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  code, kbd {
+    padding: 1px 6px; border-radius: 6px; background: var(--code);
+    font: 600 13.5px/1.4 "Cascadia Mono", Consolas, monospace; overflow-wrap: anywhere;
+  }
+  kbd { white-space: nowrap; }
+  pre {
+    margin: 10px 0; padding: 14px 16px; border-radius: 14px; overflow-x: auto;
+    background: var(--tile); border: 1px solid var(--line);
+    font: 13.5px/1.6 "Cascadia Mono", Consolas, monospace;
+  }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+  .step {
+    padding: 16px 18px; border-radius: 18px;
+    border: 1px solid var(--line); background: var(--tile);
+  }
+  .step b { display: block; margin-bottom: 4px; font-size: 16px; }
+  .step .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; margin-bottom: 8px; border-radius: 13px;
+    background: var(--gel); color: #fff; font-size: 13px; font-weight: 700;
+  }
+  table { width: 100%; margin: 8px 0 4px; border-collapse: separate; border-spacing: 0 4px; font-size: 14px; }
+  th {
+    padding: 4px 12px; color: var(--soft); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-align: left; text-transform: uppercase;
+  }
+  td { padding: 8px 12px; vertical-align: top; background: var(--tile); }
+  td:first-child { border-radius: 12px 0 0 12px; }
+  td:last-child { border-radius: 0 12px 12px 0; }
+  td.col { width: 24%; font-weight: 700; }
+  td.ex { width: 26%; color: var(--soft); }
+  table.files td.col { width: 36%; white-space: nowrap; }
+  .req {
+    display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 8px;
+    background: var(--tint); color: var(--req); font-size: 11px; font-weight: 700; vertical-align: 1px;
+  }
+  dl { margin: 8px 0; }
+  dt { margin-top: 12px; font-weight: 700; }
+  dd { margin: 2px 0 0; }
+  .note {
+    margin: 14px 0; padding: 12px 16px; border-radius: 14px;
+    background: var(--warn-bg); color: var(--warn); font-weight: 600;
+  }
+  footer { margin-top: 36px; color: var(--soft); font-size: 13px; text-align: center; }
+  @media (max-width: 860px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 24px 18px 28px; }
+    td.ex { display: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    main { box-shadow: none; border: 0; }
+  }
+  .tr { display: block; font-weight: 400; color: var(--soft); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <radialGradient id="orb" cx="40%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#3c92f2"/>
+          <stop offset="0.55" stop-color="#173f96"/>
+          <stop offset="1" stop-color="#050b2a"/>
+        </radialGradient>
+        <linearGradient id="check" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff6fb5"/>
+          <stop offset="0.35" stop-color="#ffd166"/>
+          <stop offset="0.65" stop-color="#5ce1a5"/>
+          <stop offset="1" stop-color="#6fc8ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30" fill="url(#orb)"/>
+      <ellipse cx="27" cy="16" rx="18" ry="9" fill="#fff" opacity="0.45"/>
+      <path d="M18 33l9 9 19-21" fill="none" stroke="url(#check)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>가져오기 안내서</h1>
+      <p class="lead">작업, 일정, 청구서와 계약, 노트, 습관, 연락처를 한 번에 추가합니다.</p>
+    </div>
+  </header>
+
+  <nav aria-label="목차">
+    <a href="#in-short">요약</a>
+    <a href="#folder">이 폴더의 파일</a>
+    <a href="#spreadsheet">Excel 사용</a>
+    <a href="#columns">열</a>
+    <a href="#values">사용할 수 있는 값</a>
+    <a href="#text">텍스트 파일 사용</a>
+    <a href="#calendars">캘린더와 연락처</a>
+    <a href="#preview">미리 보기와 중복</a>
+    <a href="#good-to-know">알아 두기</a>
+  </nav>
+
+  <h2 id="in-short"><span class="n">1</span>요약</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="n">1</span>
+      <b>준비</b>
+      <code>Aqueli template.xlsx</code>를 이 폴더 밖으로 복사한 다음 채우세요. 한 행에 한 항목입니다.
+    </div>
+    <div class="step">
+      <span class="n">2</span>
+      <b>가져오기</b>
+      파일을 <code>Documents\Aqueli\Import</code>에 넣거나 Aqueli 창으로 끌어 놓으세요.
+    </div>
+    <div class="step">
+      <span class="n">3</span>
+      <b>확인</b>
+      미리 보기를 확인한 다음 ‘가져오기’를 클릭하세요. <kbd>Ctrl+Z</kbd>를 누르면 가져오기 전체가 취소됩니다.
+    </div>
+  </div>
+  <p>Import 폴더에 넣은 파일은 몇 초 안에 Aqueli가 찾아냅니다. 설정 › 가져오기 › ‘파일 가져오기’에서 파일을 선택하거나 <kbd>Ctrl+K</kbd>의 ‘파일 가져오기’ 명령을 사용할 수도 있습니다.</p>
+
+  <h2 id="folder"><span class="n">2</span>이 폴더의 파일</h2>
+  <table class="files">
+    <thead><tr><th>파일</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Aqueli template.xlsx</td><td>빈 통합 문서입니다. 종류마다 시트가 하나씩 있고 열 이름이 이미 적혀 있습니다.</td></tr>
+      <tr><td class="col">Aqueli example.xlsx</td><td>같은 통합 문서에 예시를 채운 것입니다. 그대로 가져올 수 있습니다.</td></tr>
+      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>종류별 열입니다. Excel이 아닌 스프레드시트 프로그램용입니다.</td></tr>
+      <tr><td class="col">Example.txt</td><td>텍스트 파일 예시입니다. 한 행에 한 항목입니다.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">이 폴더는 Aqueli를 열 때마다 다시 만들어집니다. 템플릿을 채우기 전에 다른 위치(바탕 화면, 문서…)로 복사하세요.</p>
+
+  <h2 id="spreadsheet"><span class="n">3</span>Excel 또는 다른 스프레드시트 사용</h2>
+  <ul>
+    <li>종류마다 시트 하나를 쓰며, 시트 이름은 ‘Tasks’, ‘Events’, ‘Obligations’, ‘Notes’, ‘Habits’, ‘Contacts’, ‘Expenses’ 또는 ‘Lists’입니다(작업, 일정, 청구서와 계약, 노트, 습관, 연락처, 지출, 목록).</li>
+    <li>첫 행에는 열 이름을 씁니다. 그 뒤로는 한 행에 한 항목입니다.</li>
+    <li>필수 항목은 제목뿐입니다(습관은 이름, 연락처는 이름, 성 또는 회사). 여기에 더해 일정의 날짜, 청구서와 계약 항목의 마감일, 거래의 날짜와 금액, 목록 항목의 목록도 필요합니다. 사용하지 않는 셀은 비워 두세요.</li>
+    <li>열의 순서는 자유입니다. 알 수 없는 열은 무시됩니다. 대소문자와 악센트 부호는 구분하지 않습니다.</li>
+    <li>CSV 파일: 파일 하나에 한 종류이며, 파일 이름(<code>tasks.csv</code>)이나 열로 종류를 알아냅니다. ‘Type’ 열(Task, Event, Obligation, Note, Habit, Contact, Expense, Income, List)을 사용하면 여러 종류를 섞을 수 있습니다. 구분 기호는 <code>;</code> 또는 <code>,</code>입니다.</li>
+    <li>열 이름과 값은 제공된 템플릿과 같이 영어(또는 프랑스어)로 씁니다. 이 안내서에서는 한국어 뜻을 괄호 안에 적습니다.</li>
+  </ul>
+
+  <h2 id="columns"><span class="n">4</span>열</h2>
+
+  <h3>작업</h3>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">필수</span> <span class="tr">(제목)</span></td><td>해야 할 일.</td><td class="ex">정비소에 전화하기</td></tr>
+      <tr><td class="col">Due date <span class="tr">(마감일)</span></td><td>날짜이며 시간은 있어도 되고 없어도 됩니다. 날짜가 없는 작업은 받은 편지함으로 갑니다.</td><td class="ex">03/10/2026</td></tr>
+      <tr><td class="col">Time <span class="tr">(시간)</span></td><td>마감일의 시간.</td><td class="ex">14:00</td></tr>
+      <tr><td class="col">Start on <span class="tr">(시작일)</span></td><td>시작 날짜이며 마감일보다 늦을 수 없습니다. 그때까지 작업은 ‘예정’에만 표시됩니다.</td><td class="ex">01/10/2026</td></tr>
+      <tr><td class="col">Priority <span class="tr">(우선순위)</span></td><td><code>high</code>(높음), <code>medium</code>(보통), <code>low</code>(낮음) 또는 <code>none</code>(없음).</td><td class="ex">high</td></tr>
+      <tr><td class="col">Tags <span class="tr">(태그)</span></td><td>쉼표로 구분합니다.</td><td class="ex">자동차, 정비소</td></tr>
+      <tr><td class="col">Space <span class="tr">(공간)</span></td><td>Aqueli 공간의 이름.</td><td class="ex">개인</td></tr>
+      <tr><td class="col">Duration <span class="tr">(소요 시간)</span></td><td>예상 소요 시간이며 최대 24 h입니다.</td><td class="ex">1 h 30</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(알림)</span></td><td>마감일보다 얼마나 먼저 알릴지.</td><td class="ex">15 min</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(반복)</span></td><td>‘사용할 수 있는 값’을 참조하세요.</td><td class="ex">every Monday</td></tr>
+      <tr><td class="col">Subtasks <span class="tr">(하위 작업)</span></td><td>세미콜론으로 구분하며 최대 100개입니다.</td><td class="ex">부엌; 거실</td></tr>
+      <tr><td class="col">Notes <span class="tr">(메모)</span></td><td>자유 텍스트.</td><td class="ex">견적을 요청하기.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>일정</h3>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">필수</span> <span class="tr">(제목)</span></td><td>일정의 이름.</td><td class="ex">치과</td></tr>
+      <tr><td class="col">Date<span class="req">필수</span> <span class="tr">(날짜)</span></td><td>일정이 있는 날이며 시간을 포함할 수 있습니다.</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
+      <tr><td class="col">Start <span class="tr">(시작)</span></td><td>시작 시간입니다. 비어 있으면 종일입니다.</td><td class="ex">09:30</td></tr>
+      <tr><td class="col">End <span class="tr">(종료)</span></td><td>종료 시간입니다. 비어 있으면 시작 1시간 후입니다.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">End date <span class="tr">(종료일)</span></td><td>여러 날에 걸친 일정의 마지막 날.</td><td class="ex">18/10/2026</td></tr>
+      <tr><td class="col">Location <span class="tr">(장소)</span></td><td>주소 또는 장소.</td><td class="ex">마르탱 의원</td></tr>
+      <tr><td class="col">Space <span class="tr">(공간)</span></td><td>Aqueli 공간의 이름.</td><td class="ex">건강</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(알림)</span></td><td>시작보다 얼마나 먼저 알릴지.</td><td class="ex">1 h</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(반복)</span></td><td>‘사용할 수 있는 값’을 참조하세요.</td><td class="ex">every year</td></tr>
+      <tr><td class="col">Notes <span class="tr">(메모)</span></td><td>자유 텍스트.</td><td class="ex">건강 보험증을 챙기기.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>청구서와 계약</h3>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">필수</span> <span class="tr">(제목)</span></td><td>항목의 이름.</td><td class="ex">주택 보험</td></tr>
+      <tr><td class="col">Category <span class="tr">(카테고리)</span></td><td><code>Taxes and returns</code>(세금과 신고), <code>Bills</code>(청구서), <code>Subscriptions</code>(구독), <code>Insurance</code>(보험), <code>Contracts</code>(계약), <code>Warranties</code>(보증), <code>Identity papers</code>(신분증), <code>Health</code>(건강), <code>Vehicle</code>(차량), <code>Housing</code>(주거) 또는 Aqueli에서 붙인 이름. 비어 있으면 <code>Bills</code>입니다.</td><td class="ex">Insurance</td></tr>
+      <tr><td class="col">Due date<span class="req">필수</span> <span class="tr">(마감일)</span></td><td>다음에 지켜야 할 날짜.</td><td class="ex">15/11/2026</td></tr>
+      <tr><td class="col">Amount <span class="tr">(금액)</span></td><td>유로 단위입니다.</td><td class="ex">€45.90</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(주기)</span></td><td><code>one-off</code>(한 번), <code>monthly</code>(매월), <code>every two months</code>(2개월마다), <code>quarterly</code>(분기마다), <code>half-yearly</code>(6개월마다) 또는 <code>yearly</code>(매년). 비어 있으면 <code>one-off</code>입니다.</td><td class="ex">yearly</td></tr>
+      <tr><td class="col">Cancel by <span class="tr">(해지 기한)</span></td><td>해지 기한이며 마감일보다 늦을 수 없습니다.</td><td class="ex">15/10/2026</td></tr>
+      <tr><td class="col">Organisation <span class="tr">(기관)</span></td><td>보험사, 공급업체, 공공 기관…</td><td class="ex">보험사</td></tr>
+      <tr><td class="col">Reference <span class="tr">(참조 번호)</span></td><td>계약 번호, 고객 번호…</td><td class="ex">HOM-4521</td></tr>
+      <tr><td class="col">Direct debit <span class="tr">(자동이체)</span></td><td>자동이체이면 <code>yes</code>입니다. 마감일마다 항목이 자동으로 납부 처리됩니다. 비어 있으면 <code>no</code>입니다.</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Space <span class="tr">(공간)</span></td><td>Aqueli 공간의 이름.</td><td class="ex">개인</td></tr>
+      <tr><td class="col">Notes <span class="tr">(메모)</span></td><td>자유 텍스트.</td><td class="ex">10월에 독촉하기.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>노트</h3>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">필수</span> <span class="tr">(제목)</span></td><td>노트의 제목.</td><td class="ex">선물 아이디어</td></tr>
+      <tr><td class="col">Text <span class="tr">(본문)</span></td><td>노트의 내용입니다. 간단한 서식을 인식합니다: <code>#</code> 제목, <code>-</code> 목록, <code>- [ ]</code> 확인란, <code>**bold**</code>(굵게), <code>*italic*</code>(기울임꼴).</td><td class="ex">책, 목도리…</td></tr>
+      <tr><td class="col">Notebook <span class="tr">(노트북)</span></td><td>기존 노트북의 이름.</td><td class="ex">집</td></tr>
+      <tr><td class="col">Tags <span class="tr">(태그)</span></td><td>쉼표로 구분합니다.</td><td class="ex">선물</td></tr>
+      <tr><td class="col">Space <span class="tr">(공간)</span></td><td>Aqueli 공간의 이름.</td><td class="ex">가족</td></tr>
+      <tr><td class="col">Pinned <span class="tr">(고정)</span></td><td><code>yes</code> 또는 <code>no</code>.</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>습관</h3>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Name<span class="req">필수</span> <span class="tr">(이름)</span></td><td>습관의 이름이며 최대 60자입니다.</td><td class="ex">물 마시기</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(주기)</span></td><td>‘사용할 수 있는 값’을 참조하세요. 비어 있으면 <code>every day</code>(매일)입니다.</td><td class="ex">Mon, Wed, Fri</td></tr>
+      <tr><td class="col">Target <span class="tr">(목표)</span></td><td>하루에 달성할 양이며 1부터 1000까지입니다. 비어 있으면 체크만 하는 습관이 됩니다.</td><td class="ex">8</td></tr>
+      <tr><td class="col">Unit <span class="tr">(단위)</span></td><td>세는 대상.</td><td class="ex">잔</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(알림)</span></td><td>계획된 날의 알림 시간.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">To break <span class="tr">(끊을 습관)</span></td><td>끊으려는 습관이면 <code>yes</code>입니다. 체크한 날은 지켜 낸 날입니다.</td><td class="ex">no</td></tr>
+      <tr><td class="col">Time of day <span class="tr">(시간대)</span></td><td><code>morning</code>(아침), <code>midday</code>(점심) 또는 <code>evening</code>(저녁)입니다. 그날의 목록이 시간대별로 정리됩니다. 비어 있으면 낮 동안입니다.</td><td class="ex">morning</td></tr>
+      <tr><td class="col">Space <span class="tr">(공간)</span></td><td>Aqueli 공간의 이름.</td><td class="ex">개인</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Aqueli 템플릿과 이름이 같은 습관(독서, 명상, 운동…)은 그 템플릿의 기호와 색을 사용합니다. 다른 습관은 습관 모듈의 기호와 색을 사용합니다. 둘 다 나중에 Aqueli에서 바꿀 수 있습니다.</p>
+
+  <h3>연락처</h3>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">First name <span class="tr">(이름)</span></td><td>연락처의 이름.</td><td class="ex">Lea</td></tr>
+      <tr><td class="col">Last name <span class="tr">(성)</span></td><td>성.</td><td class="ex">Bernard</td></tr>
+      <tr><td class="col">Company <span class="tr">(회사)</span></td><td>회사 또는 단체입니다. 기술자나 상점이라면 이것만으로 충분합니다.</td><td class="ex">뒤퐁 정비소</td></tr>
+      <tr><td class="col">Phone <span class="tr">(전화)</span></td><td>번호 하나 이상이며 세미콜론으로 구분합니다.</td><td class="ex">07700 900123</td></tr>
+      <tr><td class="col">Email <span class="tr">(이메일)</span></td><td>주소 하나 이상이며 세미콜론으로 구분합니다.</td><td class="ex">lea.bernard@example.com</td></tr>
+      <tr><td class="col">Address <span class="tr">(주소)</span></td><td>우편 주소.</td><td class="ex">12 Lilac Road, London</td></tr>
+      <tr><td class="col">Birthday <span class="tr">(생일)</span></td><td>생년월일 또는 날짜와 월만 씁니다. 캘린더에 표시됩니다.</td><td class="ex">14/05/2016</td></tr>
+      <tr><td class="col">Tags <span class="tr">(태그)</span></td><td>쉼표로 구분합니다.</td><td class="ex">가족</td></tr>
+      <tr><td class="col">Keep in touch <span class="tr">(연락 주기)</span></td><td>얼마나 자주 연락할지: <code>every week</code>(매주), <code>every 2 weeks</code>(2주마다), <code>every month</code>(매월), <code>every 3 months</code>(3개월마다), <code>every 6 months</code>(6개월마다) 또는 <code>every year</code>(매년). 때가 되면 연락처가 ‘다시 연락할 사람’에 표시됩니다. 비어 있으면 관리하지 않습니다.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Space <span class="tr">(공간)</span></td><td>Aqueli 공간의 이름.</td><td class="ex">가족</td></tr>
+      <tr><td class="col">Notes <span class="tr">(메모)</span></td><td>자유 텍스트.</td><td class="ex">문자 메시지를 선호함.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>지출</h3>
+  <p>예산 모듈의 거래, 즉 지출과 수입입니다. 은행 웹사이트에서 내려받은 거래 내역서(Excel 또는 CSV 형식)는 그대로 가져올 수 있습니다.</p>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Date<span class="req">필수</span> <span class="tr">(날짜)</span></td><td>거래 날짜.</td><td class="ex">26/09/2026</td></tr>
+      <tr><td class="col">Description <span class="tr">(설명)</span></td><td>거래 내용입니다. 비어 있으면 카테고리 이름입니다.</td><td class="ex">토요일 장터</td></tr>
+      <tr><td class="col">Amount<span class="req">필수</span> <span class="tr">(금액)</span></td><td>유로 단위입니다. 음수 금액은 지출입니다. 거래 내역서처럼 음수 금액이 들어 있는 표에서는 양수 금액이 수입입니다. 그 밖의 경우 금액은 지출입니다.</td><td class="ex">42.50</td></tr>
+      <tr><td class="col">Category <span class="tr">(카테고리)</span></td><td>예산 카테고리의 이름입니다(장보기, 주거, 교통, 급여…). 알 수 없으면 카테고리 없는 거래가 되고, 미리 보기에 표시됩니다.</td><td class="ex">장보기</td></tr>
+      <tr><td class="col">Direction <span class="tr">(구분)</span></td><td><code>expense</code>(지출) 또는 <code>income</code>(수입). 금액의 부호보다 우선합니다.</td><td class="ex">income</td></tr>
+      <tr><td class="col">Debit <span class="tr">(출금)</span></td><td>거래 내역서처럼 Amount 대신 씁니다. 지출 금액입니다.</td><td class="ex">21.00</td></tr>
+      <tr><td class="col">Credit <span class="tr">(입금)</span></td><td>거래 내역서처럼 Amount 대신 씁니다. 수입 금액입니다.</td><td class="ex">2,450.00</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(반복)</span></td><td>되풀이되는 거래(급여, 월세…): <code>every month</code>(매월), <code>every 2 months</code>(2개월마다), <code>quarterly</code>(분기마다), <code>half-yearly</code>(6개월마다) 또는 <code>every year</code>(매년). 각 회차는 해당 날짜에 예산에 추가됩니다. 비어 있으면 한 번만입니다.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Until <span class="tr">(반복 종료일)</span></td><td>반복의 마지막 날입니다. 비어 있으면 끝나지 않습니다.</td><td class="ex">31/12/2027</td></tr>
+      <tr><td class="col">Space <span class="tr">(공간)</span></td><td>Aqueli 공간의 이름.</td><td class="ex">개인</td></tr>
+      <tr><td class="col">Notes <span class="tr">(메모)</span></td><td>자유 텍스트.</td><td class="ex">표 두 장.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>목록</h3>
+  <p>목록 모듈에 있는 목록의 항목입니다. 장보기, 책, 영화, 선물 아이디어…</p>
+  <table>
+    <thead><tr><th>열</th><th>내용</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td class="col">List<span class="req">필수</span> <span class="tr">(목록)</span></td><td>목록의 이름입니다. 기존 목록이면 그 목록에 항목이 들어갑니다. 없으면 목록이 만들어지며, 이름에 맞는 템플릿(<code>Shopping</code> 장보기, <code>Books</code> 책, <code>Films</code> 영화, <code>Gifts</code> 선물, <code>Travel</code> 여행, <code>Wishes</code> 갖고 싶은 것)이 사용됩니다.</td><td class="ex">Shopping</td></tr>
+      <tr><td class="col">Item<span class="req">필수</span> <span class="tr">(항목)</span></td><td>항목의 이름.</td><td class="ex">사과</td></tr>
+      <tr><td class="col">Aisle <span class="tr">(코너)</span></td><td>목록의 코너 또는 구역입니다. 기존 목록에 없는 코너이면 항목이 코너 없이 추가됩니다.</td><td class="ex">과일과 채소</td></tr>
+      <tr><td class="col">Done <span class="tr">(완료)</span></td><td>이미 체크한 항목이면 <code>yes</code>입니다.</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+  <p class="note">다른 열(‘Author’ 저자, ‘Rating’ 평가, ‘Price’ 가격, ‘Link’ 링크…)은 목록에서 이름이 같은 열을 채웁니다. 가져오기로 만들어진 목록에서는 이 열들이 목록의 열이 됩니다. ‘Rating’은 0에서 5까지의 평가, ‘Price’는 가격, ‘Date’는 날짜, ‘Link’는 링크이며, 그 밖에는 텍스트입니다. 최대 12개 열입니다.</p>
+
+  <h2 id="values"><span class="n">5</span>사용할 수 있는 값</h2>
+  <dl>
+    <dt>날짜</dt>
+    <dd>일을 먼저, 월을 나중에 씁니다: <code>03/10/2026</code>, <code>3/10/26</code>, <code>2026-10-03</code>, <code>3 October 2026</code>. 연도가 없으면(<code>03/10</code>) 다음에 오는 그 날짜입니다. <code>today</code>(오늘), <code>tomorrow</code>(내일), <code>Monday</code>(월요일), <code>in 3 days</code>(3일 후)도 쓸 수 있습니다. Excel에서 날짜로 입력한 날짜도 인식합니다.</dd>
+    <dt>시간</dt>
+    <dd><code>14:00</code>, <code>2pm</code>, <code>2:30pm</code>, <code>noon</code>(정오). 시간대: <code>09:30-10:00</code>.</dd>
+    <dt>소요 시간과 알림</dt>
+    <dd><code>15 min</code>, <code>1 h</code>, <code>1 h 30</code>, <code>2 days</code>(2일). 알림에는 <code>on time</code>(정시) 또는 <code>none</code>(없음)도 쓸 수 있습니다. 알림을 지정하지 않으면 시간이 정해진 항목에는 기본 알림(설정 › 알림)이 적용됩니다.</dd>
+    <dt>반복</dt>
+    <dd><code>every day</code>(매일), <code>every 2 days</code>(2일마다), <code>weekdays</code>(평일), <code>every Monday</code>(매주 월요일), <code>every Monday and Thursday</code>(매주 월요일과 목요일), <code>every week</code>(매주), <code>every 2 weeks</code>(2주마다), <code>every month</code>(매월), <code>every 3 months</code>(3개월마다), <code>the first Monday of the month</code>(매월 첫째 월요일), <code>every year</code>(매년). 작업에는 <code>3 days after completion</code>(완료 3일 후)도 쓸 수 있습니다.</dd>
+    <dt>습관의 주기</dt>
+    <dd><code>every day</code>(매일), <code>3 times a week</code>(주 3회), <code>Mon, Wed, Fri</code>(월, 수, 금), <code>Tuesday and Thursday</code>(화요일과 목요일), <code>weekdays</code>(평일), <code>weekends</code>(주말).</dd>
+    <dt>생일</dt>
+    <dd><code>14/05/1990</code>, <code>1990-05-14</code>, <code>14 May 1990</code>. 연도 없이: <code>14/05</code>, <code>14 May</code>.</dd>
+    <dt>금액</dt>
+    <dd><code>312</code>, <code>45.90</code>, <code>€1,234.50</code>. 거래에는 <code>-42.50</code>도 쓸 수 있습니다.</dd>
+    <dt>태그</dt>
+    <dd>문자, 숫자, <code>-</code>, <code>_</code>, <code>/</code>를 쓸 수 있습니다. 태그 하나는 최대 40자, 태그는 최대 20개입니다.</dd>
+    <dt>공간과 노트북</dt>
+    <dd>Aqueli에서의 이름입니다. 알 수 없는 이름은 미리 보기에 표시됩니다. 이 경우 항목은 표시 중인 공간이나 첫 번째 공간으로 갑니다.</dd>
+    <dt>예 또는 아니요</dt>
+    <dd><code>yes</code>(예), <code>no</code>(아니요). <code>x</code>는 예를 뜻합니다.</dd>
+  </dl>
+
+  <h2 id="text"><span class="n">6</span>텍스트 파일 사용</h2>
+  <p><code>.txt</code> 또는 <code>.md</code> 파일에는 한 줄에 한 항목을 씁니다. 종류를 쓰고, 이어서 <code>|</code>로 구분한 필드를 씁니다. 첫 번째 필드가 제목입니다.</p>
+  <pre>TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
+EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery
+OBLIGATION | Home insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
+NOTE | Gift ideas | Cookbook, scarf
+HABIT | Read | Mon, Wed, Fri | 20 pages | reminder: 21:30
+CONTACT | Lea Bernard | 07700 900123 | lea.bernard@example.com | birthday: 14/05/2016
+EXPENSE | €42.50 | Groceries | 27/09/2026
+INCOME | September salary | €2,450 | Salary | 01/10/2026
+LIST | Milk | Shopping | Fresh</pre>
+  <ul>
+    <li>종류: <code>TASK</code>(작업), <code>EVENT</code>(일정, <code>APPOINTMENT</code>도 가능), <code>OBLIGATION</code>(청구서와 계약 항목, <code>BILL</code>도 가능), <code>NOTE</code>(노트), <code>HABIT</code>(습관), <code>CONTACT</code>(연락처), <code>EXPENSE</code>(지출), <code>INCOME</code>(수입), <code>LIST</code>(목록).</li>
+    <li>지출이나 수입은 제목을 금액으로 쓸 수 있습니다. 날짜, 금액, 카테고리는 자동으로 인식됩니다. 목록 항목은 제목 다음 필드가 목록이고, 그다음이 코너입니다.</li>
+    <li>날짜, 시간, <code>#태그</code>, 우선순위(<code>!high</code>, <code>!medium</code>, <code>!low</code>), 금액, 주기, 카테고리, 반복은 자동으로 인식됩니다. 습관은 주기, 목표(<code>20 pages</code>), 알림 시간을, 연락처는 전화번호, 이메일 주소, 생년월일을 인식합니다.</li>
+    <li>그 밖의 필드는 열 이름을 사용해 <code>name: value</code>(이름: 값) 형식으로 씁니다: <code>location: Martin surgery</code>, <code>space: Work</code>, <code>reminder: 1 h</code>, <code>subtasks: Kitchen; Living room</code>. 인식되지 않는 필드는 항목의 메모로 들어갑니다.</li>
+    <li>종류가 없는 줄은 작업이며, 빠른 추가처럼 씁니다: <code>Call the garage tomorrow 2pm #car !high</code>. 줄 앞의 글머리 기호(<code>-</code>, <code>*</code>, <code>1.</code>)와 확인란(<code>- [ ]</code>)도 쓸 수 있습니다.</li>
+    <li>빈 줄, 제목(<code># Heading</code>), <code>//</code>로 시작하는 줄은 무시됩니다.</li>
+    <li>종류가 없는 <code>.md</code> 파일은 노트 하나가 됩니다. 첫 번째 제목(<code># Heading</code>)이 노트 제목이 되고, 제목이 없으면 파일 이름이 됩니다. 서식은 유지됩니다: 제목, 목록, 확인란, 인용, 코드 블록, <code>**bold**</code>(굵게), <code>*italic*</code>(기울임꼴), <code>~~strikethrough~~</code>(취소선), <code>==highlight==</code>(강조 표시), <code>`code`</code>(코드). Aqueli에서 Markdown으로 내보낸 노트는 이 방법으로 다시 가져올 수 있습니다. 미리 보기에서는 종류가 없는 파일을 작업 목록, 일정 목록 또는 노트 하나로 읽을 수도 있습니다.</li>
+  </ul>
+
+  <h2 id="calendars"><span class="n">7</span>캘린더와 연락처</h2>
+  <ul>
+    <li>캘린더 파일 <code>.ics</code>(Outlook, Google 캘린더, Apple 캘린더에서 내보낸 파일)는 일정이 됩니다. 제목, 날짜와 시간, 장소, 설명, 반복, 알림을 가져옵니다.</li>
+    <li>연락처 파일 <code>.vcf</code>(휴대폰, Gmail, Outlook에서 내보낸 파일)는 연락처가 됩니다. 이름, 회사, 번호, 이메일 주소, 주소, 생일, 메모, 태그를 가져옵니다.</li>
+    <li>협정 세계시로 적힌 시간은 이 PC의 시간으로 바뀝니다. 너무 특이한 반복은 옮겨지지 않습니다. 미리 보기에 표시되므로 나중에 캘린더에서 설정할 수 있습니다.</li>
+    <li>취소된 일정과 연락처 사진은 가져오지 않습니다.</li>
+  </ul>
+
+  <h2 id="preview"><span class="n">8</span>미리 보기, 오류, 중복</h2>
+  <ul>
+    <li>가져오기 전에 각 행이 미리 보기에 표시됩니다. ‘가져오기’를 클릭하기 전에는 아무것도 추가되지 않습니다.</li>
+    <li>오류가 있는 행은 빨간색으로 설명과 함께 표시됩니다. 그 행은 가져오지 않습니다. 파일을 고친 다음 다시 가져오세요.</li>
+    <li>중복은 Aqueli의 항목이나 앞의 행과 종류, 제목, 날짜가 같은 행입니다(습관이나 연락처는 이름이 같은 행). 거래는 금액도, 목록 항목은 목록도 같아야 합니다. 중복은 체크가 해제되어 있으며, 체크하면 그대로 가져옵니다.</li>
+    <li>행의 체크를 해제하면 가져오기에서 제외됩니다. ‘내용’ 메뉴에서 시트나 파일의 종류를 바꿀 수 있습니다.</li>
+    <li>가져온 뒤 ‘실행 취소’나 <kbd>Ctrl+Z</kbd>를 누르면 가져온 항목이 모두 한 번에 삭제됩니다.</li>
+  </ul>
+
+  <h3>기존 항목 업데이트</h3>
+  <ul>
+    <li>Aqueli에서 내보낸 표(작업, 연락처, 예산 거래)에는 마지막 열에 <code>ID</code>가 있습니다. 내보낸 <code>.ics</code>와 <code>.vcf</code> 파일에도 들어 있습니다. 바꾸지 마세요.</li>
+    <li>다시 가져오면 파일은 새 항목을 만드는 대신 이 ID가 있는 항목을 업데이트합니다. 그 행에는 ‘기존 항목 업데이트입니다.’라고 표시됩니다. 가져오기 전에 바뀔 항목을 나열한 창이 열리고 확인을 요청합니다.</li>
+    <li>파일에 적히지 않은 내용은 유지됩니다. 작업의 색, 프로젝트, 체크한 하위 작업, 연락처의 사진, 카테고리, 카드, 일정 반복에서 삭제한 회차가 그렇습니다.</li>
+    <li>ID가 없는 행, 또는 이 계정에 없는 ID를 가진 행(다른 PC의 파일)은 새 항목이 됩니다.</li>
+    <li>가져온 뒤 ‘실행 취소’를 하면 업데이트된 항목의 이전 값도 복원됩니다.</li>
+  </ul>
+
+  <h2 id="good-to-know"><span class="n">9</span>알아 두기</h2>
+  <ul>
+    <li>Import 폴더에 넣은 파일은 가져온 뒤 삭제됩니다. 이 폴더는 암호화되지 않기 때문입니다. 대신 <code>Import\Traités</code>에 보관하려면: 설정 › 가져오기 › ‘가져온 뒤’. 창으로 끌어 놓거나 다른 곳에서 선택한 파일은 원래 위치에 그대로 남습니다.</li>
+    <li>파일 하나당 최대 10 MB, 5,000개 항목입니다.</li>
+    <li>Excel: 수식은 다시 계산되지 않고 마지막으로 저장된 값을 읽습니다. 매크로는 절대 실행되지 않습니다.</li>
+    <li><code>.xls</code> 형식의 통합 문서와 암호로 보호된 통합 문서는 읽을 수 없습니다. <code>.xlsx</code> 형식으로, 암호 없이 저장하세요.</li>
+  </ul>
+
+  <footer>Aqueli · 가져오기 안내서</footer>
+</main>
+</body>
+</html>

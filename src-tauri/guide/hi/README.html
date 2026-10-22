@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>आयात मार्गदर्शिका · Aqueli</title>
+<style>
+  :root {
+    --ink: #0b2a45;
+    --soft: #3a5870;
+    --accent: #07609f;
+    --card: rgba(255, 255, 255, 0.8);
+    --card-edge: rgba(255, 255, 255, 0.95);
+    --tile: rgba(255, 255, 255, 0.78);
+    --line: rgba(11, 42, 69, 0.12);
+    --tint: rgba(10, 112, 188, 0.1);
+    --code: rgba(10, 112, 188, 0.12);
+    --req: #0b5dab;
+    --warn: #8f3a05;
+    --warn-bg: rgba(240, 120, 40, 0.16);
+    --sky: radial-gradient(70% 45% at 85% 0%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%);
+    --gel: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%), linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%);
+    --shadow: 0 18px 40px -24px rgba(11, 93, 171, 0.45);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8f1ff;
+      --soft: #a9bee0;
+      --accent: #8adbff;
+      --card: rgba(14, 30, 80, 0.86);
+      --card-edge: rgba(140, 180, 255, 0.28);
+      --tile: rgba(30, 56, 130, 0.55);
+      --line: rgba(170, 200, 255, 0.16);
+      --tint: rgba(90, 160, 255, 0.14);
+      --code: rgba(120, 180, 255, 0.18);
+      --req: #8adbff;
+      --warn: #ffc27a;
+      --warn-bg: rgba(255, 170, 80, 0.16);
+      --sky: radial-gradient(55% 45% at 85% 8%, rgba(140, 100, 255, 0.35), rgba(140, 100, 255, 0) 70%),
+        radial-gradient(55% 45% at 8% 95%, rgba(0, 190, 255, 0.28), rgba(0, 190, 255, 0) 70%),
+        linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%);
+      --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { background: #8fd8fa; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+    background: var(--sky) fixed;
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { html { background: #0c1c56; } }
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 34px 40px 40px;
+    border-radius: 28px;
+    border: 1px solid var(--card-edge);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%), var(--card);
+    box-shadow: var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    main { background: linear-gradient(180deg, rgba(120, 160, 255, 0.12) 0%, rgba(120, 160, 255, 0) 30%), var(--card); }
+  }
+  header { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  header svg { flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(11, 93, 171, 0.35)); }
+  h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+  .lead { margin: 4px 0 0; color: var(--soft); font-size: 16px; font-weight: 600; }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 22px 0 8px; padding: 0; list-style: none;
+  }
+  nav a {
+    display: inline-block; padding: 5px 12px; border-radius: 14px;
+    background: var(--tint); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none;
+  }
+  nav a:hover { background: var(--code); }
+  h2 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 36px 0 12px; font-size: 21px; letter-spacing: -0.01em;
+  }
+  h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 15px;
+    background: var(--gel); color: #fff; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 10px -4px rgba(11, 93, 171, 0.6);
+  }
+  h3 { margin: 24px 0 8px; font-size: 16px; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  code, kbd {
+    padding: 1px 6px; border-radius: 6px; background: var(--code);
+    font: 600 13.5px/1.4 "Cascadia Mono", Consolas, monospace; overflow-wrap: anywhere;
+  }
+  kbd { white-space: nowrap; }
+  pre {
+    margin: 10px 0; padding: 14px 16px; border-radius: 14px; overflow-x: auto;
+    background: var(--tile); border: 1px solid var(--line);
+    font: 13.5px/1.6 "Cascadia Mono", Consolas, monospace;
+  }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+  .step {
+    padding: 16px 18px; border-radius: 18px;
+    border: 1px solid var(--line); background: var(--tile);
+  }
+  .step b { display: block; margin-bottom: 4px; font-size: 16px; }
+  .step .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; margin-bottom: 8px; border-radius: 13px;
+    background: var(--gel); color: #fff; font-size: 13px; font-weight: 700;
+  }
+  table { width: 100%; margin: 8px 0 4px; border-collapse: separate; border-spacing: 0 4px; font-size: 14px; }
+  th {
+    padding: 4px 12px; color: var(--soft); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-align: left; text-transform: uppercase;
+  }
+  td { padding: 8px 12px; vertical-align: top; background: var(--tile); }
+  td:first-child { border-radius: 12px 0 0 12px; }
+  td:last-child { border-radius: 0 12px 12px 0; }
+  td.col { width: 24%; font-weight: 700; }
+  td.ex { width: 26%; color: var(--soft); }
+  table.files td.col { width: 36%; white-space: nowrap; }
+  .req {
+    display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 8px;
+    background: var(--tint); color: var(--req); font-size: 11px; font-weight: 700; vertical-align: 1px;
+  }
+  dl { margin: 8px 0; }
+  dt { margin-top: 12px; font-weight: 700; }
+  dd { margin: 2px 0 0; }
+  .note {
+    margin: 14px 0; padding: 12px 16px; border-radius: 14px;
+    background: var(--warn-bg); color: var(--warn); font-weight: 600;
+  }
+  footer { margin-top: 36px; color: var(--soft); font-size: 13px; text-align: center; }
+  @media (max-width: 860px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 24px 18px 28px; }
+    td.ex { display: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    main { box-shadow: none; border: 0; }
+  }
+  .tr { display: block; font-weight: 400; color: var(--soft); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <radialGradient id="orb" cx="40%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#3c92f2"/>
+          <stop offset="0.55" stop-color="#173f96"/>
+          <stop offset="1" stop-color="#050b2a"/>
+        </radialGradient>
+        <linearGradient id="check" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff6fb5"/>
+          <stop offset="0.35" stop-color="#ffd166"/>
+          <stop offset="0.65" stop-color="#5ce1a5"/>
+          <stop offset="1" stop-color="#6fc8ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30" fill="url(#orb)"/>
+      <ellipse cx="27" cy="16" rx="18" ry="9" fill="#fff" opacity="0.45"/>
+      <path d="M18 33l9 9 19-21" fill="none" stroke="url(#check)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>आयात मार्गदर्शिका</h1>
+      <p class="lead">कार्य, इवेंट, दायित्व, नोट्स, आदतें और संपर्क एक साथ जोड़ें।</p>
+    </div>
+  </header>
+
+  <nav aria-label="सामग्री">
+    <a href="#in-short">संक्षेप में</a>
+    <a href="#folder">इस फ़ोल्डर में</a>
+    <a href="#spreadsheet">Excel के साथ</a>
+    <a href="#columns">स्तंभ</a>
+    <a href="#values">स्वीकृत मान</a>
+    <a href="#text">टेक्स्ट फ़ाइल के साथ</a>
+    <a href="#calendars">कैलेंडर और संपर्क</a>
+    <a href="#preview">पूर्वावलोकन और डुप्लिकेट</a>
+    <a href="#good-to-know">जानने योग्य बातें</a>
+  </nav>
+
+  <h2 id="in-short"><span class="n">1</span>संक्षेप में</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="n">1</span>
+      <b>तैयार करें</b>
+      <code>Aqueli template.xlsx</code> को इस फ़ोल्डर से बाहर कॉपी करें, फिर उसे भरें: हर आइटम के लिए एक पंक्ति।
+    </div>
+    <div class="step">
+      <span class="n">2</span>
+      <b>आयात करें</b>
+      फ़ाइल को <code>Documents\Aqueli\Import</code> में रखें, या उसे Aqueli की विंडो पर खींचें।
+    </div>
+    <div class="step">
+      <span class="n">3</span>
+      <b>जाँचें</b>
+      पूर्वावलोकन पढ़ें, फिर “आयात करें” पर क्लिक करें। <kbd>Ctrl+Z</kbd> पूरा आयात हटा देता है।
+    </div>
+  </div>
+  <p>Import फ़ोल्डर में रखी गई फ़ाइल को Aqueli कुछ ही सेकंड में पहचान लेता है। आप सेटिंग्स › आयात › “फ़ाइल आयात करें” में भी फ़ाइल चुन सकते हैं, या <kbd>Ctrl+K</kbd> में “फ़ाइल आयात करें” कमांड से।</p>
+
+  <h2 id="folder"><span class="n">2</span>इस फ़ोल्डर में</h2>
+  <table class="files">
+    <thead><tr><th>फ़ाइल</th><th>सामग्री</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Aqueli template.xlsx</td><td>खाली वर्कबुक: हर प्रकार के लिए एक शीट, जिसमें स्तंभों के नाम पहले से दिए गए हैं।</td></tr>
+      <tr><td class="col">Aqueli example.xlsx</td><td>वही वर्कबुक, उदाहरणों से भरी हुई। यह जैसी है वैसी ही आयात हो जाती है।</td></tr>
+      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>हर प्रकार के स्तंभ, Excel के अलावा किसी अन्य स्प्रेडशीट के लिए।</td></tr>
+      <tr><td class="col">Example.txt</td><td>टेक्स्ट फ़ाइल के उदाहरण, हर आइटम के लिए एक पंक्ति।</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Aqueli खुलने पर हर बार यह फ़ोल्डर फिर से बनाया जाता है। भरने से पहले टेम्पलेट को कहीं और (डेस्कटॉप, Documents…) कॉपी करें।</p>
+
+  <h2 id="spreadsheet"><span class="n">3</span>Excel या किसी अन्य स्प्रेडशीट के साथ</h2>
+  <ul>
+    <li>हर प्रकार के लिए एक शीट, जिसका नाम “Tasks”, “Events”, “Obligations”, “Notes”, “Habits”, “Contacts”, “Expenses” या “Lists” हो।</li>
+    <li>पहली पंक्ति: स्तंभों के नाम। उसके बाद, हर आइटम के लिए एक पंक्ति।</li>
+    <li>केवल शीर्षक आवश्यक है (आदत का नाम; संपर्क का पहला नाम, उपनाम या कंपनी), साथ ही इवेंट की तारीख, दायित्व की नियत तिथि, लेन-देन की तारीख और राशि, और सूची के आइटम की सूची। जिन सेलों का उपयोग न हो, उन्हें खाली छोड़ दें।</li>
+    <li>स्तंभ किसी भी क्रम में हो सकते हैं। अज्ञात स्तंभों को अनदेखा किया जाता है। बड़े अक्षरों और उच्चारण-चिह्नों से कोई अंतर नहीं पड़ता।</li>
+    <li>CSV फ़ाइल: हर फ़ाइल में एक प्रकार, जिसे उसके नाम (<code>tasks.csv</code>) या उसके स्तंभों से पहचाना जाता है। “Type” स्तंभ (Task, Event, Obligation, Note, Habit, Contact, Expense, Income, List) से आप प्रकारों को मिला सकते हैं। विभाजक <code>;</code> या <code>,</code>।</li>
+    <li>स्तंभों के नाम और मान अंग्रेज़ी में (या फ़्रेंच में) लिखे जाते हैं, जैसे दिए गए टेम्पलेट में हैं। इस मार्गदर्शिका में उनका अर्थ कोष्ठक में दिया गया है।</li>
+  </ul>
+
+  <h2 id="columns"><span class="n">4</span>स्तंभ</h2>
+
+  <h3>कार्य</h3>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">आवश्यक</span> <span class="tr">(शीर्षक)</span></td><td>क्या करना है।</td><td class="ex">गैराज को फ़ोन करना</td></tr>
+      <tr><td class="col">Due date <span class="tr">(नियत तिथि)</span></td><td>तारीख, समय के साथ या उसके बिना। तारीख न होने पर कार्य इनबॉक्स में जाता है।</td><td class="ex">03/10/2026</td></tr>
+      <tr><td class="col">Time <span class="tr">(समय)</span></td><td>नियत तिथि का समय।</td><td class="ex">14:00</td></tr>
+      <tr><td class="col">Start on <span class="tr">(शुरू होने की तिथि)</span></td><td>आरंभ की तारीख, जो नियत तिथि के बाद की न हो। तब तक कार्य केवल “आगामी” में दिखता है।</td><td class="ex">01/10/2026</td></tr>
+      <tr><td class="col">Priority <span class="tr">(प्राथमिकता)</span></td><td>high (उच्च), medium (मध्यम), low (निम्न) या none (कोई नहीं)।</td><td class="ex">high</td></tr>
+      <tr><td class="col">Tags <span class="tr">(टैग)</span></td><td>अल्पविराम से अलग किए गए।</td><td class="ex">कार, गैराज</td></tr>
+      <tr><td class="col">Space <span class="tr">(स्पेस)</span></td><td>Aqueli के किसी स्पेस का नाम।</td><td class="ex">व्यक्तिगत</td></tr>
+      <tr><td class="col">Duration <span class="tr">(अवधि)</span></td><td>अनुमानित अवधि, अधिकतम 24 h।</td><td class="ex">1 h 30</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(अनुस्मारक)</span></td><td>नियत तिथि से कितना पहले।</td><td class="ex">15 min</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(दोहराव)</span></td><td>“स्वीकृत मान” देखें।</td><td class="ex">every Monday</td></tr>
+      <tr><td class="col">Subtasks <span class="tr">(उप-कार्य)</span></td><td>अर्धविराम से अलग किए गए, अधिकतम 100।</td><td class="ex">रसोई; बैठक</td></tr>
+      <tr><td class="col">Notes <span class="tr">(टिप्पणियाँ)</span></td><td>मुक्त पाठ।</td><td class="ex">कोटेशन माँगें।</td></tr>
+    </tbody>
+  </table>
+
+  <h3>इवेंट</h3>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">आवश्यक</span> <span class="tr">(शीर्षक)</span></td><td>इवेंट का नाम।</td><td class="ex">दंत चिकित्सक</td></tr>
+      <tr><td class="col">Date<span class="req">आवश्यक</span> <span class="tr">(तारीख)</span></td><td>इवेंट का दिन, जिसमें समय भी शामिल हो सकता है।</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
+      <tr><td class="col">Start <span class="tr">(प्रारंभ)</span></td><td>आरंभ का समय। खाली: पूरा दिन।</td><td class="ex">09:30</td></tr>
+      <tr><td class="col">End <span class="tr">(समाप्ति)</span></td><td>समाप्ति का समय। खाली: आरंभ के एक घंटे बाद।</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">End date <span class="tr">(समाप्ति तारीख)</span></td><td>कई दिनों तक चलने वाले इवेंट का अंतिम दिन।</td><td class="ex">18/10/2026</td></tr>
+      <tr><td class="col">Location <span class="tr">(स्थान)</span></td><td>पता या जगह।</td><td class="ex">मार्टिन क्लिनिक</td></tr>
+      <tr><td class="col">Space <span class="tr">(स्पेस)</span></td><td>Aqueli के किसी स्पेस का नाम।</td><td class="ex">स्वास्थ्य</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(अनुस्मारक)</span></td><td>आरंभ से कितना पहले।</td><td class="ex">1 h</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(दोहराव)</span></td><td>“स्वीकृत मान” देखें।</td><td class="ex">every year</td></tr>
+      <tr><td class="col">Notes <span class="tr">(टिप्पणियाँ)</span></td><td>मुक्त पाठ।</td><td class="ex">अपना स्वास्थ्य कार्ड साथ लाएँ।</td></tr>
+    </tbody>
+  </table>
+
+  <h3>दायित्व</h3>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">आवश्यक</span> <span class="tr">(शीर्षक)</span></td><td>दायित्व का नाम।</td><td class="ex">गृह बीमा</td></tr>
+      <tr><td class="col">Category <span class="tr">(श्रेणी)</span></td><td>Taxes and returns (कर और रिटर्न), Bills (बिल), Subscriptions (सदस्यताएँ), Insurance (बीमा), Contracts (अनुबंध), Warranties (वारंटी), Identity papers (पहचान पत्र), Health (स्वास्थ्य), Vehicle (वाहन), Housing (आवास), या Aqueli में दिया गया नाम। खाली: Bills।</td><td class="ex">Insurance</td></tr>
+      <tr><td class="col">Due date<span class="req">आवश्यक</span> <span class="tr">(नियत तिथि)</span></td><td>पूरा करने की अगली तारीख।</td><td class="ex">15/11/2026</td></tr>
+      <tr><td class="col">Amount <span class="tr">(राशि)</span></td><td>यूरो में।</td><td class="ex">€45.90</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(आवृत्ति)</span></td><td>one-off (एक बार), monthly (मासिक), every two months (हर दो महीने), quarterly (तिमाही), half-yearly (छमाही) या yearly (वार्षिक)। खाली: one-off।</td><td class="ex">yearly</td></tr>
+      <tr><td class="col">Cancel by <span class="tr">(रद्द करने की अंतिम तिथि)</span></td><td>रद्द करने की समय-सीमा, जो नियत तिथि के बाद की न हो।</td><td class="ex">15/10/2026</td></tr>
+      <tr><td class="col">Organisation <span class="tr">(संस्था)</span></td><td>बीमाकर्ता, आपूर्तिकर्ता, सरकारी संस्था…</td><td class="ex">बीमाकर्ता</td></tr>
+      <tr><td class="col">Reference <span class="tr">(संदर्भ)</span></td><td>अनुबंध संख्या, ग्राहक संख्या…</td><td class="ex">HOM-4521</td></tr>
+      <tr><td class="col">Direct debit <span class="tr">(स्वचालित डेबिट)</span></td><td>स्वचालित डेबिट के लिए <code>yes</code>: हर नियत तिथि पर दायित्व का भुगतान अपने-आप हो जाता है। खाली: no।</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Space <span class="tr">(स्पेस)</span></td><td>Aqueli के किसी स्पेस का नाम।</td><td class="ex">व्यक्तिगत</td></tr>
+      <tr><td class="col">Notes <span class="tr">(टिप्पणियाँ)</span></td><td>मुक्त पाठ।</td><td class="ex">अक्टूबर में फ़ॉलो-अप करें।</td></tr>
+    </tbody>
+  </table>
+
+  <h3>नोट्स</h3>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">आवश्यक</span> <span class="tr">(शीर्षक)</span></td><td>नोट का शीर्षक।</td><td class="ex">उपहार के विचार</td></tr>
+      <tr><td class="col">Text <span class="tr">(पाठ)</span></td><td>नोट की सामग्री। सरल फ़ॉर्मेटिंग पहचानी जाती है: <code>#</code> शीर्षक, <code>-</code> सूची, <code>- [ ]</code> चेकबॉक्स, <code>**bold**</code>, <code>*italic*</code>।</td><td class="ex">किताब, स्कार्फ़…</td></tr>
+      <tr><td class="col">Notebook <span class="tr">(नोटबुक)</span></td><td>किसी मौजूदा नोटबुक का नाम।</td><td class="ex">घर</td></tr>
+      <tr><td class="col">Tags <span class="tr">(टैग)</span></td><td>अल्पविराम से अलग किए गए।</td><td class="ex">उपहार</td></tr>
+      <tr><td class="col">Space <span class="tr">(स्पेस)</span></td><td>Aqueli के किसी स्पेस का नाम।</td><td class="ex">परिवार</td></tr>
+      <tr><td class="col">Pinned <span class="tr">(पिन किया गया)</span></td><td>yes (हाँ) या no (नहीं)।</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>आदतें</h3>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Name<span class="req">आवश्यक</span> <span class="tr">(नाम)</span></td><td>आदत का नाम, अधिकतम 60 वर्ण।</td><td class="ex">पानी पीना</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(आवृत्ति)</span></td><td>“स्वीकृत मान” देखें। खाली: every day (हर दिन)।</td><td class="ex">Mon, Wed, Fri</td></tr>
+      <tr><td class="col">Target <span class="tr">(लक्ष्य)</span></td><td>हर दिन पहुँचने वाली मात्रा, 1 से 1000 तक। खाली: आदत पर बस टिक लगाया जाता है।</td><td class="ex">8</td></tr>
+      <tr><td class="col">Unit <span class="tr">(इकाई)</span></td><td>क्या गिना जा रहा है।</td><td class="ex">गिलास</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(अनुस्मारक)</span></td><td>अनुस्मारक का समय, नियोजित दिनों पर।</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">To break <span class="tr">(छोड़नी है)</span></td><td>छोड़ी जाने वाली आदत के लिए yes: टिक किया गया हर दिन, आदत से दूर रहा एक दिन है।</td><td class="ex">no</td></tr>
+      <tr><td class="col">Time of day <span class="tr">(दिन का समय)</span></td><td>morning (सुबह), midday (दोपहर) या evening (शाम): दिन की सूची दिन के समय के अनुसार व्यवस्थित होती है। खाली: दिन के दौरान।</td><td class="ex">morning</td></tr>
+      <tr><td class="col">Space <span class="tr">(स्पेस)</span></td><td>Aqueli के किसी स्पेस का नाम।</td><td class="ex">व्यक्तिगत</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Aqueli के किसी टेम्पलेट (पढ़ना, ध्यान करना, खेल…) के नाम वाली आदत उसका चिह्न और रंग लेती है; बाकी आदतों को आदतें मॉड्यूल का चिह्न और रंग मिलता है। दोनों को बाद में Aqueli में बदला जा सकता है।</p>
+
+  <h3>संपर्क</h3>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">First name <span class="tr">(पहला नाम)</span></td><td>संपर्क का पहला नाम।</td><td class="ex">Lea</td></tr>
+      <tr><td class="col">Last name <span class="tr">(उपनाम)</span></td><td>परिवार का नाम।</td><td class="ex">Bernard</td></tr>
+      <tr><td class="col">Company <span class="tr">(कंपनी)</span></td><td>कंपनी या संस्था; किसी कारीगर या दुकान के लिए यह अकेले ही पर्याप्त है।</td><td class="ex">Dupont गैराज</td></tr>
+      <tr><td class="col">Phone <span class="tr">(फ़ोन)</span></td><td>एक या अधिक नंबर, अर्धविराम से अलग किए गए।</td><td class="ex">07700 900123</td></tr>
+      <tr><td class="col">Email <span class="tr">(ईमेल)</span></td><td>एक या अधिक पते, अर्धविराम से अलग किए गए।</td><td class="ex">lea.bernard@example.com</td></tr>
+      <tr><td class="col">Address <span class="tr">(पता)</span></td><td>डाक पता।</td><td class="ex">12 Lilac Road, London</td></tr>
+      <tr><td class="col">Birthday <span class="tr">(जन्मदिन)</span></td><td>जन्म की तारीख, या केवल दिन और महीना। कैलेंडर में दिखाया जाता है।</td><td class="ex">14/05/2016</td></tr>
+      <tr><td class="col">Tags <span class="tr">(टैग)</span></td><td>अल्पविराम से अलग किए गए।</td><td class="ex">परिवार</td></tr>
+      <tr><td class="col">Keep in touch <span class="tr">(संपर्क में रहें)</span></td><td>कितनी बार हालचाल लेना है: <code>every week</code> (हर सप्ताह), <code>every 2 weeks</code> (हर 2 सप्ताह), <code>every month</code> (हर महीने), <code>every 3 months</code> (हर 3 महीने), <code>every 6 months</code> (हर 6 महीने) या <code>every year</code> (हर साल)। समय आने पर संपर्क “फिर से संपर्क करना है” में दिखता है। खाली: कोई फ़ॉलो-अप नहीं।</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Space <span class="tr">(स्पेस)</span></td><td>Aqueli के किसी स्पेस का नाम।</td><td class="ex">परिवार</td></tr>
+      <tr><td class="col">Notes <span class="tr">(टिप्पणियाँ)</span></td><td>मुक्त पाठ।</td><td class="ex">टेक्स्ट संदेश पसंद करती हैं।</td></tr>
+    </tbody>
+  </table>
+
+  <h3>खर्च</h3>
+  <p>बजट मॉड्यूल के लेन-देन: खर्च और आय। आपके बैंक की वेबसाइट से डाउनलोड किया गया बैंक स्टेटमेंट (Excel या CSV फ़ॉर्मेट में) जैसा है वैसा ही आयात हो जाता है।</p>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Date<span class="req">आवश्यक</span> <span class="tr">(तारीख)</span></td><td>लेन-देन का दिन।</td><td class="ex">26/09/2026</td></tr>
+      <tr><td class="col">Description <span class="tr">(विवरण)</span></td><td>लेन-देन किस बारे में है। खाली: श्रेणी का नाम।</td><td class="ex">शनिवार का बाज़ार</td></tr>
+      <tr><td class="col">Amount<span class="req">आवश्यक</span> <span class="tr">(राशि)</span></td><td>यूरो में। ऋणात्मक राशि एक खर्च है; जिस तालिका में ऋणात्मक राशियाँ हों, जैसे स्टेटमेंट, उसमें धनात्मक राशि आय है। अन्यथा, राशि एक खर्च है।</td><td class="ex">42.50</td></tr>
+      <tr><td class="col">Category <span class="tr">(श्रेणी)</span></td><td>बजट की किसी श्रेणी का नाम (किराना, आवास, परिवहन, वेतन…)। अज्ञात: बिना श्रेणी का लेन-देन, जिसे पूर्वावलोकन में चिह्नित किया जाता है।</td><td class="ex">किराना</td></tr>
+      <tr><td class="col">Direction <span class="tr">(दिशा)</span></td><td><code>expense</code> (खर्च) या <code>income</code> (आय)। यह राशि के चिह्न पर प्राथमिकता रखता है।</td><td class="ex">income</td></tr>
+      <tr><td class="col">Debit <span class="tr">(डेबिट)</span></td><td>Amount के स्थान पर, स्टेटमेंट की तरह: खर्च की राशि।</td><td class="ex">21.00</td></tr>
+      <tr><td class="col">Credit <span class="tr">(क्रेडिट)</span></td><td>Amount के स्थान पर, स्टेटमेंट की तरह: आय की राशि।</td><td class="ex">2,450.00</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(दोहराव)</span></td><td>बार-बार आने वाला लेन-देन (वेतन, किराया…): <code>every month</code> (हर महीने), <code>every 2 months</code> (हर 2 महीने), <code>quarterly</code> (तिमाही), <code>half-yearly</code> (छमाही) या <code>every year</code> (हर साल)। हर किस्त अपने दिन बजट में जोड़ी जाती है। खाली: केवल एक बार।</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Until <span class="tr">(तक)</span></td><td>दोहराव का अंतिम दिन। खाली: कोई अंत नहीं।</td><td class="ex">31/12/2027</td></tr>
+      <tr><td class="col">Space <span class="tr">(स्पेस)</span></td><td>Aqueli के किसी स्पेस का नाम।</td><td class="ex">व्यक्तिगत</td></tr>
+      <tr><td class="col">Notes <span class="tr">(टिप्पणियाँ)</span></td><td>मुक्त पाठ।</td><td class="ex">दो टिकट।</td></tr>
+    </tbody>
+  </table>
+
+  <h3>सूचियाँ</h3>
+  <p>सूचियाँ मॉड्यूल की सूचियों के आइटम: खरीदारी, किताबें, फ़िल्में, उपहार के विचार…</p>
+  <table>
+    <thead><tr><th>स्तंभ</th><th>सामग्री</th><th>उदाहरण</th></tr></thead>
+    <tbody>
+      <tr><td class="col">List<span class="req">आवश्यक</span> <span class="tr">(सूची)</span></td><td>सूची का नाम। मौजूदा सूची को आइटम मिलता है; अन्यथा सूची बनाई जाती है, उस टेम्पलेट के साथ जो उसके नाम से मेल खाता है (Shopping (खरीदारी), Books (किताबें), Films (फ़िल्में), Gifts (उपहार), Travel (यात्रा), Wishes (इच्छाएँ))।</td><td class="ex">Shopping</td></tr>
+      <tr><td class="col">Item<span class="req">आवश्यक</span> <span class="tr">(आइटम)</span></td><td>आइटम का नाम।</td><td class="ex">सेब</td></tr>
+      <tr><td class="col">Aisle <span class="tr">(विभाग)</span></td><td>सूची का विभाग या खंड। यदि मौजूदा सूची में यह विभाग नहीं है, तो आइटम बिना विभाग के जोड़ा जाता है।</td><td class="ex">फल और सब्ज़ियाँ</td></tr>
+      <tr><td class="col">Done <span class="tr">(पूरा हुआ)</span></td><td>पहले से टिक किए गए आइटम के लिए yes।</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+  <p class="note">अन्य स्तंभ (“Author” (लेखक), “Rating” (रेटिंग), “Price” (कीमत), “Link” (लिंक)…) सूची के उसी नाम वाले स्तंभ भरते हैं। आयात से बनी सूची में वे उसके स्तंभ बन जाते हैं: “Rating” के लिए 0 से 5 तक की रेटिंग, “Price” के लिए कीमत, “Date” के लिए तारीख, “Link” के लिए लिंक, अन्यथा पाठ। अधिकतम 12 स्तंभ।</p>
+
+  <h2 id="values"><span class="n">5</span>स्वीकृत मान</h2>
+  <dl>
+    <dt>तारीखें</dt>
+    <dd>पहले दिन, फिर महीना: <code>03/10/2026</code>, <code>3/10/26</code>, <code>2026-10-03</code>, <code>3 October 2026</code>। वर्ष के बिना (<code>03/10</code>): आने वाली ऐसी अगली तारीख। इनके अलावा: <code>today</code> (आज), <code>tomorrow</code> (कल), <code>Monday</code> (सोमवार), <code>in 3 days</code> (3 दिन में)। Excel में तारीख के रूप में दर्ज की गई तारीखें पहचानी जाती हैं।</dd>
+    <dt>समय</dt>
+    <dd><code>14:00</code>, <code>2pm</code>, <code>2:30pm</code>, <code>noon</code> (दोपहर 12 बजे)। समय-खंड: <code>09:30-10:00</code>।</dd>
+    <dt>अवधियाँ और अनुस्मारक</dt>
+    <dd><code>15 min</code>, <code>1 h</code>, <code>1 h 30</code>, <code>2 days</code> (2 दिन)। अनुस्मारक के लिए <code>on time</code> (ठीक समय पर) या <code>none</code> (कोई नहीं) भी। जब कोई अनुस्मारक न दिया गया हो, तो डिफ़ॉल्ट अनुस्मारक (सेटिंग्स › अनुस्मारक) तय समय वाले आइटम पर लागू होता है।</dd>
+    <dt>दोहराव</dt>
+    <dd><code>every day</code> (हर दिन), <code>every 2 days</code> (हर 2 दिन), <code>weekdays</code> (कार्यदिवस), <code>every Monday</code> (हर सोमवार), <code>every Monday and Thursday</code> (हर सोमवार और गुरुवार), <code>every week</code> (हर सप्ताह), <code>every 2 weeks</code> (हर 2 सप्ताह), <code>every month</code> (हर महीने), <code>every 3 months</code> (हर 3 महीने), <code>the first Monday of the month</code> (महीने का पहला सोमवार), <code>every year</code> (हर साल)। कार्य के लिए <code>3 days after completion</code> (पूरा होने के 3 दिन बाद) भी।</dd>
+    <dt>आदतों की आवृत्तियाँ</dt>
+    <dd><code>every day</code> (हर दिन), <code>3 times a week</code> (सप्ताह में 3 बार), <code>Mon, Wed, Fri</code> (सोम, बुध, शुक्र), <code>Tuesday and Thursday</code> (मंगलवार और गुरुवार), <code>weekdays</code> (कार्यदिवस), <code>weekends</code> (सप्ताहांत)।</dd>
+    <dt>जन्मदिन</dt>
+    <dd><code>14/05/1990</code>, <code>1990-05-14</code>, <code>14 May 1990</code>; वर्ष के बिना: <code>14/05</code>, <code>14 May</code>।</dd>
+    <dt>राशियाँ</dt>
+    <dd><code>312</code>, <code>45.90</code>, <code>€1,234.50</code>। लेन-देन के लिए <code>-42.50</code> भी।</dd>
+    <dt>टैग</dt>
+    <dd>अक्षर, अंक, <code>-</code>, <code>_</code> और <code>/</code>; अधिकतम 40 वर्ण और 20 टैग।</dd>
+    <dt>स्पेस और नोटबुक</dt>
+    <dd>Aqueli में उनका नाम। अज्ञात नाम पूर्वावलोकन में चिह्नित किया जाता है; तब आइटम दिखाए गए स्पेस में, या पहले स्पेस में जाता है।</dd>
+    <dt>हाँ या नहीं</dt>
+    <dd><code>yes</code> (हाँ), <code>no</code> (नहीं), हाँ के लिए <code>x</code>।</dd>
+  </dl>
+
+  <h2 id="text"><span class="n">6</span>टेक्स्ट फ़ाइल के साथ</h2>
+  <p><code>.txt</code> या <code>.md</code> फ़ाइल में हर पंक्ति में एक आइटम होता है: उसका प्रकार, फिर <code>|</code> से अलग किए गए उसके फ़ील्ड। पहला फ़ील्ड शीर्षक होता है।</p>
+  <pre>TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
+EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery
+OBLIGATION | Home insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
+NOTE | Gift ideas | Cookbook, scarf
+HABIT | Read | Mon, Wed, Fri | 20 pages | reminder: 21:30
+CONTACT | Lea Bernard | 07700 900123 | lea.bernard@example.com | birthday: 14/05/2016
+EXPENSE | €42.50 | Groceries | 27/09/2026
+INCOME | September salary | €2,450 | Salary | 01/10/2026
+LIST | Milk | Shopping | Fresh</pre>
+  <ul>
+    <li>प्रकार: <code>TASK</code> (कार्य), <code>EVENT</code> (इवेंट) (या <code>APPOINTMENT</code>), <code>OBLIGATION</code> (दायित्व) (या <code>BILL</code>), <code>NOTE</code> (नोट), <code>HABIT</code> (आदत), <code>CONTACT</code> (संपर्क), <code>EXPENSE</code> (खर्च), <code>INCOME</code> (आय), <code>LIST</code> (सूची)।</li>
+    <li>खर्च या आय के लिए, शीर्षक राशि हो सकता है; तारीख, राशि और श्रेणी अपने-आप पहचानी जाती हैं। सूची के आइटम के लिए, शीर्षक के बाद वाला फ़ील्ड सूची है, फिर विभाग।</li>
+    <li>तारीखें, समय, <code>#tags</code>, प्राथमिकताएँ (<code>!high</code>, <code>!medium</code>, <code>!low</code>), राशियाँ, आवृत्तियाँ, श्रेणियाँ और दोहराव अपने-आप पहचाने जाते हैं; आदत के लिए आवृत्ति, लक्ष्य (<code>20 pages</code>) और अनुस्मारक का समय; संपर्क के लिए फ़ोन नंबर, ईमेल पते और जन्म की तारीख।</li>
+    <li>अन्य फ़ील्ड स्तंभों के नामों के साथ <code>name: value</code> के रूप में लिखे जाते हैं: <code>location: Martin surgery</code>, <code>space: Work</code>, <code>reminder: 1 h</code>, <code>subtasks: Kitchen; Living room</code>। जो फ़ील्ड पहचाना नहीं जाता, वह आइटम की टिप्पणियों में जाता है।</li>
+    <li>बिना प्रकार वाली पंक्ति एक कार्य है, जिसे त्वरित जोड़ की तरह लिखा जाता है: <code>Call the garage tomorrow 2pm #car !high</code>। पंक्ति की शुरुआत में बुलेट (<code>-</code>, <code>*</code>, <code>1.</code>) और चेकबॉक्स (<code>- [ ]</code>) स्वीकार किए जाते हैं।</li>
+    <li>खाली पंक्तियाँ, शीर्षक (<code># Heading</code>) और <code>//</code> से शुरू होने वाली पंक्तियाँ अनदेखी की जाती हैं।</li>
+    <li>बिना प्रकार वाली <code>.md</code> फ़ाइल एक ही नोट बन जाती है: पहला शीर्षक (<code># Heading</code>) उसका शीर्षक होता है, अन्यथा फ़ाइल का नाम। फ़ॉर्मेटिंग बनी रहती है: शीर्षक, सूचियाँ, चेकबॉक्स, उद्धरण, कोड ब्लॉक, <code>**bold**</code>, <code>*italic*</code>, <code>~~strikethrough~~</code>, <code>==highlight==</code> और <code>`code`</code>। Aqueli से Markdown के रूप में निर्यात किया गया नोट इस तरह फिर से आयात किया जा सकता है। पूर्वावलोकन में, बिना प्रकार वाली फ़ाइल को कार्यों की सूची, इवेंट की सूची, या एक ही नोट के रूप में भी पढ़ा जा सकता है।</li>
+  </ul>
+
+  <h2 id="calendars"><span class="n">7</span>कैलेंडर और संपर्क</h2>
+  <ul>
+    <li>कैलेंडर फ़ाइल <code>.ics</code> (Outlook, Google Calendar या Apple Calendar से निर्यात की गई) इवेंट बन जाती है: शीर्षक, तारीखें और समय, स्थान, विवरण, दोहराव और अनुस्मारक।</li>
+    <li>संपर्क फ़ाइल <code>.vcf</code> (फ़ोन, Gmail या Outlook से निर्यात की गई) संपर्क बन जाती है: नाम, कंपनी, नंबर, ईमेल पते, पता, जन्मदिन, टिप्पणियाँ और टैग।</li>
+    <li>सार्वभौमिक समय में लिखे गए समय इस PC के समय में बदल दिए जाते हैं। बहुत असामान्य दोहराव नहीं लाया जाता: पूर्वावलोकन उसे चिह्नित करता है, और फिर आप उसे कैलेंडर में सेट कर सकते हैं।</li>
+    <li>रद्द किए गए इवेंट और संपर्कों की फ़ोटो आयात नहीं की जातीं।</li>
+  </ul>
+
+  <h2 id="preview"><span class="n">8</span>पूर्वावलोकन, त्रुटियाँ और डुप्लिकेट</h2>
+  <ul>
+    <li>आयात से पहले हर पंक्ति पूर्वावलोकन में दिखती है। “आयात करें” पर क्लिक करने से पहले कुछ भी नहीं जोड़ा जाता।</li>
+    <li>त्रुटि वाली पंक्ति लाल रंग में, स्पष्टीकरण के साथ दिखाई जाती है। वह आयात नहीं होती: फ़ाइल ठीक करें, फिर उसे दोबारा आयात करें।</li>
+    <li>डुप्लिकेट का प्रकार, शीर्षक और तारीख (आदत या संपर्क के लिए वही नाम) Aqueli के किसी आइटम या किसी पिछली पंक्ति जैसे ही होते हैं; लेन-देन के लिए राशि भी वही होती है; सूची के आइटम के लिए सूची भी। उस पर टिक नहीं लगा होता; टिक लगाने पर वह फिर भी आयात हो जाता है।</li>
+    <li>किसी पंक्ति से टिक हटाने पर वह आयात से बाहर रहती है। “सामग्री” मेनू किसी शीट या फ़ाइल का प्रकार बदलता है।</li>
+    <li>आयात के बाद, “पूर्ववत करें” या <kbd>Ctrl+Z</kbd> सभी आयातित आइटम एक साथ हटा देता है।</li>
+  </ul>
+
+  <h3>मौजूदा आइटम अपडेट करना</h3>
+  <ul>
+    <li>Aqueli द्वारा निर्यात की गई तालिकाओं (कार्य, संपर्क, बजट के लेन-देन) का अंतिम स्तंभ <code>ID</code> होता है; निर्यात की गई <code>.ics</code> और <code>.vcf</code> फ़ाइलों में भी यह होता है। इसे न बदलें।</li>
+    <li>दोबारा आयात करने पर, फ़ाइल नए आइटम बनाने के बजाय उन आइटम को अपडेट करती है जिनमें यह ID है: पंक्ति पर “किसी मौजूदा आइटम का अद्यतन।” लिखा होता है। आयात से पहले, एक विंडो उन आइटम की सूची दिखाती है जिन्हें बदला जाएगा और आपसे पुष्टि माँगती है।</li>
+    <li>फ़ाइल जिसका वर्णन नहीं करती, वह बना रहता है: कार्य का रंग, प्रोजेक्ट और टिक किए गए उप-कार्य; संपर्क की फ़ोटो, श्रेणी और कार्ड; इवेंट की शृंखला से हटाई गई घटनाएँ।</li>
+    <li>बिना ID वाली पंक्ति, या जिसकी ID इस खाते में मौजूद नहीं है (किसी दूसरे PC की फ़ाइल), नया आइटम बनाती है।</li>
+    <li>आयात के बाद “पूर्ववत करें” अपडेट किए गए आइटम के पिछले मान भी वापस ले आता है।</li>
+  </ul>
+
+  <h2 id="good-to-know"><span class="n">9</span>जानने योग्य बातें</h2>
+  <ul>
+    <li>Import फ़ोल्डर में रखी गई फ़ाइल आयात के बाद हटा दी जाती है, क्योंकि यह फ़ोल्डर एन्क्रिप्टेड नहीं है। इसके बजाय उसे <code>Import\Traités</code> में रखने के लिए: सेटिंग्स › आयात › “आयात के बाद”। विंडो पर खींची गई या कहीं और से चुनी गई फ़ाइल अपनी जगह पर ही रहती है।</li>
+    <li>प्रति फ़ाइल अधिकतम 10 MB और 5,000 आइटम।</li>
+    <li>Excel: सूत्रों की दोबारा गणना नहीं की जाती, अंतिम सहेजा गया मान पढ़ा जाता है; मैक्रो कभी नहीं चलाए जाते।</li>
+    <li><code>.xls</code> फ़ॉर्मेट की वर्कबुक और पासवर्ड से सुरक्षित वर्कबुक पढ़ी नहीं जा सकतीं: उन्हें बिना पासवर्ड के <code>.xlsx</code> फ़ॉर्मेट में सहेजें।</li>
+  </ul>
+
+  <footer>Aqueli · आयात मार्गदर्शिका</footer>
+</main>
+</body>
+</html>

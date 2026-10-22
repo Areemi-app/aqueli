@@ -1,0 +1,385 @@
+/*
+ * Import de fichiers : aperçu avant import, dépôt d'un fichier sur la fenêtre, Paramètres › Import.
+ * Couleurs : variables de thème ; chaque ligne est une bulle teintée de la couleur de son module
+ * (--row-color), rouge doux en erreur, ambre pour un doublon.
+ */
+
+.import-dialog {
+  width: min(1040px, 100%);
+}
+
+.import-summary {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.import-chip {
+  --row-color: var(--aq-row);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 35%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) 16%, var(--aq-tile));
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.import-chip > svg {
+  color: var(--row-color);
+}
+
+.import-chip--empty {
+  color: var(--aq-soft);
+}
+
+.import-chip--error {
+  border-color: color-mix(in srgb, var(--aq-danger) 35%, transparent);
+  background: var(--aq-danger-bg);
+  color: var(--aq-danger);
+}
+
+.import-chip--error > svg {
+  color: var(--aq-danger);
+}
+
+.import-chip--duplicate {
+  border-color: color-mix(in srgb, var(--aq-warn) 35%, transparent);
+  background: var(--aq-warn-bg);
+  color: var(--aq-warn);
+}
+
+.import-chip--duplicate > svg {
+  color: var(--aq-warn);
+}
+
+/* Liste des sources : seule partie qui défile. */
+.import-sources {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0 -8px;
+  padding: 2px 8px 4px;
+}
+
+.import-source {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.import-source-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+  padding-left: 10px;
+}
+
+.import-source-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.import-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aq-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.import-soon {
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: var(--aq-field);
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.import-note {
+  padding-left: 10px;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.import-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.import-row {
+  --row-color: var(--aq-row);
+  display: grid;
+  grid-template-columns: 22px 34px minmax(0, 1.5fr) minmax(0, 0.9fr) minmax(0, 1.2fr);
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 2px;
+  min-height: 40px;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  transition:
+    background var(--aq-fast) ease,
+    opacity var(--aq-fast) ease;
+}
+
+.import-row:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.import-row[data-unchecked] {
+  opacity: 0.66;
+}
+
+.import-row[data-state="error"] {
+  border-color: color-mix(in srgb, var(--aq-danger) 40%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-danger) 12%, var(--aq-tile));
+  opacity: 1;
+}
+
+.import-row[data-state="duplicate"] {
+  border-color: color-mix(in srgb, var(--aq-warn) 40%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-warn) 11%, var(--aq-tile));
+}
+
+.import-check {
+  gap: 0;
+}
+
+.import-check .checkbox-input:checked + .checkbox-bubble {
+  background: var(--aq-chip-gloss), var(--row-color, var(--aq-row));
+  box-shadow: 0 3px 8px -3px var(--row-color, var(--aq-glow));
+}
+
+.import-source-head .import-check .checkbox-input:checked + .checkbox-bubble {
+  background: var(--aq-fresh);
+  box-shadow: 0 3px 8px -3px var(--aq-fresh-glow);
+}
+
+.import-line {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.import-main {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.import-kind {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--row-color) 22%, transparent);
+  color: var(--aq-ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.import-title,
+.import-when,
+.import-details {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.import-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.import-when {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.import-details {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.import-message {
+  grid-column: 3 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--aq-warn);
+}
+
+.import-message[data-state="error"] {
+  color: var(--aq-danger);
+}
+
+.import-message > svg {
+  flex-shrink: 0;
+}
+
+.import-after {
+  flex-shrink: 0;
+  color: var(--aq-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.import-dialog > .onb-actions,
+.import-dialog > .form-error {
+  flex-shrink: 0;
+}
+
+/* ——— Fichier glissé sur la fenêtre ——— */
+
+.import-drop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--aq-accent) 14%, transparent);
+  pointer-events: none;
+  animation: aq-fade 0.15s ease;
+}
+
+.import-drop-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 34px 54px;
+  border-radius: 26px;
+  border: 2px dashed color-mix(in srgb, var(--aq-accent) 60%, transparent);
+  animation: aq-pop 0.2s var(--aq-ease);
+}
+
+.import-drop-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 32px;
+  background: var(--aq-chip-gloss), var(--aq-gel);
+  box-shadow: 0 8px 20px -8px var(--aq-glow);
+  color: var(--aq-on-accent);
+}
+
+.import-drop-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.import-drop-text {
+  color: var(--aq-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ——— Barre d'état et Paramètres ——— */
+
+.status-action {
+  height: 22px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--aq-accent) 40%, transparent);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--aq-accent) 14%, transparent);
+  color: var(--aq-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.status-action:hover {
+  background: color-mix(in srgb, var(--aq-accent) 24%, transparent);
+}
+
+.status-action:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.import-path {
+  word-break: break-all;
+}
+
+@media (max-width: 900px) {
+  .import-row {
+    grid-template-columns: 22px 30px minmax(0, 1fr) minmax(0, 0.8fr);
+  }
+
+  .import-details {
+    grid-column: 3 / -1;
+  }
+}
+
+
+/* ——— Mise à jour d'éléments existants (colonne « Identifiant ») ——— */
+
+.import-chip--update {
+  border-color: color-mix(in srgb, var(--aq-accent) 35%, transparent);
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+}
+
+.import-row[data-state="update"] {
+  border-color: color-mix(in srgb, var(--aq-accent) 40%, transparent);
+}
+
+.import-message[data-state="update"] {
+  color: var(--aq-accent);
+}
+
+.import-update-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.import-update-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--aq-ink);
+}
+
+.import-update-more {
+  color: var(--aq-soft);
+}

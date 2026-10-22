@@ -1,0 +1,1772 @@
+/*
+ * Écran Tâches (maquette docs/maquettes/Taches.dc.html) : listes intelligentes, saisie
+ * rapide, lignes de tâches et panneau de détail. Couleurs : variables de thème seulement.
+ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ——— Compteur de la barre latérale ——— */
+
+.nav-count {
+  min-width: 20px;
+  height: 18px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0 6px;
+  border-radius: 9px;
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .nav-count {
+    display: none;
+  }
+}
+
+/* ——— Écran ——— */
+
+.tasks-screen {
+  height: 100%;
+  min-height: 0;
+}
+
+.tasks-header {
+  min-height: 52px;
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.tasks-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.tasks-header .segmented {
+  margin-left: 12px;
+}
+
+.tasks-header-spacer {
+  flex: 1;
+}
+
+.tasks-filter {
+  position: relative;
+}
+
+.btn-glass[data-active] {
+  color: var(--aq-accent);
+  box-shadow:
+    var(--aq-control-shadow),
+    0 0 0 2px var(--aq-tint);
+}
+
+/* Pas encore commencée : « Dès lundi », en retrait. */
+.task-meta[data-later] {
+  color: var(--aq-soft);
+  font-style: italic;
+}
+
+.menu--right {
+  left: auto;
+  right: 0;
+}
+
+/* Menu « Affichage » (src/tasks/TaskDisplayMenu.tsx) : réglages de la liste affichée. */
+.display-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 320px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  animation: aq-pop 0.14s var(--aq-ease);
+}
+
+.display-menu .select-box,
+.display-menu .select {
+  width: 100%;
+}
+
+.display-label {
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.display-wide {
+  grid-column: 1 / -1;
+}
+
+.display-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2px;
+  border-top: 1px solid var(--aq-line);
+}
+
+.tasks-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 14px;
+}
+
+.tasks-soon {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* ——— Listes intelligentes ——— */
+
+.task-lists {
+  width: 204px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 10px;
+  overflow-y: auto;
+}
+
+.task-list-item {
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--aq-ink);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--aq-fast) ease;
+}
+
+.task-list-item:hover:not([aria-current="page"]) {
+  background: var(--aq-hover);
+}
+
+.task-list-item[aria-current="page"] {
+  background: var(--aq-active);
+  box-shadow: var(--aq-ring);
+  font-weight: 700;
+}
+
+.task-list-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.task-list-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--aq-soft);
+}
+
+.task-list-count[data-current] {
+  color: var(--aq-accent);
+}
+
+.count-badge {
+  min-width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.count-badge--danger {
+  background: var(--aq-close-hover);
+  color: var(--aq-on-close);
+}
+
+.task-lists-tags-label {
+  padding-top: 14px;
+}
+
+.task-tags-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 6px;
+}
+
+.pill--button {
+  border: 0;
+  padding: 3px 9px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: box-shadow var(--aq-fast) ease;
+}
+
+.pill--button:hover,
+.pill--button[aria-current="page"] {
+  box-shadow: 0 0 0 1.5px var(--aq-accent);
+}
+
+/* ——— Colonne des tâches ——— */
+
+.task-panel {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 8px;
+}
+
+.quick-add {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  /* Légère teinte du thème : la saisie ne fait plus blanc sur blanc. */
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-accent) 7%, var(--aq-field));
+  border: 1px solid color-mix(in srgb, var(--aq-accent) 22%, transparent);
+  box-shadow: var(--aq-field-inset);
+  transition: box-shadow var(--aq-fast) ease;
+}
+
+.quick-add:focus-within {
+  box-shadow:
+    var(--aq-field-inset),
+    0 0 0 3px var(--aq-tint);
+}
+
+/* « Nouvelle tâche » : le champ s'éclaire deux fois et une bulle montre où écrire. */
+.quick-add[data-called] {
+  border-color: var(--aq-accent);
+  box-shadow:
+    var(--aq-field-inset),
+    0 0 0 3px var(--aq-tint);
+  animation: quick-add-called 1.1s var(--aq-ease) 2;
+}
+
+@keyframes quick-add-called {
+  50% {
+    box-shadow:
+      var(--aq-field-inset),
+      0 0 0 4px color-mix(in srgb, var(--aq-accent) 50%, transparent),
+      0 0 24px color-mix(in srgb, var(--aq-accent) 45%, transparent);
+  }
+}
+
+.quick-add[data-called] .quick-add-plus {
+  animation: quick-add-plus 1.1s var(--aq-ease) 2;
+}
+
+@keyframes quick-add-plus {
+  50% {
+    transform: scale(1.3) rotate(90deg);
+  }
+}
+
+.quick-add-callout {
+  position: relative;
+  align-self: flex-start;
+  margin: 4px 0 0 18px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: var(--aq-accent);
+  color: var(--aq-on-accent);
+  font-size: 12.5px;
+  font-weight: 650;
+  box-shadow: var(--aq-chip-shadow);
+  animation: aq-fade var(--aq-normal) ease;
+}
+
+/* Pointe de la bulle, tournée vers le champ. */
+.quick-add-callout::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+.quick-add-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quick-add-plus {
+  flex-shrink: 0;
+  color: var(--aq-accent);
+}
+
+.quick-add-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: var(--aq-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.quick-add-input::placeholder {
+  color: var(--aq-soft);
+  font-weight: 500;
+}
+
+.quick-add-hint {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+.quick-add-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-left: 26px;
+  animation: aq-fade var(--aq-fast) ease;
+}
+
+.pill--priority[data-priority="3"] {
+  background: var(--aq-danger-bg);
+  color: var(--aq-danger);
+}
+
+.pill--priority[data-priority="2"] {
+  background: var(--aq-warn-bg);
+  color: var(--aq-warn);
+}
+
+.quick-add-error {
+  margin: 2px 0 0 26px;
+}
+
+.task-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -6px;
+  padding: 0 6px;
+}
+
+.tasks-empty {
+  padding: 32px 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+.task-section + .task-section {
+  margin-top: 4px;
+}
+
+.task-section-title {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  color: var(--aq-heading);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.task-section-title[data-tone="danger"] {
+  color: var(--aq-danger);
+}
+
+.task-section-sub {
+  margin-left: 4px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+.task-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/*
+ * Chaque tâche est une petite bulle de verre teintée : couleur du thème par défaut, ou
+ * couleur choisie dans le détail (--row-color, posée sur la ligne).
+ */
+.task-row {
+  --row-color: var(--aq-row);
+  height: 40px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  transition:
+    background var(--aq-fast) ease,
+    box-shadow var(--aq-fast) ease,
+    opacity var(--aq-fast) ease;
+}
+
+.task-row:hover:not([data-selected]) {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.task-row[data-selected] {
+  border-color: color-mix(in srgb, var(--row-color) 55%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--row-color) 30%, transparent), 0 4px 12px -6px var(--row-color);
+}
+
+.task-row[data-done] {
+  opacity: 0.72;
+}
+
+/* ——— Choix de la couleur d'une tâche (détail) ——— */
+
+/* 3 rangées de 7 : la pastille « thème », puis les couleurs dans l'ordre du spectre. */
+.color-choices {
+  display: grid;
+  grid-template-columns: repeat(7, 20px);
+  gap: 5px;
+}
+
+.color-choice {
+  --swatch: var(--aq-accent);
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--swatch) 60%, transparent);
+  background: var(--aq-chip-gloss), var(--swatch);
+  cursor: pointer;
+  transition: box-shadow var(--aq-fast) ease;
+}
+
+/* Couleur du thème : pastille à moitié teintée. */
+.color-choice--theme {
+  background: linear-gradient(135deg, var(--aq-tile) 50%, var(--aq-accent) 50%);
+}
+
+.color-choice:hover {
+  box-shadow: 0 0 0 3px var(--aq-tint);
+}
+
+.color-choice[aria-checked="true"] {
+  box-shadow:
+    0 0 0 2px var(--aq-card-solid),
+    0 0 0 4px var(--swatch);
+}
+
+/* Case ronde : cercle fin, puis bulle dégradée qui éclate à l'achèvement. */
+.task-check {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 10px;
+  border: 1.5px solid var(--aq-soft);
+  background: transparent;
+  color: var(--aq-on-accent);
+  cursor: pointer;
+  transition:
+    box-shadow var(--aq-fast) ease,
+    background var(--aq-fast) ease;
+}
+
+.task-check:hover {
+  box-shadow: 0 0 0 3px var(--aq-tint);
+}
+
+.task-row[data-done] .task-check,
+.task-detail[data-done] .task-check,
+.task-check:has(svg) {
+  border: 0;
+  background: var(--aq-fresh);
+  box-shadow: 0 3px 8px -3px var(--aq-fresh-glow);
+}
+
+.task-check--lg {
+  width: 22px;
+  height: 22px;
+  margin-top: 3px;
+  border-radius: 11px;
+}
+
+.task-check[data-popping] {
+  animation: task-pop 0.45s var(--aq-ease);
+}
+
+.task-check[data-popping]::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--aq-accent);
+  pointer-events: none;
+  animation: task-ring 0.55s ease-out forwards;
+}
+
+@keyframes task-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes task-ring {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.3);
+  }
+}
+
+.task-main {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--aq-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.task-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.task-row[data-selected] .task-title {
+  font-weight: 700;
+}
+
+.task-row[data-done] .task-title {
+  font-weight: 500;
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.task-tag {
+  padding: 1px 8px;
+  border-radius: 9px;
+}
+
+.task-meta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--aq-soft);
+}
+
+.task-meta[data-late] {
+  color: var(--aq-danger);
+}
+
+.task-flag {
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.task-flag[data-priority="3"],
+.detail-priority[data-priority="3"] .detail-flag {
+  color: var(--aq-priority-high);
+}
+
+.task-flag[data-priority="2"],
+.detail-priority[data-priority="2"] .detail-flag {
+  color: var(--aq-priority-medium);
+}
+
+.task-flag[data-priority="1"],
+.detail-priority[data-priority="1"] .detail-flag {
+  color: var(--aq-priority-low);
+}
+
+.detail-priority[data-priority="0"] .detail-flag {
+  color: var(--aq-line-strong);
+}
+
+.task-row .space-dot,
+.detail-space .space-dot {
+  flex-shrink: 0;
+  background: var(--space-color);
+}
+
+.task-footer {
+  flex-shrink: 0;
+  padding: 6px 8px 0;
+  border-top: 1px solid var(--aq-line);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+/* ——— Panneau de détail ——— */
+
+.task-detail {
+  width: 300px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px;
+  animation: aq-rise var(--aq-normal) var(--aq-ease);
+}
+
+.detail-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.detail-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-title {
+  width: 100%;
+  field-sizing: content;
+  min-height: 24px;
+  max-height: 120px;
+  padding: 0 4px;
+  margin: 0 -4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  resize: none;
+  outline: none;
+}
+
+.detail-title:hover,
+.detail-title:focus {
+  background: var(--aq-field);
+}
+
+.detail-title[data-done] {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.detail-space {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-close {
+  margin-top: -2px;
+}
+
+.task-detail .select {
+  height: 30px;
+  padding: 0 28px 0 10px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.task-detail .select-chevron {
+  top: 8px;
+  right: 9px;
+}
+
+.detail-space .select {
+  height: 26px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  padding-left: 2px;
+  font-size: 12px;
+  color: var(--aq-soft);
+}
+
+.detail-space .select:hover {
+  background: var(--aq-field);
+}
+
+.detail-space .select-chevron {
+  top: 6px;
+}
+
+.detail-scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  margin: 0 -8px;
+  padding: 0 8px 4px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 8px;
+  font-size: 13px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--aq-heading);
+}
+
+/* L'échéance (date, heure) prend toute la largeur, sous son intitulé. */
+.detail-label--block {
+  grid-column: 1 / -1;
+  margin-bottom: -4px;
+}
+
+.detail-grid > .select-box {
+  justify-self: start;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Une longue répétition (« Le dernier vendredi de chaque mois ») ne déborde pas du panneau. */
+.detail-grid .select {
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.detail-when {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.detail-input {
+  min-width: 0;
+  height: 30px;
+  box-sizing: border-box;
+  padding: 0 8px;
+  border-radius: 10px;
+  border: 1px solid var(--aq-field-border);
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.detail-when .detail-input:first-child {
+  flex: 1;
+}
+
+.detail-input--time {
+  width: 92px;
+  flex-shrink: 0;
+}
+
+.detail-input:disabled {
+  opacity: 0.5;
+}
+
+.detail-priority {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.pill--removable {
+  gap: 4px;
+  padding-right: 4px;
+}
+
+.pill-remove {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pill-remove:hover {
+  background: var(--aq-tint);
+}
+
+.detail-tag-input {
+  width: 96px;
+  height: 24px;
+  padding: 0 6px;
+  border: 1px dashed var(--aq-line-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+}
+
+.detail-tag-input:focus {
+  border-style: solid;
+  border-color: var(--aq-accent);
+}
+
+.detail-inbox {
+  align-self: flex-start;
+  padding-left: 0;
+}
+
+.detail-sep {
+  height: 1px;
+  flex-shrink: 0;
+  background: var(--aq-line);
+}
+
+.detail-section-head {
+  display: flex;
+  align-items: center;
+}
+
+.detail-section-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.detail-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--aq-soft);
+}
+
+.subtask-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.subtask {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.subtask-check {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1.5px solid var(--aq-soft);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--aq-on-accent);
+  cursor: pointer;
+}
+
+.subtask[data-done] .subtask-check {
+  border: 0;
+  background: var(--aq-fresh);
+}
+
+.subtask-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.subtask[data-done] .subtask-title {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.subtask-remove {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--aq-soft);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--aq-fast) ease;
+}
+
+.subtask:hover .subtask-remove,
+.subtask-remove:focus-visible {
+  opacity: 1;
+}
+
+.subtask-remove:hover {
+  background: var(--aq-hover);
+}
+
+.subtask-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aq-accent);
+}
+
+.subtask-input {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.subtask-input::placeholder {
+  color: var(--aq-accent);
+  font-weight: 700;
+}
+
+.detail-notes {
+  min-height: 72px;
+  field-sizing: content;
+  max-height: 240px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--aq-field-border);
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  resize: vertical;
+  outline: none;
+}
+
+.detail-notes:focus {
+  box-shadow:
+    var(--aq-field-inset),
+    0 0 0 3px var(--aq-tint);
+}
+
+.detail-foot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-created {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+.btn-danger {
+  color: var(--aq-danger);
+}
+
+/* ——— Fenêtre étroite : le détail passe par-dessus la liste ——— */
+
+@media (max-width: 1180px) {
+  .task-detail {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    width: 320px;
+    background: var(--aq-popover);
+    backdrop-filter: blur(calc(var(--aq-blur) * 1.5));
+  }
+}
+
+@media (max-width: 980px) {
+  .task-lists {
+    width: 200px;
+  }
+}
+
+/* ——— Carte « Aujourd'hui » de l'Accueil (maquette Main.dc.html) ——— */
+
+.today-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Petites bulles teintées, comme les lignes des écrans : la couleur de l'élément, sinon celle de la carte. */
+.today-row {
+  --row-color: var(--widget-color, var(--aq-row));
+  flex-shrink: 0;
+  height: 32px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 24%, transparent);
+  border-radius: 10px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) 9%, var(--aq-tile));
+}
+
+.today-row[data-done] .task-check {
+  border: 0;
+  background: var(--aq-fresh);
+  box-shadow: 0 3px 8px -3px var(--aq-fresh-glow);
+}
+
+.today-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--aq-ink);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.today-row[data-done] .today-title {
+  font-weight: 500;
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.today-row .space-dot {
+  flex-shrink: 0;
+  background: var(--space-color);
+}
+
+.today-time {
+  padding: 1px 7px;
+  border-radius: 8px;
+}
+
+.today-more {
+  align-self: flex-start;
+  padding-left: 30px;
+}
+
+.today-progress {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.today-bar {
+  flex: 1;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--aq-tint);
+  overflow: hidden;
+}
+
+.today-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: var(--aq-fresh);
+  transition: width var(--aq-normal) var(--aq-ease);
+}
+
+.today-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+/* ——— Répétition ——— */
+
+.pill--icon {
+  gap: 4px;
+}
+
+.task-repeat {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--aq-soft);
+}
+
+.recurrence-editor {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--aq-field);
+  border: 1px solid var(--aq-border);
+  box-shadow: var(--aq-field-inset);
+  animation: aq-fade var(--aq-fast) ease;
+}
+
+.recurrence-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.recurrence-line label {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.recurrence-every {
+  width: 56px;
+  flex-shrink: 0;
+}
+
+.recurrence-line .select-box {
+  flex: 1;
+  min-width: 0;
+}
+
+.recurrence-line .select {
+  width: 100%;
+}
+
+.recurrence-days {
+  display: flex;
+  gap: 4px;
+}
+
+.recurrence-day {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid var(--aq-field-border);
+  background: transparent;
+  color: var(--aq-ink);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.recurrence-day[aria-pressed="true"] {
+  border-color: var(--aq-gel-border);
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 8px -3px var(--aq-glow);
+}
+
+.recurrence-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+/* ——— Panneau des sous-tâches ——— */
+
+.subtasks-panel {
+  --row-color: var(--aq-row);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 25%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--row-color) 7%, var(--aq-tile));
+}
+
+.subtasks-panel--separate {
+  min-height: 0;
+  padding: 14px 16px;
+  border-radius: 20px;
+}
+
+.subtasks-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--row-color);
+}
+
+.subtasks-title {
+  flex: 1;
+  color: var(--aq-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.subtasks-count {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.subtasks-progress {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--aq-ink) 9%, transparent);
+}
+
+.subtasks-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--aq-fresh);
+  transition: width var(--aq-fast) ease;
+}
+
+.subtasks-panel .subtask-add {
+  padding: 0 10px;
+  border: 1px solid var(--aq-field-border);
+  border-radius: 12px;
+  background: var(--aq-field);
+}
+
+.subtasks-panel .subtask-input {
+  height: 34px;
+}
+
+.subtasks-empty {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.subtask-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.subtask-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 6px 8px 6px 11px;
+  border-radius: 12px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.subtask-card:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.subtask-card .subtask-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border-color: color-mix(in srgb, var(--row-color) 70%, var(--aq-soft));
+  color: var(--aq-on-accent);
+}
+
+.subtask-card[data-done] .subtask-check {
+  border: 0;
+  background: var(--aq-fresh);
+}
+
+.subtask-card-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  cursor: text;
+}
+
+.subtask-card[data-done] .subtask-card-title {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.subtask-edit {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--aq-field-border);
+  border-radius: 8px;
+  background: var(--aq-field);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 13.5px;
+}
+
+.subtask-card:hover .subtask-remove,
+.subtask-card:focus-within .subtask-remove {
+  opacity: 1;
+}
+
+/* ——— Vues Kanban, Matrice et Chronologie (src/tasks/TaskBoards.tsx) ——— */
+
+.task-view {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 20px;
+}
+
+.task-view-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.task-view-label {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.task-view-hint {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.task-board {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.task-board .board-column {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.task-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.task-card-head .task-check {
+  margin-top: 1px;
+}
+
+.board-card.task-card[data-selected] {
+  border-color: color-mix(in srgb, var(--row-color) 70%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--row-color) 30%, transparent);
+}
+
+.board-card.task-card[data-done] .board-card-title {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+/* Matrice : deux colonnes (urgent, pas urgent), deux rangées (important, peu important). */
+.matrix {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 22px repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.matrix-axis {
+  display: grid;
+  color: var(--aq-soft);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.matrix-axis--top {
+  grid-column: 2 / 4;
+  grid-row: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  text-align: center;
+}
+
+.matrix-axis--side {
+  grid-column: 1;
+  grid-row: 2 / 4;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.matrix-axis--side span {
+  align-self: center;
+  justify-self: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.matrix-cell {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.matrix-cell[data-quadrant="maintenant"] {
+  grid-column: 2;
+  grid-row: 2;
+  --row-color: var(--aq-danger);
+}
+
+.matrix-cell[data-quadrant="planifier"] {
+  grid-column: 3;
+  grid-row: 2;
+  --row-color: var(--aq-row);
+}
+
+.matrix-cell[data-quadrant="expedier"] {
+  grid-column: 2;
+  grid-row: 3;
+  --row-color: var(--aq-priority-medium);
+}
+
+.matrix-cell[data-quadrant="reconsiderer"] {
+  grid-column: 3;
+  grid-row: 3;
+  --row-color: var(--aq-soft);
+}
+
+.matrix-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.matrix-title small {
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+/* Chronologie : une frise verticale, un point par jour. */
+.timeline-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.timeline {
+  position: relative;
+  margin: 0;
+  padding: 4px 0 4px 22px;
+  list-style: none;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 7px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--aq-line-strong);
+}
+
+.timeline-group {
+  position: relative;
+  padding-bottom: 14px;
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 4px;
+  left: -21px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--aq-tile);
+  border-radius: 50%;
+  background: var(--aq-accent);
+  box-shadow: 0 0 0 1px var(--aq-line-strong);
+}
+
+.timeline-group[data-tone="late"] .timeline-dot {
+  background: var(--aq-danger);
+}
+
+.timeline-group[data-tone="today"] .timeline-dot {
+  width: 14px;
+  height: 14px;
+  left: -22px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--aq-accent) 25%, transparent);
+}
+
+.timeline-label {
+  margin: 0 0 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.timeline-group[data-tone="late"] .timeline-label {
+  color: var(--aq-danger);
+}
+
+.timeline-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline-task {
+  --row-color: var(--aq-row);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 22%, transparent);
+  border-radius: 12px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.timeline-task[data-selected] {
+  border-color: color-mix(in srgb, var(--row-color) 65%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+}
+
+.timeline-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 650;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.timeline-undated {
+  margin: 4px 0 0;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* ——— Filtres enregistrés ——— */
+
+.task-filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-filter-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 10px;
+  padding: 2px 4px 10px;
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.task-filter-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-filter-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 750;
+  color: var(--aq-ink);
+}
+
+.task-filter-desc {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--aq-soft);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dialog.dialog--filter {
+  width: min(600px, 100%);
+}
+
+.filter-form {
+  max-width: none;
+}
+
+.filter-heading {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 750;
+  color: var(--aq-accent);
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-tags .pill--button[aria-pressed="true"] {
+  box-shadow: 0 0 0 1.5px var(--aq-accent);
+  background: var(--aq-active);
+  font-weight: 700;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.filter-grid .select-box,
+.filter-grid .select {
+  width: 100%;
+}
+
+.filter-count {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+@media (max-width: 640px) {
+  .filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Filtres enregistrés : liste remise en ordre par glisser-déposer, sans changer la mise en page. */
+.task-filters {
+  display: contents;
+}

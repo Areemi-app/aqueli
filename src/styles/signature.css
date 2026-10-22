@@ -1,0 +1,505 @@
+/*
+ * Style Signature Aqueli : la famille Signature (Aqua, le thème par défaut, et ses variantes
+ * Jade, Glycine, Ambre, Nuage, Minuit), d'après la direction artistique choisie : verre dépoli
+ * très arrondi, ciel organique, titres posés sur le ciel, cartes aux vagues de couleur, grosses
+ * bulles brillantes, note en pense-bête, barre d'état alignée sur les cartes. Couleurs : variables
+ * du thème ; les reflets blancs sont des lumières, pas des couleurs d'interface.
+ */
+
+/* ——— Barre de titre posée sur le ciel ——— */
+
+[data-skin="signature"] .titlebar {
+  height: 60px;
+  gap: 10px;
+  border-bottom: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+[data-skin="signature"] .titlebar::after {
+  display: none;
+}
+
+[data-skin="signature"] .titlebar-logo {
+  width: 38px;
+  height: 38px;
+  filter: drop-shadow(0 4px 10px var(--aq-glow));
+}
+
+[data-skin="signature"] .titlebar-name {
+  margin-right: 6px;
+  color: var(--aq-sky-ink);
+  font-size: 23px;
+  font-weight: 750;
+  text-shadow: var(--aq-sky-shadow);
+}
+
+/* Précédent et Suivant : bulles « gel ». */
+[data-skin="signature"] .history-buttons {
+  gap: 8px;
+}
+
+[data-skin="signature"] .history-buttons .icon-btn {
+  width: 34px;
+  height: 34px;
+  border-color: var(--aq-gel-border);
+  background: var(--aq-gel);
+  box-shadow:
+    var(--aq-gel-inset),
+    0 4px 12px -4px var(--aq-glow);
+  color: var(--aq-on-accent);
+}
+
+[data-skin="signature"] .history-buttons .icon-btn:disabled {
+  opacity: 0.5;
+}
+
+/* Pilules et boutons ronds : verre clair net sur le ciel. */
+[data-skin="signature"] .titlebar-end > .icon-btn,
+[data-skin="signature"] .titlebar .help-button,
+[data-skin="signature"] .titlebar .backup-button,
+[data-skin="signature"] .titlebar .space-button,
+[data-skin="signature"] .titlebar .search-field {
+  border-color: var(--aq-border);
+  background: var(--aq-bar);
+  box-shadow:
+    var(--aq-control-shadow),
+    0 6px 16px -10px var(--aq-glow);
+}
+
+[data-skin="signature"] .titlebar-end > .icon-btn,
+[data-skin="signature"] .titlebar .help-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+[data-skin="signature"] .titlebar .search-field {
+  width: min(460px, 100%);
+  height: 38px;
+  border-radius: 19px;
+}
+
+[data-skin="signature"] .titlebar .btn-gel {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 19px;
+}
+
+[data-skin="signature"] .window-btn {
+  color: var(--aq-sky-ink);
+  filter: drop-shadow(var(--aq-sky-shadow));
+}
+
+/* ——— Titres d'écran posés sur le ciel ——— */
+
+[data-skin="signature"] .screen-header,
+[data-skin="signature"] .tasks-header {
+  color: var(--aq-sky-ink);
+}
+
+[data-skin="signature"] .screen-title,
+[data-skin="signature"] .tasks-title {
+  color: var(--aq-sky-ink);
+  text-shadow: var(--aq-sky-shadow);
+}
+
+[data-skin="signature"] .screen-title {
+  font-size: 36px;
+  letter-spacing: -0.015em;
+}
+
+[data-skin="signature"] .screen-header .screen-subtitle,
+[data-skin="signature"] .tasks-header .screen-subtitle {
+  margin-top: 4px;
+  color: var(--aq-sky-soft);
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: var(--aq-sky-shadow);
+}
+
+/* Onglets posés sur le ciel : piste de verre clair. */
+[data-skin="signature"] .screen-header .segmented,
+[data-skin="signature"] .tasks-header .segmented {
+  border-color: var(--aq-border);
+  background: var(--aq-bar);
+  box-shadow: 0 6px 16px -10px var(--aq-glow);
+}
+
+/* Boutons des en-têtes : pilules de verre bien nettes. */
+[data-skin="signature"] .screen-header .btn-glass,
+[data-skin="signature"] .tasks-header .btn-glass {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 20px;
+  border-color: var(--aq-border);
+  background: var(--aq-bar);
+  box-shadow:
+    var(--aq-control-shadow),
+    0 8px 18px -12px var(--aq-glow);
+}
+
+[data-skin="signature"] .screen-header .btn-gel,
+[data-skin="signature"] .tasks-header .btn-gel {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 20px;
+}
+
+/* ——— Verre : arrondis généreux, liseré blanc ——— */
+
+[data-skin="signature"] .glass {
+  border-width: 1.5px;
+  border-radius: 24px;
+}
+
+[data-skin="signature"] .btn-gel {
+  box-shadow:
+    var(--aq-gel-inset),
+    0 8px 20px -8px var(--aq-glow);
+}
+
+/* ——— Barre latérale : grand panneau de verre bleuté ——— */
+
+[data-skin="signature"] .sidebar.glass {
+  padding: 14px 10px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--aq-row) 12%, transparent) 0%, color-mix(in srgb, var(--aq-row) 4%, transparent) 100%),
+    var(--aq-card);
+}
+
+[data-skin="signature"] .nav-item {
+  height: 36px;
+  font-size: 14.5px;
+}
+
+/* Écran ouvert : capsule « gel » en relief, texte clair ; la pastille du module garde sa couleur. */
+[data-skin="signature"] .nav-item[aria-current="page"],
+[data-skin="signature"] .nav-item--quiet[aria-current="page"] {
+  height: 42px;
+  border-radius: 14px;
+  background: var(--aq-gel);
+  box-shadow:
+    var(--aq-gel-inset),
+    0 6px 16px -6px var(--aq-glow);
+  color: var(--aq-on-accent);
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+[data-skin="signature"] .nav-item[aria-current="page"] .chip {
+  box-shadow:
+    var(--aq-chip-shadow),
+    0 0 0 1.5px var(--aq-gel-border);
+}
+
+[data-skin="signature"] .nav-item[aria-current="page"] .task-list-count,
+[data-skin="signature"] .nav-item[aria-current="page"] .nav-icon {
+  color: inherit;
+}
+
+/* ——— Cartes de l'Accueil : verre, vagues de couleur au bas, reflet en biais ——— */
+
+[data-skin="signature"] .home-grid {
+  gap: 18px;
+}
+
+[data-skin="signature"] .home-cell .widget {
+  position: relative;
+  isolation: isolate;
+  gap: 10px;
+  padding: 18px 20px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 72 C80 50 160 58 250 70 S360 82 400 58' fill='none' stroke='white' stroke-opacity='0.85' stroke-width='2' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M0 46 C70 18 150 22 230 42 S350 70 400 30' fill='none' stroke='white' stroke-opacity='0.5' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center bottom / 100% 40% no-repeat,
+    linear-gradient(122deg, rgba(255, 255, 255, 0) 48%, rgba(255, 255, 255, 0.3) 58%, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 36%),
+    var(--aq-card);
+}
+
+/* Les deux vagues, peintes de la couleur du module mêlée à la seconde teinte du thème. */
+[data-skin="signature"] .home-cell .widget::before,
+[data-skin="signature"] .home-cell .widget::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40%;
+  pointer-events: none;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+[data-skin="signature"] .home-cell .widget::before {
+  /* Vague de fond : la couleur du module glisse vers la seconde teinte du thème (mélange en oklch, sans gris). */
+  background: linear-gradient(in oklch 100deg, color-mix(in oklch, var(--widget-color) 26%, white), color-mix(in oklch, var(--aq-wave-tint) 30%, white));
+  opacity: 0.8;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 46 C70 18 150 22 230 42 S350 70 400 30 V100 H0 Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 46 C70 18 150 22 230 42 S350 70 400 30 V100 H0 Z'/%3E%3C/svg%3E");
+}
+
+[data-skin="signature"] .home-cell .widget::after {
+  /* Vague de devant : la couleur du module, plus claire à gauche, avec un reflet sur la crête. */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(in oklch 100deg, color-mix(in oklch, var(--widget-color) 38%, white), color-mix(in oklch, var(--widget-color) 72%, white));
+  opacity: 0.88;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 72 C80 50 160 58 250 70 S360 82 400 58 V100 H0 Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'%3E%3Cpath d='M0 72 C80 50 160 58 250 70 S360 82 400 58 V100 H0 Z'/%3E%3C/svg%3E");
+}
+
+/* La note épinglée occupe sa carte : pas de vagues. */
+[data-skin="signature"] .home-cell .widget:has(.widget-empty--note, .pinned-note)::before,
+[data-skin="signature"] .home-cell .widget:has(.widget-empty--note, .pinned-note)::after {
+  display: none;
+}
+
+[data-skin="signature"] .home-cell .widget > .widget-head {
+  margin: 0 0 6px;
+  padding: 0;
+  border-bottom: 0;
+  background: none;
+}
+
+/* En-tête de carte : bulle ronde du module, titre en gras, lien discret avec chevron. */
+[data-skin="signature"] .widget-head .chip {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  box-shadow:
+    var(--aq-chip-shadow),
+    0 4px 10px -4px var(--aq-glow);
+}
+
+[data-skin="signature"] .widget-head .chip svg {
+  width: 18px;
+  height: 18px;
+}
+
+[data-skin="signature"] .widget-title {
+  font-size: 17.5px;
+  font-weight: 750;
+}
+
+[data-skin="signature"] .widget-head .link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+}
+
+[data-skin="signature"] .widget-head .link-btn::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+/* Cartes vides : grosse perle brillante, phrase en clair. */
+[data-skin="signature"] .widget-empty {
+  gap: 14px;
+}
+
+[data-skin="signature"] .widget-empty .orb {
+  width: 88px;
+  height: 88px;
+}
+
+[data-skin="signature"] .widget-empty p {
+  max-width: 280px;
+  color: var(--aq-ink);
+  font-size: 15px;
+}
+
+/* Note épinglée : pense-bête jaune, coin corné en bas à droite, toujours un peu translucide. */
+[data-skin="signature"] .widget-empty--note,
+[data-skin="signature"] .pinned-note {
+  position: relative;
+  border: 0;
+  border-radius: 18px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 42%),
+    var(--aq-note);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 38px), calc(100% - 38px) 100%, 0 100%);
+}
+
+[data-skin="signature"] .widget-empty--note::after,
+[data-skin="signature"] .pinned-note::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 0 0 0 12px;
+  background:
+    linear-gradient(315deg, transparent 47%, color-mix(in srgb, var(--aq-ink) 16%, transparent) 50%, transparent 56%),
+    linear-gradient(315deg, transparent 50%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.2) 100%),
+    linear-gradient(var(--aq-note), var(--aq-note));
+  pointer-events: none;
+}
+
+/* Carte Focus : bouton principal en pilule bombée, Arrêter et Passer en bulles rondes. */
+[data-skin="signature"] .focus-side .focus-controls--compact .focus-main {
+  height: 42px;
+  border-radius: 21px;
+  font-size: 15px;
+}
+
+[data-skin="signature"] .focus-controls--compact .btn-glass {
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  border-radius: 19px;
+}
+
+/* ——— Barre d'état : bande de verre alignée sur les cartes, la barre latérale descend jusqu'en bas ——— */
+
+[data-skin="signature"] .workspace {
+  padding-bottom: 14px;
+}
+
+[data-skin="signature"] .main {
+  padding-bottom: 54px;
+}
+
+[data-skin="signature"] .statusbar {
+  position: absolute;
+  z-index: 5;
+  left: calc(232px + 32px);
+  right: 16px;
+  bottom: 14px;
+  height: 40px;
+  gap: 14px;
+  padding: 0 20px;
+  border: 1.5px solid var(--aq-border);
+  border-radius: 20px;
+  background: var(--aq-bar);
+  backdrop-filter: blur(var(--aq-blur));
+  box-shadow: 0 10px 24px -16px var(--aq-glow);
+  color: var(--aq-soft);
+  font-size: 12.5px;
+}
+
+[data-skin="signature"] .status-item--strong {
+  color: var(--aq-ink);
+  font-weight: 700;
+}
+
+[data-skin="signature"] .status-extra {
+  display: inline-block;
+}
+
+[data-skin="signature"] .status-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--aq-line-strong);
+}
+
+[data-skin="signature"] .status-item svg {
+  color: var(--aq-accent);
+}
+
+@media (max-width: 899px) {
+  [data-skin="signature"] .statusbar {
+    left: calc(58px + 24px);
+    right: 12px;
+    bottom: 10px;
+  }
+}
+
+/* ——— Paramètres : la colonne de droite est posée sur le ciel ——— */
+
+[data-skin="signature"] .settings-page-title {
+  color: var(--aq-sky-ink);
+  text-shadow: var(--aq-sky-shadow);
+}
+
+[data-skin="signature"] .settings-page-hint {
+  color: var(--aq-sky-soft);
+  font-weight: 600;
+  text-shadow: var(--aq-sky-shadow);
+}
+
+/* Intertitres posés sur le ciel (hors des panneaux de verre) : petites étiquettes de verre,
+   lisibles à toute hauteur du ciel. Les textes d'aide sont des bulles d'information (screens.css). */
+[data-skin="signature"] .settings-panel .settings-heading:not(.glass *) {
+  align-self: flex-start;
+  max-width: calc(100% - 10px);
+  /* Le texte de l'étiquette s'aligne sur celui des panneaux. */
+  margin-inline-start: 10px;
+  padding: 3px 12px;
+  font-size: 12px;
+  border: 1px solid var(--aq-border);
+  border-radius: 12px;
+  background: var(--aq-bar);
+  backdrop-filter: blur(var(--aq-blur));
+  box-shadow: 0 6px 16px -12px var(--aq-glow);
+}
+
+/* ——— Aperçu de la galerie des thèmes ——— */
+
+.theme-preview[data-skin="signature"] .tp-bar {
+  border-bottom: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--aq-sky-ink);
+  text-shadow: var(--aq-sky-shadow);
+}
+
+.theme-preview[data-skin="signature"] .tp-card {
+  border-radius: 14px;
+}
+
+/* ——— Signature sombre (Minuit) : reflets plus discrets ——— */
+
+[data-skin="signature"][data-dark="true"] .home-cell .widget {
+  background:
+    linear-gradient(122deg, rgba(255, 255, 255, 0) 48%, rgba(255, 255, 255, 0.05) 58%, rgba(255, 255, 255, 0) 70%),
+    var(--aq-card);
+}
+
+[data-skin="signature"][data-dark="true"] .home-cell .widget::before {
+  background: linear-gradient(in oklch 100deg, color-mix(in oklch, var(--widget-color) 22%, transparent), color-mix(in oklch, var(--aq-wave-tint) 24%, transparent));
+  opacity: 1;
+}
+
+[data-skin="signature"][data-dark="true"] .home-cell .widget::after {
+  background: linear-gradient(in oklch 100deg, color-mix(in oklch, var(--widget-color) 22%, transparent), color-mix(in oklch, var(--widget-color) 40%, transparent));
+  opacity: 1;
+}
+
+[data-skin="signature"][data-dark="true"] .widget-empty--note,
+[data-skin="signature"][data-dark="true"] .pinned-note {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 42%),
+    var(--aq-note);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+[data-skin="signature"][data-dark="true"] .widget-empty--note::after,
+[data-skin="signature"][data-dark="true"] .pinned-note::after {
+  background:
+    linear-gradient(315deg, transparent 50%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0.05) 100%),
+    linear-gradient(var(--aq-note), var(--aq-note));
+}
+
+/* Mini-minuteur Focus : au-dessus de la barre d'état flottante. */
+[data-skin="signature"] .focus-dock {
+  bottom: 68px;
+}
+
+/* Fenêtre moyenne : la barre d'état se resserre pour garder de l'air au bout. */
+@media (max-width: 1100px) {
+  [data-skin="signature"] .statusbar {
+    gap: 10px;
+    padding: 0 16px;
+  }
+}

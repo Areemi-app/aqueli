@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Barre de titre Aqueli</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1280px; height: 52px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; background: {{t.bar}}; border-bottom: 1px solid {{t.border}}; box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset, 0 4px 14px rgba(0,40,90,0.10); font-family: 'Figtree', 'Segoe UI Variable', 'Segoe UI', sans-serif; font-variant-numeric: tabular-nums; color: {{t.ink}}">
+<img src="/_blob/858e20c7d306c68197423b1098f549f3" alt="" style="width: 32px; height: 32px">
+<span style="font-size: 19px; font-weight: 700; letter-spacing: 0.2px">Aqueli</span>
+<button type="button" aria-label="Choisir l'espace affiché" style="margin-left: 10px; height: 34px; padding: 0 12px; display: flex; align-items: center; gap: 8px; border-radius: 17px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">
+<span style="display: flex; gap: 3px">
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #0a9fd8"></span>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #7a5ce6"></span>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #e0508a"></span>
+</span>
+<span>Tous les espaces</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+<div style="flex-grow: 1; display: flex; justify-content: center">
+<div style="width: 440px; height: 34px; box-sizing: border-box; display: flex; align-items: center; gap: 8px; padding: 0 8px 0 14px; border-radius: 17px; background: {{t.field}}; border: 1px solid {{t.border}}; box-shadow: inset 0 1px 3px rgba(0,30,60,0.14)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: {{t.soft}}"><path d="M11 18a7 7 0 1 0 0-14a7 7 0 0 0 0 14z"></path><path d="M20 20l-4-4"></path></svg>
+<label for="recherche-globale" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Rechercher</label>
+<input id="recherche-globale" type="search" placeholder="Rechercher ou lancer une commande…" style="flex-grow: 1; min-width: 0; border: 0; background: transparent; font-family: inherit; font-size: 13px; color: {{t.ink}}; outline: none">
+<span style="padding: 2px 8px; border-radius: 8px; border: 1px solid {{t.line}}; font-size: 11px; font-weight: 600; color: {{t.soft}}">Ctrl K</span>
+</div>
+</div>
+<button type="button" style="height: 34px; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 6px; border-radius: 17px; border: 1px solid rgba(255,255,255,0.28); background: {{t.gel}}; color: #ffffff; font-family: inherit; font-size: 13px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px -8px {{t.glow}}; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+<span>Capture rapide</span>
+</button>
+<button type="button" aria-label="Notifications : 3 nouvelles" style="position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 18px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>
+<span style="position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; box-sizing: border-box; padding: 0 4px; border-radius: 9px; background: linear-gradient(180deg, #ff7a6b, #d42a1c); border: 1.5px solid #ffffff; color: #ffffff; font-size: 11px; font-weight: 700; line-height: 15px; text-align: center">3</span>
+</button>
+<a href="Verrouillage.dc.html" aria-label="Verrouiller Aqueli (Ctrl+L)" style="width: 36px; height: 36px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: 18px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v9H6z"></path><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"></path></svg>
+</a>
+<div style="display: flex; margin-left: 6px; height: 52px">
+<button type="button" aria-label="Réduire" style="width: 46px; height: 52px; border: 0; background: transparent; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 6h10"></path></svg>
+</button>
+<button type="button" aria-label="Agrandir" style="width: 46px; height: 52px; border: 0; background: transparent; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1.5 1.5h9v9h-9z"></path></svg>
+</button>
+<button type="button" aria-label="Fermer" style="width: 46px; height: 52px; border: 0; background: transparent; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1.5 1.5l9 9M10.5 1.5l-9 9"></path></svg>
+</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["aqua","prairie","automne","nuit"],"default":"aqua"},"$preview":{"width":1280,"height":52}}'>
+const AQ_GLOSS = 'radial-gradient(120% 90% at 50% -20%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0) 70%)';
+const AQ_THEMES = {
+  aqua: { name: 'Aqua', bar: 'linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.58) 100%)', field: 'rgba(255,255,255,0.9)', border: 'rgba(255,255,255,0.95)', ink: '#0b2a45', soft: '#3a5870', line: 'rgba(11,42,69,0.18)', gel: AQ_GLOSS + ', linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%)', glow: 'rgba(11,93,171,0.55)', seg: '#ffffff' },
+  prairie: { name: 'Prairie', bar: 'linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.58) 100%)', field: 'rgba(255,255,255,0.9)', border: 'rgba(255,255,255,0.95)', ink: '#12321a', soft: '#3a5a40', line: 'rgba(18,50,26,0.18)', gel: AQ_GLOSS + ', linear-gradient(180deg, #47ab27 0%, #1b6810 100%)', glow: 'rgba(27,104,16,0.5)', seg: '#ffffff' },
+  automne: { name: 'Automne', bar: 'linear-gradient(180deg, rgba(255,250,240,0.9) 0%, rgba(255,244,228,0.62) 100%)', field: 'rgba(255,251,245,0.92)', border: 'rgba(255,250,240,0.95)', ink: '#3a1a0a', soft: '#6a3b22', line: 'rgba(58,26,10,0.18)', gel: AQ_GLOSS + ', linear-gradient(180deg, #e07833 0%, #983b0c 100%)', glow: 'rgba(152,59,12,0.5)', seg: '#fffaf3' },
+  nuit: { name: 'Nuit étoilée', bar: 'linear-gradient(180deg, rgba(40,72,160,0.7) 0%, rgba(10,22,64,0.62) 100%)', field: 'rgba(8,18,52,0.78)', border: 'rgba(150,200,255,0.32)', ink: '#eef5ff', soft: '#b4c8e8', line: 'rgba(200,220,255,0.25)', gel: AQ_GLOSS + ', linear-gradient(180deg, #3c92f2 0%, #1a45b5 100%)', glow: 'rgba(70,150,255,0.6)', seg: 'rgba(110,170,255,0.32)' }
+};
+class Component extends DCLogic {
+  renderVals() {
+    const key = AQ_THEMES[this.props.theme] ? this.props.theme : 'aqua';
+    return { t: AQ_THEMES[key] };
+  }
+}
+</script>
+</body>
+</html>

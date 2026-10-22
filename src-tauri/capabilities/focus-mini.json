@@ -1,0 +1,17 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "fenetre-focus",
+  "description": "Permissions du mini-lecteur du Focus, au strict minimum : lire les préférences d'affichage (thème), recevoir l'état du minuteur, transmettre ses boutons, se déplacer et se cacher. Aucune lecture des données du compte.",
+  "windows": [
+    "focus"
+  ],
+  "permissions": [
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "core:window:allow-start-dragging",
+    "allow-prefs-load",
+    "allow-focus-mini-current",
+    "allow-focus-mini-command",
+    "allow-focus-mini-close"
+  ]
+}

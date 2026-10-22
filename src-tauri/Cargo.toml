@@ -1,0 +1,77 @@
+[package]
+name = "aqueli"
+version = "1.21.0"
+description = "Aqueli : productivité personnelle, locale et hors ligne"
+authors = ["Areemi"]
+license = "GPL-3.0-or-later"
+edition = "2021"
+rust-version = "1.85"
+publish = false
+
+[lib]
+name = "aqueli_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "=2.7.0", features = [] }
+
+[dependencies]
+tauri = { version = "=2.12.0", features = ["tray-icon"] }
+tauri-plugin-window-state = "=2.5.0"
+# Une seule instance d'Aqueli à la fois : un second lancement ramène la fenêtre existante.
+tauri-plugin-single-instance = "=2.5.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Base SQLite chiffrée par SQLCipher (AES-256), compilée avec OpenSSL embarqué.
+rusqlite = { version = "=0.40.2", features = ["bundled-sqlcipher-vendored-openssl"] }
+# Dérivation de clé Argon2id et chiffrement AES-256-GCM des clés.
+argon2 = { version = "=0.6.0", default-features = false, features = ["alloc", "zeroize"] }
+aes-gcm = { version = "=0.11.1", features = ["zeroize"] }
+getrandom = "=0.4.3"
+zeroize = { version = "=1.9.0", features = ["derive"] }
+hex = "=0.4.3"
+sha2 = "=0.11.0"
+
+# API Windows : Windows Hello (clé protégée par le TPM), verrouillage de session et mise en veille.
+# Même version que celle utilisée par Tauri, pour ne pas la compiler deux fois.
+[target.'cfg(windows)'.dependencies]
+windows = { version = "=0.62.2", features = [
+  "Data_Xml_Dom",
+  "Foundation",
+  "Foundation_Collections",
+  "Security_Credentials",
+  "Security_Cryptography",
+  "Storage_Streams",
+  "UI_Notifications",
+  "Win32_Foundation",
+  "Win32_Globalization",
+  "Win32_System_Com",
+  "Win32_System_Registry",
+  "Win32_System_RemoteDesktop",
+  "Win32_System_SystemInformation",
+  "Win32_System_Threading",
+  "Win32_UI_Input_KeyboardAndMouse",
+  "Win32_UI_Shell",
+  "Win32_UI_Shell_Common",
+  "Win32_UI_WindowsAndMessaging",
+] }
+
+[dev-dependencies]
+tempfile = "=3.27.0"
+
+# Argon2 et AES restent rapides même en version de développement.
+[profile.dev.package.argon2]
+opt-level = 3
+[profile.dev.package.blake2]
+opt-level = 3
+[profile.dev.package.aes]
+opt-level = 3
+[profile.dev.package.aes-gcm]
+opt-level = 3
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İçe aktarma kılavuzu · Aqueli</title>
+<style>
+  :root {
+    --ink: #0b2a45;
+    --soft: #3a5870;
+    --accent: #07609f;
+    --card: rgba(255, 255, 255, 0.8);
+    --card-edge: rgba(255, 255, 255, 0.95);
+    --tile: rgba(255, 255, 255, 0.78);
+    --line: rgba(11, 42, 69, 0.12);
+    --tint: rgba(10, 112, 188, 0.1);
+    --code: rgba(10, 112, 188, 0.12);
+    --req: #0b5dab;
+    --warn: #8f3a05;
+    --warn-bg: rgba(240, 120, 40, 0.16);
+    --sky: radial-gradient(70% 45% at 85% 0%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%);
+    --gel: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%), linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%);
+    --shadow: 0 18px 40px -24px rgba(11, 93, 171, 0.45);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8f1ff;
+      --soft: #a9bee0;
+      --accent: #8adbff;
+      --card: rgba(14, 30, 80, 0.86);
+      --card-edge: rgba(140, 180, 255, 0.28);
+      --tile: rgba(30, 56, 130, 0.55);
+      --line: rgba(170, 200, 255, 0.16);
+      --tint: rgba(90, 160, 255, 0.14);
+      --code: rgba(120, 180, 255, 0.18);
+      --req: #8adbff;
+      --warn: #ffc27a;
+      --warn-bg: rgba(255, 170, 80, 0.16);
+      --sky: radial-gradient(55% 45% at 85% 8%, rgba(140, 100, 255, 0.35), rgba(140, 100, 255, 0) 70%),
+        radial-gradient(55% 45% at 8% 95%, rgba(0, 190, 255, 0.28), rgba(0, 190, 255, 0) 70%),
+        linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%);
+      --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { background: #8fd8fa; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+    background: var(--sky) fixed;
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { html { background: #0c1c56; } }
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 34px 40px 40px;
+    border-radius: 28px;
+    border: 1px solid var(--card-edge);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%), var(--card);
+    box-shadow: var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    main { background: linear-gradient(180deg, rgba(120, 160, 255, 0.12) 0%, rgba(120, 160, 255, 0) 30%), var(--card); }
+  }
+  header { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  header svg { flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(11, 93, 171, 0.35)); }
+  h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+  .lead { margin: 4px 0 0; color: var(--soft); font-size: 16px; font-weight: 600; }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 22px 0 8px; padding: 0; list-style: none;
+  }
+  nav a {
+    display: inline-block; padding: 5px 12px; border-radius: 14px;
+    background: var(--tint); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none;
+  }
+  nav a:hover { background: var(--code); }
+  h2 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 36px 0 12px; font-size: 21px; letter-spacing: -0.01em;
+  }
+  h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 15px;
+    background: var(--gel); color: #fff; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 10px -4px rgba(11, 93, 171, 0.6);
+  }
+  h3 { margin: 24px 0 8px; font-size: 16px; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  code, kbd {
+    padding: 1px 6px; border-radius: 6px; background: var(--code);
+    font: 600 13.5px/1.4 "Cascadia Mono", Consolas, monospace; overflow-wrap: anywhere;
+  }
+  kbd { white-space: nowrap; }
+  pre {
+    margin: 10px 0; padding: 14px 16px; border-radius: 14px; overflow-x: auto;
+    background: var(--tile); border: 1px solid var(--line);
+    font: 13.5px/1.6 "Cascadia Mono", Consolas, monospace;
+  }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+  .step {
+    padding: 16px 18px; border-radius: 18px;
+    border: 1px solid var(--line); background: var(--tile);
+  }
+  .step b { display: block; margin-bottom: 4px; font-size: 16px; }
+  .step .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; margin-bottom: 8px; border-radius: 13px;
+    background: var(--gel); color: #fff; font-size: 13px; font-weight: 700;
+  }
+  table { width: 100%; margin: 8px 0 4px; border-collapse: separate; border-spacing: 0 4px; font-size: 14px; }
+  th {
+    padding: 4px 12px; color: var(--soft); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-align: left; text-transform: uppercase;
+  }
+  td { padding: 8px 12px; vertical-align: top; background: var(--tile); }
+  td:first-child { border-radius: 12px 0 0 12px; }
+  td:last-child { border-radius: 0 12px 12px 0; }
+  td.col { width: 24%; font-weight: 700; }
+  td.ex { width: 26%; color: var(--soft); }
+  .tr { display: block; font-weight: 400; color: var(--soft); font-size: 13px; }
+  table.files td.col { width: 36%; white-space: nowrap; }
+  .req {
+    display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 8px;
+    background: var(--tint); color: var(--req); font-size: 11px; font-weight: 700; vertical-align: 1px;
+  }
+  dl { margin: 8px 0; }
+  dt { margin-top: 12px; font-weight: 700; }
+  dd { margin: 2px 0 0; }
+  .note {
+    margin: 14px 0; padding: 12px 16px; border-radius: 14px;
+    background: var(--warn-bg); color: var(--warn); font-weight: 600;
+  }
+  footer { margin-top: 36px; color: var(--soft); font-size: 13px; text-align: center; }
+  @media (max-width: 860px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 24px 18px 28px; }
+    td.ex { display: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    main { box-shadow: none; border: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <radialGradient id="orb" cx="40%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#3c92f2"/>
+          <stop offset="0.55" stop-color="#173f96"/>
+          <stop offset="1" stop-color="#050b2a"/>
+        </radialGradient>
+        <linearGradient id="check" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff6fb5"/>
+          <stop offset="0.35" stop-color="#ffd166"/>
+          <stop offset="0.65" stop-color="#5ce1a5"/>
+          <stop offset="1" stop-color="#6fc8ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30" fill="url(#orb)"/>
+      <ellipse cx="27" cy="16" rx="18" ry="9" fill="#fff" opacity="0.45"/>
+      <path d="M18 33l9 9 19-21" fill="none" stroke="url(#check)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>İçe aktarma kılavuzu</h1>
+      <p class="lead">Görevleri, etkinlikleri, yükümlülükleri, notları, alışkanlıkları ve kişileri tek seferde ekleyin.</p>
+    </div>
+  </header>
+
+  <nav aria-label="İçindekiler">
+    <a href="#in-short">Kısaca</a>
+    <a href="#folder">Bu klasörde</a>
+    <a href="#spreadsheet">Excel ile</a>
+    <a href="#columns">Sütunlar</a>
+    <a href="#values">Kabul edilen değerler</a>
+    <a href="#text">Metin dosyasıyla</a>
+    <a href="#calendars">Takvimler ve kişiler</a>
+    <a href="#preview">Önizleme ve yinelenenler</a>
+    <a href="#good-to-know">Bilinmesi gerekenler</a>
+  </nav>
+
+  <h2 id="in-short"><span class="n">1</span>Kısaca</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="n">1</span>
+      <b>Hazırlayın</b>
+      <code>Aqueli template.xlsx</code> dosyasını bu klasörün dışına kopyalayın, ardından doldurun: her öğe için bir satır.
+    </div>
+    <div class="step">
+      <span class="n">2</span>
+      <b>İçe aktarın</b>
+      Dosyayı <code>Documents\Aqueli\Import</code> klasörüne bırakın veya Aqueli penceresine sürükleyin.
+    </div>
+    <div class="step">
+      <span class="n">3</span>
+      <b>Denetleyin</b>
+      Önizlemeyi okuyun, ardından “İçe aktar” düğmesine tıklayın. <kbd>Ctrl+Z</kbd> içe aktarmanın tamamını geri alır.
+    </div>
+  </div>
+  <p>Aqueli, Import klasörüne bırakılan bir dosyayı birkaç saniye içinde fark eder. Bir dosyayı Ayarlar › İçe aktarma › “Dosya içe aktar” bölümünden veya <kbd>Ctrl+K</kbd> içindeki “Dosya içe aktar” komutuyla da seçebilirsiniz.</p>
+
+  <h2 id="folder"><span class="n">2</span>Bu klasörde</h2>
+  <table class="files">
+    <thead><tr><th>Dosya</th><th>İçerik</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Aqueli template.xlsx</td><td>Boş çalışma kitabı: her tür için bir sayfa, sütunlar önceden adlandırılmış.</td></tr>
+      <tr><td class="col">Aqueli example.xlsx</td><td>Örneklerle doldurulmuş aynı çalışma kitabı. Olduğu gibi içe aktarılır.</td></tr>
+      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>Excel dışındaki bir elektronik tablo programı için her türün sütunları.</td></tr>
+      <tr><td class="col">Example.txt</td><td>Metin dosyası örnekleri, her öğe için bir satır.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Bu klasör, Aqueli her açıldığında yeniden oluşturulur. Doldurmadan önce bir şablonu başka bir yere (Masaüstü, Belgeler…) kopyalayın.</p>
+
+  <h2 id="spreadsheet"><span class="n">3</span>Excel veya başka bir elektronik tablo programıyla</h2>
+  <ul>
+    <li>Her tür için bir sayfa; adı “Tasks”, “Events”, “Obligations”, “Notes”, “Habits”, “Contacts”, “Expenses” veya “Lists” olmalıdır (görevler, etkinlikler, yükümlülükler, notlar, alışkanlıklar, kişiler, giderler, listeler).</li>
+    <li>İlk satır: sütun adları. Ardından her öğe için bir satır.</li>
+    <li>Yalnızca başlık zorunludur (bir alışkanlığın adı, bir kişinin adı, soyadı veya şirketi). Bunun yanında bir etkinliğin tarihi, bir yükümlülüğün son tarihi, bir işlemin tarihi ve tutarı, bir liste öğesinin listesi de zorunludur. Kullanılmayan hücreleri boş bırakın.</li>
+    <li>Sütunlar herhangi bir sırada olabilir. Bilinmeyen sütunlar yok sayılır. Büyük harfler ve aksanlar fark etmez.</li>
+    <li>CSV dosyası: dosya başına bir tür; tür, dosyanın adından (<code>tasks.csv</code>) veya sütunlarından tanınır. “Type” sütunu (Task, Event, Obligation, Note, Habit, Contact, Expense, Income, List) türleri karıştırmanıza olanak tanır. Ayırıcı <code>;</code> veya <code>,</code>.</li>
+    <li>Sütun adları ve değerler, sağlanan şablonlarda olduğu gibi İngilizce (veya Fransızca) yazılır. Bu kılavuzda İngilizce verilmiştir, çevirileri parantez içindedir.</li>
+  </ul>
+
+  <h2 id="columns"><span class="n">4</span>Sütunlar</h2>
+
+  <h3>Görevler</h3>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">zorunlu</span> <span class="tr">(Başlık)</span></td><td>Yapılacak iş.</td><td class="ex">Tamirciyi ara</td></tr>
+      <tr><td class="col">Due date <span class="tr">(Son tarih)</span></td><td>Saatli veya saatsiz tarih. Tarih yoksa görev “Gelen kutusu”na gider.</td><td class="ex">03/10/2026</td></tr>
+      <tr><td class="col">Time <span class="tr">(Saat)</span></td><td>Son tarihin saati.</td><td class="ex">14:00</td></tr>
+      <tr><td class="col">Start on <span class="tr">(Başlangıç)</span></td><td>Başlangıç tarihi, son tarihten geç olamaz. O tarihe kadar görev yalnızca “Yaklaşan” bölümünde görünür.</td><td class="ex">01/10/2026</td></tr>
+      <tr><td class="col">Priority <span class="tr">(Öncelik)</span></td><td>high, medium, low veya none (yüksek, orta, düşük, yok).</td><td class="ex">high</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Etiketler)</span></td><td>Virgülle ayrılır.</td><td class="ex">araba, tamirci</td></tr>
+      <tr><td class="col">Space <span class="tr">(Alan)</span></td><td>Bir Aqueli alanının adı.</td><td class="ex">Kişisel</td></tr>
+      <tr><td class="col">Duration <span class="tr">(Süre)</span></td><td>Tahmini süre, en fazla 24 sa.</td><td class="ex">1 h 30</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Hatırlatıcı)</span></td><td>Son tarihten ne kadar önce.</td><td class="ex">15 min</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Tekrar)</span></td><td>Bkz. “Kabul edilen değerler”.</td><td class="ex">every Monday</td></tr>
+      <tr><td class="col">Subtasks <span class="tr">(Alt görevler)</span></td><td>Noktalı virgülle ayrılır, en fazla 100.</td><td class="ex">Mutfak; Oturma odası</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Notlar)</span></td><td>Serbest metin.</td><td class="ex">Fiyat teklifi isteyin.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Etkinlikler</h3>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">zorunlu</span> <span class="tr">(Başlık)</span></td><td>Etkinliğin adı.</td><td class="ex">Diş hekimi</td></tr>
+      <tr><td class="col">Date<span class="req">zorunlu</span> <span class="tr">(Tarih)</span></td><td>Etkinliğin günü. Saatleri de içerebilir.</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
+      <tr><td class="col">Start <span class="tr">(Başlangıç)</span></td><td>Başlangıç saati. Boş: tüm gün.</td><td class="ex">09:30</td></tr>
+      <tr><td class="col">End <span class="tr">(Bitiş)</span></td><td>Bitiş saati. Boş: başlangıçtan bir saat sonra.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">End date <span class="tr">(Bitiş tarihi)</span></td><td>Birkaç gün süren bir etkinliğin son günü.</td><td class="ex">18/10/2026</td></tr>
+      <tr><td class="col">Location <span class="tr">(Konum)</span></td><td>Adres veya yer.</td><td class="ex">Martin muayenehanesi</td></tr>
+      <tr><td class="col">Space <span class="tr">(Alan)</span></td><td>Bir Aqueli alanının adı.</td><td class="ex">Sağlık</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Hatırlatıcı)</span></td><td>Başlangıçtan ne kadar önce.</td><td class="ex">1 h</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Tekrar)</span></td><td>Bkz. “Kabul edilen değerler”.</td><td class="ex">every year</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Notlar)</span></td><td>Serbest metin.</td><td class="ex">Sağlık kartınızı getirin.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Yükümlülükler</h3>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">zorunlu</span> <span class="tr">(Başlık)</span></td><td>Yükümlülüğün adı.</td><td class="ex">Konut sigortası</td></tr>
+      <tr><td class="col">Category <span class="tr">(Kategori)</span></td><td>Taxes and returns, Bills, Subscriptions, Insurance, Contracts, Warranties, Identity papers, Health, Vehicle, Housing (vergiler ve beyannameler, faturalar, abonelikler, sigorta, sözleşmeler, garantiler, kimlik belgeleri, sağlık, araç, konut) veya Aqueli'de verilen ad. Boş: Bills.</td><td class="ex">Insurance</td></tr>
+      <tr><td class="col">Due date<span class="req">zorunlu</span> <span class="tr">(Son tarih)</span></td><td>Uyulması gereken bir sonraki tarih.</td><td class="ex">15/11/2026</td></tr>
+      <tr><td class="col">Amount <span class="tr">(Tutar)</span></td><td>Euro cinsinden.</td><td class="ex">€45.90</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(Sıklık)</span></td><td>one-off, monthly, every two months, quarterly, half-yearly veya yearly (tek seferlik, aylık, iki ayda bir, üç ayda bir, altı ayda bir, yıllık). Boş: one-off.</td><td class="ex">yearly</td></tr>
+      <tr><td class="col">Cancel by <span class="tr">(İptal son tarihi)</span></td><td>İptal için son tarih, son tarihten geç olamaz.</td><td class="ex">15/10/2026</td></tr>
+      <tr><td class="col">Organisation <span class="tr">(Kuruluş)</span></td><td>Sigortacı, tedarikçi, kamu kurumu…</td><td class="ex">Sigorta şirketi</td></tr>
+      <tr><td class="col">Reference <span class="tr">(Referans)</span></td><td>Sözleşme numarası, müşteri numarası…</td><td class="ex">HOM-4521</td></tr>
+      <tr><td class="col">Direct debit <span class="tr">(Otomatik ödeme)</span></td><td>Otomatik ödeme talimatı için <code>yes</code> (evet): yükümlülük her son tarihte kendiliğinden ödenir. Boş: hayır.</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Space <span class="tr">(Alan)</span></td><td>Bir Aqueli alanının adı.</td><td class="ex">Kişisel</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Notlar)</span></td><td>Serbest metin.</td><td class="ex">Ekimde hatırlatın.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Notlar</h3>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">zorunlu</span> <span class="tr">(Başlık)</span></td><td>Notun başlığı.</td><td class="ex">Hediye fikirleri</td></tr>
+      <tr><td class="col">Text <span class="tr">(Metin)</span></td><td>Notun içeriği. Basit biçimlendirme tanınır: <code>#</code> başlık, <code>-</code> liste, <code>- [ ]</code> onay kutusu, <code>**kalın**</code>, <code>*italik*</code>.</td><td class="ex">Kitap, atkı…</td></tr>
+      <tr><td class="col">Notebook <span class="tr">(Defter)</span></td><td>Mevcut bir defterin adı.</td><td class="ex">Ev</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Etiketler)</span></td><td>Virgülle ayrılır.</td><td class="ex">hediyeler</td></tr>
+      <tr><td class="col">Space <span class="tr">(Alan)</span></td><td>Bir Aqueli alanının adı.</td><td class="ex">Aile</td></tr>
+      <tr><td class="col">Pinned <span class="tr">(Sabitlenmiş)</span></td><td>yes veya no (evet veya hayır).</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Alışkanlıklar</h3>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Name<span class="req">zorunlu</span> <span class="tr">(Ad)</span></td><td>Alışkanlığın adı, en fazla 60 karakter.</td><td class="ex">Su içmek</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(Sıklık)</span></td><td>Bkz. “Kabul edilen değerler”. Boş: her gün.</td><td class="ex">Mon, Wed, Fri</td></tr>
+      <tr><td class="col">Target <span class="tr">(Hedef)</span></td><td>Her gün ulaşılacak miktar, 1 ile 1000 arasında. Boş: alışkanlık yalnızca işaretlenir.</td><td class="ex">8</td></tr>
+      <tr><td class="col">Unit <span class="tr">(Birim)</span></td><td>Sayılan şey.</td><td class="ex">bardak</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Hatırlatıcı)</span></td><td>Planlanan günlerde hatırlatıcının saati.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">To break <span class="tr">(Bırakılacak)</span></td><td>Bırakılacak bir alışkanlık için yes (evet): işaretlenen her gün, korunmuş bir gündür.</td><td class="ex">no</td></tr>
+      <tr><td class="col">Time of day <span class="tr">(Günün zamanı)</span></td><td>morning, midday veya evening (sabah, öğle, akşam): günün listesi günün zamanına göre düzenlenir. Boş: gün içinde.</td><td class="ex">morning</td></tr>
+      <tr><td class="col">Space <span class="tr">(Alan)</span></td><td>Bir Aqueli alanının adı.</td><td class="ex">Kişisel</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Aqueli şablonlarından birinin adını taşıyan bir alışkanlık (Okumak, Meditasyon yapmak, Spor…) o şablonun simgesini ve rengini alır. Diğerleri Alışkanlıklar modülünün simgesini ve rengini alır. Her ikisi de daha sonra Aqueli'de değiştirilebilir.</p>
+
+  <h3>Kişiler</h3>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">First name <span class="tr">(Ad)</span></td><td>Kişinin adı.</td><td class="ex">Lea</td></tr>
+      <tr><td class="col">Last name <span class="tr">(Soyadı)</span></td><td>Soyadı.</td><td class="ex">Bernard</td></tr>
+      <tr><td class="col">Company <span class="tr">(Şirket)</span></td><td>Şirket veya kuruluş. Bir esnaf veya mağaza için tek başına yeterlidir.</td><td class="ex">Dupont Oto Servis</td></tr>
+      <tr><td class="col">Phone <span class="tr">(Telefon)</span></td><td>Noktalı virgülle ayrılmış bir veya daha fazla numara.</td><td class="ex">07700 900123</td></tr>
+      <tr><td class="col">Email <span class="tr">(E-posta)</span></td><td>Noktalı virgülle ayrılmış bir veya daha fazla adres.</td><td class="ex">lea.bernard@example.com</td></tr>
+      <tr><td class="col">Address <span class="tr">(Adres)</span></td><td>Posta adresi.</td><td class="ex">Leylak Sokak No. 12, İstanbul</td></tr>
+      <tr><td class="col">Birthday <span class="tr">(Doğum günü)</span></td><td>Doğum tarihi veya yalnızca gün ve ay. Takvimde gösterilir.</td><td class="ex">14/05/2016</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Etiketler)</span></td><td>Virgülle ayrılır.</td><td class="ex">aile</td></tr>
+      <tr><td class="col">Keep in touch <span class="tr">(İletişimde kal)</span></td><td>Ne sıklıkla haberleşileceği: <code>every week</code>, <code>every 2 weeks</code>, <code>every month</code>, <code>every 3 months</code>, <code>every 6 months</code> veya <code>every year</code> (her hafta, 2 haftada bir, her ay, 3 ayda bir, 6 ayda bir, her yıl). Zamanı geldiğinde kişi “Yeniden iletişime geçilecek” listesinde görünür. Boş: takip yok.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Space <span class="tr">(Alan)</span></td><td>Bir Aqueli alanının adı.</td><td class="ex">Aile</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Notlar)</span></td><td>Serbest metin.</td><td class="ex">Kısa mesajı tercih eder.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Giderler</h3>
+  <p>Bütçe modülünün işlemleri: giderler ve gelirler. Bankanızın web sitesinden indirilen bir hesap özeti (Excel veya CSV biçiminde) olduğu gibi içe aktarılır.</p>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Date<span class="req">zorunlu</span> <span class="tr">(Tarih)</span></td><td>İşlemin günü.</td><td class="ex">26/09/2026</td></tr>
+      <tr><td class="col">Description <span class="tr">(Açıklama)</span></td><td>İşlemin ne olduğu. Boş: kategorinin adı.</td><td class="ex">Cumartesi pazarı</td></tr>
+      <tr><td class="col">Amount<span class="req">zorunlu</span> <span class="tr">(Tutar)</span></td><td>Euro cinsinden. Negatif bir tutar giderdir. Hesap özeti gibi negatif tutarlar içeren bir tabloda pozitif bir tutar gelirdir. Aksi hâlde tutar giderdir.</td><td class="ex">42.50</td></tr>
+      <tr><td class="col">Category <span class="tr">(Kategori)</span></td><td>Bir bütçe kategorisinin adı (Market, Konut, Ulaşım, Maaş…). Bilinmiyorsa: kategorisiz işlem, önizlemede belirtilir.</td><td class="ex">Market</td></tr>
+      <tr><td class="col">Direction <span class="tr">(Yön)</span></td><td><code>expense</code> veya <code>income</code> (gider veya gelir). Tutarın işaretinden önceliklidir.</td><td class="ex">income</td></tr>
+      <tr><td class="col">Debit <span class="tr">(Borç)</span></td><td>Amount yerine, hesap özetindeki gibi: bir giderin tutarı.</td><td class="ex">21.00</td></tr>
+      <tr><td class="col">Credit <span class="tr">(Alacak)</span></td><td>Amount yerine, hesap özetindeki gibi: bir gelirin tutarı.</td><td class="ex">2,450.00</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Tekrar)</span></td><td>Tekrarlanan bir işlem (maaş, kira…): <code>every month</code>, <code>every 2 months</code>, <code>quarterly</code>, <code>half-yearly</code> veya <code>every year</code> (her ay, 2 ayda bir, üç ayda bir, altı ayda bir, her yıl). Her taksit kendi gününde bütçeye eklenir. Boş: yalnızca bir kez.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Until <span class="tr">(Bitiş)</span></td><td>Tekrarın son günü. Boş: bitiş yok.</td><td class="ex">31/12/2027</td></tr>
+      <tr><td class="col">Space <span class="tr">(Alan)</span></td><td>Bir Aqueli alanının adı.</td><td class="ex">Kişisel</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Notlar)</span></td><td>Serbest metin.</td><td class="ex">İki bilet.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Listeler</h3>
+  <p>Listeler modülündeki listelerin öğeleri: alışveriş, kitaplar, filmler, hediye fikirleri…</p>
+  <table>
+    <thead><tr><th>Sütun</th><th>İçerik</th><th>Örnek</th></tr></thead>
+    <tbody>
+      <tr><td class="col">List<span class="req">zorunlu</span> <span class="tr">(Liste)</span></td><td>Listenin adı. Öğe mevcut bir listeye eklenir. Liste yoksa adına uyan şablonla oluşturulur: Shopping, Books, Films, Gifts, Travel, Wishes (alışveriş, kitaplar, filmler, hediyeler, seyahat, istekler).</td><td class="ex">Shopping</td></tr>
+      <tr><td class="col">Item<span class="req">zorunlu</span> <span class="tr">(Öğe)</span></td><td>Öğenin adı.</td><td class="ex">Elma</td></tr>
+      <tr><td class="col">Aisle <span class="tr">(Reyon)</span></td><td>Listenin reyonu veya bölümü. Mevcut listede yoksa öğe reyonsuz eklenir.</td><td class="ex">Meyve ve sebze</td></tr>
+      <tr><td class="col">Done <span class="tr">(Tamamlandı)</span></td><td>Önceden işaretlenmiş bir öğe için yes (evet).</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Diğer sütunlar (“Author”, “Rating”, “Price”, “Link”…) listenin aynı adlı sütunlarını doldurur. İçe aktarmayla oluşturulan bir listede bunlar listenin sütunları olur: “Rating” için 0 ile 5 arasında bir puan, “Price” için bir fiyat, “Date” için bir tarih, “Link” için bir bağlantı, diğer durumlarda metin. En fazla 12 sütun.</p>
+
+  <h2 id="values"><span class="n">5</span>Kabul edilen değerler</h2>
+  <dl>
+    <dt>Tarihler</dt>
+    <dd>Önce gün, sonra ay: <code>03/10/2026</code>, <code>3/10/26</code>, <code>2026-10-03</code>, <code>3 October 2026</code>. Yıl olmadan (<code>03/10</code>): bu tarihin bir sonraki tekrarı. Ayrıca: <code>today</code>, <code>tomorrow</code>, <code>Monday</code>, <code>in 3 days</code> (bugün, yarın, pazartesi, 3 gün sonra). Excel'de tarih olarak girilen tarihler tanınır.</dd>
+    <dt>Saatler</dt>
+    <dd><code>14:00</code>, <code>2pm</code>, <code>2:30pm</code>, <code>noon</code> (öğle). Saat aralığı: <code>09:30-10:00</code>.</dd>
+    <dt>Süreler ve hatırlatıcılar</dt>
+    <dd><code>15 min</code>, <code>1 h</code>, <code>1 h 30</code>, <code>2 days</code>. Bir hatırlatıcı için ayrıca <code>on time</code> (tam zamanında) veya <code>none</code> (hatırlatıcı yok). Hatırlatıcı verilmediğinde, saati belirlenmiş öğelere varsayılan hatırlatıcı (Ayarlar › Hatırlatıcılar) uygulanır.</dd>
+    <dt>Tekrarlar</dt>
+    <dd><code>every day</code>, <code>every 2 days</code>, <code>weekdays</code>, <code>every Monday</code>, <code>every Monday and Thursday</code>, <code>every week</code>, <code>every 2 weeks</code>, <code>every month</code>, <code>every 3 months</code>, <code>the first Monday of the month</code>, <code>every year</code>. Bir görev için ayrıca <code>3 days after completion</code> (tamamlandıktan 3 gün sonra).</dd>
+    <dt>Alışkanlık sıklıkları</dt>
+    <dd><code>every day</code>, <code>3 times a week</code>, <code>Mon, Wed, Fri</code>, <code>Tuesday and Thursday</code>, <code>weekdays</code>, <code>weekends</code>.</dd>
+    <dt>Doğum günleri</dt>
+    <dd><code>14/05/1990</code>, <code>1990-05-14</code>, <code>14 May 1990</code>. Yıl olmadan: <code>14/05</code>, <code>14 May</code>.</dd>
+    <dt>Tutarlar</dt>
+    <dd><code>312</code>, <code>45.90</code>, <code>€1,234.50</code>. Bir işlem için ayrıca <code>-42.50</code>.</dd>
+    <dt>Etiketler</dt>
+    <dd>Harfler, rakamlar, <code>-</code>, <code>_</code> ve <code>/</code>. En fazla 40 karakter ve 20 etiket.</dd>
+    <dt>Alanlar ve defterler</dt>
+    <dd>Aqueli'deki adları. Bilinmeyen bir ad önizlemede belirtilir. Öğe bu durumda orada gösterilen alana veya ilk alana gider.</dd>
+    <dt>Evet veya hayır</dt>
+    <dd><code>yes</code> (evet), <code>no</code> (hayır), evet için <code>x</code>.</dd>
+  </dl>
+
+  <h2 id="text"><span class="n">6</span>Metin dosyasıyla</h2>
+  <p>Bir <code>.txt</code> veya <code>.md</code> dosyası her satırda bir öğe içerir: önce türü, ardından <code>|</code> ile ayrılmış alanları. İlk alan başlıktır.</p>
+  <pre>TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
+EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery
+OBLIGATION | Home insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
+NOTE | Gift ideas | Cookbook, scarf
+HABIT | Read | Mon, Wed, Fri | 20 pages | reminder: 21:30
+CONTACT | Lea Bernard | 07700 900123 | lea.bernard@example.com | birthday: 14/05/2016
+EXPENSE | €42.50 | Groceries | 27/09/2026
+INCOME | September salary | €2,450 | Salary | 01/10/2026
+LIST | Milk | Shopping | Fresh</pre>
+  <ul>
+    <li>Türler: <code>TASK</code>, <code>EVENT</code> (veya <code>APPOINTMENT</code>), <code>OBLIGATION</code> (veya <code>BILL</code>), <code>NOTE</code>, <code>HABIT</code>, <code>CONTACT</code>, <code>EXPENSE</code>, <code>INCOME</code>, <code>LIST</code> (görev, etkinlik, yükümlülük, not, alışkanlık, kişi, gider, gelir, liste).</li>
+    <li>Bir gider veya gelir için başlık tutar olabilir. Tarih, tutar ve kategori kendiliğinden tanınır. Bir liste öğesi için başlıktan sonraki alan listedir, ardından reyon gelir.</li>
+    <li>Tarihler, saatler, <code>#tags</code>, öncelikler (<code>!high</code>, <code>!medium</code>, <code>!low</code>), tutarlar, sıklıklar, kategoriler ve tekrarlar kendiliğinden tanınır. Bir alışkanlık için sıklık, hedef (<code>20 pages</code>) ve hatırlatıcı saati tanınır. Bir kişi için telefon numaraları, e-posta adresleri ve doğum tarihi tanınır.</li>
+    <li>Diğer alanlar sütun adları kullanılarak <code>name: value</code> biçiminde yazılır: <code>location: Martin surgery</code>, <code>space: Work</code>, <code>reminder: 1 h</code>, <code>subtasks: Kitchen; Living room</code>. Tanınmayan bir alan öğenin notlarına eklenir.</li>
+    <li>Türü olmayan bir satır, hızlı eklemedeki gibi yazılmış bir görevdir: <code>Call the garage tomorrow 2pm #car !high</code>. Satır başındaki madde işaretleri (<code>-</code>, <code>*</code>, <code>1.</code>) ve onay kutuları (<code>- [ ]</code>) kabul edilir.</li>
+    <li>Boş satırlar, başlıklar (<code># Başlık</code>) ve <code>//</code> ile başlayan satırlar yok sayılır.</li>
+    <li>Türü olmayan bir <code>.md</code> dosyası tek bir not olur. İlk başlık (<code># Başlık</code>) notun başlığıdır, yoksa dosyanın adı kullanılır. Biçimlendirme korunur: başlıklar, listeler, onay kutuları, alıntılar, kod blokları, <code>**kalın**</code>, <code>*italik*</code>, <code>~~üstü çizili~~</code>, <code>==vurgu==</code> ve <code>`kod`</code>. Aqueli'den Markdown olarak dışa aktarılan bir not bu şekilde yeniden içe aktarılabilir. Önizlemede türü olmayan bir dosya bir görev listesi, bir etkinlik listesi veya tek bir not olarak da okunabilir.</li>
+  </ul>
+
+  <h2 id="calendars"><span class="n">7</span>Takvimler ve kişiler</h2>
+  <ul>
+    <li>Bir <code>.ics</code> takvim dosyası (Outlook, Google Takvim veya Apple Takvim'den dışa aktarılmış) etkinliklere dönüşür: başlık, tarihler ve saatler, konum, açıklama, tekrar ve hatırlatıcı.</li>
+    <li>Bir <code>.vcf</code> kişi dosyası (bir telefondan, Gmail'den veya Outlook'tan dışa aktarılmış) kişilere dönüşür: ad, şirket, numaralar, e-posta adresleri, adres, doğum günü, notlar ve etiketler.</li>
+    <li>Evrensel saatle yazılmış saatler bu PC'nin saatine dönüştürülür. Fazla alışılmadık bir tekrar aktarılmaz. Önizleme bunu belirtir, tekrarı daha sonra takvimde ayarlayabilirsiniz.</li>
+    <li>İptal edilmiş etkinlikler ve kişi fotoğrafları içe aktarılmaz.</li>
+  </ul>
+
+  <h2 id="preview"><span class="n">8</span>Önizleme, hatalar ve yinelenenler</h2>
+  <ul>
+    <li>Her satır, içe aktarmadan önce önizlemede görünür. “İçe aktar” düğmesine tıklamadan hiçbir şey eklenmez.</li>
+    <li>Hatalı bir satır açıklamasıyla birlikte kırmızı gösterilir. İçe aktarılmaz: dosyayı düzeltin, ardından yeniden içe aktarın.</li>
+    <li>Yinelenen bir öğe, Aqueli'deki bir öğeyle veya önceki bir satırla aynı türe, başlığa ve tarihe sahiptir (bir alışkanlık veya kişi için aynı ada). Bir işlem için ayrıca aynı tutara, bir liste öğesi için aynı listeye sahiptir. İşareti kaldırılmıştır. İşaretlenirse yine de içe aktarılır.</li>
+    <li>İşareti kaldırılan bir satır içe aktarılmaz. “İçerik” menüsü bir sayfanın veya dosyanın türünü değiştirir.</li>
+    <li>İçe aktarmadan sonra “Geri al” veya <kbd>Ctrl+Z</kbd>, içe aktarılan tüm öğeleri tek seferde kaldırır.</li>
+  </ul>
+
+  <h3>Mevcut öğeleri güncelleme</h3>
+  <ul>
+    <li>Aqueli'nin dışa aktardığı tablolarda (görevler, kişiler, bütçe işlemleri) son sütun <code>ID</code> sütunudur. Dışa aktarılan <code>.ics</code> ve <code>.vcf</code> dosyaları da bunu taşır. Bu değeri değiştirmeyin.</li>
+    <li>Dosya yeniden içe aktarıldığında, yeni öğeler oluşturmak yerine bu ID'yi taşıyan öğeleri günceller: satır “Mevcut bir öğenin güncellenmesi.” olarak işaretlenir. İçe aktarmadan önce bir pencere, değiştirilecek öğeleri listeler ve onay ister.</li>
+    <li>Dosyanın tanımlamadığı bilgiler korunur: bir görevin rengi, projesi ve işaretlenmiş alt görevleri; bir kişinin fotoğrafı, kategorisi ve kartı; bir etkinlik dizisinden kaldırılmış tekrarlar.</li>
+    <li>ID'si olmayan veya ID'si bu hesapta bulunmayan bir satır (başka bir PC'den gelen dosya) yeni bir öğe oluşturur.</li>
+    <li>İçe aktarmadan sonra “Geri al”, güncellenen öğelerin önceki değerlerini de geri yükler.</li>
+  </ul>
+
+  <h2 id="good-to-know"><span class="n">9</span>Bilinmesi gerekenler</h2>
+  <ul>
+    <li>Import klasörüne bırakılan bir dosya, bu klasör şifrelenmediği için içe aktarmadan sonra silinir. Bunun yerine dosyayı <code>Import\Traités</code> klasöründe tutmak için: Ayarlar › İçe aktarma › “İçe aktarmadan sonra”. Pencereye sürüklenen veya başka bir yerden seçilen dosya olduğu yerde kalır.</li>
+    <li>Dosya başına en fazla 10 MB ve 5.000 öğe.</li>
+    <li>Excel: formüller yeniden hesaplanmaz, son kaydedilen değer okunur. Makrolar hiçbir zaman çalıştırılmaz.</li>
+    <li><code>.xls</code> biçimindeki çalışma kitapları ve parolayla korunan çalışma kitapları okunamaz. Bunları parolasız olarak <code>.xlsx</code> biçiminde kaydedin.</li>
+  </ul>
+
+  <footer>Aqueli · İçe aktarma kılavuzu</footer>
+</main>
+</body>
+</html>

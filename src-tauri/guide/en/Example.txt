@@ -1,0 +1,13 @@
+TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
+TASK | Pack the boxes | 10/10/2026 | #moving | duration: 2 h | subtasks: Kitchen; Living room; Bedroom
+TASK | Water the plants | every week | space: Personal
+EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery | reminder: 1 h | space: Health
+EVENT | Weekend by the sea | 17/10/2026 | end date: 18/10/2026
+OBLIGATION | Home insurance | Insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
+OBLIGATION | Phone plan | Subscriptions | due 05/10/2026 | €19.99 | monthly | organisation: Network provider
+NOTE | Gift ideas | Cookbook, scarf, board game
+HABIT | Read | Mon, Wed, Fri | 20 pages | reminder: 21:30
+CONTACT | Lea Bernard | 07700 900123 | lea.bernard@example.com | birthday: 14/05/2016
+EXPENSE | €42.50 | Groceries | 27/09/2026
+INCOME | September salary | €2,450 | Salary | 01/10/2026
+LIST | Milk | Shopping | Fresh

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>取り込みガイド · Aqueli</title>
+<style>
+  :root {
+    --ink: #0b2a45;
+    --soft: #3a5870;
+    --accent: #07609f;
+    --card: rgba(255, 255, 255, 0.8);
+    --card-edge: rgba(255, 255, 255, 0.95);
+    --tile: rgba(255, 255, 255, 0.78);
+    --line: rgba(11, 42, 69, 0.12);
+    --tint: rgba(10, 112, 188, 0.1);
+    --code: rgba(10, 112, 188, 0.12);
+    --req: #0b5dab;
+    --warn: #8f3a05;
+    --warn-bg: rgba(240, 120, 40, 0.16);
+    --sky: radial-gradient(70% 45% at 85% 0%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%);
+    --gel: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%), linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%);
+    --shadow: 0 18px 40px -24px rgba(11, 93, 171, 0.45);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8f1ff;
+      --soft: #a9bee0;
+      --accent: #8adbff;
+      --card: rgba(14, 30, 80, 0.86);
+      --card-edge: rgba(140, 180, 255, 0.28);
+      --tile: rgba(30, 56, 130, 0.55);
+      --line: rgba(170, 200, 255, 0.16);
+      --tint: rgba(90, 160, 255, 0.14);
+      --code: rgba(120, 180, 255, 0.18);
+      --req: #8adbff;
+      --warn: #ffc27a;
+      --warn-bg: rgba(255, 170, 80, 0.16);
+      --sky: radial-gradient(55% 45% at 85% 8%, rgba(140, 100, 255, 0.35), rgba(140, 100, 255, 0) 70%),
+        radial-gradient(55% 45% at 8% 95%, rgba(0, 190, 255, 0.28), rgba(0, 190, 255, 0) 70%),
+        linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%);
+      --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { background: #8fd8fa; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+    background: var(--sky) fixed;
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { html { background: #0c1c56; } }
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 34px 40px 40px;
+    border-radius: 28px;
+    border: 1px solid var(--card-edge);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%), var(--card);
+    box-shadow: var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    main { background: linear-gradient(180deg, rgba(120, 160, 255, 0.12) 0%, rgba(120, 160, 255, 0) 30%), var(--card); }
+  }
+  header { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  header svg { flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(11, 93, 171, 0.35)); }
+  h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+  .lead { margin: 4px 0 0; color: var(--soft); font-size: 16px; font-weight: 600; }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 22px 0 8px; padding: 0; list-style: none;
+  }
+  nav a {
+    display: inline-block; padding: 5px 12px; border-radius: 14px;
+    background: var(--tint); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none;
+  }
+  nav a:hover { background: var(--code); }
+  h2 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 36px 0 12px; font-size: 21px; letter-spacing: -0.01em;
+  }
+  h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 15px;
+    background: var(--gel); color: #fff; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 10px -4px rgba(11, 93, 171, 0.6);
+  }
+  h3 { margin: 24px 0 8px; font-size: 16px; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  code, kbd {
+    padding: 1px 6px; border-radius: 6px; background: var(--code);
+    font: 600 13.5px/1.4 "Cascadia Mono", Consolas, monospace; overflow-wrap: anywhere;
+  }
+  kbd { white-space: nowrap; }
+  pre {
+    margin: 10px 0; padding: 14px 16px; border-radius: 14px; overflow-x: auto;
+    background: var(--tile); border: 1px solid var(--line);
+    font: 13.5px/1.6 "Cascadia Mono", Consolas, monospace;
+  }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+  .step {
+    padding: 16px 18px; border-radius: 18px;
+    border: 1px solid var(--line); background: var(--tile);
+  }
+  .step b { display: block; margin-bottom: 4px; font-size: 16px; }
+  .step .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; margin-bottom: 8px; border-radius: 13px;
+    background: var(--gel); color: #fff; font-size: 13px; font-weight: 700;
+  }
+  table { width: 100%; margin: 8px 0 4px; border-collapse: separate; border-spacing: 0 4px; font-size: 14px; }
+  th {
+    padding: 4px 12px; color: var(--soft); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-align: left; text-transform: uppercase;
+  }
+  td { padding: 8px 12px; vertical-align: top; background: var(--tile); }
+  td:first-child { border-radius: 12px 0 0 12px; }
+  td:last-child { border-radius: 0 12px 12px 0; }
+  td.col { width: 24%; font-weight: 700; }
+  td.ex { width: 26%; color: var(--soft); }
+  table.files td.col { width: 36%; white-space: nowrap; }
+  .req {
+    display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 8px;
+    background: var(--tint); color: var(--req); font-size: 11px; font-weight: 700; vertical-align: 1px;
+  }
+  dl { margin: 8px 0; }
+  dt { margin-top: 12px; font-weight: 700; }
+  dd { margin: 2px 0 0; }
+  .note {
+    margin: 14px 0; padding: 12px 16px; border-radius: 14px;
+    background: var(--warn-bg); color: var(--warn); font-weight: 600;
+  }
+  footer { margin-top: 36px; color: var(--soft); font-size: 13px; text-align: center; }
+  @media (max-width: 860px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 24px 18px 28px; }
+    td.ex { display: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    main { box-shadow: none; border: 0; }
+  }
+  .tr { display: block; font-weight: 400; color: var(--soft); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <radialGradient id="orb" cx="40%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#3c92f2"/>
+          <stop offset="0.55" stop-color="#173f96"/>
+          <stop offset="1" stop-color="#050b2a"/>
+        </radialGradient>
+        <linearGradient id="check" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff6fb5"/>
+          <stop offset="0.35" stop-color="#ffd166"/>
+          <stop offset="0.65" stop-color="#5ce1a5"/>
+          <stop offset="1" stop-color="#6fc8ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30" fill="url(#orb)"/>
+      <ellipse cx="27" cy="16" rx="18" ry="9" fill="#fff" opacity="0.45"/>
+      <path d="M18 33l9 9 19-21" fill="none" stroke="url(#check)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>取り込みガイド</h1>
+      <p class="lead">タスク、予定、支払いと契約、ノート、習慣、連絡先をまとめて追加します。</p>
+    </div>
+  </header>
+
+  <nav aria-label="目次">
+    <a href="#in-short">概要</a>
+    <a href="#folder">このフォルダーの内容</a>
+    <a href="#spreadsheet">Excel を使う</a>
+    <a href="#columns">列</a>
+    <a href="#values">使用できる値</a>
+    <a href="#text">テキストファイルを使う</a>
+    <a href="#calendars">カレンダーと連絡先</a>
+    <a href="#preview">プレビューと重複</a>
+    <a href="#good-to-know">補足</a>
+  </nav>
+
+  <h2 id="in-short"><span class="n">1</span>概要</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="n">1</span>
+      <b>準備する</b>
+      <code>Aqueli template.xlsx</code> をこのフォルダーの外にコピーしてから入力します。1 行に 1 項目です。
+    </div>
+    <div class="step">
+      <span class="n">2</span>
+      <b>取り込む</b>
+      ファイルを <code>Documents\Aqueli\Import</code> に置くか、Aqueli のウィンドウにドラッグします。
+    </div>
+    <div class="step">
+      <span class="n">3</span>
+      <b>確認する</b>
+      プレビューを確認してから「取り込み」をクリックします。<kbd>Ctrl+Z</kbd> で取り込み全体を取り消せます。
+    </div>
+  </div>
+  <p>Import フォルダーに置いたファイルは、数秒以内に Aqueli が検出します。設定 › 取り込み › 「ファイルを取り込む」でファイルを選ぶことも、<kbd>Ctrl+K</kbd> の「ファイルを取り込む」コマンドを使うこともできます。</p>
+
+  <h2 id="folder"><span class="n">2</span>このフォルダーの内容</h2>
+  <table class="files">
+    <thead><tr><th>ファイル</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Aqueli template.xlsx</td><td>空のブックです。種類ごとに 1 シートあり、列名は入力済みです。</td></tr>
+      <tr><td class="col">Aqueli example.xlsx</td><td>同じブックに例を入力したものです。そのまま取り込めます。</td></tr>
+      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>種類ごとの列です。Excel 以外の表計算ソフト用です。</td></tr>
+      <tr><td class="col">Example.txt</td><td>テキストファイルの例です。1 行に 1 項目です。</td></tr>
+    </tbody>
+  </table>
+  <p class="note">このフォルダーは Aqueli を開くたびに作り直されます。テンプレートは、入力する前に別の場所（デスクトップ、ドキュメント…）にコピーしてください。</p>
+
+  <h2 id="spreadsheet"><span class="n">3</span>Excel またはほかの表計算ソフトを使う</h2>
+  <ul>
+    <li>種類ごとに 1 シートで、シート名は「Tasks」「Events」「Obligations」「Notes」「Habits」「Contacts」「Expenses」「Lists」のいずれかです（タスク、予定、支払いと契約、ノート、習慣、連絡先、支出、リスト）。</li>
+    <li>1 行目は列名です。その後は 1 行に 1 項目です。</li>
+    <li>必須なのはタイトルだけです（習慣は名前、連絡先は名、姓、会社のいずれか）。ただし、予定の日付、支払い項目の期限、取引の日付と金額、リストの項目のリストも必須です。使わないセルは空のままにします。</li>
+    <li>列の順序は自由です。認識できない列は無視されます。大文字と小文字、アクセント記号は区別されません。</li>
+    <li>CSV ファイル：1 ファイルに 1 種類で、ファイル名（<code>tasks.csv</code>）または列から判別されます。「Type」列（Task、Event、Obligation、Note、Habit、Contact、Expense、Income、List）を使うと、種類を混在できます。区切り文字は <code>;</code> または <code>,</code> です。</li>
+    <li>列名と値は、提供のテンプレートと同じく英語（またはフランス語）で書きます。このガイドでは、日本語の意味を括弧内に示します。</li>
+  </ul>
+
+  <h2 id="columns"><span class="n">4</span>列</h2>
+
+  <h3>タスク</h3>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">必須</span> <span class="tr">（タイトル）</span></td><td>やること。</td><td class="ex">整備工場に電話する</td></tr>
+      <tr><td class="col">Due date <span class="tr">（期限）</span></td><td>日付です。時刻は付けても付けなくてもかまいません。日付がないタスクは受信トレイに入ります。</td><td class="ex">03/10/2026</td></tr>
+      <tr><td class="col">Time <span class="tr">（時刻）</span></td><td>期限の時刻。</td><td class="ex">14:00</td></tr>
+      <tr><td class="col">Start on <span class="tr">（開始日）</span></td><td>開始日です。期限より後にはできません。それまでは「今後の予定」にのみ表示されます。</td><td class="ex">01/10/2026</td></tr>
+      <tr><td class="col">Priority <span class="tr">（優先度）</span></td><td><code>high</code>（高）、<code>medium</code>（中）、<code>low</code>（低）、<code>none</code>（なし）のいずれか。</td><td class="ex">high</td></tr>
+      <tr><td class="col">Tags <span class="tr">（タグ）</span></td><td>カンマで区切ります。</td><td class="ex">車, 整備</td></tr>
+      <tr><td class="col">Space <span class="tr">（スペース）</span></td><td>Aqueli のスペースの名前。</td><td class="ex">個人</td></tr>
+      <tr><td class="col">Duration <span class="tr">（所要時間）</span></td><td>見込みの所要時間です。最大 24 h です。</td><td class="ex">1 h 30</td></tr>
+      <tr><td class="col">Reminder <span class="tr">（リマインダー）</span></td><td>期限のどれだけ前に通知するか。</td><td class="ex">15 min</td></tr>
+      <tr><td class="col">Repeat <span class="tr">（繰り返し）</span></td><td>「使用できる値」を参照してください。</td><td class="ex">every Monday</td></tr>
+      <tr><td class="col">Subtasks <span class="tr">（サブタスク）</span></td><td>セミコロンで区切ります。最大 100 個です。</td><td class="ex">キッチン; リビング</td></tr>
+      <tr><td class="col">Notes <span class="tr">（メモ）</span></td><td>自由なテキスト。</td><td class="ex">見積もりを依頼する。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>予定</h3>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">必須</span> <span class="tr">（タイトル）</span></td><td>予定の名前。</td><td class="ex">歯医者</td></tr>
+      <tr><td class="col">Date<span class="req">必須</span> <span class="tr">（日付）</span></td><td>予定の日です。時刻を含めることもできます。</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
+      <tr><td class="col">Start <span class="tr">（開始）</span></td><td>開始時刻です。空の場合は終日です。</td><td class="ex">09:30</td></tr>
+      <tr><td class="col">End <span class="tr">（終了）</span></td><td>終了時刻です。空の場合は開始の 1 時間後です。</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">End date <span class="tr">（終了日）</span></td><td>複数日にわたる予定の最終日。</td><td class="ex">18/10/2026</td></tr>
+      <tr><td class="col">Location <span class="tr">（場所）</span></td><td>住所または場所。</td><td class="ex">マルタン医院</td></tr>
+      <tr><td class="col">Space <span class="tr">（スペース）</span></td><td>Aqueli のスペースの名前。</td><td class="ex">健康</td></tr>
+      <tr><td class="col">Reminder <span class="tr">（リマインダー）</span></td><td>開始のどれだけ前に通知するか。</td><td class="ex">1 h</td></tr>
+      <tr><td class="col">Repeat <span class="tr">（繰り返し）</span></td><td>「使用できる値」を参照してください。</td><td class="ex">every year</td></tr>
+      <tr><td class="col">Notes <span class="tr">（メモ）</span></td><td>自由なテキスト。</td><td class="ex">保険証を持参する。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>支払いと契約</h3>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">必須</span> <span class="tr">（タイトル）</span></td><td>支払い項目の名前。</td><td class="ex">住宅保険</td></tr>
+      <tr><td class="col">Category <span class="tr">（カテゴリ）</span></td><td><code>Taxes and returns</code>（税金と申告）、<code>Bills</code>（請求書）、<code>Subscriptions</code>（サブスクリプション）、<code>Insurance</code>（保険）、<code>Contracts</code>（契約）、<code>Warranties</code>（保証）、<code>Identity papers</code>（身分証明書）、<code>Health</code>（健康）、<code>Vehicle</code>（車両）、<code>Housing</code>（住まい）、または Aqueli で付けた名前。空の場合は <code>Bills</code> です。</td><td class="ex">Insurance</td></tr>
+      <tr><td class="col">Due date<span class="req">必須</span> <span class="tr">（期限）</span></td><td>次に対応すべき日付。</td><td class="ex">15/11/2026</td></tr>
+      <tr><td class="col">Amount <span class="tr">（金額）</span></td><td>ユーロ単位です。</td><td class="ex">€45.90</td></tr>
+      <tr><td class="col">Frequency <span class="tr">（頻度）</span></td><td><code>one-off</code>（1 回のみ）、<code>monthly</code>（毎月）、<code>every two months</code>（2 か月ごと）、<code>quarterly</code>（四半期ごと）、<code>half-yearly</code>（半年ごと）、<code>yearly</code>（毎年）のいずれか。空の場合は <code>one-off</code> です。</td><td class="ex">yearly</td></tr>
+      <tr><td class="col">Cancel by <span class="tr">（解約期限）</span></td><td>解約の期限です。期限より後にはできません。</td><td class="ex">15/10/2026</td></tr>
+      <tr><td class="col">Organisation <span class="tr">（相手先）</span></td><td>保険会社、供給会社、公的機関…</td><td class="ex">保険会社</td></tr>
+      <tr><td class="col">Reference <span class="tr">（番号）</span></td><td>契約番号、顧客番号…</td><td class="ex">HOM-4521</td></tr>
+      <tr><td class="col">Direct debit <span class="tr">（自動引き落とし）</span></td><td>自動引き落としの場合は <code>yes</code> です。期限が来るたびに自動で支払い済みになります。空の場合は <code>no</code> です。</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Space <span class="tr">（スペース）</span></td><td>Aqueli のスペースの名前。</td><td class="ex">個人</td></tr>
+      <tr><td class="col">Notes <span class="tr">（メモ）</span></td><td>自由なテキスト。</td><td class="ex">10 月に催促する。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>ノート</h3>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">必須</span> <span class="tr">（タイトル）</span></td><td>ノートのタイトル。</td><td class="ex">プレゼントのアイデア</td></tr>
+      <tr><td class="col">Text <span class="tr">（本文）</span></td><td>ノートの内容です。簡単な書式を認識します：<code>#</code> 見出し、<code>-</code> リスト、<code>- [ ]</code> チェックボックス、<code>**bold**</code>（太字）、<code>*italic*</code>（斜体）。</td><td class="ex">本、マフラー…</td></tr>
+      <tr><td class="col">Notebook <span class="tr">（ノートブック）</span></td><td>既存のノートブックの名前。</td><td class="ex">家</td></tr>
+      <tr><td class="col">Tags <span class="tr">（タグ）</span></td><td>カンマで区切ります。</td><td class="ex">プレゼント</td></tr>
+      <tr><td class="col">Space <span class="tr">（スペース）</span></td><td>Aqueli のスペースの名前。</td><td class="ex">家族</td></tr>
+      <tr><td class="col">Pinned <span class="tr">（ピン留め）</span></td><td><code>yes</code> または <code>no</code>。</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>習慣</h3>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Name<span class="req">必須</span> <span class="tr">（名前）</span></td><td>習慣の名前です。最大 60 文字です。</td><td class="ex">水を飲む</td></tr>
+      <tr><td class="col">Frequency <span class="tr">（頻度）</span></td><td>「使用できる値」を参照してください。空の場合は <code>every day</code>（毎日）です。</td><td class="ex">Mon, Wed, Fri</td></tr>
+      <tr><td class="col">Target <span class="tr">（目標）</span></td><td>1 日に達成する量です。1 から 1000 までです。空の場合は、チェックを付けるだけの習慣になります。</td><td class="ex">8</td></tr>
+      <tr><td class="col">Unit <span class="tr">（単位）</span></td><td>数える対象。</td><td class="ex">杯</td></tr>
+      <tr><td class="col">Reminder <span class="tr">（リマインダー）</span></td><td>予定した日に通知する時刻。</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">To break <span class="tr">（やめたい習慣）</span></td><td>やめたい習慣の場合は <code>yes</code> です。チェックを付けた日は、守れた日になります。</td><td class="ex">no</td></tr>
+      <tr><td class="col">Time of day <span class="tr">（時間帯）</span></td><td><code>morning</code>（朝）、<code>midday</code>（昼）、<code>evening</code>（夜）のいずれかです。その日のリストが時間帯ごとに並びます。空の場合は日中です。</td><td class="ex">morning</td></tr>
+      <tr><td class="col">Space <span class="tr">（スペース）</span></td><td>Aqueli のスペースの名前。</td><td class="ex">個人</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Aqueli のテンプレートと同じ名前の習慣（読書する、瞑想する、スポーツ…）は、そのテンプレートの記号と色を使います。それ以外の習慣は、習慣モジュールの記号と色を使います。どちらも後で Aqueli で変更できます。</p>
+
+  <h3>連絡先</h3>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">First name <span class="tr">（名）</span></td><td>連絡先の名。</td><td class="ex">Lea</td></tr>
+      <tr><td class="col">Last name <span class="tr">（姓）</span></td><td>姓。</td><td class="ex">Bernard</td></tr>
+      <tr><td class="col">Company <span class="tr">（会社）</span></td><td>会社または団体です。職人や店の場合は、これだけで足ります。</td><td class="ex">デュポン自動車整備</td></tr>
+      <tr><td class="col">Phone <span class="tr">（電話）</span></td><td>1 つ以上の番号です。セミコロンで区切ります。</td><td class="ex">07700 900123</td></tr>
+      <tr><td class="col">Email <span class="tr">（メール）</span></td><td>1 つ以上のアドレスです。セミコロンで区切ります。</td><td class="ex">lea.bernard@example.com</td></tr>
+      <tr><td class="col">Address <span class="tr">（住所）</span></td><td>郵便の住所。</td><td class="ex">12 Lilac Road, London</td></tr>
+      <tr><td class="col">Birthday <span class="tr">（誕生日）</span></td><td>生年月日、または日と月だけです。カレンダーに表示されます。</td><td class="ex">14/05/2016</td></tr>
+      <tr><td class="col">Tags <span class="tr">（タグ）</span></td><td>カンマで区切ります。</td><td class="ex">家族</td></tr>
+      <tr><td class="col">Keep in touch <span class="tr">（連絡の頻度）</span></td><td>連絡を取る間隔です：<code>every week</code>（毎週）、<code>every 2 weeks</code>（2 週間ごと）、<code>every month</code>（毎月）、<code>every 3 months</code>（3 か月ごと）、<code>every 6 months</code>（6 か月ごと）、<code>every year</code>（毎年）のいずれか。時期が来ると、その連絡先が「連絡が必要」に表示されます。空の場合は追跡しません。</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Space <span class="tr">（スペース）</span></td><td>Aqueli のスペースの名前。</td><td class="ex">家族</td></tr>
+      <tr><td class="col">Notes <span class="tr">（メモ）</span></td><td>自由なテキスト。</td><td class="ex">メッセージでの連絡を好む。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>支出</h3>
+  <p>予算モジュールの取引、つまり支出と収入です。銀行のウェブサイトからダウンロードした明細（Excel または CSV 形式）は、そのまま取り込めます。</p>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Date<span class="req">必須</span> <span class="tr">（日付）</span></td><td>取引の日。</td><td class="ex">26/09/2026</td></tr>
+      <tr><td class="col">Description <span class="tr">（説明）</span></td><td>取引の内容です。空の場合はカテゴリの名前です。</td><td class="ex">土曜日の市場</td></tr>
+      <tr><td class="col">Amount<span class="req">必須</span> <span class="tr">（金額）</span></td><td>ユーロ単位です。マイナスの金額は支出です。明細のようにマイナスの金額を含む表では、プラスの金額は収入です。それ以外の場合、金額は支出です。</td><td class="ex">42.50</td></tr>
+      <tr><td class="col">Category <span class="tr">（カテゴリ）</span></td><td>予算のカテゴリの名前です（日用品・食料品、住まい、交通、給与…）。認識できない場合は、カテゴリなしの取引になり、プレビューで示されます。</td><td class="ex">日用品・食料品</td></tr>
+      <tr><td class="col">Direction <span class="tr">（区分）</span></td><td><code>expense</code>（支出）または <code>income</code>（収入）。金額の符号より優先されます。</td><td class="ex">income</td></tr>
+      <tr><td class="col">Debit <span class="tr">（出金）</span></td><td>明細と同じく、Amount の代わりに使います。支出の金額です。</td><td class="ex">21.00</td></tr>
+      <tr><td class="col">Credit <span class="tr">（入金）</span></td><td>明細と同じく、Amount の代わりに使います。収入の金額です。</td><td class="ex">2,450.00</td></tr>
+      <tr><td class="col">Repeat <span class="tr">（繰り返し）</span></td><td>定期的な取引（給与、家賃…）：<code>every month</code>（毎月）、<code>every 2 months</code>（2 か月ごと）、<code>quarterly</code>（四半期ごと）、<code>half-yearly</code>（半年ごと）、<code>every year</code>（毎年）のいずれか。各回はその日に予算へ追加されます。空の場合は 1 回のみです。</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Until <span class="tr">（繰り返しの終了日）</span></td><td>繰り返しの最終日です。空の場合は終了しません。</td><td class="ex">31/12/2027</td></tr>
+      <tr><td class="col">Space <span class="tr">（スペース）</span></td><td>Aqueli のスペースの名前。</td><td class="ex">個人</td></tr>
+      <tr><td class="col">Notes <span class="tr">（メモ）</span></td><td>自由なテキスト。</td><td class="ex">チケット 2 枚。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>リスト</h3>
+  <p>リストモジュールのリストの項目です。買い物、本、映画、プレゼントのアイデア…</p>
+  <table>
+    <thead><tr><th>列</th><th>内容</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td class="col">List<span class="req">必須</span> <span class="tr">（リスト）</span></td><td>リストの名前です。既存のリストに項目が追加されます。ない場合はリストが作成され、名前に合うテンプレート（<code>Shopping</code> 買い物、<code>Books</code> 本、<code>Films</code> 映画、<code>Gifts</code> プレゼント、<code>Travel</code> 旅行、<code>Wishes</code> 欲しいもの）が使われます。</td><td class="ex">Shopping</td></tr>
+      <tr><td class="col">Item<span class="req">必須</span> <span class="tr">（項目）</span></td><td>項目の名前。</td><td class="ex">りんご</td></tr>
+      <tr><td class="col">Aisle <span class="tr">（売り場）</span></td><td>リストの売り場または区分です。既存のリストにない場合、項目は売り場なしで追加されます。</td><td class="ex">果物と野菜</td></tr>
+      <tr><td class="col">Done <span class="tr">（完了）</span></td><td>すでにチェック済みの項目は <code>yes</code> です。</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+  <p class="note">ほかの列（「Author」著者、「Rating」評価、「Price」価格、「Link」リンク…）は、リストの同じ名前の列に入ります。取り込みで作成されたリストでは、これらがそのリストの列になります。「Rating」は 0 から 5 の評価、「Price」は価格、「Date」は日付、「Link」はリンク、それ以外はテキストです。最大 12 列です。</p>
+
+  <h2 id="values"><span class="n">5</span>使用できる値</h2>
+  <dl>
+    <dt>日付</dt>
+    <dd>日が先、月が後です：<code>03/10/2026</code>、<code>3/10/26</code>、<code>2026-10-03</code>、<code>3 October 2026</code>。年がない場合（<code>03/10</code>）は、次に来るその日付です。ほかに <code>today</code>（今日）、<code>tomorrow</code>（明日）、<code>Monday</code>（月曜日）、<code>in 3 days</code>（3 日後）も使えます。Excel で日付として入力した日付も認識します。</dd>
+    <dt>時刻</dt>
+    <dd><code>14:00</code>、<code>2pm</code>、<code>2:30pm</code>、<code>noon</code>（正午）。時間帯：<code>09:30-10:00</code>。</dd>
+    <dt>所要時間とリマインダー</dt>
+    <dd><code>15 min</code>、<code>1 h</code>、<code>1 h 30</code>、<code>2 days</code>（2 日）。リマインダーには <code>on time</code>（時間どおり）または <code>none</code>（なし）も使えます。リマインダーを指定しない場合、時刻のある項目には既定のリマインダー（設定 › リマインダー）が適用されます。</dd>
+    <dt>繰り返し</dt>
+    <dd><code>every day</code>（毎日）、<code>every 2 days</code>（2 日ごと）、<code>weekdays</code>（平日）、<code>every Monday</code>（毎週月曜日）、<code>every Monday and Thursday</code>（毎週月曜日と木曜日）、<code>every week</code>（毎週）、<code>every 2 weeks</code>（2 週間ごと）、<code>every month</code>（毎月）、<code>every 3 months</code>（3 か月ごと）、<code>the first Monday of the month</code>（毎月第 1 月曜日）、<code>every year</code>（毎年）。タスクには <code>3 days after completion</code>（完了の 3 日後）も使えます。</dd>
+    <dt>習慣の頻度</dt>
+    <dd><code>every day</code>（毎日）、<code>3 times a week</code>（週 3 回）、<code>Mon, Wed, Fri</code>（月・水・金）、<code>Tuesday and Thursday</code>（火曜日と木曜日）、<code>weekdays</code>（平日）、<code>weekends</code>（週末）。</dd>
+    <dt>誕生日</dt>
+    <dd><code>14/05/1990</code>、<code>1990-05-14</code>、<code>14 May 1990</code>。年なし：<code>14/05</code>、<code>14 May</code>。</dd>
+    <dt>金額</dt>
+    <dd><code>312</code>、<code>45.90</code>、<code>€1,234.50</code>。取引には <code>-42.50</code> も使えます。</dd>
+    <dt>タグ</dt>
+    <dd>文字、数字、<code>-</code>、<code>_</code>、<code>/</code> が使えます。1 つのタグは最大 40 文字、タグは最大 20 個です。</dd>
+    <dt>スペースとノートブック</dt>
+    <dd>Aqueli での名前です。認識できない名前はプレビューで示されます。その場合、項目は表示中のスペース、または最初のスペースに入ります。</dd>
+    <dt>はい・いいえ</dt>
+    <dd><code>yes</code>（はい）、<code>no</code>（いいえ）。<code>x</code> は「はい」を表します。</dd>
+  </dl>
+
+  <h2 id="text"><span class="n">6</span>テキストファイルを使う</h2>
+  <p><code>.txt</code> または <code>.md</code> ファイルには、1 行に 1 項目を書きます。種類を書き、続けて <code>|</code> で区切った各フィールドを書きます。最初のフィールドがタイトルです。</p>
+  <pre>TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
+EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery
+OBLIGATION | Home insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
+NOTE | Gift ideas | Cookbook, scarf
+HABIT | Read | Mon, Wed, Fri | 20 pages | reminder: 21:30
+CONTACT | Lea Bernard | 07700 900123 | lea.bernard@example.com | birthday: 14/05/2016
+EXPENSE | €42.50 | Groceries | 27/09/2026
+INCOME | September salary | €2,450 | Salary | 01/10/2026
+LIST | Milk | Shopping | Fresh</pre>
+  <ul>
+    <li>種類：<code>TASK</code>（タスク）、<code>EVENT</code>（予定。<code>APPOINTMENT</code> も可）、<code>OBLIGATION</code>（支払い項目。<code>BILL</code> も可）、<code>NOTE</code>（ノート）、<code>HABIT</code>（習慣）、<code>CONTACT</code>（連絡先）、<code>EXPENSE</code>（支出）、<code>INCOME</code>（収入）、<code>LIST</code>（リスト）。</li>
+    <li>支出または収入では、タイトルを金額にできます。日付、金額、カテゴリは自動で認識されます。リストの項目では、タイトルの次のフィールドがリスト、その次が売り場です。</li>
+    <li>日付、時刻、<code>#タグ</code>、優先度（<code>!high</code>、<code>!medium</code>、<code>!low</code>）、金額、頻度、カテゴリ、繰り返しは自動で認識されます。習慣では頻度、目標（<code>20 pages</code>）、リマインダーの時刻、連絡先では電話番号、メールアドレス、生年月日が認識されます。</li>
+    <li>そのほかのフィールドは、列名を使って <code>name: value</code>（名前: 値）と書きます：<code>location: Martin surgery</code>、<code>space: Work</code>、<code>reminder: 1 h</code>、<code>subtasks: Kitchen; Living room</code>。認識できないフィールドは、項目のメモに入ります。</li>
+    <li>種類のない行はタスクで、クイック追加と同じように書きます：<code>Call the garage tomorrow 2pm #car !high</code>。行頭の箇条書き記号（<code>-</code>、<code>*</code>、<code>1.</code>）とチェックボックス（<code>- [ ]</code>）も使えます。</li>
+    <li>空行、見出し（<code># Heading</code>）、<code>//</code> で始まる行は無視されます。</li>
+    <li>種類のない <code>.md</code> ファイルは、1 つのノートになります。最初の見出し（<code># Heading</code>）がタイトルになり、見出しがない場合はファイル名になります。書式は保持されます：見出し、リスト、チェックボックス、引用、コードブロック、<code>**bold**</code>（太字）、<code>*italic*</code>（斜体）、<code>~~strikethrough~~</code>（取り消し線）、<code>==highlight==</code>（強調表示）、<code>`code`</code>（コード）。Aqueli から Markdown で書き出したノートは、この方法で再び取り込めます。プレビューでは、種類のないファイルを、タスクのリスト、予定のリスト、または 1 つのノートとして読むこともできます。</li>
+  </ul>
+
+  <h2 id="calendars"><span class="n">7</span>カレンダーと連絡先</h2>
+  <ul>
+    <li>カレンダーファイル <code>.ics</code>（Outlook、Google カレンダー、Apple カレンダーから書き出したもの）は予定になります。タイトル、日付と時刻、場所、説明、繰り返し、リマインダーが取り込まれます。</li>
+    <li>連絡先ファイル <code>.vcf</code>（携帯電話、Gmail、Outlook から書き出したもの）は連絡先になります。名前、会社、番号、メールアドレス、住所、誕生日、メモ、タグが取り込まれます。</li>
+    <li>協定世界時で書かれた時刻は、この PC の時刻に変換されます。特殊すぎる繰り返しは引き継がれません。プレビューで示されるので、後でカレンダーで設定できます。</li>
+    <li>キャンセルされた予定と連絡先の写真は取り込まれません。</li>
+  </ul>
+
+  <h2 id="preview"><span class="n">8</span>プレビュー、エラー、重複</h2>
+  <ul>
+    <li>取り込みの前に、各行がプレビューに表示されます。「取り込み」をクリックするまで、何も追加されません。</li>
+    <li>エラーのある行は赤で表示され、説明が付きます。その行は取り込まれません。ファイルを修正してから、もう一度取り込んでください。</li>
+    <li>重複とは、Aqueli の項目または前の行と、種類、タイトル、日付が同じもの（習慣と連絡先は名前が同じもの）です。取引では金額も、リストの項目ではリストも同じものです。重複はチェックが外れています。チェックを付けると、そのまま取り込まれます。</li>
+    <li>行のチェックを外すと、その行は取り込みから除外されます。「内容」メニューで、シートまたはファイルの種類を変更できます。</li>
+    <li>取り込みの後、「元に戻す」または <kbd>Ctrl+Z</kbd> で、取り込んだ項目をすべて一度に削除できます。</li>
+  </ul>
+
+  <h3>既存の項目の更新</h3>
+  <ul>
+    <li>Aqueli が書き出した表（タスク、連絡先、予算の取引）には、最後の列に <code>ID</code> があります。書き出した <code>.ics</code> ファイルと <code>.vcf</code> ファイルにも含まれます。変更しないでください。</li>
+    <li>もう一度取り込むと、ファイルは新しい項目を作る代わりに、この ID を持つ項目を更新します。その行には「既存の項目の更新です。」と表示されます。取り込みの前に、置き換えられる項目を一覧にしたウィンドウが表示され、確認を求められます。</li>
+    <li>ファイルに書かれていない内容は保持されます。タスクの色、プロジェクト、チェック済みのサブタスク、連絡先の写真、カテゴリ、カード、予定の繰り返しから削除した回などです。</li>
+    <li>ID のない行、またはこのアカウントに存在しない ID を持つ行（別の PC のファイル）は、新しい項目になります。</li>
+    <li>取り込みの後の「元に戻す」では、更新された項目の以前の値も復元されます。</li>
+  </ul>
+
+  <h2 id="good-to-know"><span class="n">9</span>補足</h2>
+  <ul>
+    <li>Import フォルダーに置いたファイルは、取り込みの後に削除されます。このフォルダーは暗号化されていないためです。代わりに <code>Import\Traités</code> に保管するには：設定 › 取り込み › 「取り込み後」。ウィンドウにドラッグしたファイルや別の場所から選んだファイルは、元の場所に残ります。</li>
+    <li>1 ファイルにつき最大 10 MB、5,000 項目です。</li>
+    <li>Excel：数式は再計算されず、最後に保存された値が読み込まれます。マクロは実行されません。</li>
+    <li><code>.xls</code> 形式のブックとパスワードで保護されたブックは読み込めません。<code>.xlsx</code> 形式で、パスワードなしで保存してください。</li>
+  </ul>
+
+  <footer>Aqueli · 取り込みガイド</footer>
+</main>
+</body>
+</html>

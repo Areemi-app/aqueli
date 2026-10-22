@@ -1,0 +1,503 @@
+/*
+ * « Planifier ma journée » : tâches à placer et agenda du jour, glisser-déposer.
+ * Couleurs : variables de thème seulement ; les tâches sont des bulles teintées (--row-color).
+ */
+
+.dialog--wide {
+  width: min(980px, 100%);
+  height: min(720px, 92vh);
+  max-height: none;
+  overflow: hidden;
+}
+
+.planner {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(250px, 340px) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.planner-side,
+.planner-agenda {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.planner-heading {
+  color: var(--aq-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.planner-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 2px 4px 4px 2px;
+}
+
+.planner-group {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--aq-soft);
+}
+
+.plan-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.plan-row {
+  --row-color: var(--aq-row);
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px 0 10px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  cursor: grab;
+  touch-action: pan-y;
+  transition:
+    background var(--aq-fast) ease,
+    opacity var(--aq-fast) ease;
+}
+
+.plan-row:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.plan-row[data-dragging] {
+  opacity: 0.45;
+}
+
+.plan-row-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.plan-row-duration {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--aq-soft);
+  white-space: nowrap;
+}
+
+.plan-row-action {
+  width: 28px;
+  height: 28px;
+}
+
+.planner-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  color: var(--aq-soft);
+}
+
+.planner-hint {
+  font-size: 12.5px;
+  color: var(--aq-soft);
+}
+
+/* ——— Agenda du jour : une heure = 64 px (HOUR_PX dans DayPlanner.tsx) ——— */
+
+.agenda-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  border-radius: 14px;
+  border: 1px solid var(--aq-field-border);
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  transition:
+    border-color var(--aq-fast) ease,
+    box-shadow var(--aq-fast) ease;
+}
+
+.agenda-scroll[data-drop] {
+  border-color: var(--aq-accent);
+  box-shadow:
+    var(--aq-field-inset),
+    0 0 0 3px var(--aq-tint);
+}
+
+.agenda {
+  --agenda-gutter: 58px;
+  position: relative;
+}
+
+.agenda-hour {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 64px;
+  pointer-events: none;
+}
+
+.agenda-hour::before,
+.agenda-hour::after {
+  content: "";
+  position: absolute;
+  left: var(--agenda-gutter);
+  right: 0;
+  border-top: 1px solid var(--aq-line);
+}
+
+.agenda-hour::before {
+  top: 0;
+}
+
+/* Demi-heure. */
+.agenda-hour::after {
+  top: 32px;
+  border-top-style: dashed;
+  opacity: 0.6;
+}
+
+.agenda-hour-label {
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Avant 7 h et après 22 h. */
+.agenda-off {
+  position: absolute;
+  left: var(--agenda-gutter);
+  right: 0;
+  background: color-mix(in srgb, var(--aq-ink) 4%, transparent);
+  pointer-events: none;
+}
+
+.agenda-now {
+  position: absolute;
+  z-index: 3;
+  left: calc(var(--agenda-gutter) - 4px);
+  right: 0;
+  border-top: 2px solid var(--aq-danger);
+  pointer-events: none;
+}
+
+.agenda-now::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--aq-danger);
+}
+
+.agenda-block {
+  --row-color: var(--aq-row);
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 26px 4px 11px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 45%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+  box-shadow:
+    inset 3px 0 0 var(--row-color),
+    0 6px 12px -10px var(--row-color);
+  cursor: grab;
+  touch-action: none;
+}
+
+.agenda-block[data-size] {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.agenda-block[data-size="xs"] .agenda-block-time {
+  display: none;
+}
+
+.agenda-block[data-dragging] {
+  opacity: 0.35;
+}
+
+.agenda-block--preview {
+  z-index: 4;
+  border-style: dashed;
+  pointer-events: none;
+}
+
+.agenda-block-title {
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.agenda-block[data-size] .agenda-block-title {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.agenda-block-time {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.agenda-block-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--aq-ink) 10%, transparent);
+  color: var(--aq-ink);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity var(--aq-fast) ease;
+}
+
+.agenda-block[data-size] .agenda-block-remove {
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+}
+
+.agenda-block:hover .agenda-block-remove,
+.agenda-block:focus-within .agenda-block-remove {
+  opacity: 1;
+}
+
+.agenda-block-remove:hover {
+  background: color-mix(in srgb, var(--aq-danger) 22%, transparent);
+}
+
+/* Rendez-vous du calendrier : pleins, de leur couleur, non déplaçables ici. */
+.agenda-event {
+  --row-color: var(--aq-row);
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 60%, transparent);
+  background: var(--aq-chip-gloss), var(--row-color);
+  box-shadow: var(--aq-chip-shadow);
+  color: var(--aq-on-accent);
+  pointer-events: none;
+}
+
+.agenda-event[data-default] {
+  border-color: var(--aq-gel-border);
+  background: var(--aq-gel);
+}
+
+.agenda-event[data-ink="dark"] {
+  color: var(--aq-on-light);
+}
+
+.agenda-event[data-size] {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.agenda-event .agenda-block-time {
+  color: inherit;
+  opacity: 0.88;
+}
+
+.agenda-event[data-size="xs"] .agenda-block-time {
+  display: none;
+}
+
+.planner-allday {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.planner-allday-chip {
+  --row-color: var(--aq-row);
+  max-width: 100%;
+  padding: 3px 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 40%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/* Poignée du bas : tirer pour changer la durée. */
+.agenda-resize {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7px;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.agenda-resize::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 18px;
+  height: 3px;
+  margin-left: -9px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--row-color) 70%, transparent);
+  opacity: 0;
+  transition: opacity var(--aq-fast) ease;
+}
+
+.agenda-block:hover .agenda-resize::after {
+  opacity: 1;
+}
+
+.planner-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.planner-status {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+/* ——— Glisser-déposer (src/lib/pointerDrag.ts) ——— */
+
+.drag-ghost {
+  position: fixed;
+  z-index: 1000;
+  max-width: 260px;
+  padding: 7px 14px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--aq-border);
+  background: var(--aq-popover-solid);
+  box-shadow: 0 12px 26px -12px var(--aq-glow);
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(12px, -50%);
+}
+
+html.is-dragging,
+html.is-dragging * {
+  cursor: grabbing !important;
+}
+
+/* Étiquette d'un élément glissé (src/lib/dragDrop.ts) : pastille de sa couleur, puis son titre. */
+.drag-ghost {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drag-ghost-dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: var(--aq-chip-gloss), var(--ghost-color);
+}
+
+.drag-ghost-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Élément en cours de déplacement : estompé à sa place. */
+html.is-dragging [data-drag-source] {
+  opacity: 0.45;
+}
+
+/* Cibles possibles : contour en pointillé ; cible survolée : teinte et contour pleins. */
+html.is-dragging [data-drop-ready] {
+  outline: 1.5px dashed color-mix(in srgb, var(--aq-accent) 45%, transparent);
+  outline-offset: -2px;
+}
+
+html.is-dragging [data-drop-over] {
+  outline: 2px solid var(--aq-accent);
+  outline-offset: -2px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-accent) 20%, var(--aq-tile));
+  box-shadow: 0 4px 14px -6px var(--aq-glow);
+}
+
+/* Place d'insertion dans une liste remise en ordre. */
+.drag-insert {
+  position: fixed;
+  z-index: 1000;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--aq-gel);
+  box-shadow: 0 0 8px var(--aq-glow);
+  pointer-events: none;
+}

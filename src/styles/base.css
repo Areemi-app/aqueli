@@ -1,0 +1,267 @@
+/*
+ * Base d'Aqueli : police, tailles, focus clavier, barres de défilement, options d'accessibilité.
+ * Toutes les couleurs viennent des variables de thème « --aq-… » (src/theme/themes.ts).
+ */
+
+:root {
+  --aq-font: "Figtree Variable", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --aq-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --aq-fast: 150ms;
+  --aq-normal: 220ms;
+
+  font-family: var(--aq-font);
+  font-size: 14px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  color: var(--aq-ink);
+  background: var(--aq-window-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Écritures non latines : Figtree garde le latin et les chiffres, puis la police de Windows faite
+   pour chaque écriture (chinois, japonais et coréen chacun la sienne, pour la forme juste des
+   caractères communs). Le cyrillique et le vietnamien passent par Segoe UI. */
+:root:lang(zh) {
+  --aq-font: "Figtree Variable", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
+}
+
+:root:lang(ja) {
+  --aq-font: "Figtree Variable", "Yu Gothic UI", "Meiryo UI", "Segoe UI", sans-serif;
+}
+
+:root:lang(ko) {
+  --aq-font: "Figtree Variable", "Malgun Gothic", "Segoe UI", sans-serif;
+}
+
+:root:lang(hi) {
+  --aq-font: "Figtree Variable", "Nirmala UI", "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  /* Une application ne se sélectionne pas comme une page web ; les champs de saisie, si. */
+  user-select: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  user-select: text;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+img {
+  display: block;
+}
+
+/* Contour de focus toujours visible au clavier, jamais à la souris. */
+:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: var(--aq-tint);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--aq-scrollbar) transparent;
+}
+
+::placeholder {
+  color: var(--aq-soft);
+  opacity: 1;
+}
+
+/* Changement de thème : fondu enchaîné de 0,4 s. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: ease;
+}
+
+.hide-when-narrow {
+  display: inline;
+}
+
+@media (max-width: 1100px) {
+  /* Prioritaire : un élément masqué l'est même si son style lui donne un affichage. */
+  .hide-when-narrow {
+    display: none !important;
+  }
+}
+
+/* Barre de titre : en dessous de 1 440 px, certains libellés laissent la place à la recherche
+   (l'icône et son infobulle restent). */
+@media (max-width: 1440px) {
+  .hide-below-wide {
+    display: none;
+  }
+}
+
+/* ——— Options d'accessibilité ——— */
+
+[data-reduce-motion="true"] *,
+[data-reduce-motion="true"] *::before,
+[data-reduce-motion="true"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+[data-reduce-transparency="true"] .glass {
+  background: var(--aq-card-solid);
+  backdrop-filter: none;
+}
+
+[data-reduce-transparency="true"] .glass-popover {
+  background: var(--aq-popover-solid);
+  backdrop-filter: none;
+}
+
+[data-reduce-transparency="true"] .titlebar,
+[data-reduce-transparency="true"] .statusbar {
+  background: var(--aq-bar-solid);
+  backdrop-filter: none;
+}
+
+[data-reduce-transparency="true"] .btn-glass,
+[data-reduce-transparency="true"] .icon-btn,
+[data-reduce-transparency="true"] .theme-card {
+  backdrop-filter: none;
+}
+
+[data-reduce-transparency="true"] .decor {
+  opacity: 0.5;
+}
+
+/* Contraste élevé : texte franc, traits marqués (les surfaces sont déjà opaques, voir plus haut).
+   « !important » l'emporte sur les variables posées par le thème. */
+[data-high-contrast="true"] {
+  --aq-ink: #000 !important;
+  --aq-soft: #2b2f36 !important;
+  --aq-line: rgba(0, 0, 0, 0.42) !important;
+  --aq-line-strong: rgba(0, 0, 0, 0.6) !important;
+  --aq-border: rgba(0, 0, 0, 0.5) !important;
+  --aq-field-border: rgba(0, 0, 0, 0.62) !important;
+  --aq-focus: #000 !important;
+  --aq-heading: #000 !important;
+  --aq-button-ink: #000 !important;
+}
+
+[data-high-contrast="true"][data-dark="true"] {
+  --aq-ink: #fff !important;
+  --aq-soft: #e2e6ec !important;
+  --aq-line: rgba(255, 255, 255, 0.45) !important;
+  --aq-line-strong: rgba(255, 255, 255, 0.62) !important;
+  --aq-border: rgba(255, 255, 255, 0.55) !important;
+  --aq-field-border: rgba(255, 255, 255, 0.66) !important;
+  --aq-focus: #fff !important;
+  --aq-heading: #fff !important;
+  --aq-button-ink: #fff !important;
+}
+
+[data-high-contrast="true"] .glass,
+[data-high-contrast="true"] .glass-popover {
+  border: 1px solid var(--aq-border);
+}
+
+[data-high-contrast="true"] .decor {
+  display: none;
+}
+
+[data-high-contrast="true"] :focus-visible {
+  outline: 3px solid var(--aq-focus) !important;
+  outline-offset: 2px;
+}
+
+@keyframes aq-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes aq-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+@keyframes aq-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes aq-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(4px, -12px, 0);
+  }
+}
+
+@keyframes aq-twinkle {
+  0%,
+  100% {
+    opacity: var(--star-opacity, 0.8);
+  }
+  50% {
+    opacity: calc(var(--star-opacity, 0.8) * 0.3);
+  }
+}
+
+/* Texte d'aide affiché une phrase par ligne (composant Sentences). */
+.text-lines {
+  display: block;
+  min-width: 0;
+}
+
+.text-line {
+  display: block;
+}
+
+.text-line + .text-line {
+  margin-top: 2px;
+}

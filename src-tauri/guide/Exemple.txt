@@ -1,0 +1,13 @@
+TÂCHE | Appeler le garage | 03/10/2026 14:00 | #voiture | !haute | espace: Perso
+TÂCHE | Préparer les cartons | 10/10/2026 | #déménagement | durée: 2 h | sous-tâches: Cuisine; Salon; Chambre
+TÂCHE | Arroser les plantes | chaque semaine | espace: Perso
+ÉVÉNEMENT | Dentiste | 08/10/2026 09:30-10:00 | lieu: Cabinet Martin | rappel: 1 h | espace: Santé
+ÉVÉNEMENT | Week-end à la mer | 17/10/2026 | date de fin: 18/10/2026
+OBLIGATION | Assurance habitation | Assurances | échéance 15/11/2026 | préavis 15/10/2026 | 312 € | annuelle
+OBLIGATION | Abonnement téléphone | Abonnements | échéance 05/10/2026 | 19,99 € | mensuelle | organisme: Opérateur
+NOTE | Idées cadeaux | Livre de cuisine, écharpe, jeu de société
+HABITUDE | Lire | lun, mer, ven | 20 pages | rappel: 21:30
+CONTACT | Léa Bernard | 06 12 34 56 78 | lea.bernard@exemple.fr | anniversaire: 14/05/2016
+DÉPENSE | 42,50 € | Courses | 27/09/2026
+REVENU | Salaire de septembre | 2 450 € | Salaire | 01/10/2026
+LISTE | Lait | Courses | Frais

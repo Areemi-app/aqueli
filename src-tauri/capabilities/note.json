@@ -1,0 +1,42 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "fenetres-notes",
+  "description": "Permissions d'une note ouverte dans sa propre fenêtre, au strict minimum : lire les préférences d'affichage (thème), lire et modifier les notes, lire les espaces, exporter la note, se déplacer, se réduire, s'agrandir et se fermer, prévenir la fenêtre principale. Aucun accès aux autres données du compte.",
+  "windows": [
+    "note-*"
+  ],
+  "permissions": [
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "core:window:allow-start-dragging",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-internal-toggle-maximize",
+    "core:window:allow-is-maximized",
+    "core:window:allow-close",
+    "core:window:allow-destroy",
+    "core:window:allow-show",
+    "core:window:allow-set-focus",
+    "core:webview:allow-set-webview-zoom",
+    "allow-prefs-load",
+    "allow-discreet-window",
+    "allow-spaces-list",
+    "allow-notes-list",
+    "allow-notes-get",
+    "allow-notes-search",
+    "allow-notes-update-body",
+    "allow-notes-update-meta",
+    "allow-notes-delete",
+    "allow-notes-restore",
+    "allow-notebooks-list",
+    "allow-note-folders-list",
+    "allow-note-versions-list",
+    "allow-note-versions-get",
+    "allow-note-versions-restore",
+    "allow-note-templates-list",
+    "allow-note-templates-create",
+    "allow-export-file",
+    "allow-note-window-activity",
+    "allow-note-window-show-in-main"
+  ]
+}

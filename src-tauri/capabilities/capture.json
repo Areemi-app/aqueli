@@ -1,0 +1,17 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "fenetre-capture",
+  "description": "Permissions de la capture rapide, au strict minimum : lire les préférences d'affichage (thème, taille du texte), régler la taille du texte, envoyer l'élément saisi, connaître l'état du verrouillage, se cacher. Aucune lecture des données du compte.",
+  "windows": [
+    "capture"
+  ],
+  "permissions": [
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "core:webview:allow-set-webview-zoom",
+    "allow-prefs-load",
+    "allow-capture-submit",
+    "allow-capture-status",
+    "allow-capture-hide"
+  ]
+}

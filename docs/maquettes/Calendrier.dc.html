@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Calendrier Aqueli</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 1280px; height: 800px; overflow: hidden; background: {{t.sky}}; font-family: 'Figtree', 'Segoe UI Variable', 'Segoe UI', sans-serif; font-variant-numeric: tabular-nums; color: {{t.ink}}">
+<div aria-hidden="true" style="position: absolute; left: 1180px; top: 80px; width: 80px; height: 80px; border-radius: 40px; background: {{t.bubble}}; border: 1px solid {{t.bubbleEdge}}"></div>
+<div style="position: relative; display: flex; flex-direction: column; width: 1280px; height: 800px">
+<dc-import name="BarreTitre" theme="{{themeKey}}" hint-size="1280px,52px"></dc-import>
+<div style="display: flex; gap: 16px; height: 720px; box-sizing: border-box; padding: 12px 16px 12px 16px">
+<dc-import name="BarreLaterale" theme="{{themeKey}}" active="calendrier" hint-size="232px,696px"></dc-import>
+<main style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="height: 52px; display: flex; align-items: center; gap: 10px">
+<h1 style="margin: 0 8px 0 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em">Calendrier</h1>
+<button type="button" aria-label="Semaine précédente" style="width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 17px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<button type="button" aria-label="Semaine suivante" style="width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 17px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></button>
+<button type="button" style="height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Aujourd'hui</button>
+<span style="margin-left: 6px; font-size: 17px; font-weight: 700">28 sept. – 4 oct. 2026</span>
+<span style="flex-grow: 1"></span>
+<div role="tablist" aria-label="Vue" style="display: flex; padding: 3px; gap: 2px; border-radius: 18px; background: {{t.field}}; border: 1px solid {{t.border}}; box-shadow: inset 0 1px 3px rgba(0,30,60,0.12)">
+<button type="button" role="tab" aria-selected="false" style="height: 30px; padding: 0 12px; border-radius: 15px; border: 0; background: transparent; color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Jour</button>
+<button type="button" role="tab" aria-selected="true" style="height: 30px; padding: 0 12px; border-radius: 15px; border: 0; background: {{t.seg}}; color: {{t.accent}}; box-shadow: 0 1px 3px rgba(0,30,60,0.18), inset 0 1px 0 rgba(255,255,255,0.7); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Semaine</button>
+<button type="button" role="tab" aria-selected="false" style="height: 30px; padding: 0 12px; border-radius: 15px; border: 0; background: transparent; color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Mois</button>
+<button type="button" role="tab" aria-selected="false" style="height: 30px; padding: 0 12px; border-radius: 15px; border: 0; background: transparent; color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Année</button>
+<button type="button" role="tab" aria-selected="false" style="height: 30px; padding: 0 12px; border-radius: 15px; border: 0; background: transparent; color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Agenda</button>
+</div>
+<button type="button" style="height: 38px; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 6px; border-radius: 19px; border: 1px solid rgba(255,255,255,0.28); background: {{t.gel}}; color: #ffffff; font-family: inherit; font-size: 14px; font-weight: 700; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px -8px {{t.glow}}; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+<span>Événement</span>
+</button>
+</div>
+<div style="flex-grow: 1; min-height: 0; display: flex; gap: 14px">
+<aside aria-label="Calendriers" style="width: 204px; flex-shrink: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; padding: 14px 12px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}">
+<div style="display: flex; align-items: center; padding: 0 4px"><span style="flex-grow: 1; font-size: 14px; font-weight: 700">Septembre 2026</span></div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px; text-align: center; font-size: 11px; font-weight: 700; color: {{t.soft}}">
+<span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px; text-align: center">
+<sc-for list="{{mini}}" as="c" hint-placeholder-count="35">
+<span style="height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: {{c.bg}}; color: {{c.color}}; font-size: 12px; font-weight: {{c.weight}}">{{c.n}}</span>
+</sc-for>
+</div>
+<div style="height: 1px; margin: 6px 0; background: {{t.line}}"></div>
+<div style="padding: 0 4px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{t.soft}}">Mes calendriers</div>
+<sc-for list="{{calendars}}" as="cal" hint-placeholder-count="4">
+<label style="height: 28px; display: flex; align-items: center; gap: 8px; padding: 0 4px; font-size: 13px; font-weight: 600; cursor: pointer">
+<input type="checkbox" checked="{{cal.on}}" style="width: 16px; height: 16px; margin: 0; accent-color: {{cal.color}}">
+<span style="flex-grow: 1">{{cal.label}}</span>
+<span style="width: 10px; height: 10px; border-radius: 5px; background: {{cal.color}}"></span>
+</label>
+</sc-for>
+<div style="height: 1px; margin: 6px 0; background: {{t.line}}"></div>
+<div style="padding: 0 4px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{t.soft}}">Afficher aussi</div>
+<sc-for list="{{layers}}" as="layer" hint-placeholder-count="5">
+<label style="height: 28px; display: flex; align-items: center; gap: 8px; padding: 0 4px; font-size: 13px; font-weight: 600; cursor: pointer">
+<input type="checkbox" checked="{{layer.on}}" style="width: 16px; height: 16px; margin: 0; accent-color: {{t.accent}}">
+<span>{{layer.label}}</span>
+</label>
+</sc-for>
+</aside>
+<section aria-label="Semaine du 28 septembre" style="flex-grow: 1; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; padding: 12px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; overflow: hidden">
+<div style="height: 46px; display: flex; padding-left: 44px">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+<div style="flex-grow: 1; flex-basis: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px">
+<span style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: {{t.soft}}">{{d.label}}</span>
+<span style="font-size: 18px; font-weight: 700; line-height: 1.1">{{d.num}}</span>
+</div>
+</sc-for>
+</div>
+<div style="position: relative; height: 30px; border-top: 1px solid {{t.line}}; border-bottom: 1px solid {{t.line}}">
+<span style="position: absolute; left: 0; top: 8px; width: 40px; text-align: right; font-size: 10px; font-weight: 700; color: {{t.soft}}">JOURNÉE</span>
+<sc-for list="{{allDay}}" as="a" hint-placeholder-count="2">
+<div style="position: absolute; left: {{a.left}}px; top: 4px; width: {{a.width}}px; height: 22px; box-sizing: border-box; padding: 0 6px; border-radius: 7px; background: {{a.bg}}; border: 1px solid {{a.color}}; color: {{t.ink}}; font-size: 11px; font-weight: 700; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{a.title}}</div>
+</sc-for>
+</div>
+<div style="position: relative; flex-grow: 1">
+<sc-for list="{{weekend}}" as="w" hint-placeholder-count="2">
+<div style="position: absolute; left: {{w.left}}px; top: 0; width: {{w.width}}px; height: 540px; background: {{t.tint}}; opacity: 0.5"></div>
+</sc-for>
+<sc-for list="{{hours}}" as="h" hint-placeholder-count="12">
+<div style="position: absolute; left: 0; right: 0; top: {{h.top}}px; height: 1px; background: {{t.line}}"></div>
+<span style="position: absolute; left: 0; top: {{h.labelTop}}px; width: 38px; text-align: right; font-size: 11px; font-weight: 600; color: {{t.soft}}">{{h.label}}</span>
+</sc-for>
+<sc-for list="{{events}}" as="e" hint-placeholder-count="12">
+<div style="position: absolute; left: {{e.left}}px; top: {{e.top}}px; width: {{e.width}}px; height: {{e.height}}px; box-sizing: border-box; padding: 3px 7px; border-radius: 9px; background: {{e.bg}}; border: {{e.border}}; color: {{e.ink}}; box-shadow: {{e.shadow}}; overflow: hidden">
+<div style="font-size: 12px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{e.title}}</div>
+<div style="font-size: 11px; font-weight: 600; line-height: 1.2; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{e.sub}}</div>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+</main>
+</div>
+<footer style="height: 28px; box-sizing: border-box; display: flex; align-items: center; gap: 18px; padding: 0 16px; background: {{t.bar}}; border-top: 1px solid {{t.border}}; font-size: 12px; font-weight: 600; color: {{t.soft}}">
+<span style="display: flex; align-items: center; gap: 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>Enregistré</span>
+<span>Glissez une tâche dans la grille pour lui réserver un créneau</span>
+<span style="flex-grow: 1"></span>
+<span>Thème {{t.name}}</span>
+</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["aqua","prairie","automne","nuit"],"default":"prairie"},"$preview":{"width":1280,"height":800}}'>
+const AQ_GLOSS = 'radial-gradient(120% 90% at 50% -20%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0) 70%)';
+const AQ_BUBBLE = 'radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.35) 18%, rgba(255,255,255,0.08) 55%, rgba(255,255,255,0.35) 100%)';
+const AQ_THEMES = {
+  aqua: { name: 'Aqua', sky: 'radial-gradient(70% 45% at 85% 0%, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%), linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%)', bar: 'linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.58) 100%)', card: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 38%), rgba(255,255,255,0.66)', field: 'rgba(255,255,255,0.9)', border: 'rgba(255,255,255,0.95)', ink: '#0b2a45', soft: '#3a5870', accent: '#07609f', tint: 'rgba(10,112,188,0.10)', today: 'rgba(10,112,188,0.9)', gel: AQ_GLOSS + ', linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%)', glow: 'rgba(11,93,171,0.55)', seg: '#ffffff', line: 'rgba(11,42,69,0.12)', shadow: '0 10px 30px rgba(6,68,120,0.16)', bubble: AQ_BUBBLE, bubbleEdge: 'rgba(255,255,255,0.7)' },
+  prairie: { name: 'Prairie', sky: 'radial-gradient(130% 55% at 25% 112%, #58b52c 0%, #58b52c 55%, rgba(88,181,44,0) 55.4%), radial-gradient(100% 45% at 88% 110%, #86cf49 0%, #86cf49 58%, rgba(134,207,73,0) 58.4%), radial-gradient(70% 40% at 80% 0%, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%), linear-gradient(180deg, #34a8e6 0%, #9edcf9 45%, #eefaff 100%)', bar: 'linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.58) 100%)', card: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 38%), rgba(255,255,255,0.7)', field: 'rgba(255,255,255,0.9)', border: 'rgba(255,255,255,0.95)', ink: '#12321a', soft: '#3a5a40', accent: '#1d6e10', tint: 'rgba(31,125,18,0.10)', today: 'rgba(31,125,18,0.9)', gel: AQ_GLOSS + ', linear-gradient(180deg, #47ab27 0%, #1b6810 100%)', glow: 'rgba(27,104,16,0.5)', seg: '#ffffff', line: 'rgba(18,50,26,0.12)', shadow: '0 10px 30px rgba(30,90,40,0.16)', bubble: AQ_BUBBLE, bubbleEdge: 'rgba(255,255,255,0.7)' },
+  automne: { name: 'Automne', sky: 'radial-gradient(60% 45% at 82% 4%, rgba(255,240,190,0.95), rgba(255,240,190,0) 70%), linear-gradient(180deg, #f7cd7a 0%, #efa059 45%, #d9713c 75%, #a8452a 100%)', bar: 'linear-gradient(180deg, rgba(255,250,240,0.9) 0%, rgba(255,244,228,0.62) 100%)', card: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 38%), rgba(255,247,236,0.74)', field: 'rgba(255,251,245,0.92)', border: 'rgba(255,250,240,0.95)', ink: '#3a1a0a', soft: '#6a3b22', accent: '#9a3b0a', tint: 'rgba(168,65,12,0.10)', today: 'rgba(168,65,12,0.9)', gel: AQ_GLOSS + ', linear-gradient(180deg, #e07833 0%, #983b0c 100%)', glow: 'rgba(152,59,12,0.5)', seg: '#fffaf3', line: 'rgba(58,26,10,0.12)', shadow: '0 10px 30px rgba(120,50,10,0.2)', bubble: AQ_BUBBLE, bubbleEdge: 'rgba(255,240,210,0.7)' },
+  nuit: { name: 'Nuit étoilée', sky: 'radial-gradient(55% 45% at 85% 8%, rgba(140,100,255,0.35), rgba(140,100,255,0) 70%), radial-gradient(55% 45% at 8% 95%, rgba(0,190,255,0.28), rgba(0,190,255,0) 70%), linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%)', bar: 'linear-gradient(180deg, rgba(40,72,160,0.7) 0%, rgba(10,22,64,0.62) 100%)', card: 'linear-gradient(180deg, rgba(160,200,255,0.14) 0%, rgba(160,200,255,0) 38%), rgba(12,26,72,0.66)', field: 'rgba(8,18,52,0.78)', border: 'rgba(150,200,255,0.3)', ink: '#eef5ff', soft: '#b4c8e8', accent: '#8adbff', tint: 'rgba(114,210,255,0.10)', today: 'rgba(60,140,240,0.9)', gel: AQ_GLOSS + ', linear-gradient(180deg, #3c92f2 0%, #1a45b5 100%)', glow: 'rgba(70,150,255,0.6)', seg: 'rgba(110,170,255,0.32)', line: 'rgba(200,220,255,0.14)', shadow: '0 10px 30px rgba(0,0,0,0.35)', bubble: 'radial-gradient(circle at 32% 28%, rgba(200,230,255,0.7) 0%, rgba(120,180,255,0.2) 20%, rgba(80,140,255,0.05) 55%, rgba(140,190,255,0.25) 100%)', bubbleEdge: 'rgba(150,200,255,0.35)' }
+};
+const CAL = { perso: '#0778b0', travail: '#6a4fd6', sante: '#c2386f', famille: '#a8620a', obligation: '#d0601c' };
+const HOUR_PX = 45, START = 8, GUTTER = 44, COL = 101;
+const EVENTS = [
+  { day: 0, s: 9.5, e: 10, title: 'Dentiste', sub: '09:30 · Santé', cal: 'sante' },
+  { day: 0, s: 11, e: 12.5, title: 'Préparer la réunion', sub: 'Créneau de tâche', cal: 'travail', task: true },
+  { day: 0, s: 14, e: 15.5, title: 'Réunion d’équipe', sub: '14:00 – 15:30', cal: 'travail' },
+  { day: 1, s: 12, e: 13, title: 'Déjeuner d’équipe', sub: '12:00 · Travail', cal: 'travail' },
+  { day: 1, s: 16, e: 17.5, title: 'Dossier mutuelle', sub: 'Créneau de tâche', cal: 'sante', task: true },
+  { day: 2, s: 9, e: 10.5, title: 'Session Focus', sub: '2 × 25 min', cal: 'perso', task: true },
+  { day: 2, s: 18, e: 19, title: 'Cours de yoga', sub: '18:00 · Perso', cal: 'perso' },
+  { day: 3, s: 10, e: 11.5, title: 'Rendez-vous banque', sub: '10:00 · Perso', cal: 'perso' },
+  { day: 4, s: 12.5, e: 14, title: 'Déjeuner avec Camille', sub: '12:30 · Perso', cal: 'perso' },
+  { day: 4, s: 14, e: 14.75, title: 'Appeler le garage', sub: 'Tâche · 14:00', cal: 'perso', task: true },
+  { day: 5, s: 10, e: 12, title: 'Marché et jardin', sub: '10:00 · Famille', cal: 'famille' },
+  { day: 6, s: 15, e: 17, title: 'Goûter chez Léa', sub: '15:00 · Famille', cal: 'famille' }
+];
+function hexA(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+}
+class Component extends DCLogic {
+  renderVals() {
+    const key = AQ_THEMES[this.props.theme] ? this.props.theme : 'prairie';
+    const t = AQ_THEMES[key];
+    const names = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM', 'DIM'];
+    const nums = ['28', '29', '30', '1 oct.', '2', '3', '4'];
+    const days = names.map((label, i) => ({ label, num: nums[i] }));
+    const hours = [];
+    for (let h = START; h < START + 12; h++) {
+      hours.push({ top: (h - START) * HOUR_PX, labelTop: (h - START) * HOUR_PX + 2, label: (h < 10 ? '0' : '') + h + ':00' });
+    }
+    const events = EVENTS.map((ev) => {
+      const c = CAL[ev.cal];
+      return {
+        title: ev.title,
+        sub: ev.sub,
+        left: GUTTER + ev.day * COL + 3,
+        width: COL - 6,
+        top: (ev.s - START) * HOUR_PX + 2,
+        height: (ev.e - ev.s) * HOUR_PX - 4,
+        bg: ev.task ? hexA(c, 0.14) : 'linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 55%), ' + c,
+        border: ev.task ? '1.5px dashed ' + c : '1px solid rgba(0,0,0,0.12)',
+        ink: ev.task ? t.ink : '#ffffff',
+        shadow: ev.task ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 6px rgba(0,0,0,0.15)'
+      };
+    });
+    const allDay = [
+      { title: 'Salle de sport · 29,90 €', day: 3, color: CAL.obligation },
+      { title: 'Anniversaire de Léa', day: 6, color: CAL.famille }
+    ].map((a) => ({ ...a, left: GUTTER + a.day * COL + 3, width: COL - 6, bg: hexA(a.color, 0.18) }));
+    const weekend = [5, 6].map((d) => ({ left: GUTTER + d * COL, width: COL }));
+    const mini = [];
+    const push = (n, muted, kind) => mini.push({
+      n,
+      bg: kind === 'today' ? t.today : (kind === 'week' ? t.tint : 'transparent'),
+      color: kind === 'today' ? '#ffffff' : (muted ? t.soft : t.ink),
+      weight: kind ? 700 : 500
+    });
+    push('31', true, null);
+    for (let d = 1; d <= 30; d++) push(String(d), false, d === 27 ? 'today' : (d >= 28 ? 'week' : null));
+    for (let d = 1; d <= 4; d++) push(String(d), true, 'week');
+    const calendars = [
+      { label: 'Perso', color: CAL.perso, on: true },
+      { label: 'Travail', color: CAL.travail, on: true },
+      { label: 'Santé', color: CAL.sante, on: true },
+      { label: 'Famille', color: CAL.famille, on: true }
+    ];
+    const layers = [
+      { label: 'Tâches datées', on: true },
+      { label: 'Obligations', on: true },
+      { label: 'Anniversaires', on: true },
+      { label: 'Jours fériés', on: true },
+      { label: 'Vacances scolaires', on: false }
+    ];
+    return { t, themeKey: key, days, hours, events, allDay, weekend, mini, calendars, layers };
+  }
+}
+</script>
+</body>
+</html>

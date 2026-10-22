@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Accueil Aqueli</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 1280px; height: 800px; overflow: hidden; background: {{t.sky}}; font-family: 'Figtree', 'Segoe UI Variable', 'Segoe UI', sans-serif; font-variant-numeric: tabular-nums; color: {{t.ink}}">
+<div aria-hidden="true" style="position: absolute; left: 1150px; top: 70px; width: 110px; height: 110px; border-radius: 55px; background: {{t.bubble}}; border: 1px solid {{t.bubbleEdge}}"></div>
+<div aria-hidden="true" style="position: absolute; left: 1200px; top: 610px; width: 64px; height: 64px; border-radius: 32px; background: {{t.bubble}}; border: 1px solid {{t.bubbleEdge}}"></div>
+<div aria-hidden="true" style="position: absolute; left: 700px; top: 720px; width: 44px; height: 44px; border-radius: 22px; background: {{t.bubble}}; border: 1px solid {{t.bubbleEdge}}"></div>
+<div aria-hidden="true" style="position: absolute; left: 600px; top: 64px; width: 28px; height: 28px; border-radius: 14px; background: {{t.bubble}}; border: 1px solid {{t.bubbleEdge}}"></div>
+<div aria-hidden="true" style="position: absolute; left: 930px; top: 400px; width: 70px; height: 70px; border-radius: 35px; background: {{t.bubble}}; border: 1px solid {{t.bubbleEdge}}"></div>
+<div style="position: relative; display: flex; flex-direction: column; width: 1280px; height: 800px">
+<dc-import name="BarreTitre" theme="{{themeKey}}" hint-size="1280px,52px"></dc-import>
+<div style="display: flex; gap: 16px; height: 720px; box-sizing: border-box; padding: 12px 16px 12px 16px">
+<dc-import name="BarreLaterale" theme="{{themeKey}}" active="accueil" hint-size="232px,696px"></dc-import>
+<main style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="height: 64px; display: flex; align-items: center; gap: 12px">
+<div style="flex-grow: 1">
+<h1 style="margin: 0; font-size: 30px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em">Bonsoir !</h1>
+<p style="margin: 2px 0 0 0; font-size: 14px; font-weight: 500; color: {{t.soft}}">Dimanche 27 septembre 2026 · semaine 39 · 3 tâches restantes aujourd'hui</p>
+</div>
+<button type="button" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; border-radius: 19px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9M15 5v4M9 15v4"></path></svg>
+<span>Personnaliser</span>
+</button>
+<button type="button" style="height: 38px; padding: 0 18px; display: flex; align-items: center; gap: 8px; border-radius: 19px; border: 1px solid rgba(255,255,255,0.28); background: {{t.gel}}; color: #ffffff; font-family: inherit; font-size: 14px; font-weight: 700; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px -8px {{t.glow}}; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0"></path></svg>
+<span>Planifier ma journée</span>
+</button>
+</div>
+<div style="flex-grow: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 14px">
+<section style="box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 2px">
+<span style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), #2d6ff0; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z M8 12l3 3 5-6"></path></svg></span>
+<h2 style="margin: 0; flex-grow: 1; font-size: 16px; font-weight: 700">Aujourd'hui</h2>
+<a href="Taches.dc.html" style="font-size: 13px; font-weight: 600; color: {{t.accent}}; text-decoration: none">Tout voir</a>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 34px; border-bottom: 1px solid {{t.line}}">
+<button type="button" aria-label="Rouvrir la tâche" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 0; box-shadow: 0 3px 8px -3px {{t.glow}}; background: {{t.gel}}; cursor: pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 500; color: {{t.soft}}; text-decoration: line-through">Arroser les plantes</span>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #0a9fd8"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 34px; border-bottom: 1px solid {{t.line}}">
+<button type="button" aria-label="Rouvrir la tâche" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 0; box-shadow: 0 3px 8px -3px {{t.glow}}; background: {{t.gel}}; cursor: pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 500; color: {{t.soft}}; text-decoration: line-through">Répondre au syndic</span>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #0a9fd8"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 34px; border-bottom: 1px solid {{t.line}}">
+<button type="button" aria-label="Terminer la tâche" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; border-radius: 10px; border: 1.5px solid {{t.soft}}; background: transparent; cursor: pointer"></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 600">Appeler le garage</span>
+<span style="padding: 1px 7px; border-radius: 8px; background: {{t.tint}}; color: {{t.accent}}; font-size: 12px; font-weight: 700">14:00</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="#e0483c" stroke="#e0483c" stroke-width="2" stroke-linejoin="round" aria-label="Priorité haute" role="img"><path d="M5 21V4h11l-2 4 2 4H5"></path></svg>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #0a9fd8"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 34px; border-bottom: 1px solid {{t.line}}">
+<button type="button" aria-label="Terminer la tâche" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; border-radius: 10px; border: 1.5px solid {{t.soft}}; background: transparent; cursor: pointer"></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 600">Envoyer le dossier mutuelle</span>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #e0508a"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 34px">
+<button type="button" aria-label="Terminer la tâche" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; border-radius: 10px; border: 1.5px solid {{t.soft}}; background: transparent; cursor: pointer"></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 600">Préparer la réunion de lundi</span>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #7a5ce6"></span>
+</div>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 10px">
+<div style="flex-grow: 1; height: 10px; border-radius: 5px; background: {{t.tint}}; overflow: hidden"><div style="width: 40%; height: 10px; border-radius: 5px; background: {{t.gel}}"></div></div>
+<span style="font-size: 12px; font-weight: 600; color: {{t.soft}}">2 sur 5</span>
+</div>
+</section>
+<section style="box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 2px">
+<span style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), #2fae4a; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v14H4z M4 10h16 M8 3v5 M16 3v5"></path></svg></span>
+<h2 style="margin: 0; flex-grow: 1; font-size: 16px; font-weight: 700">Prochains rendez-vous</h2>
+<a href="Calendrier.dc.html" style="font-size: 13px; font-weight: 600; color: {{t.accent}}; text-decoration: none">Agenda</a>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; height: 52px">
+<div style="width: 44px; height: 46px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; background: {{t.tile}}; border: 1px solid {{t.border}}"><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: {{t.soft}}">LUN</span><span style="font-size: 19px; font-weight: 700; line-height: 1">28</span></div>
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Dentiste</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">09:30 – 10:00 · Santé</div></div>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #e0508a"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; height: 52px">
+<div style="width: 44px; height: 46px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; background: {{t.tile}}; border: 1px solid {{t.border}}"><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: {{t.soft}}">LUN</span><span style="font-size: 19px; font-weight: 700; line-height: 1">28</span></div>
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Réunion d'équipe</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">14:00 – 15:30 · Travail</div></div>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #7a5ce6"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; height: 52px">
+<div style="width: 44px; height: 46px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; background: {{t.tile}}; border: 1px solid {{t.border}}"><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: {{t.soft}}">MER</span><span style="font-size: 19px; font-weight: 700; line-height: 1">30</span></div>
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Cours de yoga</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">18:00 – 19:00 · Perso</div></div>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #0a9fd8"></span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; height: 52px">
+<div style="width: 44px; height: 46px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; background: {{t.tile}}; border: 1px solid {{t.border}}"><span style="font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: {{t.soft}}">VEN</span><span style="font-size: 19px; font-weight: 700; line-height: 1">2</span></div>
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Déjeuner avec Camille</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">12:30 – 14:00 · Perso</div></div>
+<span style="width: 8px; height: 8px; border-radius: 4px; background: #0a9fd8"></span>
+</div>
+</section>
+<section style="box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 2px">
+<span style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), #e0671f; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z M14 3v5h5 M9 13h7 M9 17h5"></path></svg></span>
+<h2 style="margin: 0; flex-grow: 1; font-size: 16px; font-weight: 700">Obligations à venir</h2>
+<a href="#" style="font-size: 13px; font-weight: 600; color: {{t.accent}}; text-decoration: none">Registre</a>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 52px; border-bottom: 1px solid {{t.line}}">
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Salle de sport</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">Prélèvement le 1er oct. · 29,90 €</div></div>
+<span style="padding: 2px 9px; border-radius: 9px; background: {{t.tint}}; color: {{t.accent}}; font-size: 12px; font-weight: 700">dans 4 j</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 52px; border-bottom: 1px solid {{t.line}}">
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Assurance habitation</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">Date limite de résiliation : 15 oct.</div></div>
+<span style="padding: 2px 9px; border-radius: 9px; background: {{t.warnBg}}; color: {{t.warn}}; font-size: 12px; font-weight: 700">J-18</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 52px; border-bottom: 1px solid {{t.line}}">
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Contrôle technique</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">À faire avant le 12 nov.</div></div>
+<span style="padding: 2px 9px; border-radius: 9px; background: {{t.tint}}; color: {{t.accent}}; font-size: 12px; font-weight: 700">J-46</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 52px">
+<div style="flex-grow: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">Carte d'identité</div><div style="font-size: 12px; font-weight: 500; color: {{t.soft}}">Expire en mars 2027 · Documents</div></div>
+<span style="padding: 2px 9px; border-radius: 9px; background: {{t.tint}}; color: {{t.accent}}; font-size: 12px; font-weight: 700">6 mois</span>
+</div>
+</section>
+<section style="box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 2px">
+<span style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), #16a3a3; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5l2 2 M20 4v5h-5 M20 12a8 8 0 0 1-14 5l-2-2 M4 20v-5h5"></path></svg></span>
+<h2 style="margin: 0; flex-grow: 1; font-size: 16px; font-weight: 700">Habitudes</h2>
+<span style="font-size: 13px; font-weight: 600; color: {{t.soft}}">2 sur 4</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 6px 0 8px 0; border-bottom: 1px solid {{t.line}}">
+<div style="display: flex; align-items: center"><span style="flex-grow: 1; font-size: 14px; font-weight: 600">Boire de l'eau</span><span style="font-size: 12px; font-weight: 600; color: {{t.soft}}">5 / 8 verres · série 12 j</span></div>
+<div style="display: flex; gap: 6px" aria-label="5 verres sur 8" role="img">
+<span style="width: 18px; height: 18px; border-radius: 9px; background: {{t.gel}}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 5px -2px {{t.glow}}"></span>
+<span style="width: 18px; height: 18px; border-radius: 9px; background: {{t.gel}}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 5px -2px {{t.glow}}"></span>
+<span style="width: 18px; height: 18px; border-radius: 9px; background: {{t.gel}}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 5px -2px {{t.glow}}"></span>
+<span style="width: 18px; height: 18px; border-radius: 9px; background: {{t.gel}}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 5px -2px {{t.glow}}"></span>
+<span style="width: 18px; height: 18px; border-radius: 9px; background: {{t.gel}}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 5px -2px {{t.glow}}"></span>
+<span style="width: 18px; height: 18px; box-sizing: border-box; border-radius: 9px; border: 2px solid {{t.tint}}; background: {{t.tile}}"></span>
+<span style="width: 18px; height: 18px; box-sizing: border-box; border-radius: 9px; border: 2px solid {{t.tint}}; background: {{t.tile}}"></span>
+<span style="width: 18px; height: 18px; box-sizing: border-box; border-radius: 9px; border: 2px solid {{t.tint}}; background: {{t.tile}}"></span>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 40px; border-bottom: 1px solid {{t.line}}">
+<button type="button" aria-label="Annuler le pointage" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 0; box-shadow: 0 3px 8px -3px {{t.glow}}; background: {{t.gel}}; cursor: pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 600">Lecture 20 min</span>
+<span style="font-size: 12px; font-weight: 600; color: {{t.soft}}">série 34 j</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 40px; border-bottom: 1px solid {{t.line}}">
+<button type="button" aria-label="Annuler le pointage" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 0; box-shadow: 0 3px 8px -3px {{t.glow}}; background: {{t.gel}}; cursor: pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 600">Méditation 10 min</span>
+<span style="font-size: 12px; font-weight: 600; color: {{t.soft}}">série 9 j</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; height: 40px">
+<button type="button" aria-label="Pointer l'habitude" style="width: 20px; height: 20px; padding: 0; flex-shrink: 0; border-radius: 10px; border: 1.5px solid {{t.soft}}; background: transparent; cursor: pointer"></button>
+<span style="flex-grow: 1; font-size: 14px; font-weight: 600">Marche 30 min</span>
+<span style="font-size: 12px; font-weight: 600; color: {{t.soft}}">série 6 j</span>
+</div>
+</section>
+<section style="box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), #0a9cc4; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 9v4l3 2 M9 2h6"></path></svg></span>
+<h2 style="margin: 0; flex-grow: 1; font-size: 16px; font-weight: 700">Focus</h2>
+<span style="font-size: 13px; font-weight: 600; color: {{t.soft}}">50 min aujourd'hui</span>
+</div>
+<div style="flex-grow: 1; display: flex; align-items: center; gap: 16px">
+<div style="position: relative; width: 136px; height: 136px; flex-shrink: 0">
+<svg width="136" height="136" viewBox="0 0 136 136" aria-hidden="true">
+<defs><linearGradient id="anneau-focus" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b6f03c"></stop><stop offset="0.3" stop-color="#2fd6c9"></stop><stop offset="0.55" stop-color="#3a7bff"></stop><stop offset="0.8" stop-color="#b04cff"></stop><stop offset="1" stop-color="#ff5fa8"></stop></linearGradient></defs>
+<circle cx="68" cy="68" r="58" fill="none" stroke="{{t.tint}}" stroke-width="12"></circle>
+<circle cx="68" cy="68" r="58" fill="none" stroke="url(#anneau-focus)" stroke-width="12" stroke-linecap="round"></circle>
+<circle cx="68" cy="68" r="46" fill="{{t.tile}}"></circle>
+</svg>
+<div style="position: absolute; left: 0; top: 0; width: 136px; height: 136px; display: flex; flex-direction: column; align-items: center; justify-content: center"><span style="font-size: 30px; font-weight: 700; line-height: 1">25:00</span><span style="margin-top: 4px; font-size: 12px; font-weight: 600; color: {{t.soft}}">Session 1 sur 4</span></div>
+</div>
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div><div style="font-size: 12px; font-weight: 600; color: {{t.soft}}">Tâche liée</div><div style="font-size: 14px; font-weight: 600">Préparer la réunion de lundi</div></div>
+<div><div style="font-size: 12px; font-weight: 600; color: {{t.soft}}">Ambiance</div><div style="font-size: 14px; font-weight: 600">Pluie douce</div></div>
+<div style="display: flex; gap: 8px">
+<button type="button" style="height: 36px; padding: 0 18px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.28); background: {{t.gel}}; color: #ffffff; font-family: inherit; font-size: 14px; font-weight: 700; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 8px 18px -8px {{t.glow}}; cursor: pointer">Démarrer</button>
+<button type="button" aria-label="Choisir l'ambiance sonore" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 18px; border: 1px solid {{t.border}}; background: {{t.field}}; backdrop-filter: blur(12px); box-shadow: 0 1px 2px rgba(0,30,60,0.08), inset 0 1px 0 rgba(255,255,255,0.5); color: {{t.ink}}; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"></path><path d="M16.5 9a4 4 0 0 1 0 6"></path></svg></button>
+</div>
+</div>
+</div>
+</section>
+<section style="box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(16px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), #e3a712; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v10l-6 6H4z M14 20v-6h6"></path></svg></span>
+<h2 style="margin: 0; flex-grow: 1; font-size: 16px; font-weight: 700">Note épinglée</h2>
+<a href="#" style="font-size: 13px; font-weight: 600; color: {{t.accent}}; text-decoration: none">Ouvrir</a>
+</div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 14px; background: {{t.note}}; border: 1px solid {{t.border}}">
+<div style="font-size: 15px; font-weight: 700">Idées pour Aqueli</div>
+<ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 5px; font-size: 14px; font-weight: 500; line-height: 1.35">
+<li>Thème sakura pour le printemps</li>
+<li>Son de vagues pour le Focus</li>
+<li>Exporter mon bilan du mois en PDF</li>
+</ul>
+<div style="margin-top: auto; font-size: 12px; font-weight: 600; color: {{t.soft}}">Modifiée hier · Carnet Perso</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<footer style="height: 28px; box-sizing: border-box; display: flex; align-items: center; gap: 18px; padding: 0 16px; background: {{t.bar}}; border-top: 1px solid {{t.border}}; font-size: 12px; font-weight: 600; color: {{t.soft}}">
+<span style="display: flex; align-items: center; gap: 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>Enregistré</span>
+<span>Espace : Tous</span>
+<span style="flex-grow: 1"></span>
+<span>Thème {{t.name}}</span>
+<span>Verrouillage automatique dans 10 min</span>
+</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["aqua","prairie","automne","nuit"],"default":"nuit"},"$preview":{"width":1280,"height":800}}'>
+const AQ_GLOSS = 'radial-gradient(120% 90% at 50% -20%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0) 70%)';
+const AQ_BUBBLE = 'radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.35) 18%, rgba(255,255,255,0.08) 55%, rgba(255,255,255,0.35) 100%)';
+const AQ_THEMES = {
+  aqua: { name: 'Aqua', sky: 'radial-gradient(70% 45% at 85% 0%, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%), linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%)', bar: 'linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.58) 100%)', card: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 38%), rgba(255,255,255,0.62)', field: 'rgba(255,255,255,0.9)', tile: 'rgba(255,255,255,0.8)', border: 'rgba(255,255,255,0.95)', ink: '#0b2a45', soft: '#3a5870', accent: '#07609f', tint: 'rgba(10,112,188,0.14)', warn: '#8f3a05', warnBg: 'rgba(240,120,40,0.2)', gel: AQ_GLOSS + ', linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%)', glow: 'rgba(11,93,171,0.55)', seg: '#ffffff', line: 'rgba(11,42,69,0.12)', shadow: '0 10px 30px rgba(6,68,120,0.16)', note: 'rgba(255,243,184,0.75)', bubble: AQ_BUBBLE, bubbleEdge: 'rgba(255,255,255,0.7)' },
+  prairie: { name: 'Prairie', sky: 'radial-gradient(130% 55% at 25% 112%, #58b52c 0%, #58b52c 55%, rgba(88,181,44,0) 55.4%), radial-gradient(100% 45% at 88% 110%, #86cf49 0%, #86cf49 58%, rgba(134,207,73,0) 58.4%), radial-gradient(70% 40% at 80% 0%, rgba(255,255,255,0.7), rgba(255,255,255,0) 70%), linear-gradient(180deg, #34a8e6 0%, #9edcf9 45%, #eefaff 100%)', bar: 'linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.58) 100%)', card: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 38%), rgba(255,255,255,0.64)', field: 'rgba(255,255,255,0.9)', tile: 'rgba(255,255,255,0.8)', border: 'rgba(255,255,255,0.95)', ink: '#12321a', soft: '#3a5a40', accent: '#1d6e10', tint: 'rgba(31,125,18,0.14)', warn: '#8f3a05', warnBg: 'rgba(240,120,40,0.2)', gel: AQ_GLOSS + ', linear-gradient(180deg, #47ab27 0%, #1b6810 100%)', glow: 'rgba(27,104,16,0.5)', seg: '#ffffff', line: 'rgba(18,50,26,0.12)', shadow: '0 10px 30px rgba(30,90,40,0.16)', note: 'rgba(255,243,184,0.75)', bubble: AQ_BUBBLE, bubbleEdge: 'rgba(255,255,255,0.7)' },
+  automne: { name: 'Automne', sky: 'radial-gradient(60% 45% at 82% 4%, rgba(255,240,190,0.95), rgba(255,240,190,0) 70%), linear-gradient(180deg, #f7cd7a 0%, #efa059 45%, #d9713c 75%, #a8452a 100%)', bar: 'linear-gradient(180deg, rgba(255,250,240,0.9) 0%, rgba(255,244,228,0.62) 100%)', card: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 38%), rgba(255,247,236,0.7)', field: 'rgba(255,251,245,0.92)', tile: 'rgba(255,250,242,0.85)', border: 'rgba(255,250,240,0.95)', ink: '#3a1a0a', soft: '#6a3b22', accent: '#9a3b0a', tint: 'rgba(168,65,12,0.14)', warn: '#8a1f0c', warnBg: 'rgba(220,60,30,0.18)', gel: AQ_GLOSS + ', linear-gradient(180deg, #e07833 0%, #983b0c 100%)', glow: 'rgba(152,59,12,0.5)', seg: '#fffaf3', line: 'rgba(58,26,10,0.12)', shadow: '0 10px 30px rgba(120,50,10,0.2)', note: 'rgba(255,236,170,0.8)', bubble: 'radial-gradient(circle at 32% 28%, rgba(255,245,220,0.95) 0%, rgba(255,220,160,0.35) 20%, rgba(255,200,140,0.08) 55%, rgba(255,230,190,0.35) 100%)', bubbleEdge: 'rgba(255,240,210,0.7)' },
+  nuit: { name: 'Nuit étoilée', sky: 'radial-gradient(55% 45% at 85% 8%, rgba(140,100,255,0.35), rgba(140,100,255,0) 70%), radial-gradient(55% 45% at 8% 95%, rgba(0,190,255,0.28), rgba(0,190,255,0) 70%), linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%)', bar: 'linear-gradient(180deg, rgba(40,72,160,0.7) 0%, rgba(10,22,64,0.62) 100%)', card: 'linear-gradient(180deg, rgba(160,200,255,0.14) 0%, rgba(160,200,255,0) 38%), rgba(12,26,72,0.62)', field: 'rgba(8,18,52,0.78)', tile: 'rgba(30,56,130,0.6)', border: 'rgba(150,200,255,0.3)', ink: '#eef5ff', soft: '#b4c8e8', accent: '#8adbff', tint: 'rgba(114,210,255,0.18)', warn: '#ffc08f', warnBg: 'rgba(255,140,60,0.2)', gel: AQ_GLOSS + ', linear-gradient(180deg, #3c92f2 0%, #1a45b5 100%)', glow: 'rgba(70,150,255,0.6)', seg: 'rgba(110,170,255,0.32)', line: 'rgba(200,220,255,0.14)', shadow: '0 10px 30px rgba(0,0,0,0.35)', note: 'rgba(255,215,110,0.12)', bubble: 'radial-gradient(circle at 32% 28%, rgba(200,230,255,0.7) 0%, rgba(120,180,255,0.2) 20%, rgba(80,140,255,0.05) 55%, rgba(140,190,255,0.25) 100%)', bubbleEdge: 'rgba(150,200,255,0.35)' }
+};
+class Component extends DCLogic {
+  renderVals() {
+    const key = AQ_THEMES[this.props.theme] ? this.props.theme : 'aqua';
+    return { t: AQ_THEMES[key], themeKey: key };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1316 @@
+/*
+ * Calendrier (maquette docs/maquettes/Calendrier.dc.html) : en-tête, barre latérale,
+ * vues Jour, Semaine, Mois, Année et Agenda, fenêtre d'événement.
+ * Couleurs : variables de thème ; la couleur d'un événement vient de son calendrier (--ev-color).
+ */
+
+.calendar-screen {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ——— En-tête ——— */
+
+.cal-header {
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.cal-header .screen-title {
+  margin-right: 4px;
+}
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cal-range {
+  flex: 1;
+  min-width: 9em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ——— Corps : barre latérale et vue ——— */
+
+.cal-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 216px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.cal-aside {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+}
+
+.cal-mini-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cal-mini-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cal-aside-heading {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--aq-line);
+  color: var(--aq-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cal-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal-checks .checkbox {
+  font-size: 13.5px;
+}
+
+.cal-main {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (max-width: 1100px) {
+  .cal-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cal-aside {
+    display: none;
+  }
+}
+
+/* ——— Petit mois ——— */
+
+.mini-month {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mini-month-head,
+.mini-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.mini-month-head span {
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--aq-soft);
+}
+
+.mini-day {
+  position: relative;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.mini-day:hover {
+  background: var(--aq-hover);
+}
+
+.mini-day[data-out] {
+  color: var(--aq-soft);
+  opacity: 0.7;
+}
+
+.mini-day[data-range] {
+  background: var(--aq-tint);
+  font-weight: 700;
+}
+
+/* Jour férié : bulle pleine de sa couleur (--hol-color, src/calendar/holidays.ts). */
+.mini-day[data-holiday] {
+  background: var(--aq-chip-gloss), var(--hol-color);
+  box-shadow: 0 2px 5px -2px var(--hol-color);
+  color: var(--aq-on-accent);
+  font-weight: 700;
+}
+
+.mini-day[data-holiday][data-ink="dark"] {
+  color: var(--aq-on-light);
+}
+
+.mini-day[data-holiday][data-out] {
+  opacity: 0.55;
+}
+
+.mini-day[data-today] {
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  font-weight: 700;
+  opacity: 1;
+}
+
+.mini-day[data-mark]::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--aq-accent);
+}
+
+.mini-day[data-today][data-mark]::after {
+  background: var(--aq-on-accent);
+}
+
+/* ——— Grille des heures (Jour, Semaine) : une heure = 48 px (TimeGrid.tsx) ——— */
+
+.tg {
+  --tg-gutter: 52px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.tg-head {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: var(--tg-gutter) repeat(var(--tg-cols), minmax(0, 1fr));
+  padding: 8px 10px 6px 0;
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.tg-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tg-day:hover {
+  background: var(--aq-hover);
+}
+
+.tg-day-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--aq-soft);
+}
+
+.tg-day-num {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.tg-day-note {
+  max-width: 100%;
+  min-height: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--aq-soft);
+}
+
+.tg-day[data-holiday]:not([data-today]) .tg-day-num {
+  background: var(--aq-chip-gloss), var(--hol-color);
+  box-shadow: 0 4px 10px -4px var(--hol-color);
+  color: var(--aq-on-accent);
+}
+
+.tg-day[data-holiday][data-ink="dark"]:not([data-today]) .tg-day-num {
+  color: var(--aq-on-light);
+}
+
+/* Aujourd'hui un jour férié : bulle du jour, cerclée de la couleur de la fête. */
+.tg-day[data-holiday][data-today] .tg-day-num,
+.mini-day[data-holiday][data-today],
+.mv-cell[data-holiday][data-today] .mv-num {
+  outline: 2px solid var(--hol-color);
+  outline-offset: 1px;
+}
+
+.tg-day[data-today] .tg-day-num {
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  box-shadow: 0 4px 10px -4px var(--aq-glow);
+}
+
+.tg-allday {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: var(--tg-gutter) repeat(var(--tg-cols), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--tg-rows), 24px);
+  gap: 3px 0;
+  padding: 5px 10px 5px 0;
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.tg-allday-label {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--aq-soft);
+}
+
+/* Toutes les lignes affichées : la ligne défile si elle devient trop haute. */
+.tg-allday[data-open] {
+  max-height: 40%;
+  overflow-y: auto;
+}
+
+.tg-allday-toggle,
+.tg-allday-more {
+  align-self: center;
+  justify-self: center;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--aq-accent);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tg-allday-toggle {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.tg-allday-more:hover,
+.tg-allday-toggle:hover {
+  background: var(--aq-hover);
+}
+
+/* Éléments d'une journée entière, et du mois. */
+.tg-chip,
+.mv-chip {
+  --ev-color: var(--aq-accent);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: grab;
+  touch-action: none;
+}
+
+.tg-chip {
+  margin: 0 3px;
+  padding: 3px 8px;
+  line-height: 18px;
+}
+
+.tg-chip[data-kind="event"],
+.mv-chip[data-kind="event"]:not([data-timed]) {
+  background: var(--aq-chip-gloss), var(--ev-color);
+  box-shadow: var(--aq-chip-shadow);
+  color: var(--aq-on-accent);
+}
+
+.tg-chip[data-kind="event"][data-default],
+.mv-chip[data-kind="event"][data-default]:not([data-timed]) {
+  background: var(--aq-gel);
+}
+
+.tg-chip[data-ink="dark"],
+.mv-chip[data-ink="dark"] {
+  color: var(--aq-on-light);
+}
+
+.tg-chip[data-kind="task"],
+.mv-chip[data-kind="task"] {
+  border: 1.5px dashed var(--ev-color);
+  background: color-mix(in srgb, var(--ev-color) 14%, transparent);
+  color: var(--aq-ink);
+}
+
+/* Obligations : échéance teintée de la catégorie, date limite de résiliation en alerte. */
+.tg-chip[data-kind="obligation"],
+.mv-chip[data-kind="obligation"] {
+  border-left: 3px solid var(--ev-color);
+  background: color-mix(in srgb, var(--ev-color) 22%, var(--aq-card));
+  color: var(--aq-ink);
+  cursor: pointer;
+}
+
+.tg-chip[data-kind="cancel"],
+.mv-chip[data-kind="cancel"] {
+  border: 1px dashed var(--aq-warn);
+  background: var(--aq-warn-bg);
+  color: var(--aq-warn);
+  cursor: pointer;
+}
+
+.av-row[data-kind="cancel"] .av-dot {
+  border-radius: 2px;
+  background: var(--aq-warn);
+  transform: rotate(45deg) scale(0.8);
+}
+
+/* Jours fériés : teintés de leur couleur, texte du thème. */
+.tg-chip[data-kind="holiday"],
+.mv-chip[data-kind="holiday"] {
+  border: 1px solid color-mix(in srgb, var(--ev-color) 45%, transparent);
+  background: color-mix(in srgb, var(--ev-color) 20%, var(--aq-card));
+  color: var(--aq-ink);
+  cursor: default;
+}
+
+.tg-chip[data-clip-start] {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.tg-chip[data-clip-end] {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.tg-chip[data-dragging],
+.mv-chip[data-dragging] {
+  opacity: 0.45;
+}
+
+.tg-chip:focus-visible,
+.mv-chip:focus-visible,
+.tg-block:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.tg-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.tg-body {
+  position: relative;
+}
+
+.tg-col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--aq-line);
+}
+
+.tg-col[data-weekend] {
+  background: color-mix(in srgb, var(--aq-accent) 4%, transparent);
+}
+
+.tg-col[data-holiday] {
+  background: color-mix(in srgb, var(--hol-color) 9%, transparent);
+}
+
+.tg-hour {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 48px;
+  pointer-events: none;
+}
+
+.tg-hour::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--tg-gutter);
+  right: 0;
+  border-top: 1px solid var(--aq-line);
+}
+
+.tg-hour-label {
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.tg-now {
+  position: absolute;
+  z-index: 3;
+  border-top: 2px solid var(--aq-danger);
+  pointer-events: none;
+}
+
+.tg-now::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--aq-danger);
+}
+
+.tg-block {
+  --ev-color: var(--aq-accent);
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 3px 7px;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.tg-block[data-kind="event"] {
+  border: 1px solid color-mix(in srgb, var(--ev-color) 60%, transparent);
+  background: var(--aq-chip-gloss), var(--ev-color);
+  box-shadow: var(--aq-chip-shadow);
+  color: var(--aq-on-accent);
+}
+
+.tg-block[data-kind="event"][data-default] {
+  border-color: var(--aq-gel-border);
+  background: var(--aq-gel);
+}
+
+.tg-block[data-ink="dark"] {
+  color: var(--aq-on-light);
+}
+
+/* Créneau de tâche : pointillés teintés (maquette). */
+.tg-block[data-kind="task"] {
+  border: 1.5px dashed var(--ev-color);
+  background: color-mix(in srgb, var(--ev-color) 14%, var(--aq-card));
+  color: var(--aq-ink);
+}
+
+.tg-block[data-short] {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tg-block[data-dragging] {
+  opacity: 0.35;
+}
+
+.tg-block--preview {
+  z-index: 4;
+  border: 1.5px dashed var(--aq-accent);
+  background: color-mix(in srgb, var(--aq-accent) 16%, var(--aq-card));
+  color: var(--aq-ink);
+  pointer-events: none;
+}
+
+.tg-block--preview[data-kind="event"] {
+  border-style: dashed;
+}
+
+.tg-block-title {
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.tg-block-sub {
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.88;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bloc court : le titre passe avant l'heure. */
+.tg-block[data-short] .tg-block-title {
+  max-width: 100%;
+}
+
+.tg-block[data-short] .tg-block-sub {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.tg-resize {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+/* ——— Vue Mois ——— */
+
+.mv {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px 10px;
+}
+
+.mv-head {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding-bottom: 6px;
+}
+
+.mv-head span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--aq-soft);
+}
+
+.mv-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  border-top: 1px solid var(--aq-line);
+  border-left: 1px solid var(--aq-line);
+}
+
+.mv-cell {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px 4px;
+  overflow: hidden;
+  border-right: 1px solid var(--aq-line);
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.mv-cell[data-weekend] {
+  background: color-mix(in srgb, var(--aq-accent) 4%, transparent);
+}
+
+.mv-cell[data-holiday] {
+  background: color-mix(in srgb, var(--hol-color) 9%, transparent);
+}
+
+.mv-cell[data-holiday]:not([data-today]) .mv-num {
+  background: var(--aq-chip-gloss), var(--hol-color);
+  color: var(--aq-on-accent);
+}
+
+.mv-cell[data-holiday][data-ink="dark"]:not([data-today]) .mv-num {
+  color: var(--aq-on-light);
+}
+
+.mv-cell[data-out] .mv-num {
+  color: var(--aq-soft);
+  opacity: 0.7;
+}
+
+.mv-cell[data-drop] {
+  background: var(--aq-tint);
+  box-shadow: inset 0 0 0 2px var(--aq-accent);
+}
+
+.mv-num {
+  align-self: flex-start;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.mv-num:hover {
+  background: var(--aq-hover);
+}
+
+.mv-cell[data-today] .mv-num {
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+}
+
+.mv-chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 6px;
+  line-height: 17px;
+  font-size: 11.5px;
+}
+
+/* Événement à heure fixe : pastille de couleur, texte du thème. */
+.mv-chip[data-timed] {
+  color: var(--aq-ink);
+  font-weight: 600;
+}
+
+.mv-chip[data-timed][data-kind="event"]::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: var(--ev-color);
+}
+
+.mv-chip[data-timed][data-kind="event"][data-default]::before {
+  background: var(--aq-gel);
+}
+
+.mv-chip[data-timed]:hover {
+  background: var(--aq-hover);
+}
+
+.mv-chip-time {
+  flex-shrink: 0;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.mv-chip-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Case trop basse : compteur en haut à droite. */
+.mv-cell {
+  position: relative;
+}
+
+.mv-more[data-compact] {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--aq-tint);
+}
+
+.mv-more {
+  align-self: flex-start;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: var(--aq-accent);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Panneau « N de plus » : tous les éléments du jour, avec défilement. */
+.day-panel {
+  position: fixed;
+  z-index: 60;
+  max-height: min(320px, 70vh);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 16px;
+  animation: aq-pop 0.16s var(--aq-ease);
+}
+
+.day-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-panel-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.day-panel-list {
+  min-height: 0;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0 2px 2px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-panel-row {
+  min-height: 34px;
+  padding: 0 10px;
+}
+
+.day-panel-time {
+  width: 50px;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ——— Vue Année ——— */
+
+.yv {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px 22px;
+  padding: 16px 18px;
+}
+
+.yv-month {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.yv-title {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+/* ——— Vue Agenda ——— */
+
+.av {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 18px;
+}
+
+.av-empty {
+  margin: auto;
+  font-size: 15px;
+  color: var(--aq-soft);
+}
+
+.av-day {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.av-date {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.av-day[data-today] .av-date {
+  color: var(--aq-accent);
+}
+
+.av-relative {
+  color: var(--aq-soft);
+  font-weight: 600;
+}
+
+.av-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.av-row {
+  --ev-color: var(--aq-accent);
+  width: 100%;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--ev-color) 28%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--ev-color) var(--aq-row-mix), var(--aq-tile));
+  color: var(--aq-ink);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.av-row:hover:not(:disabled) {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--ev-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.av-row:disabled {
+  cursor: default;
+}
+
+.av-time {
+  width: 104px;
+  flex-shrink: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.av-dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: var(--ev-color);
+}
+
+.av-row[data-kind="task"] .av-dot {
+  background: transparent;
+  border: 2px dashed var(--ev-color);
+}
+
+.av-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.av-location {
+  max-width: 30%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+  color: var(--aq-soft);
+}
+
+/* ——— Fenêtre d'événement ——— */
+
+.dialog--event {
+  width: min(560px, 100%);
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-form .setting-row {
+  padding: 0;
+  border: 0;
+}
+
+.event-when {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.event-when-inputs {
+  display: flex;
+  gap: 8px;
+}
+
+.event-when-inputs .detail-input {
+  height: 36px;
+  font-size: 14px;
+}
+
+.event-when-inputs .detail-input:not(.detail-input--time) {
+  flex: 1;
+}
+
+.event-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.event-colors {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-notes {
+  width: 100%;
+  min-height: 70px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  resize: vertical;
+  border-radius: 14px;
+  border: 1px solid var(--aq-field-border);
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.event-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-actions-gap {
+  flex: 1;
+}
+
+.event-delete {
+  color: var(--aq-danger);
+}
+
+/* Événement répété : cette occurrence ou toute la série. */
+.scope-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scope-choice {
+  justify-content: flex-start;
+  height: 44px;
+  padding: 0 18px;
+  font-size: 15px;
+}
+
+/* ——— Carte « Prochains rendez-vous » de l'Accueil ——— */
+
+.appointment-dot {
+  --ev-color: var(--aq-accent);
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: var(--ev-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ev-color) 18%, transparent);
+}
+
+/* ——— Jours spéciaux (src/calendar/specialDays.ts, dayMarkStyle.ts) ———
+   Jour férié : bulle pleine de sa couleur (--hol-color, règles plus haut) ; fête d'une tradition :
+   bulle cerclée ; période (vacances scolaires, ramadan…) : colonne ou case teintée de sa couleur
+   (--period-color) et son nom en filigrane. */
+
+.mini-day[data-feast]:not([data-today]),
+.tg-day[data-feast]:not([data-today]) .tg-day-num,
+.mv-cell[data-feast]:not([data-today]) .mv-num {
+  box-shadow: inset 0 0 0 2px var(--hol-color);
+  font-weight: 700;
+}
+
+.tg-day[data-feast][data-today] .tg-day-num,
+.mini-day[data-feast][data-today],
+.mv-cell[data-feast][data-today] .mv-num {
+  outline: 2px solid var(--hol-color);
+  outline-offset: 1px;
+}
+
+.mini-day[data-period]:not([data-today]):not([data-range]) {
+  background: color-mix(in srgb, var(--period-color) 20%, transparent);
+}
+
+.tg-col[data-feast]:not([data-in-period]),
+.mv-cell[data-feast]:not([data-in-period]) {
+  background: color-mix(in srgb, var(--hol-color) 5%, transparent);
+}
+
+.tg-col[data-in-period]:not([data-holiday]),
+.mv-cell[data-in-period]:not([data-holiday]) {
+  background: color-mix(in srgb, var(--period-color) 8%, transparent);
+}
+
+/* Nom en filigrane, vertical (lu de haut en bas), qui reste en haut de la colonne pendant le
+   défilement des heures. */
+.tg-col-mark {
+  position: sticky;
+  top: 12px;
+  display: block;
+  width: max-content;
+  margin: 0 auto;
+  writing-mode: vertical-rl;
+  color: var(--period-color, var(--hol-color));
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.18;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mv-period {
+  position: absolute;
+  top: 8px;
+  left: 34px;
+  right: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--period-color);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Réglage « Jours fériés et fêtes » : barre latérale du calendrier et Paramètres › Calendrier. */
+.cal-aside .select-box,
+.cal-aside .select {
+  width: 100%;
+}
+
+.cal-aside .select {
+  font-size: 13px;
+}
+
+.cal-zones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 8px;
+}
+
+.cal-zones-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.zone-chips {
+  display: flex;
+  gap: 4px;
+}
+
+.zone-chip {
+  width: 30px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--aq-border);
+  border-radius: 14px;
+  background: var(--aq-tile);
+  box-shadow: var(--aq-control-shadow);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background var(--aq-fast) ease;
+}
+
+.zone-chip:hover {
+  background: var(--aq-hover);
+}
+
+.zone-chip[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+}
+
+.zone-list {
+  margin: 0;
+  padding: 4px 18px 14px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+/* Agenda : période qui commence (vacances, ramadan…). */
+.av-period {
+  margin: 0;
+  padding: 5px 12px;
+  border-left: 3px solid var(--period-color);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--period-color) 10%, transparent);
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* Case trop basse : le compteur d'éléments garde sa place à droite du nom de la période. */
+.mv-cell:has(.mv-more[data-compact]) .mv-period {
+  right: 30px;
+}
+
+/* ——— Affichage du calendrier (src/calendar/calendarSettings.ts) ——— */
+
+/* Hors des heures de travail : la colonne est légèrement grisée. */
+.tg-off {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: color-mix(in srgb, var(--aq-soft) 7%, transparent);
+  pointer-events: none;
+}
+
+.cal-week {
+  color: var(--aq-soft);
+  font-weight: 600;
+}
+
+.mv-week {
+  position: absolute;
+  right: 6px;
+  bottom: 4px;
+  color: var(--aq-soft);
+  font-size: 10px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.work-hours {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* « Ajouter un événement » en une phrase, en haut du calendrier. */
+.cal-quick {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  margin: 10px 12px 4px;
+  padding: 0 14px;
+  color: var(--aq-soft);
+}
+
+.cal-quick .field-input {
+  font-size: 13.5px;
+}
+
+.cal-quick-preview {
+  flex: none;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 3px 10px;
+  border-radius: 11px;
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* En-têtes de la grille : bandeau teinté de la couleur du thème (comme les cartes de l'Accueil),
+   noms des jours dans la couleur des titres. */
+.tg-head,
+.mv-head {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, color-mix(in srgb, var(--aq-row) 14%, transparent), color-mix(in srgb, var(--aq-row) 5%, transparent));
+  border-radius: 12px 12px 0 0;
+}
+
+.mv-head {
+  padding-top: 6px;
+}
+
+.tg-day-name,
+.mv-head span {
+  color: var(--aq-heading);
+}
+
+/* Journée entière : légère teinte, pour la séparer des heures. */
+.tg-allday {
+  background: color-mix(in srgb, var(--aq-row) 4%, transparent);
+}

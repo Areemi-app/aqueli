@@ -1,0 +1,2391 @@
+/*
+ * Journal, Habitudes, Focus et Corbeille. Couleurs : variables de thème ; humeurs et habitudes
+ * gardent leur couleur propre (--mood, --row-color), posée sur l'élément.
+ */
+
+/* ——— Corbeille ——— */
+
+.trash-intro {
+  margin: -6px 0 0;
+  color: var(--aq-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.trash-screen .task-panel {
+  flex: 1;
+  min-height: 0;
+}
+
+.trash-row {
+  --row-color: var(--aq-row);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  margin-bottom: 6px;
+  padding: 6px 10px 6px 8px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+}
+
+.trash-row:hover,
+.trash-row:focus-within {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.trash-row:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.trash-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.trash-title {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trash-meta {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* ——— Journal ——— */
+
+.journal-screen {
+  height: 100%;
+  min-height: 0;
+}
+
+.journal-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
+}
+
+.journal-page {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 18px 10px;
+  border-radius: 20px;
+}
+
+.journal-page-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.journal-date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.journal-date::first-letter,
+.journal-calendar-title::first-letter,
+.journal-result-day::first-letter {
+  text-transform: uppercase;
+}
+
+.journal-today {
+  padding: 2px 9px;
+  border-radius: 10px;
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.journal-status {
+  margin-left: auto;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.journal-scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  margin: 0 -8px;
+  padding: 14px 8px 6px;
+}
+
+.journal-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 36px;
+}
+
+.journal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.journal-label {
+  color: var(--aq-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mood-picker {
+  display: flex;
+  gap: 4px;
+}
+
+.mood-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 58px;
+  padding: 5px 4px 4px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: none;
+  color: var(--aq-soft);
+  cursor: pointer;
+  opacity: 0.6;
+  transition:
+    opacity var(--aq-fast) ease,
+    transform var(--aq-fast) ease,
+    background var(--aq-fast) ease;
+}
+
+.mood-option:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.mood-option[aria-checked="true"] {
+  border-color: var(--aq-border);
+  background: var(--aq-tint);
+  color: var(--aq-ink);
+  opacity: 1;
+}
+
+.mood-option:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.mood-label {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mood-face-bubble {
+  fill: var(--mood);
+}
+
+.mood-face-gloss {
+  fill: var(--aq-on-accent);
+  opacity: 0.38;
+}
+
+.mood-face-eye {
+  fill: var(--aq-on-accent);
+}
+
+.mood-face-mouth {
+  fill: none;
+  stroke: var(--aq-on-accent);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.energy-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+}
+
+.energy-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 38px;
+}
+
+.energy-bar {
+  width: 16px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.energy-bar span {
+  display: block;
+  width: 100%;
+  height: var(--h);
+  border: 1px solid var(--aq-button-border);
+  border-radius: 5px;
+  background: var(--aq-track);
+  transition: background var(--aq-fast) ease;
+}
+
+.energy-bar[data-on] span {
+  border-color: transparent;
+  background: var(--aq-gel);
+}
+
+.energy-bar:focus-visible span {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.energy-label {
+  min-width: 86px;
+  color: var(--aq-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.journal-gratitudes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 620px;
+}
+
+.journal-gratitude {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.journal-gratitude .field-box {
+  flex: 1;
+}
+
+.journal-gratitude-n {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.journal-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 14px;
+  background: var(--aq-tint);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.journal-prompt > svg {
+  flex-shrink: 0;
+  color: var(--aq-accent);
+}
+
+.journal-prompt-text {
+  flex: 1;
+}
+
+.journal-editor {
+  flex: 1;
+}
+
+.journal-content {
+  min-height: 240px;
+}
+
+.journal-side {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.journal-calendar {
+  padding: 12px 14px 14px;
+  border-radius: 18px;
+}
+
+.journal-calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.journal-calendar-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 36px));
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.journal-weekday {
+  color: var(--aq-soft);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.journal-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.journal-cell:hover:not(:disabled) {
+  background: var(--aq-hover);
+}
+
+.journal-cell[data-written] {
+  background: var(--aq-tint);
+}
+
+.journal-cell[data-mood] {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--mood) 42%, var(--aq-tile));
+  box-shadow: inset 0 0 0 1.5px var(--mood);
+  font-weight: 700;
+}
+
+.journal-cell[data-today] {
+  box-shadow: inset 0 0 0 2px var(--aq-accent);
+}
+
+.journal-cell[data-selected] {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.journal-cell[data-holiday]::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--holiday);
+}
+
+.journal-cell:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.journal-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 12px 10px;
+  border-radius: 18px;
+}
+
+.journal-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  text-align: center;
+}
+
+.journal-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.journal-stat-label {
+  color: var(--aq-heading);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.journal-memory {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 10px 10px;
+  border-radius: 18px;
+  color: var(--aq-ink);
+}
+
+.journal-memory .journal-memory-title {
+  padding: 0 4px;
+}
+
+/* « Ce jour-là » : une ligne par année passée. */
+.journal-memory-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--aq-accent) 7%, var(--aq-tile));
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.journal-memory-item:hover {
+  background: color-mix(in srgb, var(--aq-accent) 14%, var(--aq-tile));
+}
+
+.journal-memory-item:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.journal-memory-when {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Onglets du volet : à leur largeur (leur marge négative ne doit pas déborder du volet). */
+.journal-side > .tabs-fit {
+  align-self: flex-start;
+  max-width: 100%;
+}
+
+.journal-side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Activités du jour. */
+.journal-activities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.journal-activity {
+  height: 28px;
+  padding: 0 10px;
+  border-color: color-mix(in srgb, var(--aq-accent) 30%, var(--aq-border));
+  background: color-mix(in srgb, var(--aq-accent) 12%, var(--aq-tint));
+}
+
+.journal-activity svg {
+  color: var(--aq-accent);
+}
+
+.journal-activity-add {
+  height: 28px;
+  padding: 0 10px;
+  border-style: dashed;
+  background: transparent;
+  color: var(--aq-soft);
+}
+
+.journal-activity-pop {
+  position: fixed;
+  z-index: 350;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 360px;
+  padding: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 16px;
+  animation: aq-pop 0.14s var(--aq-ease);
+}
+
+.journal-activity-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.journal-activity-group-title {
+  color: var(--aq-heading);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.journal-activity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.journal-activity-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--aq-tint);
+  color: var(--aq-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.journal-activity-option:hover {
+  background: var(--aq-row-gloss), var(--aq-tint);
+}
+
+.journal-activity-option:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.journal-activity-option[aria-pressed="true"] {
+  border-color: var(--aq-accent);
+  background: color-mix(in srgb, var(--aq-accent) 16%, var(--aq-tint));
+}
+
+.journal-activity-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--aq-accent) 12%, transparent);
+  color: var(--aq-accent);
+}
+
+.journal-activity-option[aria-pressed="true"] .journal-activity-icon {
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+}
+
+.journal-activity-name {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Tendances. */
+.journal-trends {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px 14px;
+  border-radius: 18px;
+}
+
+.journal-trends-head,
+.journal-results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.journal-period .select {
+  height: 30px;
+  padding-left: 12px;
+  font-size: 12.5px;
+}
+
+.journal-period .select-chevron {
+  top: 8px;
+}
+
+.journal-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.journal-chart-grid {
+  stroke: var(--aq-border);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.journal-chart-line {
+  fill: none;
+  stroke: var(--aq-accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.journal-chart-dot {
+  fill: var(--mood);
+  stroke: var(--aq-card-solid);
+  stroke-width: 1.5;
+}
+
+.journal-mood-counts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.journal-mood-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.journal-mood-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--aq-tint);
+  overflow: hidden;
+}
+
+.journal-mood-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--mood);
+}
+
+.journal-mood-n {
+  min-width: 22px;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: right;
+}
+
+.journal-trend-note,
+.journal-trend-empty {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.journal-effects {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.journal-effect {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--aq-accent) 7%, var(--aq-tile));
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.journal-effect:hover {
+  background: color-mix(in srgb, var(--aq-accent) 14%, var(--aq-tile));
+}
+
+.journal-effect:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.journal-effect svg {
+  color: var(--aq-accent);
+}
+
+.journal-effect-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.journal-effect-days {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.journal-effect-delta {
+  min-width: 38px;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: right;
+}
+
+.journal-effect-delta[data-sign="plus"] {
+  color: var(--aq-gain);
+}
+
+.journal-reminder .select {
+  height: 34px;
+  font-size: 13px;
+}
+
+.journal-memory-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--aq-accent);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.journal-memory-text,
+.journal-result-excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.journal-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--aq-field-border);
+  border-radius: 17px;
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  color: var(--aq-soft);
+}
+
+.journal-search-input {
+  width: 220px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 13.5px;
+}
+
+.journal-results {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 18px;
+}
+
+.journal-result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.journal-result {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.journal-result:hover {
+  background: var(--aq-hover);
+}
+
+.journal-result-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.journal-result-day {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.journal-result-excerpt {
+  color: var(--aq-soft);
+  -webkit-line-clamp: 2;
+}
+
+@media (max-width: 1000px) {
+  .journal-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .journal-page {
+    min-height: 560px;
+  }
+
+  .journal-side {
+    overflow: visible;
+  }
+
+  /* Les onglets restent au-dessus ; le contenu du volet se range en colonnes. */
+  .journal-side-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    align-items: start;
+  }
+}
+
+/* ——— Habitudes ——— */
+
+.habits-screen {
+  height: 100%;
+  min-height: 0;
+}
+
+.habits-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 14px;
+}
+
+.habit-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 2px 0;
+  list-style: none;
+}
+
+.habit-row {
+  --row-color: var(--aq-row);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 7px 12px 7px 8px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  cursor: pointer;
+  transition:
+    background var(--aq-fast) ease,
+    box-shadow var(--aq-fast) ease;
+}
+
+.habit-row:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.habit-row[data-selected] {
+  border-color: color-mix(in srgb, var(--row-color) 55%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--row-color) 30%, transparent);
+}
+
+.habit-row:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.habit-row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.habit-row-name {
+  overflow: hidden;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.habit-row[data-done] .habit-row-name {
+  color: var(--aq-soft);
+}
+
+.habit-row-meta {
+  overflow: hidden;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.habit-week {
+  flex-shrink: 0;
+  display: flex;
+  gap: 4px;
+}
+
+.habit-day {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1.5px solid color-mix(in srgb, var(--row-color) 45%, transparent);
+  border-radius: 12px;
+  background: var(--aq-field);
+  color: var(--aq-soft);
+  font: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.habit-day[data-rest] {
+  border-style: dashed;
+  opacity: 0.55;
+}
+
+.habit-day[data-partial] {
+  background: color-mix(in srgb, var(--row-color) 30%, var(--aq-field));
+  color: var(--aq-ink);
+}
+
+.habit-day[data-done] {
+  border-color: transparent;
+  background: var(--aq-chip-gloss), var(--row-color);
+  color: var(--aq-on-accent);
+}
+
+.habit-day[data-today] {
+  box-shadow: 0 0 0 2px var(--aq-tile), 0 0 0 3.5px var(--row-color);
+}
+
+.habit-today {
+  flex-shrink: 0;
+  min-width: 34px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.habit-check {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  border-color: color-mix(in srgb, var(--row-color) 70%, var(--aq-soft));
+}
+
+.habit-check[aria-pressed="true"] {
+  background: var(--aq-chip-gloss), var(--row-color);
+  box-shadow: 0 3px 8px -3px var(--row-color);
+}
+
+.habit-counter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--aq-field-border);
+  border-radius: 16px;
+  background: var(--aq-field);
+}
+
+.habit-counter[data-done] {
+  border-color: transparent;
+  background: var(--aq-chip-gloss), color-mix(in srgb, var(--row-color) 30%, var(--aq-field));
+}
+
+.habit-step {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 13px;
+  background: var(--aq-tint);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.habit-step:hover:not(:disabled) {
+  background: var(--aq-chip-gloss), var(--row-color);
+  color: var(--aq-on-accent);
+}
+
+.habit-step:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.habit-count {
+  min-width: 46px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: center;
+}
+
+.habit-unit {
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.habit-detail {
+  --row-color: var(--aq-row);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  padding: 16px;
+  border-radius: 20px;
+}
+
+.habit-detail--empty {
+  align-items: center;
+  justify-content: center;
+  color: var(--aq-soft);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.habit-detail-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.habit-detail-title {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.habit-detail-title h2 {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.habit-detail-title span {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.habit-detail-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.habit-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.habit-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--row-color) 12%, var(--aq-tile));
+  text-align: center;
+}
+
+.habit-stat-value {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.habit-stat-label {
+  color: var(--aq-heading);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.habit-heat-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.habit-heat {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  padding: 14px 2px 4px;
+}
+
+.habit-heat-week {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.habit-heat-month {
+  position: absolute;
+  top: -14px;
+  left: 0;
+  color: var(--aq-soft);
+  font-size: 9.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.habit-heat-cell {
+  width: 9px;
+  height: 9px;
+  border-radius: 2.5px;
+  background: color-mix(in srgb, var(--aq-ink) 8%, transparent);
+}
+
+.habit-heat-cell[data-level="1"] {
+  background: color-mix(in srgb, var(--row-color) 30%, transparent);
+}
+
+.habit-heat-cell[data-level="2"] {
+  background: color-mix(in srgb, var(--row-color) 55%, transparent);
+}
+
+.habit-heat-cell[data-level="3"] {
+  background: color-mix(in srgb, var(--row-color) 78%, transparent);
+}
+
+.habit-heat-cell[data-level="4"] {
+  background: var(--row-color);
+}
+
+.habit-heat-cell[data-outside] {
+  background: transparent;
+}
+
+.habits-empty {
+  flex: 1;
+}
+
+/* Éditeur d'habitude. */
+.dialog--habit {
+  width: min(600px, 100%);
+}
+
+.habit-templates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--aq-border);
+  border-radius: 15px;
+  background: var(--aq-tint);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chip-btn:hover {
+  background: var(--aq-row-gloss), var(--aq-tint);
+  box-shadow: var(--aq-ring);
+}
+
+.habit-name-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.habit-name {
+  flex: 1;
+}
+
+.habit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 20px;
+}
+
+.habit-target {
+  display: flex;
+  gap: 10px;
+}
+
+.habit-number {
+  width: 90px;
+}
+
+.habit-days {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.day-chip {
+  width: 44px;
+  height: 30px;
+  border: 1px solid var(--aq-field-border);
+  border-radius: 15px;
+  background: var(--aq-field);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.day-chip[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 8px -4px var(--aq-glow);
+}
+
+.habit-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.habit-reminder,
+.habit-space {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 1000px) {
+  .habits-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .habits-body .task-panel {
+    flex: none;
+  }
+
+  .habit-week {
+    display: none;
+  }
+}
+
+/* ——— Focus ——— */
+
+.focus-screen {
+  height: 100%;
+  min-height: 0;
+}
+
+.focus-layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(280px, 28vw, 340px);
+  gap: 14px;
+}
+
+.focus-main-panel {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px 28px;
+  border-radius: 20px;
+  container-type: inline-size;
+}
+
+.focus-panel-grid {
+  display: grid;
+  grid-template-columns: 350px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+}
+
+@container (max-width: 660px) {
+  .focus-panel-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.focus-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.focus-progress {
+  transition: stroke-dashoffset 0.3s linear;
+}
+
+.focus-ring[data-phase="pause"] .focus-progress,
+.focus-ring[data-phase="longue-pause"] .focus-progress {
+  opacity: 0.6;
+}
+
+.focus-ring[data-status="suspendu"] .focus-digits {
+  animation: focus-blink 1.6s ease-in-out infinite;
+}
+
+@keyframes focus-blink {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.focus-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.focus-controls .btn-gel,
+.focus-controls .btn-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.focus-main {
+  min-width: 140px;
+  justify-content: center;
+}
+
+/* Écran Focus : le bouton principal sur sa ligne, « Arrêter » et « Passer » côte à côte dessous,
+   comme dans la carte de l'Accueil. */
+.focus-controls:not(.focus-controls--compact) {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+}
+
+.focus-controls:not(.focus-controls--compact) .focus-main {
+  grid-column: 1 / -1;
+  justify-self: center;
+  min-width: 190px;
+}
+
+.focus-settings {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.focus-task .select-box {
+  max-width: 420px;
+}
+
+.focus-custom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.focus-number {
+  width: 120px;
+  display: flex;
+  align-items: center;
+}
+
+.focus-number .field-input {
+  min-width: 0;
+}
+
+.field-suffix {
+  padding-right: 10px;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.focus-ambience {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.focus-ambience-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.focus-ambience-chip[aria-checked="true"] {
+  border-color: transparent;
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 8px -4px var(--aq-glow);
+}
+
+.focus-volume {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 340px;
+}
+
+.focus-volume .range {
+  flex: 1;
+}
+
+.focus-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.focus-stats {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding: 16px;
+  border-radius: 20px;
+}
+
+.focus-stats-title {
+  margin-top: 4px;
+  color: var(--aq-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.focus-stats-note {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.focus-bars {
+  height: 150px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.focus-bar {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.focus-bar-value {
+  height: 14px;
+  color: var(--aq-soft);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.focus-bar-track {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  max-width: 26px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--aq-ink) 7%, transparent);
+  overflow: hidden;
+}
+
+.focus-bar-fill {
+  position: absolute;
+  inset: auto 0 0;
+  min-height: 0;
+  border-radius: 8px;
+  background: var(--aq-chip-gloss), var(--row-color);
+}
+
+.focus-bar-day {
+  color: var(--aq-soft);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.focus-bar[data-today] .focus-bar-day {
+  color: var(--aq-ink);
+}
+
+.focus-task-times {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.focus-task-time {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--row-color) 10%, var(--aq-tile));
+  color: var(--aq-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.focus-task-time:hover {
+  background: color-mix(in srgb, var(--row-color) 18%, var(--aq-tile));
+}
+
+.focus-task-time:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.focus-task-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.focus-task-minutes {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* Objectif du jour. */
+.focus-goal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--row-color) 10%, var(--aq-tile));
+}
+
+.focus-goal-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.focus-goal-label {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.focus-goal-value {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.focus-goal[data-done] .focus-goal-value {
+  color: var(--aq-gain);
+}
+
+.focus-goal .today-bar {
+  flex: none;
+}
+
+/* Séances du jour : la liste défile au-delà de cinq. */
+.focus-sessions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 212px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.focus-session {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--row-color) 10%, var(--aq-tile));
+  cursor: default;
+}
+
+.focus-session:hover {
+  background: color-mix(in srgb, var(--row-color) 18%, var(--aq-tile));
+}
+
+.focus-session:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.focus-session-time {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.focus-session-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.focus-session-label,
+.focus-session-task {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.focus-session-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.focus-session-task {
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+/* Widget de l'Accueil. */
+.focus-side-task {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.focus-controls--compact {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.focus-controls--compact .focus-main {
+  min-width: 0;
+  padding-inline: 14px;
+}
+
+.focus-controls--compact .btn-glass {
+  width: 36px;
+  min-width: 36px;
+  justify-content: center;
+  padding: 0;
+}
+
+.aquarium .focus-controls--compact .focus-main {
+  min-width: 150px;
+}
+
+/* Carte Focus de l'Accueil : le bouton principal sur sa ligne, Arrêter et Passer dessous. */
+.focus-side .focus-controls--compact {
+  flex-wrap: wrap;
+}
+
+.focus-side .focus-controls--compact .focus-main {
+  flex: 1 0 100%;
+}
+
+/* Aquarium : plein écran apaisant. Eau profonde tirée de la couleur du thème. */
+.aquarium {
+  --deep: color-mix(in srgb, var(--aq-accent) 38%, black);
+  --shallow: color-mix(in srgb, var(--aq-accent) 70%, white);
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 70% at 50% -10%, color-mix(in srgb, var(--shallow) 55%, transparent), transparent 60%),
+    linear-gradient(180deg, color-mix(in srgb, var(--aq-accent) 62%, black) 0%, var(--deep) 100%);
+  color: white;
+  animation: aquarium-in 0.6s ease;
+}
+
+@keyframes aquarium-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.aquarium[data-phase="pause"],
+.aquarium[data-phase="longue-pause"] {
+  --deep: color-mix(in srgb, var(--aq-accent) 30%, color-mix(in srgb, var(--aq-priority-low) 30%, black));
+}
+
+.aquarium-rays {
+  position: absolute;
+  inset: -20% -10% 30%;
+  background: repeating-linear-gradient(
+    100deg,
+    transparent 0 50px,
+    color-mix(in srgb, white 4%, transparent) 64px,
+    color-mix(in srgb, white 7%, transparent) 75px,
+    color-mix(in srgb, white 4%, transparent) 86px,
+    transparent 100px 170px
+  );
+  mask-image: linear-gradient(180deg, black, transparent);
+  will-change: transform;
+  animation: aquarium-rays 18s ease-in-out infinite alternate;
+}
+
+@keyframes aquarium-rays {
+  to {
+    transform: translateX(60px) skewX(-4deg);
+  }
+}
+
+.aquarium-bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.aquarium-bubble {
+  position: absolute;
+  bottom: -30px;
+  border: 1px solid color-mix(in srgb, white 55%, transparent);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, color-mix(in srgb, white 70%, transparent) 0 18%, color-mix(in srgb, white 10%, transparent) 40%, transparent 70%);
+  will-change: transform, opacity;
+  animation: aquarium-rise linear infinite;
+}
+
+@keyframes aquarium-rise {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(12px, -55vh);
+  }
+  100% {
+    transform: translate(-6px, -112vh);
+    opacity: 0.6;
+  }
+}
+
+.aquarium-fish-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.aquarium-fish {
+  position: absolute;
+  left: 0;
+  fill: color-mix(in srgb, var(--shallow) 55%, transparent);
+  will-change: transform;
+  animation: aquarium-swim linear infinite;
+}
+
+.aquarium-eye {
+  fill: color-mix(in srgb, var(--aq-accent) 30%, black);
+}
+
+@keyframes aquarium-swim {
+  0% {
+    transform: translate(110vw, 0);
+  }
+  25% {
+    transform: translate(80vw, 14px);
+  }
+  50% {
+    transform: translate(45vw, -8px);
+  }
+  75% {
+    transform: translate(15vw, 10px);
+  }
+  100% {
+    transform: translate(-120px, 0);
+  }
+}
+
+.aquarium-weeds {
+  position: absolute;
+  inset: auto 0 0;
+  height: 22vh;
+  pointer-events: none;
+}
+
+.aquarium-weed {
+  position: absolute;
+  bottom: 0;
+  width: 3.5vw;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: color-mix(in srgb, var(--aq-priority-low) 45%, var(--deep));
+  stroke-linecap: round;
+  stroke-width: 7;
+  transform-origin: bottom center;
+  will-change: transform;
+  animation: aquarium-sway 7s ease-in-out infinite alternate;
+}
+
+.aquarium-weed--late {
+  stroke-width: 5;
+  animation-duration: 9s;
+  animation-delay: -3s;
+}
+
+/* Pendant l'aquarium, le reste de la fenêtre est caché : rien ne s'y dessine ni ne s'y anime. */
+:root[data-aquarium] .app {
+  visibility: hidden;
+}
+
+:root[data-aquarium] .app * {
+  animation-play-state: paused;
+}
+
+@keyframes aquarium-sway {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(5deg);
+  }
+}
+
+.aquarium-center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.aquarium .focus-track {
+  stroke: color-mix(in srgb, white 14%, transparent);
+}
+
+.aquarium .focus-core {
+  fill: color-mix(in srgb, white 8%, transparent);
+}
+
+.aquarium .focus-digits {
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 2px 16px color-mix(in srgb, black 35%, transparent);
+}
+
+.aquarium .focus-caption,
+.aquarium-task {
+  color: color-mix(in srgb, white 82%, transparent);
+}
+
+.aquarium-task {
+  max-width: 60vw;
+  overflow: hidden;
+  font-size: 17px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aquarium .btn-glass {
+  border-color: color-mix(in srgb, white 30%, transparent);
+  background: color-mix(in srgb, white 14%, transparent);
+  color: white;
+}
+
+.aquarium .btn-glass:hover {
+  background: color-mix(in srgb, white 24%, transparent);
+}
+
+.aquarium-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+}
+
+@media (max-width: 1000px) {
+  .focus-layout {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .focus-main-panel,
+  .focus-stats {
+    flex: none;
+    overflow: visible;
+  }
+}
+
+
+
+/* ——— Cartes de l'Accueil : habitudes, humeur ——— */
+
+.habit-widget-row .habit-check {
+  width: 26px;
+  height: 26px;
+}
+
+.habit-widget-row .habit-counter {
+  padding: 2px;
+}
+
+.habit-widget-row .habit-step {
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+}
+
+.habit-widget-row .habit-count {
+  min-width: 38px;
+  font-size: 12px;
+}
+
+.habit-widget-row[data-done] .today-title {
+  color: var(--aq-soft);
+}
+
+.mood-widget {
+  gap: 12px;
+}
+
+.mood-widget .mood-picker {
+  justify-content: space-between;
+}
+
+.mood-widget .mood-option {
+  min-width: 0;
+  flex: 1;
+}
+
+.mood-widget-energy {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mood-widget-energy .energy-picker {
+  min-height: 0;
+}
+
+.mood-widget-prompt {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: auto;
+  padding: 10px 12px;
+  border: 1px dashed var(--aq-border);
+  border-radius: 14px;
+  background: var(--aq-note);
+  color: var(--aq-soft);
+  font: inherit;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.mood-widget-prompt:hover {
+  color: var(--aq-ink);
+}
+
+.mood-widget-prompt:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+/* ——— Mini-lecteurs du Focus ——— */
+
+.focus-extras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.focus-extra {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-color: color-mix(in srgb, var(--row-color) 40%, var(--aq-border));
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) 14%, var(--aq-tile));
+}
+
+.focus-extra:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) 24%, var(--aq-tile));
+}
+
+/* Mini-lecteur épinglé hors d'Aqueli. */
+.focus-extra[aria-pressed="true"],
+.mini-btn[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--aq-accent) 55%, var(--aq-border));
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-accent) 22%, var(--aq-tile));
+  color: var(--aq-accent);
+}
+
+.mini-btn {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--aq-border);
+  border-radius: 15px;
+  background: var(--aq-tint);
+  color: var(--aq-ink);
+  cursor: pointer;
+}
+
+.mini-btn:hover {
+  background: var(--aq-hover);
+}
+
+.mini-btn:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.mini-btn--main {
+  border-color: transparent;
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 8px -4px var(--aq-glow);
+}
+
+.mini-btn--main:hover {
+  background: var(--aq-gel);
+  filter: brightness(1.06);
+}
+
+.mini-btn--ghost {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  background: none;
+  color: var(--aq-soft);
+}
+
+/* Dans Aqueli, en bas à droite, au-dessus de la barre d'état. */
+.focus-dock {
+  position: fixed;
+  right: 18px;
+  bottom: 44px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 300px;
+  padding: 10px 12px;
+  border-radius: 20px;
+  animation: aq-rise 0.3s var(--aq-ease) backwards;
+}
+
+.focus-dock .focus-digits,
+.mini-focus .focus-digits {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.focus-dock .focus-caption,
+.mini-focus .focus-caption {
+  display: none;
+}
+
+.focus-dock-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.focus-dock-phase {
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.focus-dock-task {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.focus-dock-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.focus-dock-corner {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+}
+
+.focus-dock--pill {
+  width: auto;
+  gap: 8px;
+  padding: 7px 14px 7px 10px;
+  border: 1px solid var(--aq-border);
+  color: var(--aq-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.focus-dock-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--aq-gel);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--aq-accent) 25%, transparent);
+}
+
+.focus-dock--pill[data-status="en-cours"] .focus-dock-dot {
+  animation: focus-blink 2s ease-in-out infinite;
+}
+
+.focus-dock--pill[data-phase="pause"] .focus-dock-dot,
+.focus-dock--pill[data-phase="longue-pause"] .focus-dock-dot {
+  background: var(--aq-priority-low);
+}
+
+.focus-dock-time {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* Petite fenêtre toujours visible : transparente autour de sa carte. */
+:root[data-window="focus"],
+:root[data-window="focus"] body {
+  background: transparent;
+  overflow: hidden;
+}
+
+.mini-focus {
+  position: fixed;
+  inset: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px 6px 8px;
+  border: 1px solid var(--aq-border);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--aq-sheen), transparent 55%), var(--aq-popover-solid);
+  user-select: none;
+  cursor: grab;
+}
+
+.mini-focus-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-focus-phase {
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mini-focus-state {
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.mini-focus-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.mini-focus .mini-btn {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+/* ——— Habitudes : jours de pause et force de l'habitude ——— */
+
+/* Jour de pause (vacances, maladie) : hachuré, ni réussi ni manqué. */
+.habit-day[data-paused],
+.habit-heat-cell[data-paused] {
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--aq-soft) 30%, transparent) 0 2px,
+    transparent 2px 5px
+  );
+  border-style: dashed;
+}
+
+.habit-force {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 30%, transparent);
+  border-radius: 14px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) 10%, var(--aq-tile));
+}
+
+/* Anneau rempli selon la force (--force, en %), de la couleur de l'habitude. */
+.habit-force-ring {
+  width: 54px;
+  height: 54px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, var(--aq-card-solid) 76%, transparent 78%),
+    conic-gradient(var(--row-color) var(--force), color-mix(in srgb, var(--row-color) 16%, transparent) 0);
+}
+
+.habit-force-value {
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.habit-force-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--aq-soft);
+}
+
+.habit-force-text strong {
+  color: var(--aq-ink);
+  font-size: 14px;
+}

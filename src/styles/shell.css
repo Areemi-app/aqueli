@@ -1,0 +1,846 @@
+/*
+ * Cadre de la fenêtre : décor de fond, barre de titre, barre latérale, zone de travail,
+ * barre d'état (maquettes Main, BarreTitre, BarreLaterale).
+ */
+
+.app {
+  position: relative;
+  isolation: isolate;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--aq-sky);
+}
+
+/* ——— Décor : bulles et étoiles ——— */
+
+.decor {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--aq-bubble);
+  border: 1px solid var(--aq-bubble-edge);
+  animation: aq-float 14s ease-in-out infinite;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--aq-star);
+  opacity: var(--star-opacity);
+  box-shadow: 0 0 var(--star-glow) var(--aq-star-glow);
+  animation: aq-twinkle 5s ease-in-out infinite;
+}
+
+/* Motifs du thème : feuilles, flocons, pétales, cœurs, œufs, chauves-souris. */
+.motif {
+  position: absolute;
+  opacity: 0.55;
+  animation: aq-float 16s ease-in-out infinite;
+}
+
+.motif path {
+  fill: var(--aq-motif);
+}
+
+.motif[data-stroke] path {
+  fill: none;
+  stroke: var(--aq-motif);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sparkle {
+  position: absolute;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 6px currentColor);
+  --star-opacity: 0.85;
+  animation: aq-twinkle 6s ease-in-out infinite;
+}
+
+/* ——— Barre de titre ——— */
+
+/* Trois zones : la recherche au milieu de la fenêtre, quelle que soit la largeur des côtés. */
+.titlebar {
+  position: relative;
+  z-index: 20;
+  height: 52px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: minmax(max-content, 1fr) minmax(160px, 440px) minmax(max-content, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding-left: 16px;
+  background: var(--aq-bar);
+  border-bottom: 1px solid var(--aq-border);
+  box-shadow: var(--aq-titlebar-shadow);
+}
+
+.titlebar::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--aq-bar-edge);
+  pointer-events: none;
+}
+
+.titlebar-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.titlebar-name {
+  flex-shrink: 0;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.history-buttons {
+  display: flex;
+  gap: 4px;
+  margin-left: 4px;
+}
+
+.space-selector {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.space-button {
+  gap: 8px;
+}
+
+.space-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.space-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+/* Bannière du thème : la barre de titre devient une capsule de verre liquide posée sur le ciel,
+   où flotte la frise du thème (src/theme/banners.ts). Pas de liseré : le bord de verre, son reflet
+   et une ombre douce la détachent du reste de la fenêtre. */
+.titlebar[data-banner] {
+  height: 58px;
+  border-bottom: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.titlebar[data-banner]::after {
+  display: none;
+}
+
+.titlebar-banner {
+  position: absolute;
+  inset: 5px 6px;
+  overflow: hidden;
+  pointer-events: none;
+  border: 1px solid var(--aq-border);
+  border-radius: 20px;
+  background: var(--aq-sky);
+  background-attachment: fixed;
+  box-shadow:
+    inset 0 1px 0 var(--aq-border),
+    inset 0 -10px 18px -14px var(--aq-border),
+    0 12px 26px -18px var(--aq-glow);
+  animation: aq-fade var(--aq-slow) ease;
+}
+
+/* Reflet du verre, plus clair en haut. */
+.titlebar-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--aq-row-gloss);
+  opacity: 0.6;
+}
+
+/* La frise, à l'échelle de la barre entière ; elle s'efface sous le nom d'Aqueli et sous les
+   boutons de la fenêtre. */
+.titlebar-banner::after {
+  content: "";
+  position: absolute;
+  inset: -5px -6px;
+  background: var(--banner) center bottom / auto 100% no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 120px, #000 300px, #000 calc(100% - 210px), transparent calc(100% - 140px));
+  mask-image: linear-gradient(to right, transparent 120px, #000 300px, #000 calc(100% - 210px), transparent calc(100% - 140px));
+}
+
+/* Boutons de la fenêtre dans la capsule : survol arrondi. */
+.titlebar[data-banner] .window-controls {
+  margin-right: 10px;
+  padding: 10px 0;
+}
+
+.titlebar[data-banner] .window-btn {
+  border-radius: 12px;
+}
+
+.titlebar-start,
+.titlebar-center,
+.titlebar-end {
+  position: relative;
+}
+
+.titlebar-start,
+.titlebar-end {
+  display: flex;
+  align-items: center;
+  gap: inherit;
+  min-width: 0;
+}
+
+.titlebar-end {
+  justify-self: end;
+}
+
+.titlebar-center {
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-field {
+  width: min(440px, 100%);
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 14px;
+  border-radius: 17px;
+  border: 1px solid var(--aq-border);
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  color: var(--aq-soft);
+  font-size: 13px;
+  text-align: left;
+  cursor: text;
+  transition: box-shadow var(--aq-fast) ease;
+}
+
+.search-field:hover {
+  box-shadow:
+    var(--aq-field-inset),
+    0 0 0 3px var(--aq-tint);
+}
+
+.search-icon {
+  flex-shrink: 0;
+  color: var(--aq-soft);
+}
+
+.search-placeholder {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.window-controls {
+  display: flex;
+  align-self: stretch;
+  flex-shrink: 0;
+  margin-left: 6px;
+}
+
+.window-btn {
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--aq-ink);
+  transition: background var(--aq-fast) ease;
+}
+
+.window-btn:hover {
+  background: var(--aq-hover);
+}
+
+.window-btn--close:hover {
+  background: var(--aq-close-hover);
+  color: var(--aq-on-close);
+}
+
+.window-btn:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ——— Zone de travail ——— */
+
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 16px;
+  padding: 12px 16px;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  animation: aq-rise var(--aq-normal) var(--aq-ease);
+}
+
+/* ——— Barre latérale ——— */
+
+.sidebar {
+  width: 232px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 10px;
+  backdrop-filter: blur(calc(var(--aq-blur) * 1.1));
+}
+
+.sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow-y: auto;
+  margin: -4px;
+  padding: 4px;
+}
+
+/* « Modules » et le bouton qui ouvre le choix des modules affichés. */
+.sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 4px;
+}
+
+.sidebar-customize {
+  margin-bottom: 4px;
+  opacity: 0.75;
+}
+
+.sidebar-customize:hover,
+.sidebar-customize[aria-expanded="true"] {
+  opacity: 1;
+}
+
+.section-label {
+  padding: 2px 8px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--aq-heading);
+}
+
+.nav-item {
+  --nav-color: var(--aq-accent);
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--aq-ink);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--aq-fast) ease,
+    box-shadow var(--aq-fast) ease;
+}
+
+/* Survol et écran ouvert : petite bulle teintée de la couleur du module. */
+.nav-item:hover:not([aria-current="page"]) {
+  background: color-mix(in srgb, var(--nav-color) 9%, var(--aq-hover));
+}
+
+.nav-item[aria-current="page"] {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--nav-color) var(--aq-row-mix-strong), var(--aq-tile));
+  box-shadow:
+    var(--aq-ring),
+    inset 0 0 0 1px color-mix(in srgb, var(--nav-color) 28%, transparent);
+  font-weight: 650;
+}
+
+.nav-item .chip {
+  transition:
+    transform var(--aq-fast) ease,
+    box-shadow var(--aq-fast) ease;
+}
+
+.nav-item:hover .chip {
+  transform: scale(1.06);
+}
+
+.nav-item[aria-current="page"] .chip,
+.nav-mini[aria-current="page"] .chip {
+  box-shadow:
+    var(--aq-chip-shadow),
+    0 0 10px color-mix(in srgb, var(--nav-color) 45%, transparent);
+}
+
+.nav-item--quiet:hover:not([aria-current="page"]) {
+  background: var(--aq-hover);
+}
+
+.nav-item--quiet[aria-current="page"] {
+  background: var(--aq-active);
+  box-shadow: var(--aq-ring);
+}
+
+/* ——— Catégories de la barre latérale ——— */
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 6px;
+}
+
+.nav-group-head {
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--aq-soft);
+  font: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.nav-group-head:hover {
+  color: var(--aq-ink);
+}
+
+.nav-group-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--aq-line-strong), transparent);
+}
+
+.nav-group-head svg {
+  flex-shrink: 0;
+  opacity: 0.75;
+  transition: transform var(--aq-fast) ease;
+}
+
+.nav-group[data-closed] .nav-group-head svg {
+  transform: rotate(-90deg);
+}
+
+/* Catégorie repliée : ses modules restent à portée, en pastilles. */
+.nav-group-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 3px 8px 5px;
+}
+
+.nav-mini {
+  --nav-color: var(--aq-accent);
+  display: flex;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-mini .chip {
+  transition: transform var(--aq-fast) ease;
+}
+
+.nav-mini:hover .chip {
+  transform: scale(1.1);
+}
+
+.nav-item--quiet {
+  color: var(--aq-soft);
+}
+
+.nav-item--quiet[aria-current="page"] {
+  color: var(--aq-ink);
+  font-weight: 600;
+}
+
+.nav-icon {
+  width: 24px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sidebar-footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-top: 4px;
+}
+
+.sidebar-sep {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--aq-line);
+}
+
+/* ——— Barre d'état ——— */
+
+.statusbar {
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 16px;
+  background: var(--aq-bar);
+  border-top: 1px solid var(--aq-border);
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.status-spacer {
+  flex: 1;
+}
+
+/* ——— Fenêtre étroite (moins de 900 px) : barre latérale repliée en icônes ——— */
+
+@media (max-width: 899px) {
+  .workspace {
+    gap: 12px;
+    padding: 10px 12px;
+  }
+
+  .sidebar {
+    width: 58px;
+    padding: 12px 8px;
+  }
+
+  .sidebar .section-label,
+  .sidebar .nav-label {
+    display: none;
+  }
+
+  .sidebar-head {
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  .sidebar .nav-item {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .nav-group-head {
+    justify-content: center;
+    height: 14px;
+    padding: 0 4px;
+  }
+
+  .nav-group-label,
+  .nav-group-head svg {
+    display: none;
+  }
+
+  .nav-group-line {
+    background: var(--aq-line-strong);
+  }
+
+  .nav-group-chips {
+    flex-direction: column;
+    align-items: center;
+    padding: 2px 0;
+  }
+
+  .titlebar {
+    gap: 8px;
+  }
+
+  .titlebar-name,
+  .space-name {
+    display: none;
+  }
+}
+
+/* ——— Bouton « Sauvegarder » (à côté des espaces) ——— */
+
+.backup-button {
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px 0 8px;
+  border: 1px solid var(--aq-border);
+  border-radius: 17px;
+  background: var(--aq-tile);
+  box-shadow: var(--aq-control-shadow);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 650;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--aq-fast) ease;
+}
+
+.backup-button:hover:not(:disabled) {
+  background: var(--aq-hover);
+}
+
+.backup-button:disabled {
+  cursor: progress;
+}
+
+.backup-button-icon {
+  position: relative;
+  display: inline-flex;
+  color: var(--aq-accent);
+}
+
+/* Pastille de fraîcheur : verte (moins d'un jour), ambre (plus de 3 jours), grise (aucune). */
+.backup-button-dot {
+  position: absolute;
+  right: -3px;
+  bottom: -2px;
+  width: 7px;
+  height: 7px;
+  border: 1.5px solid var(--aq-tile);
+  border-radius: 50%;
+  background: var(--aq-soft);
+}
+
+.backup-button[data-freshness="recente"] .backup-button-dot,
+.backup-button[data-freshness="correcte"] .backup-button-dot {
+  background: var(--aq-priority-low);
+}
+
+.backup-button[data-freshness="ancienne"] .backup-button-dot {
+  background: var(--aq-priority-medium);
+}
+
+.backup-button[aria-busy="true"] .backup-button-icon {
+  animation: aq-pulse 1s ease-in-out infinite;
+}
+
+@keyframes aq-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ——— Bouton « Aide » (ampoule, à côté de la sauvegarde) ——— */
+
+.help-button {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--aq-border);
+  border-radius: 50%;
+  background: var(--aq-tile);
+  box-shadow: var(--aq-control-shadow);
+  color: var(--aq-accent);
+  cursor: pointer;
+  transition: background var(--aq-fast) ease;
+}
+
+.help-button:hover {
+  background: var(--aq-hover);
+}
+
+/* ——— Bilan : mis en avant sous l'Accueil ——— */
+
+.nav-featured {
+  --nav-color: var(--aq-accent);
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 3px 0 4px;
+  padding: 0 8px;
+  border: 1px solid color-mix(in srgb, var(--nav-color) 32%, transparent);
+  border-radius: 12px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--nav-color) 13%, var(--aq-tile));
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--aq-fast) ease;
+}
+
+.nav-featured:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--nav-color) 20%, var(--aq-tile));
+}
+
+.nav-featured[aria-current="page"] {
+  border-color: color-mix(in srgb, var(--nav-color) 60%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--nav-color) 26%, transparent);
+}
+
+.nav-featured:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+@media (max-width: 899px) {
+  .nav-featured {
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+/* Épinglés : liste remise en ordre par glisser-déposer, sans changer la mise en page. */
+.nav-pins-list {
+  display: contents;
+}
+
+/* Barre d'état : « Verrouillage automatique » ouvre Paramètres › Sécurité ; pictogrammes et
+   séparateurs du style Signature, masqués ailleurs. */
+.status-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.status-link:hover {
+  color: var(--aq-ink);
+}
+
+.status-link:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.status-extra {
+  display: none;
+}
+
+/* « Soutenir Aqueli » : le cœur prend la couleur d'accent du thème. */
+.status-support svg {
+  color: var(--aq-accent);
+}
+
+/* Fenêtre moyenne : la barre d'état se resserre. */
+@media (max-width: 1100px) {
+  .statusbar {
+    gap: 12px;
+  }
+}
+
+/* Fenêtre étroite : la barre de titre se resserre pour garder les boutons de la fenêtre visibles
+   (le nom d'Aqueli laisse le logo seul, le nom de l'espace se coupe ; infobulle au survol). */
+@media (max-width: 1080px) {
+  .titlebar-name {
+    display: none;
+  }
+
+  .space-name {
+    max-width: 96px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 899px) {
+  .space-name {
+    display: none;
+  }
+
+  /* La recherche devient un bouton rond ; son nom reste dans l'infobulle et pour le lecteur d'écran. */
+  .titlebar {
+    grid-template-columns: minmax(max-content, 1fr) 36px minmax(max-content, 1fr);
+  }
+
+  .titlebar .titlebar-center button.search-field {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .search-field .search-placeholder {
+    display: none;
+  }
+}
+
+/* Recherche de la barre de titre : texte d'aide court quand elle est étroite. */
+.search-placeholder-short {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .search-placeholder-long {
+    display: none;
+  }
+
+  .search-placeholder-short {
+    display: inline;
+  }
+}

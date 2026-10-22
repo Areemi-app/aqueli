@@ -1,0 +1,688 @@
+/*
+ * Composants de base : verre dépoli, boutons « gel », boutons de verre, pastilles, onglets,
+ * interrupteurs. Valeurs reprises des maquettes validées.
+ */
+
+/* ——— Verre dépoli ——— */
+
+.glass {
+  background: var(--aq-card);
+  backdrop-filter: blur(var(--aq-blur));
+  border: 1px solid var(--aq-border);
+  box-shadow: var(--aq-shadow);
+  border-radius: 18px;
+}
+
+.glass-popover {
+  background: var(--aq-popover);
+  backdrop-filter: blur(calc(var(--aq-blur) * 1.5)) saturate(1.2);
+  border: 1px solid var(--aq-border);
+  box-shadow: var(--aq-shadow);
+}
+
+/* ——— Bouton principal « gel » : pilule dégradée, reflet, halo coloré ——— */
+
+.btn-gel {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  height: 38px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 19px;
+  border: 1px solid var(--aq-gel-border);
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--aq-gel-inset), 0 8px 18px -8px var(--aq-glow);
+  cursor: pointer;
+  transition:
+    box-shadow var(--aq-fast) ease,
+    filter var(--aq-fast) ease,
+    transform var(--aq-fast) ease;
+}
+
+/* Reflet qui glisse au survol. */
+.btn-gel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, var(--aq-sheen) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.6s var(--aq-ease);
+  pointer-events: none;
+}
+
+.btn-gel:hover {
+  filter: brightness(1.06) saturate(1.05);
+  box-shadow:
+    var(--aq-gel-inset),
+    0 10px 22px -8px var(--aq-glow),
+    0 0 0 3px var(--aq-tint);
+}
+
+.btn-gel:hover::after {
+  transform: translateX(120%);
+}
+
+.btn-gel:active {
+  transform: translateY(1px);
+  filter: brightness(0.95);
+}
+
+.btn-gel--sm {
+  height: 34px;
+  padding: 0 16px 0 12px;
+  gap: 6px;
+  border-radius: 17px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+  .btn-gel--sm {
+    padding: 0 9px;
+  }
+}
+
+/* ——— Boutons secondaires en verre ——— */
+
+.btn-glass,
+.icon-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--aq-button-border);
+  background: var(--aq-button);
+  backdrop-filter: blur(calc(var(--aq-blur) * 0.75));
+  box-shadow: var(--aq-control-shadow);
+  color: var(--aq-button-ink);
+  cursor: pointer;
+  transition:
+    box-shadow var(--aq-fast) ease,
+    transform var(--aq-fast) ease,
+    opacity var(--aq-fast) ease;
+}
+
+.btn-glass {
+  height: 38px;
+  padding: 0 16px;
+  gap: 8px;
+  border-radius: 19px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn-glass--sm {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 17px;
+  font-size: 13px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 18px;
+}
+
+.icon-btn--sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+.icon-btn--xs {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+}
+
+.btn-glass:hover,
+.icon-btn:hover:not(:disabled) {
+  box-shadow:
+    var(--aq-control-shadow),
+    0 0 0 3px var(--aq-tint);
+}
+
+.btn-glass:active,
+.icon-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+.link-btn {
+  flex-shrink: 0;
+  border: 0;
+  background: none;
+  padding: 2px 4px;
+  border-radius: 6px;
+  color: var(--aq-accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+/* ——— Pastille de module ——— */
+
+.chip {
+  width: var(--chip-size);
+  height: var(--chip-size);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--chip-size) * 0.3);
+  background: var(--aq-chip-gloss), var(--chip-color);
+  box-shadow: var(--aq-chip-shadow);
+  color: var(--aq-on-accent);
+}
+
+/* ——— Petites étiquettes ——— */
+
+.kbd {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--aq-button-border);
+  border-bottom-width: 2px;
+  background: var(--aq-button);
+  color: var(--aq-button-ink);
+  font-family: var(--aq-font);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 10px;
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Case cochée : pastille dégradée avec halo coloré. */
+.check-dot {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--aq-fresh);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 8px -3px var(--aq-fresh-glow);
+}
+
+/* ——— Onglets segmentés ——— */
+
+/* Place laissée aux onglets : ce qui ne tient pas passe dans « Plus » (Tabs.tsx). */
+.tabs-fit {
+  flex: 0 1 auto;
+  min-width: 0;
+  /* Dans une colonne, la barre ne s'écrase jamais en hauteur (overflow: hidden annulerait sinon
+     sa hauteur minimale). */
+  min-height: max-content;
+  display: flex;
+  overflow: hidden;
+  /* Place pour l'ombre et le contour de focus. */
+  padding: 3px;
+  margin: -3px;
+}
+
+/* Dans une fenêtre qui défile (colonne), la barre garde sa hauteur. */
+.dialog > .tabs-fit {
+  flex-shrink: 0;
+  align-self: flex-start;
+  max-width: 100%;
+}
+
+.segmented {
+  flex-shrink: 0;
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 18px;
+  background: var(--aq-track);
+  border: 1px solid var(--aq-border);
+  box-shadow: var(--aq-field-inset);
+}
+
+.segment {
+  flex-shrink: 0;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 15px;
+  border: 0;
+  background: transparent;
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--aq-fast) ease;
+}
+
+.segment:hover:not([aria-selected="true"]):not([aria-checked="true"]) {
+  background: var(--aq-tint);
+}
+
+.segmented-tabs {
+  display: flex;
+  gap: 2px;
+}
+
+.segment-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 10px 0 12px;
+}
+
+.segment[aria-selected="true"],
+.segment[aria-checked="true"] {
+  background: var(--aq-seg);
+  color: var(--aq-accent);
+  box-shadow: var(--aq-seg-shadow);
+  font-weight: 700;
+}
+
+.segmented--choice {
+  align-self: flex-start;
+}
+
+.segment:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+/* ——— Interrupteur ——— */
+
+.switch {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 13px;
+  border: 1px solid var(--aq-border);
+  background: var(--aq-tint);
+  box-shadow: var(--aq-field-inset);
+  cursor: pointer;
+  transition: background var(--aq-normal) ease;
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--aq-on-accent);
+  box-shadow: 0 1px 3px var(--aq-line-strong), 0 2px 6px -2px var(--aq-glow);
+  transition: transform var(--aq-normal) var(--aq-ease);
+}
+
+.switch[aria-checked="true"] {
+  background: var(--aq-fresh);
+  border-color: var(--aq-gel-border);
+  box-shadow: var(--aq-gel-inset), 0 3px 8px -3px var(--aq-fresh-glow);
+}
+
+.switch[aria-checked="true"] .switch-thumb {
+  transform: translateX(20px);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.setting-row:last-child {
+  border-bottom: 0;
+}
+
+.setting-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setting-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.setting-desc {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--aq-soft);
+}
+
+.setting-note {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--aq-accent);
+}
+
+/* ——— Sphère illustrée des états vides ——— */
+
+.orb {
+  flex-shrink: 0;
+  overflow: visible;
+  filter: drop-shadow(0 10px 18px color-mix(in srgb, currentColor 45%, transparent));
+  animation: aq-float 7s ease-in-out infinite;
+}
+
+.orb-rim {
+  stroke: var(--aq-bubble-edge);
+}
+
+.orb-shine-top {
+  stop-color: var(--aq-on-accent);
+  stop-opacity: 0.85;
+}
+
+.orb-shine-bottom {
+  stop-color: var(--aq-on-accent);
+  stop-opacity: 0;
+}
+
+.orb-icon path {
+  stroke: var(--aq-on-accent);
+}
+
+.feature-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.feature-list li > svg {
+  flex-shrink: 0;
+  color: var(--aq-accent);
+}
+
+/* Puce neutre des listes descriptives. */
+.bullet-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  margin: 0 4px;
+  border-radius: 3px;
+  background: var(--aq-accent);
+}
+
+/* ——— Sélection de plusieurs éléments (src/components/SelectionBar.tsx) ——— */
+
+/* Élément pris dans la sélection (Ctrl+clic, Maj+clic, Ctrl+A). */
+[data-picked] {
+  outline: 2px solid color-mix(in srgb, var(--aq-accent) 75%, transparent);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 100vmax color-mix(in srgb, var(--aq-accent) 12%, transparent);
+}
+
+.selection-bar {
+  container-type: inline-size;
+  position: sticky;
+  bottom: 8px;
+  z-index: 5;
+  flex-shrink: 0;
+  margin: 6px 8px 8px;
+  padding: 7px 8px 7px 14px;
+  border-radius: 14px;
+  animation: aq-pop var(--aq-fast) var(--aq-ease);
+}
+
+.selection-inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.selection-count {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--aq-accent);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.selection-noun {
+  margin-left: -2px;
+}
+
+.selection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.selection-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.selection-action[data-danger] {
+  color: var(--aq-danger);
+}
+
+/* Colonne étroite (documents, contacts) : la barre garde ses boutons, en icônes seules. */
+@container (max-width: 470px) {
+  .selection-noun,
+  .selection-label {
+    display: none;
+  }
+
+  .selection-actions,
+  .selection-inner {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .selection-action {
+    padding-inline: 9px;
+  }
+}
+
+/* ——— Cadrage d'une image (src/components/ImageCropper.tsx) ——— */
+
+.cropper {
+  align-items: center;
+}
+
+.cropper-frame {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--aq-tint);
+  box-shadow:
+    0 0 0 1px var(--aq-border),
+    var(--aq-control-shadow);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.cropper-frame:active {
+  cursor: grabbing;
+}
+
+.cropper-frame:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 3px;
+}
+
+.cropper-frame[data-round] {
+  border-radius: 50%;
+}
+
+.cropper-image {
+  position: absolute;
+  max-width: none;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+}
+
+/* Repères des tiers, pour centrer le sujet. */
+.cropper-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, transparent calc(33.33% - 0.5px), rgba(255, 255, 255, 0.45) calc(33.33% - 0.5px), rgba(255, 255, 255, 0.45) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), rgba(255, 255, 255, 0.45) calc(66.66% - 0.5px), rgba(255, 255, 255, 0.45) calc(66.66% + 0.5px), transparent calc(66.66% + 0.5px)),
+    linear-gradient(to bottom, transparent calc(33.33% - 0.5px), rgba(255, 255, 255, 0.45) calc(33.33% - 0.5px), rgba(255, 255, 255, 0.45) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), rgba(255, 255, 255, 0.45) calc(66.66% - 0.5px), rgba(255, 255, 255, 0.45) calc(66.66% + 0.5px), transparent calc(66.66% + 0.5px));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--aq-fast) ease;
+}
+
+.cropper-frame:hover .cropper-grid,
+.cropper-frame:active .cropper-grid,
+.cropper-frame:focus-visible .cropper-grid {
+  opacity: 1;
+}
+
+.cropper-tools {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cropper-tools .btn-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cropper-zoom {
+  flex: 1;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cropper-zoom input {
+  width: 100%;
+  accent-color: var(--aq-accent);
+}
+
+/* « Plus d'options » (src/components/MoreOptions.tsx). */
+.more-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.more-options-toggle {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--aq-accent);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.more-options-toggle:hover {
+  background: color-mix(in srgb, var(--aq-accent) 10%, transparent);
+}
+
+.more-options-toggle:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
+}
+
+.more-options-chevron {
+  transition: transform var(--aq-fast) ease;
+}
+
+.more-options[data-open] .more-options-chevron {
+  transform: rotate(180deg);
+}
+
+.more-options-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Tuiles des chiffres clés : verre en relief, teinté sur les thèmes clairs (jamais blanc sur blanc). */
+.budget-stat.glass,
+.obl-stat.glass {
+  border-color: var(--aq-button-border);
+  background: var(--aq-raised);
+}
+
+/* Dépenses et revenus : la tuile prend la couleur de l'argent. */
+.budget-stat.glass[data-glow] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 52%),
+    color-mix(in srgb, var(--money) 9%, var(--aq-tile));
+}
+
+/* Colonnes de navigation (listes, carnets, dossiers, rubriques) : un voile de la couleur du thème
+   les distingue du contenu, qui reste clair pour le texte. */
+.task-lists.glass,
+.doc-folders.glass,
+.lists-nav.glass,
+.settings-nav.glass,
+.cal-aside.glass {
+  background: linear-gradient(var(--aq-nav-tint), var(--aq-nav-tint)), var(--aq-card);
+}

@@ -1,0 +1,1402 @@
+/*
+ * Écrans du coffre : verrouillage (maquette Verrouillage.dc.html), premier lancement,
+ * champs de mot de passe, clé de récupération, fenêtres de dialogue.
+ */
+
+.app-loading {
+  height: 100vh;
+  background: var(--aq-sky);
+}
+
+/* ——— Fond plein écran ——— */
+
+.fullwin {
+  position: relative;
+  isolation: isolate;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--aq-lock-glow), var(--aq-sky);
+}
+
+.fullwin-bar {
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.fullwin-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px 24px;
+}
+
+/* ——— Carte de verrouillage ——— */
+
+.lock-stack {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+}
+
+.lock-card {
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 34px 40px 30px;
+  border-radius: 28px;
+  border: 1px solid var(--aq-border);
+  background: var(--aq-card);
+  backdrop-filter: blur(calc(var(--aq-blur) * 1.4));
+  box-shadow: var(--aq-lock-shadow);
+  animation: aq-pop 0.3s var(--aq-ease);
+}
+
+[data-reduce-transparency="true"] .lock-card {
+  background: var(--aq-card-solid);
+  backdrop-filter: none;
+}
+
+.lock-logo {
+  width: 128px;
+  height: 128px;
+  filter: drop-shadow(0 8px 24px var(--aq-glow));
+}
+
+.lock-logo--small {
+  width: 88px;
+  height: 88px;
+}
+
+/* Bulle du prénom : initiale sur l'accent du thème, reflet de verre, logo d'Aqueli en médaillon. */
+.lock-avatar {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  margin: 6px 0 2px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 26%, color-mix(in oklch, var(--aq-on-accent) 38%, transparent) 0%, transparent 46%),
+    linear-gradient(160deg, color-mix(in oklch, var(--aq-accent) 72%, var(--aq-on-accent)) 0%, var(--aq-accent) 58%, color-mix(in oklch, var(--aq-accent) 78%, var(--aq-ink)) 100%);
+  box-shadow:
+    0 14px 30px -12px var(--aq-glow),
+    inset 0 0 0 1px color-mix(in oklch, var(--aq-on-accent) 35%, transparent),
+    inset 0 -6px 14px -6px color-mix(in oklch, var(--aq-ink) 30%, transparent);
+}
+
+/* Reflet du haut, comme une bulle. */
+.lock-avatar::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 18px;
+  right: 18px;
+  height: 38%;
+  border-radius: 50% 50% 46% 46%;
+  background: linear-gradient(180deg, color-mix(in oklch, var(--aq-on-accent) 55%, transparent), transparent);
+  pointer-events: none;
+}
+
+.lock-avatar-initial {
+  position: relative;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--aq-on-accent);
+  text-shadow: 0 2px 8px color-mix(in oklch, var(--aq-ink) 30%, transparent);
+}
+
+.lock-avatar-badge {
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  width: 38px;
+  height: 38px;
+  filter: drop-shadow(0 3px 8px var(--aq-glow));
+}
+
+[data-high-contrast="true"] .lock-avatar {
+  background: var(--aq-accent);
+  box-shadow: none;
+}
+
+[data-high-contrast="true"] .lock-avatar::before {
+  display: none;
+}
+
+.lock-title {
+  text-align: center;
+}
+
+.lock-title h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.lock-title p {
+  margin-top: 4px;
+  color: var(--aq-soft);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.lock-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.lock-field-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.lock-field-row .field {
+  flex: 1;
+}
+
+.lock-submit.btn-gel {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 22px;
+}
+
+.lock-link {
+  align-self: center;
+  margin-top: 4px;
+}
+
+.lock-hint {
+  color: var(--aq-soft);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.lock-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lock-time {
+  font-size: 54px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-shadow: 0 0 24px var(--aq-clock-glow);
+}
+
+.lock-day {
+  margin-top: 6px;
+  color: var(--aq-soft);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.lock-footer {
+  flex-shrink: 0;
+  padding: 0 24px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Fenêtre basse : l'horloge laisse la place à la carte. */
+@media (max-height: 700px) {
+  .lock-clock {
+    display: none;
+  }
+}
+
+/* ——— Champs de saisie ——— */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.field--center {
+  align-items: center;
+}
+
+.field-label {
+  color: var(--aq-heading);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.field-box {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px 0 14px;
+  border-radius: 14px;
+  border: 1px solid var(--aq-field-border);
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  transition: box-shadow var(--aq-fast) ease, border-color var(--aq-fast) ease;
+}
+
+.field-box:focus-within {
+  border-color: var(--aq-focus);
+  box-shadow:
+    var(--aq-field-inset),
+    0 0 0 3px var(--aq-tint);
+}
+
+.field-box[data-invalid] {
+  border-color: var(--aq-danger);
+}
+
+.field-box--short {
+  width: 150px;
+  padding: 0 14px;
+}
+
+.field-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  color: var(--aq-ink);
+  font-size: 15px;
+}
+
+.field-input:disabled {
+  opacity: 0.6;
+}
+
+.field-input--secret[type="password"] {
+  letter-spacing: 2px;
+}
+
+/* L'œil ajouté d'office par WebView2 (Edge) ferait doublon avec celui d'Aqueli.
+   Règle seule : un navigateur qui ignore ce sélecteur ignore toute la règle. */
+.field-input--secret::-ms-reveal {
+  display: none;
+}
+
+.field-input--code {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.field-box--short .field-input--code {
+  text-align: center;
+  letter-spacing: 6px;
+}
+
+.field-input--code::placeholder {
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.field-eye {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--aq-soft);
+  cursor: pointer;
+}
+
+.field-eye:hover {
+  background: var(--aq-tint);
+  color: var(--aq-ink);
+}
+
+.field-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field-note--warn {
+  color: var(--aq-warn);
+}
+
+.form-error {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--aq-danger-bg);
+  color: var(--aq-danger);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.form-error--shake {
+  animation: aq-shake 0.4s ease;
+}
+
+@keyframes aq-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+/* ——— Jauge de solidité ——— */
+
+.strength {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: -2px;
+}
+
+.strength-bars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.strength-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--aq-tint);
+  transition: background var(--aq-normal) ease;
+}
+
+.strength-bars[data-level="faible"] .strength-bar[data-on] {
+  background: var(--aq-danger);
+}
+
+.strength-bars[data-level="moyen"] .strength-bar[data-on] {
+  background: var(--aq-warn);
+}
+
+.strength-bars[data-level="bon"] .strength-bar[data-on] {
+  background: var(--aq-fresh);
+  box-shadow: 0 2px 6px -2px var(--aq-fresh-glow);
+}
+
+.strength-text {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.strength-label {
+  color: var(--aq-ink);
+  font-weight: 700;
+}
+
+/* ——— Case à cocher « bulle » ——— */
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.checkbox-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.checkbox-bubble {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  border: 1.5px solid var(--aq-soft);
+  color: var(--aq-on-accent);
+  transition: background var(--aq-fast) ease;
+}
+
+.checkbox-input:checked + .checkbox-bubble {
+  border: 0;
+  background: var(--aq-fresh);
+  box-shadow: 0 3px 8px -3px var(--aq-fresh-glow);
+}
+
+.checkbox-input:focus-visible + .checkbox-bubble {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+/* Case colorée (calendriers, modules), case indisponible, mention sous le libellé. */
+.checkbox[data-color] .checkbox-input:checked + .checkbox-bubble {
+  background: var(--aq-chip-gloss), var(--check-color);
+  box-shadow: 0 3px 8px -3px var(--check-color);
+}
+
+.checkbox[data-disabled] {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.checkbox-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-note {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+/* ——— Clé de récupération ——— */
+
+.recovery {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.recovery-key {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 8px 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--aq-border);
+  background: var(--aq-tile);
+  user-select: text;
+}
+
+.recovery-group {
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: var(--aq-field);
+  box-shadow: var(--aq-field-inset);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-variant-numeric: tabular-nums;
+  user-select: text;
+}
+
+/* Feuille imprimable : invisible à l'écran, seule visible à l'impression. */
+.print-sheet {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .print-sheet,
+  .print-sheet * {
+    visibility: visible !important;
+  }
+
+  .print-sheet {
+    display: block;
+    position: absolute;
+    inset: 0;
+    padding: 20mm;
+    background: Canvas;
+    color: CanvasText;
+    font-family: var(--aq-font);
+  }
+
+  .print-logo {
+    width: 30mm;
+    height: 30mm;
+  }
+
+  .print-sheet h1 {
+    margin: 8mm 0 6mm;
+    font-size: 20pt;
+  }
+
+  .print-key {
+    margin: 6mm 0;
+    padding: 5mm;
+    border: 0.4mm solid CanvasText;
+    border-radius: 3mm;
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: 1mm;
+    text-align: center;
+  }
+
+  .print-sheet p {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+}
+
+/* ——— Assistant de premier lancement ——— */
+
+.onb-card {
+  width: min(520px, 100%);
+  margin: auto 0;
+  gap: 16px;
+}
+
+.onb-card:has(.theme-gallery) {
+  width: min(720px, 100%);
+}
+
+.onb-card .theme-gallery {
+  justify-content: center;
+}
+
+.onb-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.onb-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--aq-tint);
+  transition: width var(--aq-normal) var(--aq-ease), background var(--aq-normal) ease;
+}
+
+.onb-dot[data-state="fait"] {
+  background: var(--aq-accent);
+}
+
+.onb-dot[data-state="actuel"] {
+  width: 24px;
+  background: var(--aq-gel);
+}
+
+.onb-logo {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 8px 24px var(--aq-glow));
+}
+
+.onb-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.onb-text {
+  color: var(--aq-soft);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.onb-text strong {
+  color: var(--aq-ink);
+}
+
+.onb-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.onb-actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* Accueil : tout est centré, le bouton aussi. */
+.onb-actions--center {
+  justify-content: center;
+}
+
+.btn-gel:disabled,
+.btn-glass:disabled {
+  opacity: 0.45;
+  cursor: default;
+  filter: none;
+  transform: none;
+}
+
+.btn-gel:disabled::after {
+  display: none;
+}
+
+/* ——— Petit indicateur d'attente ——— */
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--aq-sheen);
+  border-top-color: var(--aq-on-accent);
+  animation: aq-spin 0.8s linear infinite;
+}
+
+@keyframes aq-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ——— Dialogues ——— */
+
+.scrim--center {
+  align-items: center;
+  padding-top: 0;
+}
+
+.dialog {
+  width: min(520px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 26px 24px;
+  border-radius: 22px;
+  animation: aq-pop 0.2s var(--aq-ease);
+}
+
+.dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Barre de titre des fenêtres : bandeau teinté (reflet, couleur du thème), qui reste visible
+   quand le contenu défile. */
+.dialog > .dialog-head {
+  position: sticky;
+  top: -22px;
+  z-index: 3;
+  margin: -22px -26px 0;
+  padding: 16px 22px 12px 26px;
+  border-bottom: 1px solid color-mix(in srgb, var(--aq-row) 22%, transparent);
+  /* Bandeau en partie transparent : le décor du coin se voit au travers. */
+  background:
+    var(--aq-row-gloss),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, color-mix(in srgb, var(--aq-row) 18%, var(--aq-popover-solid)) 66%, transparent),
+      color-mix(in srgb, color-mix(in srgb, var(--aq-row) 7%, var(--aq-popover-solid)) 66%, transparent)
+    );
+}
+
+/* Contenu qui défile sous le bandeau : il reste net, le bandeau redevient plein. */
+.dialog[data-scrolled] > .dialog-head {
+  background:
+    var(--aq-row-gloss),
+    linear-gradient(180deg, color-mix(in srgb, var(--aq-row) 18%, var(--aq-popover-solid)), color-mix(in srgb, var(--aq-row) 7%, var(--aq-popover-solid)));
+}
+
+/* ——— Décor des fenêtres (DialogMotif) : motif du coin en haut à droite, fondu dans le fond ——— */
+
+.dialog {
+  position: relative;
+  isolation: isolate;
+  /* Texte secondaire un peu plus franc qu'ailleurs : il reste lisible (4,5:1) sur le décor,
+     dans tous les thèmes (src/theme/dialogDecor.contrast.test.ts). */
+  --aq-soft: color-mix(in srgb, var(--aq-ink) 30%, var(--aq-soft-base));
+}
+
+.dialog-motif {
+  /* Clarté et éclat bornés : des couleurs franches mais douces dans tous les thèmes. */
+  /* Teintes des pastilles d'identité du thème (--aq-decor-1 à 3, posées par applyTheme), à une
+     clarté bornée : franches mais douces, lisibles sur les fonds clairs comme sombres. */
+  --motif-a: oklch(from var(--aq-decor-1, var(--aq-accent)) clamp(0.6, l, 0.76) min(c, 0.2) h);
+  --motif-b: oklch(from var(--aq-decor-2, var(--aq-accent)) clamp(0.62, l, 0.78) min(c, 0.19) h);
+  --motif-c: oklch(from var(--aq-decor-3, var(--aq-accent)) clamp(0.64, l, 0.8) min(c, 0.18) h);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  /* Rien ne dépasse du cadre de la fenêtre. */
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  /* Fondu depuis le coin en bas à droite, sur près de la moitié de la fenêtre. */
+  -webkit-mask-image: radial-gradient(115% 125% at 100% 100%, #000 0%, #000 34%, rgb(0 0 0 / 0.55) 58%, transparent 92%);
+  mask-image: radial-gradient(115% 125% at 100% 100%, #000 0%, #000 34%, rgb(0 0 0 / 0.55) 58%, transparent 92%);
+}
+
+.dialog-motif-stop-a {
+  stop-color: var(--motif-a);
+}
+
+.dialog-motif-stop-b {
+  stop-color: var(--motif-b);
+}
+
+.dialog-motif-stop-c {
+  stop-color: var(--motif-c);
+}
+
+.dialog-motif-veil {
+  animation: aq-motif-fade 0.6s ease both;
+}
+
+.dialog-motif-line {
+  stroke-dasharray: 1;
+  animation: aq-motif-draw 0.9s var(--aq-ease) both;
+}
+
+.dialog-motif-pearl {
+  fill: var(--motif-a);
+  filter: drop-shadow(0 0 4px var(--motif-a));
+  animation: aq-motif-fade 0.5s ease both;
+}
+
+.dialog-motif-pearl--b {
+  fill: var(--motif-b);
+  filter: drop-shadow(0 0 4px var(--motif-b));
+}
+
+.dialog-motif-pearl--c {
+  fill: var(--motif-c);
+  filter: drop-shadow(0 0 4px var(--motif-c));
+}
+
+.dialog-motif-spark {
+  fill: var(--motif-b);
+  opacity: 0.85;
+  animation: aq-motif-fade 0.6s ease both;
+}
+
+.dialog-motif-fill {
+  fill: color-mix(in oklch, var(--motif-a) 11%, transparent);
+  animation: aq-motif-fade 0.6s ease both;
+}
+
+.dialog-motif-fill--strong {
+  fill: color-mix(in oklch, var(--motif-a) 15%, transparent);
+}
+
+.dialog-motif-bubble {
+  animation: aq-motif-fade 0.6s ease both;
+}
+
+/* Formes pleines : 15 % au plus, voile compris (voir dialogDecor.contrast.test.ts). */
+.dialog-motif-bubble-body {
+  fill: color-mix(in oklch, var(--motif-a) 15%, transparent);
+  stroke: var(--motif-a);
+  stroke-width: 1.4;
+}
+
+.dialog-motif-bubble-body--b {
+  fill: color-mix(in oklch, var(--motif-b) 15%, transparent);
+  stroke: var(--motif-b);
+}
+
+.dialog-motif-bubble-body--c {
+  fill: color-mix(in oklch, var(--motif-c) 15%, transparent);
+  stroke: var(--motif-c);
+}
+
+.dialog-motif-gloss {
+  fill: #fff;
+  opacity: 0.6;
+}
+
+@keyframes aq-motif-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes aq-motif-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Contraste élevé : pas de décor. */
+[data-high-contrast="true"] .dialog-motif {
+  display: none;
+}
+
+.dialog-title {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ——— Réglages de sécurité ——— */
+
+.settings-card--padded {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+}
+
+.settings-form {
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.select-box {
+  position: relative;
+  flex-shrink: 0;
+  /* La case suit le bouton : la flèche reste dans la liste, même dans une colonne. */
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* Liste déroulante d'Aqueli (src/components/Select.tsx) : bouton en verre, liste en verre. */
+.select {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  height: 36px;
+  padding: 0 34px 0 14px;
+  border-radius: 18px;
+  border: 1px solid var(--aq-button-border);
+  background: var(--aq-button);
+  box-shadow: var(--aq-control-shadow);
+  color: var(--aq-button-ink);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color var(--aq-fast) ease,
+    box-shadow var(--aq-fast) ease;
+}
+
+.select:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--aq-accent) 40%, var(--aq-field-border));
+}
+
+.select[data-open] {
+  border-color: var(--aq-accent);
+  box-shadow:
+    var(--aq-field-inset),
+    0 0 0 3px color-mix(in srgb, var(--aq-accent) 18%, transparent);
+}
+
+.select:disabled {
+  cursor: default;
+}
+
+/* Toutes les options dans la même case : la largeur suit la plus longue, comme une liste de Windows. */
+.select-sizer {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.select-value {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  visibility: hidden;
+}
+
+.select-value[data-shown] {
+  visibility: visible;
+}
+
+.select-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.select-dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--dot);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--dot) 22%, transparent);
+}
+
+.select-icon {
+  flex: none;
+  color: var(--aq-accent);
+}
+
+.select-list {
+  position: fixed;
+  z-index: 350;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 14px;
+  list-style: none;
+  animation: aq-pop 0.14s var(--aq-ease);
+}
+
+.select-section {
+  list-style: none;
+}
+
+.select-section + .select-section {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--aq-line);
+}
+
+.select-group {
+  display: block;
+  padding: 6px 10px 4px;
+  color: var(--aq-heading);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.select-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.select-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 32px;
+  padding: 6px 10px;
+  border-radius: 9px;
+  color: var(--aq-ink);
+  font-size: 13.5px;
+  font-weight: 550;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.select-option[data-active] {
+  background: var(--aq-tint);
+}
+
+.select-option[aria-selected="true"] {
+  font-weight: 700;
+}
+
+.select-option[aria-disabled] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.select-check {
+  flex: none;
+  margin-left: auto;
+  padding-left: 4px;
+  color: var(--aq-accent);
+}
+
+.select-chevron {
+  position: absolute;
+  right: 12px;
+  top: 11px;
+  pointer-events: none;
+  color: var(--aq-button-ink);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.notice--warn {
+  background: var(--aq-warn-bg);
+  color: var(--aq-warn);
+}
+
+.notice--danger {
+  align-items: flex-start;
+  background: var(--aq-danger-bg);
+  color: var(--aq-danger);
+}
+
+.notice--danger > svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.notice--banner {
+  flex-shrink: 0;
+  padding: 10px 12px 10px 16px;
+  border-radius: 16px;
+  background: var(--aq-card);
+  color: var(--aq-ink);
+  font-size: 14px;
+}
+
+.notice--banner > svg {
+  color: var(--aq-warn);
+  flex-shrink: 0;
+}
+
+.notice-text {
+  flex: 1;
+}
+
+/* ——— Windows Hello (maquette Verrouillage) ——— */
+
+.lock-hello.btn-gel {
+  width: 100%;
+  height: 50px;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.lock-or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--aq-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lock-or span {
+  flex: 1;
+  height: 1px;
+  background: var(--aq-line-strong);
+}
+
+.lock-submit--secondary {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  border: 1px solid var(--aq-field-border);
+  background: var(--aq-chip-gloss), var(--aq-tile);
+  color: var(--aq-ink);
+  cursor: pointer;
+}
+
+.lock-submit--secondary:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.hello-intro {
+  display: flex;
+  justify-content: center;
+  color: var(--aq-accent);
+}
+
+.hello-intro svg {
+  filter: drop-shadow(0 6px 16px var(--aq-glow));
+}
+
+.switch:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.setting-error {
+  margin: 0 18px 14px;
+}
+
+/* Écran d'accueil : restaurer un compte depuis une sauvegarde (nouveau PC). */
+.onb-restore {
+  align-self: center;
+  margin-top: 4px;
+}
+
+/* Écran d'accueil : langue de l'interface (Français, English). */
+.onb-language {
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* ——— Journal de sécurité ——— */
+
+.security-log {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.security-event {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.security-event:last-child {
+  border-bottom: 0;
+}
+
+.security-event-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+}
+
+.security-event[data-tone="warn"] .security-event-icon {
+  background: var(--aq-danger-bg);
+  color: var(--aq-danger);
+}
+
+.security-event-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.security-event-label {
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--aq-ink);
+}
+
+.security-event-detail {
+  font-size: 12.5px;
+  color: var(--aq-soft);
+}
+
+.security-event[data-tone="warn"] .security-event-detail {
+  color: var(--aq-danger);
+  font-weight: 600;
+}
+
+.security-event-when {
+  font-size: 12.5px;
+  color: var(--aq-soft);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.dialog.dialog--security-log {
+  width: min(640px, 100%);
+}
+
+.notice--ok {
+  background: var(--aq-gain-bg);
+  color: var(--aq-gain);
+}
+
+/* Chemin d'un dossier : coupé n'importe où plutôt que de déborder. */
+.data-path {
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-place-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ——— Champs de date et d'heure (src/components/DateField.tsx, TimeField.tsx) ——— */
+
+.date-field,
+.time-field {
+  cursor: pointer;
+}
+
+.date-field:focus,
+.time-field:focus {
+  cursor: text;
+}
+
+.date-pop {
+  position: fixed;
+  z-index: 350;
+  width: 286px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  overflow-y: auto;
+  border-radius: 16px;
+  animation: aq-pop 0.14s var(--aq-ease);
+}
+
+.date-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.date-chip {
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--aq-border);
+  border-radius: 13px;
+  background: var(--aq-tile);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background var(--aq-fast) ease;
+}
+
+.date-chip:hover:not(:disabled) {
+  background: var(--aq-tint);
+}
+
+.date-chip:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.date-chip--clear {
+  color: var(--aq-soft);
+}
+
+.date-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.date-title {
+  font-size: 13.5px;
+  font-weight: 750;
+  color: var(--aq-ink);
+}
+
+.date-title::first-letter {
+  text-transform: uppercase;
+}
+
+.date-grid .mini-day {
+  height: 30px;
+  border-radius: 15px;
+}
+
+.date-grid .mini-day:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* Jour choisi : bulle « gel » ; aujourd'hui (s'il n'est pas choisi) : simple anneau. */
+.date-grid .mini-day[data-selected] {
+  background: var(--aq-gel);
+  box-shadow: 0 3px 8px -3px color-mix(in srgb, var(--aq-accent) 70%, transparent);
+  color: var(--aq-on-accent);
+  font-weight: 750;
+}
+
+.date-grid .mini-day[data-today]:not([data-selected]) {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--aq-accent);
+  color: var(--aq-accent);
+  font-weight: 750;
+}
+
+.time-list {
+  min-width: 96px;
+}
+
+.time-note {
+  margin-left: auto;
+  padding-left: 14px;
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Choix de la langue (accueil, déverrouillage) : un globe et la liste des langues. */
+.language-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aq-soft);
+}
+
+.language-picker .select {
+  min-width: 170px;
+}
+
+/* Déverrouillage : à droite du bas de la fenêtre. */
+.lock-language {
+  margin-left: auto;
+}

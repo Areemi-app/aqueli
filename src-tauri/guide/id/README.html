@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panduan impor · Aqueli</title>
+<style>
+  :root {
+    --ink: #0b2a45;
+    --soft: #3a5870;
+    --accent: #07609f;
+    --card: rgba(255, 255, 255, 0.8);
+    --card-edge: rgba(255, 255, 255, 0.95);
+    --tile: rgba(255, 255, 255, 0.78);
+    --line: rgba(11, 42, 69, 0.12);
+    --tint: rgba(10, 112, 188, 0.1);
+    --code: rgba(10, 112, 188, 0.12);
+    --req: #0b5dab;
+    --warn: #8f3a05;
+    --warn-bg: rgba(240, 120, 40, 0.16);
+    --sky: radial-gradient(70% 45% at 85% 0%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 70%),
+      linear-gradient(180deg, #3aaee9 0%, #8fd8fa 40%, #dff6ff 75%, #c9f1dc 100%);
+    --gel: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%), linear-gradient(180deg, #2b9ee4 0%, #0b5dab 100%);
+    --shadow: 0 18px 40px -24px rgba(11, 93, 171, 0.45);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8f1ff;
+      --soft: #a9bee0;
+      --accent: #8adbff;
+      --card: rgba(14, 30, 80, 0.86);
+      --card-edge: rgba(140, 180, 255, 0.28);
+      --tile: rgba(30, 56, 130, 0.55);
+      --line: rgba(170, 200, 255, 0.16);
+      --tint: rgba(90, 160, 255, 0.14);
+      --code: rgba(120, 180, 255, 0.18);
+      --req: #8adbff;
+      --warn: #ffc27a;
+      --warn-bg: rgba(255, 170, 80, 0.16);
+      --sky: radial-gradient(55% 45% at 85% 8%, rgba(140, 100, 255, 0.35), rgba(140, 100, 255, 0) 70%),
+        radial-gradient(55% 45% at 8% 95%, rgba(0, 190, 255, 0.28), rgba(0, 190, 255, 0) 70%),
+        linear-gradient(180deg, #050b2a 0%, #0c1c56 55%, #173f96 100%);
+      --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { background: #8fd8fa; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 32px 16px 48px;
+    background: var(--sky) fixed;
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { html { background: #0c1c56; } }
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 34px 40px 40px;
+    border-radius: 28px;
+    border: 1px solid var(--card-edge);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%), var(--card);
+    box-shadow: var(--shadow);
+  }
+  @media (prefers-color-scheme: dark) {
+    main { background: linear-gradient(180deg, rgba(120, 160, 255, 0.12) 0%, rgba(120, 160, 255, 0) 30%), var(--card); }
+  }
+  header { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
+  header svg { flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(11, 93, 171, 0.35)); }
+  h1 { margin: 0; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+  .lead { margin: 4px 0 0; color: var(--soft); font-size: 16px; font-weight: 600; }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 22px 0 8px; padding: 0; list-style: none;
+  }
+  nav a {
+    display: inline-block; padding: 5px 12px; border-radius: 14px;
+    background: var(--tint); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none;
+  }
+  nav a:hover { background: var(--code); }
+  h2 {
+    display: flex; align-items: center; gap: 10px;
+    margin: 36px 0 12px; font-size: 21px; letter-spacing: -0.01em;
+  }
+  h2 .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 15px;
+    background: var(--gel); color: #fff; font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 10px -4px rgba(11, 93, 171, 0.6);
+  }
+  h3 { margin: 24px 0 8px; font-size: 16px; }
+  p { margin: 8px 0; }
+  ul { margin: 8px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  code, kbd {
+    padding: 1px 6px; border-radius: 6px; background: var(--code);
+    font: 600 13.5px/1.4 "Cascadia Mono", Consolas, monospace; overflow-wrap: anywhere;
+  }
+  kbd { white-space: nowrap; }
+  pre {
+    margin: 10px 0; padding: 14px 16px; border-radius: 14px; overflow-x: auto;
+    background: var(--tile); border: 1px solid var(--line);
+    font: 13.5px/1.6 "Cascadia Mono", Consolas, monospace;
+  }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+  .step {
+    padding: 16px 18px; border-radius: 18px;
+    border: 1px solid var(--line); background: var(--tile);
+  }
+  .step b { display: block; margin-bottom: 4px; font-size: 16px; }
+  .step .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; margin-bottom: 8px; border-radius: 13px;
+    background: var(--gel); color: #fff; font-size: 13px; font-weight: 700;
+  }
+  table { width: 100%; margin: 8px 0 4px; border-collapse: separate; border-spacing: 0 4px; font-size: 14px; }
+  th {
+    padding: 4px 12px; color: var(--soft); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.04em; text-align: left; text-transform: uppercase;
+  }
+  td { padding: 8px 12px; vertical-align: top; background: var(--tile); }
+  td:first-child { border-radius: 12px 0 0 12px; }
+  td:last-child { border-radius: 0 12px 12px 0; }
+  td.col { width: 24%; font-weight: 700; }
+  td.ex { width: 26%; color: var(--soft); }
+  table.files td.col { width: 36%; white-space: nowrap; }
+  .req {
+    display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 8px;
+    background: var(--tint); color: var(--req); font-size: 11px; font-weight: 700; vertical-align: 1px;
+  }
+  dl { margin: 8px 0; }
+  dt { margin-top: 12px; font-weight: 700; }
+  dd { margin: 2px 0 0; }
+  .note {
+    margin: 14px 0; padding: 12px 16px; border-radius: 14px;
+    background: var(--warn-bg); color: var(--warn); font-weight: 600;
+  }
+  footer { margin-top: 36px; color: var(--soft); font-size: 13px; text-align: center; }
+  @media (max-width: 860px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 24px 18px 28px; }
+    td.ex { display: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    main { box-shadow: none; border: 0; }
+  }
+  .tr { display: block; font-weight: 400; color: var(--soft); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <radialGradient id="orb" cx="40%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#3c92f2"/>
+          <stop offset="0.55" stop-color="#173f96"/>
+          <stop offset="1" stop-color="#050b2a"/>
+        </radialGradient>
+        <linearGradient id="check" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff6fb5"/>
+          <stop offset="0.35" stop-color="#ffd166"/>
+          <stop offset="0.65" stop-color="#5ce1a5"/>
+          <stop offset="1" stop-color="#6fc8ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="30" fill="url(#orb)"/>
+      <ellipse cx="27" cy="16" rx="18" ry="9" fill="#fff" opacity="0.45"/>
+      <path d="M18 33l9 9 19-21" fill="none" stroke="url(#check)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <h1>Panduan impor</h1>
+      <p class="lead">Tambahkan tugas, acara, kewajiban, catatan, kebiasaan, dan kontak sekaligus.</p>
+    </div>
+  </header>
+
+  <nav aria-label="Daftar isi">
+    <a href="#in-short">Ringkasnya</a>
+    <a href="#folder">Di folder ini</a>
+    <a href="#spreadsheet">Dengan Excel</a>
+    <a href="#columns">Kolom</a>
+    <a href="#values">Nilai yang diterima</a>
+    <a href="#text">Dengan file teks</a>
+    <a href="#calendars">Kalender dan kontak</a>
+    <a href="#preview">Pratinjau dan duplikat</a>
+    <a href="#good-to-know">Perlu diketahui</a>
+  </nav>
+
+  <h2 id="in-short"><span class="n">1</span>Ringkasnya</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="n">1</span>
+      <b>Siapkan</b>
+      Salin <code>Aqueli template.xlsx</code> ke luar folder ini, lalu isi: satu baris per item.
+    </div>
+    <div class="step">
+      <span class="n">2</span>
+      <b>Impor</b>
+      Letakkan file di <code>Documents\Aqueli\Import</code>, atau seret file ke jendela Aqueli.
+    </div>
+    <div class="step">
+      <span class="n">3</span>
+      <b>Periksa</b>
+      Baca pratinjau, lalu klik “Impor”. <kbd>Ctrl+Z</kbd> menghapus seluruh impor.
+    </div>
+  </div>
+  <p>Aqueli mendeteksi file yang diletakkan di folder Import dalam beberapa detik. Anda juga dapat memilih file di Pengaturan › Impor › “Impor file”, atau dengan perintah “Impor file” di <kbd>Ctrl+K</kbd>.</p>
+
+  <h2 id="folder"><span class="n">2</span>Di folder ini</h2>
+  <table class="files">
+    <thead><tr><th>File</th><th>Isi</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Aqueli template.xlsx</td><td>Buku kerja kosong: satu lembar per jenis, dengan nama kolom yang sudah diisi.</td></tr>
+      <tr><td class="col">Aqueli example.xlsx</td><td>Buku kerja yang sama, berisi contoh. Buku kerja ini dapat diimpor apa adanya.</td></tr>
+      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>Kolom setiap jenis, untuk lembar kerja selain Excel.</td></tr>
+      <tr><td class="col">Example.txt</td><td>Contoh file teks, satu baris per item.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Folder ini dibuat ulang setiap kali Aqueli dibuka. Salin templat ke tempat lain (Desktop, Documents…) sebelum mengisinya.</p>
+
+  <h2 id="spreadsheet"><span class="n">3</span>Dengan Excel atau lembar kerja lain</h2>
+  <ul>
+    <li>Satu lembar per jenis, bernama “Tasks”, “Events”, “Obligations”, “Notes”, “Habits”, “Contacts”, “Expenses”, atau “Lists”.</li>
+    <li>Baris pertama: nama kolom. Setelah itu, satu baris per item.</li>
+    <li>Hanya judul yang wajib (nama kebiasaan; nama depan, nama belakang, atau perusahaan kontak), beserta tanggal acara, tenggat kewajiban, tanggal dan jumlah transaksi, serta daftar untuk item daftar. Biarkan sel yang tidak digunakan kosong.</li>
+    <li>Kolom boleh dalam urutan apa pun. Kolom yang tidak dikenal diabaikan. Huruf besar dan aksen tidak berpengaruh.</li>
+    <li>File CSV: satu jenis per file, dikenali dari namanya (<code>tasks.csv</code>) atau kolomnya. Kolom “Type” (Task, Event, Obligation, Note, Habit, Contact, Expense, Income, List) memungkinkan Anda mencampur jenis. Pemisah <code>;</code> atau <code>,</code>.</li>
+    <li>Nama kolom dan nilai ditulis dalam bahasa Inggris (atau Prancis), seperti pada templat yang disediakan. Panduan ini memberikan artinya dalam tanda kurung.</li>
+  </ul>
+
+  <h2 id="columns"><span class="n">4</span>Kolom</h2>
+
+  <h3>Tugas</h3>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">wajib</span> <span class="tr">(Judul)</span></td><td>Apa yang harus dilakukan.</td><td class="ex">Telepon bengkel</td></tr>
+      <tr><td class="col">Due date <span class="tr">(Tenggat)</span></td><td>Tanggal, dengan atau tanpa jam. Tanpa tanggal, tugas masuk ke kotak masuk.</td><td class="ex">03/10/2026</td></tr>
+      <tr><td class="col">Time <span class="tr">(Jam)</span></td><td>Jam tenggat.</td><td class="ex">14:00</td></tr>
+      <tr><td class="col">Start on <span class="tr">(Mulai pada)</span></td><td>Tanggal mulai, tidak lebih lambat dari tenggat. Sampai tanggal itu, tugas hanya muncul di “Mendatang”.</td><td class="ex">01/10/2026</td></tr>
+      <tr><td class="col">Priority <span class="tr">(Prioritas)</span></td><td>high (tinggi), medium (sedang), low (rendah), atau none (tidak ada).</td><td class="ex">high</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Tag)</span></td><td>Dipisahkan dengan koma.</td><td class="ex">mobil, bengkel</td></tr>
+      <tr><td class="col">Space <span class="tr">(Ruang)</span></td><td>Nama ruang Aqueli.</td><td class="ex">Pribadi</td></tr>
+      <tr><td class="col">Duration <span class="tr">(Durasi)</span></td><td>Perkiraan durasi, paling lama 24 h.</td><td class="ex">1 h 30</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Pengingat)</span></td><td>Berapa lama sebelum tenggat.</td><td class="ex">15 min</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Pengulangan)</span></td><td>Lihat “Nilai yang diterima”.</td><td class="ex">every Monday</td></tr>
+      <tr><td class="col">Subtasks <span class="tr">(Subtugas)</span></td><td>Dipisahkan dengan titik koma, paling banyak 100.</td><td class="ex">Dapur; Ruang tamu</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Catatan)</span></td><td>Teks bebas.</td><td class="ex">Minta penawaran harga.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Acara</h3>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">wajib</span> <span class="tr">(Judul)</span></td><td>Nama acara.</td><td class="ex">Dokter gigi</td></tr>
+      <tr><td class="col">Date<span class="req">wajib</span> <span class="tr">(Tanggal)</span></td><td>Hari acara; dapat mencakup jamnya.</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
+      <tr><td class="col">Start <span class="tr">(Mulai)</span></td><td>Jam mulai. Kosong: sepanjang hari.</td><td class="ex">09:30</td></tr>
+      <tr><td class="col">End <span class="tr">(Selesai)</span></td><td>Jam selesai. Kosong: satu jam setelah mulai.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">End date <span class="tr">(Tanggal selesai)</span></td><td>Hari terakhir acara yang berlangsung beberapa hari.</td><td class="ex">18/10/2026</td></tr>
+      <tr><td class="col">Location <span class="tr">(Lokasi)</span></td><td>Alamat atau tempat.</td><td class="ex">Klinik Martin</td></tr>
+      <tr><td class="col">Space <span class="tr">(Ruang)</span></td><td>Nama ruang Aqueli.</td><td class="ex">Kesehatan</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Pengingat)</span></td><td>Berapa lama sebelum mulai.</td><td class="ex">1 h</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Pengulangan)</span></td><td>Lihat “Nilai yang diterima”.</td><td class="ex">every year</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Catatan)</span></td><td>Teks bebas.</td><td class="ex">Bawa kartu kesehatan Anda.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Kewajiban</h3>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">wajib</span> <span class="tr">(Judul)</span></td><td>Nama kewajiban.</td><td class="ex">Asuransi rumah</td></tr>
+      <tr><td class="col">Category <span class="tr">(Kategori)</span></td><td>Taxes and returns (pajak dan pelaporan), Bills (tagihan), Subscriptions (langganan), Insurance (asuransi), Contracts (kontrak), Warranties (garansi), Identity papers (dokumen identitas), Health (kesehatan), Vehicle (kendaraan), Housing (tempat tinggal), atau nama yang diberikan di Aqueli. Kosong: Bills.</td><td class="ex">Insurance</td></tr>
+      <tr><td class="col">Due date<span class="req">wajib</span> <span class="tr">(Tenggat)</span></td><td>Tanggal berikutnya yang harus dipenuhi.</td><td class="ex">15/11/2026</td></tr>
+      <tr><td class="col">Amount <span class="tr">(Jumlah)</span></td><td>Dalam euro.</td><td class="ex">€45.90</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(Frekuensi)</span></td><td>one-off (sekali), monthly (bulanan), every two months (dua bulan sekali), quarterly (triwulanan), half-yearly (semesteran), atau yearly (tahunan). Kosong: one-off.</td><td class="ex">yearly</td></tr>
+      <tr><td class="col">Cancel by <span class="tr">(Batas waktu pembatalan)</span></td><td>Batas waktu pembatalan, tidak lebih lambat dari tenggat.</td><td class="ex">15/10/2026</td></tr>
+      <tr><td class="col">Organisation <span class="tr">(Lembaga)</span></td><td>Perusahaan asuransi, pemasok, instansi pemerintah…</td><td class="ex">Perusahaan asuransi</td></tr>
+      <tr><td class="col">Reference <span class="tr">(Referensi)</span></td><td>Nomor kontrak, nomor pelanggan…</td><td class="ex">HOM-4521</td></tr>
+      <tr><td class="col">Direct debit <span class="tr">(Debit otomatis)</span></td><td><code>yes</code> untuk debit otomatis: kewajiban dibayar dengan sendirinya pada setiap tenggat. Kosong: no.</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Space <span class="tr">(Ruang)</span></td><td>Nama ruang Aqueli.</td><td class="ex">Pribadi</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Catatan)</span></td><td>Teks bebas.</td><td class="ex">Tindak lanjuti pada bulan Oktober.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Catatan</h3>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Title<span class="req">wajib</span> <span class="tr">(Judul)</span></td><td>Judul catatan.</td><td class="ex">Ide hadiah</td></tr>
+      <tr><td class="col">Text <span class="tr">(Teks)</span></td><td>Isi catatan. Format sederhana dikenali: <code>#</code> judul bagian, <code>-</code> daftar, <code>- [ ]</code> kotak centang, <code>**bold**</code>, <code>*italic*</code>.</td><td class="ex">Buku, syal…</td></tr>
+      <tr><td class="col">Notebook <span class="tr">(Buku catatan)</span></td><td>Nama buku catatan yang sudah ada.</td><td class="ex">Rumah</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Tag)</span></td><td>Dipisahkan dengan koma.</td><td class="ex">hadiah</td></tr>
+      <tr><td class="col">Space <span class="tr">(Ruang)</span></td><td>Nama ruang Aqueli.</td><td class="ex">Keluarga</td></tr>
+      <tr><td class="col">Pinned <span class="tr">(Disematkan)</span></td><td>yes (ya) atau no (tidak).</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Kebiasaan</h3>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Name<span class="req">wajib</span> <span class="tr">(Nama)</span></td><td>Nama kebiasaan, paling banyak 60 karakter.</td><td class="ex">Minum air</td></tr>
+      <tr><td class="col">Frequency <span class="tr">(Frekuensi)</span></td><td>Lihat “Nilai yang diterima”. Kosong: every day (setiap hari).</td><td class="ex">Mon, Wed, Fri</td></tr>
+      <tr><td class="col">Target <span class="tr">(Target)</span></td><td>Jumlah yang harus dicapai setiap hari, dari 1 sampai 1000. Kosong: kebiasaan cukup dicentang.</td><td class="ex">8</td></tr>
+      <tr><td class="col">Unit <span class="tr">(Satuan)</span></td><td>Apa yang dihitung.</td><td class="ex">gelas</td></tr>
+      <tr><td class="col">Reminder <span class="tr">(Pengingat)</span></td><td>Jam pengingat, pada hari-hari yang direncanakan.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">To break <span class="tr">(Untuk dihentikan)</span></td><td>yes untuk kebiasaan yang ingin dihentikan: setiap hari yang dicentang adalah hari yang berhasil dijaga.</td><td class="ex">no</td></tr>
+      <tr><td class="col">Time of day <span class="tr">(Waktu dalam sehari)</span></td><td>morning (pagi), midday (siang), atau evening (malam): daftar hari ini disusun menurut waktu dalam sehari. Kosong: sepanjang hari.</td><td class="ex">morning</td></tr>
+      <tr><td class="col">Space <span class="tr">(Ruang)</span></td><td>Nama ruang Aqueli.</td><td class="ex">Pribadi</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Kebiasaan yang bernama sama dengan salah satu templat Aqueli (Membaca, Bermeditasi, Olahraga…) mendapat simbol dan warnanya; kebiasaan lain mendapat simbol dan warna modul Kebiasaan. Keduanya dapat diubah kemudian di Aqueli.</p>
+
+  <h3>Kontak</h3>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">First name <span class="tr">(Nama depan)</span></td><td>Nama depan kontak.</td><td class="ex">Lea</td></tr>
+      <tr><td class="col">Last name <span class="tr">(Nama belakang)</span></td><td>Nama keluarga.</td><td class="ex">Bernard</td></tr>
+      <tr><td class="col">Company <span class="tr">(Perusahaan)</span></td><td>Perusahaan atau lembaga; cukup dengan ini saja untuk tukang atau toko.</td><td class="ex">Bengkel Dupont</td></tr>
+      <tr><td class="col">Phone <span class="tr">(Telepon)</span></td><td>Satu atau beberapa nomor, dipisahkan dengan titik koma.</td><td class="ex">07700 900123</td></tr>
+      <tr><td class="col">Email <span class="tr">(Email)</span></td><td>Satu atau beberapa alamat, dipisahkan dengan titik koma.</td><td class="ex">lea.bernard@example.com</td></tr>
+      <tr><td class="col">Address <span class="tr">(Alamat)</span></td><td>Alamat pos.</td><td class="ex">12 Lilac Road, London</td></tr>
+      <tr><td class="col">Birthday <span class="tr">(Ulang tahun)</span></td><td>Tanggal lahir, atau hanya hari dan bulan. Ditampilkan di kalender.</td><td class="ex">14/05/2016</td></tr>
+      <tr><td class="col">Tags <span class="tr">(Tag)</span></td><td>Dipisahkan dengan koma.</td><td class="ex">keluarga</td></tr>
+      <tr><td class="col">Keep in touch <span class="tr">(Tetap terhubung)</span></td><td>Seberapa sering berkabar: <code>every week</code> (setiap minggu), <code>every 2 weeks</code> (setiap 2 minggu), <code>every month</code> (setiap bulan), <code>every 3 months</code> (setiap 3 bulan), <code>every 6 months</code> (setiap 6 bulan), atau <code>every year</code> (setiap tahun). Kontak muncul di “Perlu dihubungi lagi” saat waktunya tiba. Kosong: tanpa tindak lanjut.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Space <span class="tr">(Ruang)</span></td><td>Nama ruang Aqueli.</td><td class="ex">Keluarga</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Catatan)</span></td><td>Teks bebas.</td><td class="ex">Lebih suka pesan teks.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Pengeluaran</h3>
+  <p>Transaksi modul Anggaran: pengeluaran dan pemasukan. Rekening koran yang diunduh dari situs web bank Anda (dalam format Excel atau CSV) dapat diimpor apa adanya.</p>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">Date<span class="req">wajib</span> <span class="tr">(Tanggal)</span></td><td>Hari transaksi.</td><td class="ex">26/09/2026</td></tr>
+      <tr><td class="col">Description <span class="tr">(Keterangan)</span></td><td>Tentang apa transaksi ini. Kosong: nama kategori.</td><td class="ex">Pasar hari Sabtu</td></tr>
+      <tr><td class="col">Amount<span class="req">wajib</span> <span class="tr">(Jumlah)</span></td><td>Dalam euro. Jumlah negatif adalah pengeluaran; dalam tabel yang berisi jumlah negatif, seperti rekening koran, jumlah positif adalah pemasukan. Selain itu, jumlah adalah pengeluaran.</td><td class="ex">42.50</td></tr>
+      <tr><td class="col">Category <span class="tr">(Kategori)</span></td><td>Nama kategori Anggaran (Belanja harian, Tempat tinggal, Transportasi, Gaji…). Tidak dikenal: transaksi tanpa kategori, ditandai di pratinjau.</td><td class="ex">Belanja harian</td></tr>
+      <tr><td class="col">Direction <span class="tr">(Arah)</span></td><td><code>expense</code> (pengeluaran) atau <code>income</code> (pemasukan). Lebih diutamakan daripada tanda jumlah.</td><td class="ex">income</td></tr>
+      <tr><td class="col">Debit <span class="tr">(Debit)</span></td><td>Sebagai ganti Amount, seperti pada rekening koran: jumlah pengeluaran.</td><td class="ex">21.00</td></tr>
+      <tr><td class="col">Credit <span class="tr">(Kredit)</span></td><td>Sebagai ganti Amount, seperti pada rekening koran: jumlah pemasukan.</td><td class="ex">2,450.00</td></tr>
+      <tr><td class="col">Repeat <span class="tr">(Pengulangan)</span></td><td>Transaksi yang berulang (gaji, sewa…): <code>every month</code> (setiap bulan), <code>every 2 months</code> (setiap 2 bulan), <code>quarterly</code> (triwulanan), <code>half-yearly</code> (semesteran), atau <code>every year</code> (setiap tahun). Setiap angsuran ditambahkan ke Anggaran pada harinya. Kosong: hanya sekali.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Until <span class="tr">(Hingga)</span></td><td>Hari terakhir pengulangan. Kosong: tanpa akhir.</td><td class="ex">31/12/2027</td></tr>
+      <tr><td class="col">Space <span class="tr">(Ruang)</span></td><td>Nama ruang Aqueli.</td><td class="ex">Pribadi</td></tr>
+      <tr><td class="col">Notes <span class="tr">(Catatan)</span></td><td>Teks bebas.</td><td class="ex">Dua tiket.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Daftar</h3>
+  <p>Item dari daftar di modul Daftar: belanja, buku, film, ide hadiah…</p>
+  <table>
+    <thead><tr><th>Kolom</th><th>Isi</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td class="col">List<span class="req">wajib</span> <span class="tr">(Daftar)</span></td><td>Nama daftar. Daftar yang sudah ada menerima item tersebut; jika tidak ada, daftar dibuat dengan templat yang sesuai dengan namanya (Shopping (belanja), Books (buku), Films (film), Gifts (hadiah), Travel (perjalanan), Wishes (keinginan)).</td><td class="ex">Shopping</td></tr>
+      <tr><td class="col">Item<span class="req">wajib</span> <span class="tr">(Item)</span></td><td>Nama item.</td><td class="ex">Apel</td></tr>
+      <tr><td class="col">Aisle <span class="tr">(Lorong)</span></td><td>Lorong atau bagian daftar. Jika tidak dikenal oleh daftar yang sudah ada: item ditambahkan tanpa lorong.</td><td class="ex">Buah dan sayur</td></tr>
+      <tr><td class="col">Done <span class="tr">(Selesai)</span></td><td>yes untuk item yang sudah dicentang.</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Kolom lain (“Author” (penulis), “Rating” (penilaian), “Price” (harga), “Link” (tautan)…) mengisi kolom daftar yang bernama sama. Untuk daftar yang dibuat oleh impor, kolom tersebut menjadi kolom daftar itu: penilaian dari 0 sampai 5 untuk “Rating”, harga untuk “Price”, tanggal untuk “Date”, tautan untuk “Link”, dan teks untuk yang lain. Paling banyak 12 kolom.</p>
+
+  <h2 id="values"><span class="n">5</span>Nilai yang diterima</h2>
+  <dl>
+    <dt>Tanggal</dt>
+    <dd>Hari terlebih dahulu, lalu bulan: <code>03/10/2026</code>, <code>3/10/26</code>, <code>2026-10-03</code>, <code>3 October 2026</code>. Tanpa tahun (<code>03/10</code>): tanggal tersebut yang berikutnya. Juga: <code>today</code> (hari ini), <code>tomorrow</code> (besok), <code>Monday</code> (Senin), <code>in 3 days</code> (3 hari lagi). Tanggal yang dimasukkan sebagai tanggal di Excel dikenali.</dd>
+    <dt>Jam</dt>
+    <dd><code>14:00</code>, <code>2pm</code>, <code>2:30pm</code>, <code>noon</code> (tengah hari). Rentang waktu: <code>09:30-10:00</code>.</dd>
+    <dt>Durasi dan pengingat</dt>
+    <dd><code>15 min</code>, <code>1 h</code>, <code>1 h 30</code>, <code>2 days</code> (2 hari). Untuk pengingat, juga <code>on time</code> (tepat waktu) atau <code>none</code> (tidak ada). Jika tidak ada pengingat yang diberikan, pengingat bawaan (Pengaturan › Pengingat) berlaku untuk item yang memiliki jam.</dd>
+    <dt>Pengulangan</dt>
+    <dd><code>every day</code> (setiap hari), <code>every 2 days</code> (setiap 2 hari), <code>weekdays</code> (hari kerja), <code>every Monday</code> (setiap Senin), <code>every Monday and Thursday</code> (setiap Senin dan Kamis), <code>every week</code> (setiap minggu), <code>every 2 weeks</code> (setiap 2 minggu), <code>every month</code> (setiap bulan), <code>every 3 months</code> (setiap 3 bulan), <code>the first Monday of the month</code> (Senin pertama setiap bulan), <code>every year</code> (setiap tahun). Untuk tugas, juga <code>3 days after completion</code> (3 hari setelah selesai).</dd>
+    <dt>Frekuensi kebiasaan</dt>
+    <dd><code>every day</code> (setiap hari), <code>3 times a week</code> (3 kali seminggu), <code>Mon, Wed, Fri</code> (Sen, Rab, Jum), <code>Tuesday and Thursday</code> (Selasa dan Kamis), <code>weekdays</code> (hari kerja), <code>weekends</code> (akhir pekan).</dd>
+    <dt>Ulang tahun</dt>
+    <dd><code>14/05/1990</code>, <code>1990-05-14</code>, <code>14 May 1990</code>; tanpa tahun: <code>14/05</code>, <code>14 May</code>.</dd>
+    <dt>Jumlah</dt>
+    <dd><code>312</code>, <code>45.90</code>, <code>€1,234.50</code>. Untuk transaksi, juga <code>-42.50</code>.</dd>
+    <dt>Tag</dt>
+    <dd>Huruf, angka, <code>-</code>, <code>_</code>, dan <code>/</code>; paling banyak 40 karakter dan 20 tag.</dd>
+    <dt>Ruang dan buku catatan</dt>
+    <dd>Namanya di Aqueli. Nama yang tidak dikenal ditandai di pratinjau; item lalu masuk ke ruang yang ditampilkan, atau ke ruang pertama.</dd>
+    <dt>Ya atau tidak</dt>
+    <dd><code>yes</code> (ya), <code>no</code> (tidak), <code>x</code> untuk ya.</dd>
+  </dl>
+
+  <h2 id="text"><span class="n">6</span>Dengan file teks</h2>
+  <p>File <code>.txt</code> atau <code>.md</code> berisi satu item per baris: jenisnya, lalu kolom-kolomnya yang dipisahkan dengan <code>|</code>. Kolom pertama adalah judul.</p>
+  <pre>TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
+EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery
+OBLIGATION | Home insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
+NOTE | Gift ideas | Cookbook, scarf
+HABIT | Read | Mon, Wed, Fri | 20 pages | reminder: 21:30
+CONTACT | Lea Bernard | 07700 900123 | lea.bernard@example.com | birthday: 14/05/2016
+EXPENSE | €42.50 | Groceries | 27/09/2026
+INCOME | September salary | €2,450 | Salary | 01/10/2026
+LIST | Milk | Shopping | Fresh</pre>
+  <ul>
+    <li>Jenis: <code>TASK</code> (tugas), <code>EVENT</code> (acara) (atau <code>APPOINTMENT</code>), <code>OBLIGATION</code> (kewajiban) (atau <code>BILL</code>), <code>NOTE</code> (catatan), <code>HABIT</code> (kebiasaan), <code>CONTACT</code> (kontak), <code>EXPENSE</code> (pengeluaran), <code>INCOME</code> (pemasukan), <code>LIST</code> (daftar).</li>
+    <li>Untuk pengeluaran atau pemasukan, judulnya boleh berupa jumlah; tanggal, jumlah, dan kategori dikenali dengan sendirinya. Untuk item daftar, kolom setelah judul adalah daftarnya, lalu lorongnya.</li>
+    <li>Tanggal, jam, <code>#tags</code>, prioritas (<code>!high</code>, <code>!medium</code>, <code>!low</code>), jumlah, frekuensi, kategori, dan pengulangan dikenali dengan sendirinya; untuk kebiasaan, frekuensi, target (<code>20 pages</code>), dan jam pengingat; untuk kontak, nomor telepon, alamat email, dan tanggal lahir.</li>
+    <li>Kolom lain ditulis <code>name: value</code>, dengan nama kolom: <code>location: Martin surgery</code>, <code>space: Work</code>, <code>reminder: 1 h</code>, <code>subtasks: Kitchen; Living room</code>. Kolom yang tidak dikenali masuk ke catatan item.</li>
+    <li>Baris tanpa jenis adalah tugas, ditulis seperti pada tambah cepat: <code>Call the garage tomorrow 2pm #car !high</code>. Butir (<code>-</code>, <code>*</code>, <code>1.</code>) dan kotak centang (<code>- [ ]</code>) di awal baris diterima.</li>
+    <li>Baris kosong, judul bagian (<code># Heading</code>), dan baris yang diawali <code>//</code> diabaikan.</li>
+    <li>File <code>.md</code> tanpa jenis menjadi satu catatan: judul bagian pertama (<code># Heading</code>) menjadi judulnya, atau nama file jika tidak ada. Format tetap dipertahankan: judul bagian, daftar, kotak centang, kutipan, blok kode, <code>**bold**</code>, <code>*italic*</code>, <code>~~strikethrough~~</code>, <code>==highlight==</code>, dan <code>`code`</code>. Catatan yang diekspor dari Aqueli sebagai Markdown dapat diimpor kembali dengan cara ini. Di pratinjau, file tanpa jenis juga dapat dibaca sebagai daftar tugas, daftar acara, atau satu catatan.</li>
+  </ul>
+
+  <h2 id="calendars"><span class="n">7</span>Kalender dan kontak</h2>
+  <ul>
+    <li>File kalender <code>.ics</code> (diekspor dari Outlook, Google Calendar, atau Apple Calendar) menjadi acara: judul, tanggal dan jam, lokasi, keterangan, pengulangan, dan pengingat.</li>
+    <li>File kontak <code>.vcf</code> (diekspor dari ponsel, Gmail, atau Outlook) menjadi kontak: nama, perusahaan, nomor, alamat email, alamat, ulang tahun, catatan, dan tag.</li>
+    <li>Jam yang ditulis dalam waktu universal dikonversi ke waktu PC ini. Pengulangan yang terlalu tidak biasa tidak dibawa: pratinjau menandainya, dan Anda dapat mengaturnya di kalender.</li>
+    <li>Acara yang dibatalkan dan foto kontak tidak diimpor.</li>
+  </ul>
+
+  <h2 id="preview"><span class="n">8</span>Pratinjau, kesalahan, dan duplikat</h2>
+  <ul>
+    <li>Setiap baris muncul di pratinjau sebelum impor. Tidak ada yang ditambahkan sebelum Anda mengklik “Impor”.</li>
+    <li>Baris yang berisi kesalahan ditampilkan dengan warna merah, beserta penjelasannya. Baris itu tidak diimpor: perbaiki file, lalu impor lagi.</li>
+    <li>Duplikat memiliki jenis, judul, dan tanggal yang sama (nama yang sama untuk kebiasaan atau kontak) dengan item di Aqueli atau baris sebelumnya; untuk transaksi, juga jumlah yang sama; untuk item daftar, daftar yang sama. Duplikat tidak dicentang; mencentangnya tetap mengimpornya.</li>
+    <li>Menghapus centang sebuah baris mengecualikannya dari impor. Menu “Isi” mengubah jenis sebuah lembar atau file.</li>
+    <li>Setelah impor, “Urungkan” atau <kbd>Ctrl+Z</kbd> menghapus semua item yang diimpor sekaligus.</li>
+  </ul>
+
+  <h3>Memperbarui item yang sudah ada</h3>
+  <ul>
+    <li>Tabel yang diekspor oleh Aqueli (tugas, kontak, transaksi anggaran) memiliki kolom terakhir <code>ID</code>; file <code>.ics</code> dan <code>.vcf</code> yang diekspor juga memuatnya. Jangan mengubahnya.</li>
+    <li>Saat diimpor kembali, file memperbarui item yang memiliki ID ini alih-alih membuat item baru: baris ditandai “Pembaruan item yang sudah ada.”. Sebelum impor, sebuah jendela mencantumkan item yang akan diganti dan meminta konfirmasi Anda.</li>
+    <li>Apa yang tidak dijelaskan oleh file tetap dipertahankan: warna, proyek, dan subtugas yang sudah dicentang pada tugas; foto, kategori, dan kartu pada kontak; kemunculan yang dihapus dari rangkaian acara.</li>
+    <li>Baris tanpa ID, atau yang ID-nya tidak ada di akun ini (file dari PC lain), membuat item baru.</li>
+    <li>“Urungkan”, setelah impor, juga memulihkan nilai sebelumnya dari item yang diperbarui.</li>
+  </ul>
+
+  <h2 id="good-to-know"><span class="n">9</span>Perlu diketahui</h2>
+  <ul>
+    <li>File yang diletakkan di folder Import dihapus setelah impor, karena folder ini tidak dienkripsi. Untuk menyimpannya di <code>Import\Traités</code>: Pengaturan › Impor › “Setelah impor”. File yang diseret ke jendela atau dipilih dari tempat lain tetap berada di tempatnya.</li>
+    <li>Paling besar 10 MB dan paling banyak 5.000 item per file.</li>
+    <li>Excel: rumus tidak dihitung ulang, nilai terakhir yang disimpan yang dibaca; makro tidak pernah dijalankan.</li>
+    <li>Buku kerja berformat <code>.xls</code> dan buku kerja yang dilindungi kata sandi tidak dapat dibaca: simpan dalam format <code>.xlsx</code>, tanpa kata sandi.</li>
+  </ul>
+
+  <footer>Aqueli · Panduan impor</footer>
+</main>
+</body>
+</html>

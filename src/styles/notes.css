@@ -1,0 +1,1381 @@
+/* ——— Notes (cahier des charges § 4.5) ——— */
+
+/* Couleurs de surlignage : teintes fixes, rendues transparentes pour rester lisibles dans
+   chaque thème, clair ou sombre. */
+.notes-screen,
+.note-colors,
+.widget,
+.dialog--versions {
+  --mark-orange: #f08a24;
+  --mark-jaune: #f2c200;
+  --mark-vert: #3fbf5a;
+  --mark-bleu: #2f9be8;
+  --mark-violet: #9a6cf0;
+  --mark-rose: #ef5f9c;
+}
+
+.notes-body {
+  gap: 12px;
+}
+
+/* ——— Carnets ——— */
+
+.notes-nav {
+  width: 212px;
+}
+
+.notes-nav-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+}
+
+.notes-nav-add {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--aq-soft);
+  cursor: pointer;
+}
+
+.notes-nav-add:hover {
+  background: var(--aq-hover);
+  color: var(--aq-accent);
+}
+
+.notes-book {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-left: calc(var(--depth, 0) * 14px);
+}
+
+.notes-book > .task-list-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.notes-book-toggle {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--aq-soft);
+  cursor: pointer;
+  transition: transform var(--aq-fast) ease;
+}
+
+button.notes-book-toggle:hover {
+  background: var(--aq-hover);
+}
+
+.notes-book-toggle[aria-expanded="false"] {
+  transform: rotate(-90deg);
+}
+
+.notes-nav-empty {
+  margin: 2px 8px;
+  font-size: 12.5px;
+  color: var(--aq-soft);
+}
+
+/* ——— En-tête : recherche, « Nouvelle note » ——— */
+
+.notes-search {
+  width: min(280px, 30vw);
+  gap: 8px;
+  padding-left: 12px;
+  color: var(--aq-soft);
+}
+
+.notes-search .field-input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.notes-new {
+  display: flex;
+}
+
+.notes-new > .btn-gel:first-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.notes-new-more {
+  margin-left: 2px;
+  padding: 0 10px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+/* ——— Liste des notes ——— */
+
+.notes-list {
+  flex: 0 0 290px;
+  min-width: 0;
+  padding: 14px 10px 8px;
+}
+
+.notes-list-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0 6px 10px;
+}
+
+.notes-list-title {
+  min-width: 0;
+  display: flex;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.notes-list-pick {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 6px;
+  margin-left: -6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--aq-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.notes-list-pick:hover {
+  background: var(--aq-hover);
+}
+
+.notes-list-pick svg {
+  flex-shrink: 0;
+  color: var(--aq-soft);
+}
+
+.notes-list-pick-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.notes-cards {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 2px 4px 8px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+/* Chaque note : petite bulle de verre teintée de sa couleur, sinon de celle du thème. */
+.note-card {
+  --row-color: var(--aq-row);
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 11px 8px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 26%, transparent);
+  border-radius: 12px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  color: var(--aq-ink);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--aq-fast) ease,
+    box-shadow var(--aq-fast) ease;
+}
+
+.note-card:hover:not([aria-current]) {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.note-card[aria-current] {
+  border-color: color-mix(in srgb, var(--row-color) 55%, transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--row-color) 30%, transparent),
+    0 4px 12px -6px var(--row-color);
+}
+
+.note-card-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.note-card-name {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.note-card-pin {
+  flex-shrink: 0;
+  color: var(--row-color);
+}
+
+.note-card-star {
+  flex-shrink: 0;
+  margin-left: auto;
+  fill: var(--aq-star);
+  stroke: var(--aq-star);
+}
+
+.note-card-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--aq-soft);
+}
+
+.note-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  font-size: 11.5px;
+  color: var(--aq-soft);
+}
+
+.note-card-book {
+  font-weight: 600;
+  color: color-mix(in srgb, var(--row-color) 55%, var(--aq-ink));
+}
+
+.note-card-tag {
+  color: var(--aq-accent);
+}
+
+/* ——— Note ouverte ——— */
+
+.notes-editor-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  /* Fenêtre très basse : la note entière défile plutôt que d'écraser le texte. */
+  overflow-y: auto;
+}
+
+.notes-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--aq-soft);
+}
+
+.notes-empty p {
+  margin: 0;
+}
+
+.note-editor {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.note-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 0 22px;
+}
+
+.note-place {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--aq-soft);
+}
+
+.note-updated {
+  font-weight: 500;
+}
+
+.note-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.note-tool {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--aq-button-ink);
+  cursor: pointer;
+  transition:
+    background var(--aq-fast) ease,
+    color var(--aq-fast) ease;
+}
+
+.note-tool:hover:not(:disabled) {
+  background: var(--aq-button);
+  box-shadow: 0 0 0 1px var(--aq-button-border);
+}
+
+.note-tool[aria-pressed="true"] {
+  background: var(--aq-active);
+  box-shadow: var(--aq-ring);
+  color: var(--aq-accent);
+}
+
+.note-tool:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.note-tool--star[aria-pressed="true"] svg {
+  fill: var(--aq-star);
+  stroke: var(--aq-star);
+}
+
+.note-tool--color {
+  --swatch: var(--aq-accent);
+}
+
+.note-tool-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: var(--aq-chip-gloss), var(--swatch);
+  border: 1px solid color-mix(in srgb, var(--swatch) 60%, transparent);
+}
+
+.note-tool--theme .note-tool-dot {
+  background: linear-gradient(135deg, var(--aq-tile) 50%, var(--aq-accent) 50%);
+}
+
+.note-colors-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.note-colors {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 14px;
+}
+
+.note-colors--end {
+  left: auto;
+  right: 0;
+}
+
+.note-color {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--mark) 70%, transparent);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--mark) 55%, transparent);
+  cursor: pointer;
+}
+
+.note-color[aria-pressed="true"] {
+  box-shadow:
+    0 0 0 2px var(--aq-card-solid),
+    0 0 0 4px var(--mark);
+}
+
+.note-tool-swatch {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 4px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--mark);
+}
+
+[data-color="orange"] {
+  --mark: var(--mark-orange);
+}
+
+[data-color="jaune"],
+.note-content mark:not([data-color]) {
+  --mark: var(--mark-jaune);
+}
+
+[data-color="vert"] {
+  --mark: var(--mark-vert);
+}
+
+[data-color="bleu"] {
+  --mark: var(--mark-bleu);
+}
+
+[data-color="violet"] {
+  --mark: var(--mark-violet);
+}
+
+[data-color="rose"] {
+  --mark: var(--mark-rose);
+}
+
+.note-title {
+  margin: 6px 22px 2px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  outline: none;
+}
+
+.note-title::placeholder {
+  color: color-mix(in srgb, var(--aq-soft) 70%, transparent);
+}
+
+.note-title:focus-visible {
+  box-shadow: 0 2px 0 var(--aq-accent);
+}
+
+/* ——— Barre de mise en forme ——— */
+
+.note-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  margin: 4px 14px 0;
+  padding: 4px 6px;
+  border-radius: 12px;
+  background:
+    var(--aq-row-gloss),
+    linear-gradient(180deg, color-mix(in srgb, var(--aq-row) 14%, var(--aq-popover-solid)), color-mix(in srgb, var(--aq-row) 6%, var(--aq-popover-solid)));
+  border: 1px solid color-mix(in srgb, var(--aq-row) 24%, transparent);
+}
+
+.note-toolbar .select-box {
+  width: 118px;
+}
+
+.note-toolbar .select,
+.note-foot-field .select {
+  width: 100%;
+  height: 30px;
+  padding-left: 12px;
+  font-size: 13px;
+}
+
+.note-toolbar .select-chevron,
+.note-foot-field .select-chevron {
+  top: 8px;
+}
+
+.note-tool-sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: var(--aq-line);
+}
+
+.note-tool-spacer {
+  flex: 1;
+}
+
+/* ——— Texte ——— */
+
+.note-scroll {
+  flex: 1;
+  min-height: 160px;
+  overflow-y: auto;
+  padding: 6px 22px 16px;
+}
+
+.note-content-wrap {
+  min-height: 100%;
+}
+
+/* Styles de base de ProseMirror (TipTap ne les injecte pas : politique de sécurité). */
+.ProseMirror {
+  position: relative;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: break-spaces;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0;
+}
+
+.ProseMirror [contenteditable="false"] {
+  white-space: normal;
+}
+
+.ProseMirror [contenteditable="false"] [contenteditable="true"] {
+  white-space: pre-wrap;
+}
+
+.ProseMirror pre {
+  white-space: pre-wrap;
+}
+
+img.ProseMirror-separator {
+  display: inline !important;
+  border: none !important;
+  margin: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.ProseMirror-gapcursor {
+  display: none;
+  pointer-events: none;
+  position: absolute;
+  margin: 0;
+}
+
+.ProseMirror-gapcursor::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -2px;
+  width: 20px;
+  border-top: 1px solid var(--aq-ink);
+  animation: note-caret 1.1s steps(2, start) infinite;
+}
+
+@keyframes note-caret {
+  to {
+    visibility: hidden;
+  }
+}
+
+.ProseMirror-focused .ProseMirror-gapcursor {
+  display: block;
+}
+
+.ProseMirror-hideselection *::selection {
+  background: transparent;
+}
+
+.ProseMirror-hideselection * {
+  caret-color: transparent;
+}
+
+.note-content {
+  min-height: 240px;
+  padding: 8px 0 24px;
+  outline: none;
+  color: var(--aq-ink);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.note-content > * + * {
+  margin-top: 0.55em;
+}
+
+.note-content p {
+  margin: 0;
+}
+
+.note-content h1,
+.note-content h2,
+.note-content h3 {
+  margin: 1em 0 0.2em;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.note-content h1 {
+  font-size: 1.6em;
+  font-weight: 800;
+}
+
+.note-content h2 {
+  font-size: 1.3em;
+  font-weight: 750;
+}
+
+.note-content h3 {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+.note-content > :first-child {
+  margin-top: 0;
+}
+
+.note-content ul,
+.note-content ol {
+  margin: 0.3em 0;
+  padding-left: 1.5em;
+}
+
+.note-content li > p {
+  margin: 0.1em 0;
+}
+
+.note-content li::marker {
+  color: var(--aq-accent);
+  font-weight: 700;
+}
+
+/* Cases à cocher. */
+.note-content ul[data-type="taskList"] {
+  padding-left: 0.2em;
+  list-style: none;
+}
+
+.note-content ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.note-content ul[data-type="taskList"] li > label {
+  flex-shrink: 0;
+  margin-top: 0.28em;
+  user-select: none;
+}
+
+.note-content ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.note-content ul[data-type="taskList"] input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: var(--aq-accent);
+  cursor: pointer;
+}
+
+.note-content ul[data-type="taskList"] li[data-checked="true"] > div {
+  color: var(--aq-soft);
+  text-decoration: line-through;
+}
+
+.note-content blockquote {
+  margin: 0.6em 0;
+  padding: 4px 14px;
+  border-left: 3px solid var(--aq-accent);
+  border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--aq-accent) 7%, transparent);
+  color: color-mix(in srgb, var(--aq-ink) 85%, var(--aq-soft));
+}
+
+.note-content code {
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--aq-ink) 8%, transparent);
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.note-content pre {
+  margin: 0.6em 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--aq-ink) 8%, var(--aq-field));
+  border: 1px solid var(--aq-border);
+  overflow-x: auto;
+}
+
+.note-content pre code {
+  padding: 0;
+  background: none;
+  font-size: 13.5px;
+}
+
+.note-content hr {
+  height: 2px;
+  margin: 1.2em 0;
+  border: 0;
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, var(--aq-accent), transparent);
+  opacity: 0.5;
+}
+
+.note-content hr.ProseMirror-selectednode {
+  opacity: 1;
+}
+
+.note-content mark {
+  padding: 0 2px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--mark) 42%, transparent);
+  color: inherit;
+}
+
+.note-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.6em 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px -10px var(--aq-shadow);
+}
+
+.note-content img.ProseMirror-selectednode {
+  outline: 3px solid var(--aq-accent);
+  outline-offset: 2px;
+}
+
+/* Tableaux. */
+.note-content .tableWrapper {
+  margin: 0.8em 0;
+  overflow-x: auto;
+}
+
+.note-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  border: 1px solid var(--aq-line-strong);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.note-content th,
+.note-content td {
+  position: relative;
+  min-width: 80px;
+  padding: 6px 10px;
+  border-right: 1px solid var(--aq-line);
+  border-bottom: 1px solid var(--aq-line);
+  vertical-align: top;
+  text-align: left;
+}
+
+.note-content tr > :last-child {
+  border-right: 0;
+}
+
+.note-content tr:last-child > * {
+  border-bottom: 0;
+}
+
+.note-content th {
+  background: color-mix(in srgb, var(--aq-accent) 10%, transparent);
+  font-weight: 700;
+}
+
+.note-content .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--aq-accent) 18%, transparent);
+  pointer-events: none;
+}
+
+/* Texte d'aide d'une note vide. */
+.note-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: color-mix(in srgb, var(--aq-soft) 80%, transparent);
+  pointer-events: none;
+}
+
+/* Lien vers une note. */
+.note-link {
+  display: inline-block;
+  padding: 0 7px;
+  border-radius: 8px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-accent) 14%, var(--aq-tile));
+  border: 1px solid color-mix(in srgb, var(--aq-accent) 35%, transparent);
+  color: var(--aq-accent);
+  font-weight: 600;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.note-link::before {
+  content: "↗ ";
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.note-link.ProseMirror-selectednode {
+  box-shadow: 0 0 0 2px var(--aq-accent);
+}
+
+.note-link-typing {
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--aq-accent) 14%, transparent);
+}
+
+.note-link-menu {
+  position: fixed;
+  z-index: 60;
+  width: 280px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+  border-radius: 14px;
+}
+
+.note-link-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  color: var(--aq-ink);
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.note-link-option[aria-selected="true"] {
+  background: var(--aq-active);
+  box-shadow: var(--aq-ring);
+}
+
+.note-link-option:hover:not([aria-selected="true"]) {
+  background: var(--aq-hover);
+}
+
+.note-link-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.note-link-empty {
+  margin: 6px 10px;
+  font-size: 13px;
+  color: var(--aq-soft);
+}
+
+/* Liens et rétroliens, sous le texte. */
+.note-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--aq-line);
+}
+
+.note-links-title {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--aq-heading);
+}
+
+.note-links-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.note-link-chip {
+  max-width: 240px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--aq-accent) 28%, transparent);
+  border-radius: 12px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-accent) var(--aq-row-mix), var(--aq-tile));
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.note-link-chip:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--aq-accent) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.note-links-empty {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--aq-soft);
+}
+
+/* ——— Pied : carnet, espace, étiquettes, mots ——— */
+
+.note-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 8px 14px 10px;
+  border-top: 1px solid var(--aq-line);
+}
+
+.note-foot-field .select-box {
+  width: 150px;
+}
+
+
+.note-tags {
+  flex: 1;
+  min-width: 160px;
+  margin: 0;
+}
+
+.note-words {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ——— Historique des versions ——— */
+
+.dialog--versions {
+  width: min(900px, 100%);
+  height: min(640px, 90vh);
+}
+
+.note-versions {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.note-versions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.note-version {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 11px;
+  cursor: pointer;
+  outline: none;
+}
+
+.note-version:hover:not([aria-selected="true"]) {
+  background: var(--aq-hover);
+}
+
+.note-version[aria-selected="true"] {
+  background: var(--aq-active);
+  box-shadow: var(--aq-ring);
+}
+
+.note-version:focus-visible {
+  box-shadow: 0 0 0 3px var(--aq-focus);
+}
+
+.note-version-date {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--aq-accent);
+}
+
+.note-version-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--aq-ink);
+}
+
+.note-version-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12px;
+  color: var(--aq-soft);
+}
+
+.note-versions-preview {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 18px;
+  border-radius: 14px;
+  background: var(--aq-field);
+  border: 1px solid var(--aq-border);
+}
+
+/* ——— Modèles personnels ——— */
+
+.note-templates {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.note-template-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  color: var(--aq-ink);
+}
+
+.note-template-row:hover {
+  background: var(--aq-hover);
+}
+
+.note-template-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+}
+
+/* ——— Carte « Note épinglée » de l'Accueil ——— */
+
+.pinned-note {
+  --row-color: var(--aq-row);
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--row-color) 26%, transparent);
+  border-radius: 14px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-note));
+  color: var(--aq-ink);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.pinned-note:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-note));
+}
+
+.pinned-note-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.pinned-note-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--aq-ink) 80%, var(--aq-soft));
+}
+
+.pinned-note-meta {
+  margin-top: auto;
+  font-size: 11.5px;
+  color: var(--aq-soft);
+}
+
+/* ——— Fenêtres étroites ——— */
+
+@media (max-width: 1180px) {
+  .notes-list {
+    flex-basis: 270px;
+  }
+
+  .notes-nav {
+    width: 176px;
+  }
+}
+
+@media (max-width: 980px) {
+  .notes-nav {
+    display: none;
+  }
+}
+
+[data-reduce-transparency="true"] .note-link-menu,
+[data-reduce-transparency="true"] .note-colors {
+  backdrop-filter: none;
+  background: var(--aq-popover-solid);
+}
+
+/* ——— Dossiers de carnets ——— */
+
+.notes-nav-actions {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.notes-folder {
+  --folder-color: var(--aq-accent);
+  margin: 2px 0;
+  padding: 2px 0 4px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--folder-color) 7%, transparent);
+}
+
+.notes-folder > .notes-book .task-list-label {
+  font-weight: 700;
+}
+
+.notes-folder-books {
+  padding-left: 12px;
+}
+
+.notes-folder-empty {
+  padding-left: 30px;
+}
+
+.notes-list-add {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 0;
+  border: 0;
+  border-radius: 15px;
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+  box-shadow: 0 3px 8px -4px var(--aq-glow);
+  cursor: pointer;
+}
+
+.notes-list-add:hover {
+  filter: brightness(1.06);
+}
+
+.notes-list-add:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+/* ——— Note dans sa propre fenêtre ——— */
+
+.note-window {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--aq-sky);
+}
+
+.note-window-bar {
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 14px;
+  background: var(--aq-bar);
+  border-bottom: 1px solid var(--aq-border);
+  box-shadow: var(--aq-titlebar-shadow);
+}
+
+.note-window-bar .titlebar-logo {
+  width: 26px;
+  height: 26px;
+}
+
+.note-window-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--aq-ink);
+}
+
+.note-window-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 12px;
+  overflow-y: auto;
+  border-radius: 20px;
+}
+
+/* Note ouverte à part : la fenêtre principale le signale à la place de l'éditeur. */
+.notes-detached-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Menu « / » (src/notes/editor/slash.ts) : blocs à insérer, avec leur raccourci de saisie. */
+.slash-menu {
+  width: 300px;
+  max-height: 340px;
+}
+
+.slash-option {
+  align-items: center;
+  gap: 10px;
+}
+
+.slash-icon {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--aq-border);
+  border-radius: 9px;
+  background: var(--aq-tile);
+  color: var(--aq-accent);
+}
+
+.slash-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.slash-hint {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--aq-soft);
+  font-size: 11.5px;
+}
+
+/* Sommaire de la note : ses titres, en retrait selon leur niveau. */
+.note-outline {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  width: 260px;
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px;
+  border-radius: 14px;
+}
+
+.note-outline-item {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.note-outline-item:hover {
+  background: var(--aq-hover);
+}
+
+.note-outline-item[data-level="1"] {
+  font-weight: 750;
+}
+
+.note-outline-item[data-level="2"] {
+  padding-left: 22px;
+  font-weight: 600;
+}
+
+.note-outline-item[data-level="3"] {
+  padding-left: 34px;
+  color: var(--aq-soft);
+}
+
+/* Dossiers de carnets : remis en ordre par glisser-déposer, sans changer la mise en page. */
+.notes-folders {
+  display: contents;
+}
+
+/* Contact cité avec « @ » : pastille aux couleurs du module Contacts. */
+.contact-mention {
+  --mention-color: var(--aq-accent);
+  display: inline-block;
+  padding: 0 7px;
+  border: 1px solid color-mix(in srgb, var(--mention-color) 35%, transparent);
+  border-radius: 999px;
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--mention-color) 14%, var(--aq-tile));
+  color: var(--mention-color);
+  font-weight: 650;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.contact-mention:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--mention-color) 24%, var(--aq-tile));
+}

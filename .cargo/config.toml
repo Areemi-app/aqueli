@@ -1,0 +1,5 @@
+# Perl pour Windows (Strawberry Perl portable, dans C:\Projets\outils) : il sert uniquement
+# à compiler OpenSSL, dont SQLCipher a besoin pour chiffrer la base. Rien de tout cela
+# n'accède au réseau.
+[env]
+OPENSSL_SRC_PERL = { value = "../outils/strawberry-perl/perl/bin/perl.exe", relative = true }

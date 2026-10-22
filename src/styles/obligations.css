@@ -1,0 +1,626 @@
+/*
+ * Obligations (src/obligations) : bandeau de chiffres, lignes en bulles teintées de leur
+ * catégorie, fenêtre d'obligation, frise de l'année. Couleurs : variables de thème ; la couleur
+ * d'une ligne vient de sa catégorie ou de son choix (--row-color).
+ */
+
+.obligations-screen .task-lists {
+  width: 240px;
+}
+
+/* ——— Bandeau ——— */
+
+.obl-summary {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.obl-stat {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+}
+
+.obl-stat-label {
+  color: var(--aq-heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.obl-stat-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.obl-stat[data-alert] .obl-stat-value {
+  color: var(--aq-warn);
+}
+
+.obl-stat-sub {
+  color: var(--aq-soft);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* ——— Lignes ——— */
+
+.obl-row {
+  --row-color: var(--aq-row);
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 0 10px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
+  transition: background var(--aq-fast) ease;
+}
+
+.obl-row:hover {
+  background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix-strong), var(--aq-tile));
+}
+
+.obl-row[data-status="paye"],
+.obl-row[data-status="resilie"] {
+  opacity: 0.72;
+}
+
+.obl-main {
+  flex: 1;
+  /* Le titre reste lisible : les pastilles cèdent la place avant lui. */
+  min-width: 110px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.obl-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.obl-row[data-status="resilie"] .obl-title {
+  text-decoration: line-through;
+}
+
+.obl-org {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--aq-soft);
+}
+
+.obl-cancel {
+  flex-shrink: 1;
+  min-width: 28px;
+  gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: var(--aq-warn-bg);
+  color: var(--aq-warn);
+}
+
+.obl-amount {
+  flex-shrink: 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.obl-per {
+  font-weight: 600;
+  color: var(--aq-soft);
+}
+
+.obl-due {
+  flex-shrink: 0;
+  min-width: 104px;
+  text-align: right;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--aq-soft);
+  white-space: nowrap;
+}
+
+.obl-due[data-late] {
+  color: var(--aq-danger);
+}
+
+.obl-pay {
+  width: 30px;
+  height: 30px;
+}
+
+.obl-cancel-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1000px) {
+  .obl-org,
+  .obl-per,
+  .obl-cancel-text {
+    display: none;
+  }
+
+  .obl-due {
+    min-width: 0;
+  }
+}
+
+/* Carte « Obligations à venir » de l'Accueil. */
+.obl-widget-amount {
+  color: var(--aq-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-meta[data-warn] {
+  color: var(--aq-warn);
+}
+
+/* ——— Réglages des obligations ——— */
+
+.obl-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.obl-settings .settings-intro {
+  margin: 0 0 4px;
+}
+
+.obl-cat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.obl-cat-name {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Bouton du symbole : ouvre symbole et couleur. */
+.obl-cat-look {
+  display: inline-flex;
+  padding: 2px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  transition: box-shadow var(--aq-fast) ease;
+}
+
+.obl-cat-look:hover,
+.obl-cat-look[aria-expanded="true"] {
+  box-shadow: 0 0 0 2px var(--aq-tint);
+}
+
+.obl-cat-look-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 8px 40px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--aq-tint);
+}
+
+.obl-cat-look-panel .field-label {
+  margin: 2px 0 0;
+}
+
+.obl-default {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--aq-tint);
+}
+
+.obl-default .field-label {
+  flex: 1;
+  min-width: 140px;
+  margin: 0;
+}
+
+/* Réglages par catégorie : repliés tant qu'aucune catégorie n'a les siens. */
+.obl-disclosure {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--aq-ink);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.obl-disclosure:hover {
+  color: var(--aq-accent);
+}
+
+.obl-disclosure-arrow {
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--aq-fast) ease;
+}
+
+.obl-disclosure[aria-expanded="true"] .obl-disclosure-arrow {
+  transform: rotate(45deg);
+}
+
+.obl-exceptions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.obl-exception {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding: 6px 4px;
+  border-top: 1px solid var(--aq-border);
+}
+
+.obl-exception-label {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 13.5px;
+  color: var(--aq-ink);
+}
+
+.obl-exception-same {
+  font-size: 12px;
+  color: var(--aq-soft);
+}
+
+.obl-exception-label .link-btn {
+  font-size: 12px;
+}
+
+/* Catégorie sans réglage propre : pastilles plus discrètes. */
+.obl-exception:not([data-own]) .obl-offset[aria-pressed="true"] {
+  opacity: 0.6;
+}
+
+.obl-offsets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.obl-offset[aria-pressed="true"] {
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+}
+
+/* ——— Fenêtre d'obligation ——— */
+
+.obl-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.obl-pair .select-box,
+.obl-pair .select {
+  width: 100%;
+}
+
+/* Échéance et prélèvement automatique côte à côte, la case alignée sur le champ. */
+.obl-pair--due {
+  align-items: end;
+}
+
+.obl-autopay {
+  padding-bottom: 4px;
+}
+
+.obl-yearly {
+  margin: -4px 0 0;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* Paiements enregistrés. */
+.obl-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.obl-history-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.obl-history-total {
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.obl-history-empty {
+  margin: 0;
+  color: var(--aq-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.obl-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 168px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.obl-history-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--row-color, var(--aq-row)) 8%, var(--aq-tile));
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.obl-history-day {
+  flex: 1;
+}
+
+.obl-history-kind {
+  color: var(--aq-soft);
+  font-size: 12px;
+}
+
+.obl-history-amount {
+  min-width: 80px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: right;
+}
+
+.obl-auto {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--aq-soft);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.obl-amount-input {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.obl-currency {
+  padding: 0 8px 0 6px;
+  font-weight: 700;
+  color: var(--aq-soft);
+}
+
+.obl-date {
+  width: 100%;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 14px;
+}
+
+.obl-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.obl-status .pill--button[aria-checked="true"] {
+  background: var(--aq-gel);
+  color: var(--aq-on-accent);
+}
+
+/* ——— Frise de l'année ——— */
+
+.frise {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px 14px;
+}
+
+.frise-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+.frise-year {
+  min-width: 60px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.frise-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.frise-row {
+  --row-color: var(--aq-row);
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  align-items: center;
+  min-height: 34px;
+  border-bottom: 1px solid var(--aq-line);
+}
+
+.frise-label {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--aq-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.frise-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.frise-track {
+  position: relative;
+  align-self: stretch;
+  background: repeating-linear-gradient(to right, var(--aq-line) 0 1px, transparent 1px calc(100% / 12));
+}
+
+.frise-track--months {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: center;
+}
+
+.frise-track--months span {
+  overflow: hidden;
+  padding: 0 4px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--aq-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.frise-months {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--aq-card-solid);
+}
+
+.frise-totals .frise-label {
+  cursor: default;
+  color: var(--aq-soft);
+}
+
+.frise-totals .frise-track--months span {
+  color: var(--aq-ink);
+  font-size: 11px;
+}
+
+.frise-dot {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  padding: 0;
+  border: 2px solid var(--aq-card-solid);
+  border-radius: 7px;
+  background: var(--aq-chip-gloss), var(--row-color);
+  box-shadow: 0 2px 5px -2px var(--row-color);
+  cursor: pointer;
+}
+
+.frise-dot:hover,
+.frise-dot:focus-visible {
+  transform: scale(1.25);
+}
+
+.frise-dot[data-paid] {
+  opacity: 0.45;
+}
+
+.frise-dot[data-late] {
+  outline: 2px solid var(--aq-danger);
+  outline-offset: 1px;
+}
+
+/* Date limite de résiliation : losange. */
+.frise-cancel {
+  position: absolute;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border: 2px solid var(--aq-warn);
+  background: var(--aq-warn-bg);
+  transform: rotate(45deg);
+}
+
+.frise-today {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 2px solid var(--aq-danger);
+  opacity: 0.6;
+}

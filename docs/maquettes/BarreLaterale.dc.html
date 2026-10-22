@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Barre latérale Aqueli</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<nav aria-label="Modules" style="width: 232px; height: 696px; box-sizing: border-box; display: flex; flex-direction: column; gap: 1px; padding: 12px 10px; border-radius: 18px; background: {{t.card}}; backdrop-filter: blur(18px); border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; font-family: 'Figtree', 'Segoe UI Variable', 'Segoe UI', sans-serif; color: {{t.ink}}">
+<div style="padding: 2px 8px 6px 8px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{t.soft}}">Modules</div>
+<sc-for list="{{items}}" as="item" hint-placeholder-count="15">
+<a href="{{item.href}}" style="height: 32px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 0 8px; border-radius: 10px; background: {{item.bg}}; box-shadow: {{item.ring}}; color: {{t.ink}}; text-decoration: none; font-size: 14px; font-weight: {{item.weight}}">
+<span style="width: 24px; height: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 7px; background: {{item.chip}}; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="{{item.d}}"></path></svg>
+</span>
+<span style="flex-grow: 1">{{item.label}}</span>
+<sc-if value="{{item.hasCount}}" hint-placeholder-val="{{false}}">
+<span style="min-width: 20px; height: 18px; box-sizing: border-box; padding: 0 6px; border-radius: 9px; background: {{t.tint}}; color: {{t.accent}}; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center">{{item.count}}</span>
+</sc-if>
+</a>
+</sc-for>
+<div style="margin: 8px 8px 4px 8px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{t.soft}}">Favoris</div>
+<a href="#" style="height: 32px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 0 8px; border-radius: 10px; color: {{t.ink}}; text-decoration: none; font-size: 14px; font-weight: 500">
+<span style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 7px; background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), #e89a1c; box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 1px 3px rgba(0,0,0,0.2)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="#ffffff" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"></path></svg>
+</span>
+<span>Projet Déménagement</span>
+</a>
+<div style="flex-grow: 1"></div>
+<div style="height: 1px; margin: 4px 8px; background: {{t.line}}"></div>
+<a href="#" style="height: 32px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 0 8px; border-radius: 10px; color: {{t.soft}}; text-decoration: none; font-size: 14px; font-weight: 500">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 3px"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg>
+<span>Corbeille</span>
+</a>
+<a href="#" style="height: 32px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 0 8px; border-radius: 10px; color: {{t.soft}}; text-decoration: none; font-size: 14px; font-weight: 500">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 3px"><path d="M4 7h9M17 7h3M4 17h3M11 17h9M15 5v4M9 15v4"></path></svg>
+<span>Paramètres</span>
+</a>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["aqua","prairie","automne","nuit"],"default":"aqua"},"active":{"editor":"enum","options":["accueil","taches","calendrier","obligations","notes","journal","habitudes","objectifs","projets","focus","listes","contacts","documents","bilan","budget"],"default":"accueil"},"$preview":{"width":232,"height":696}}'>
+const AQ_THEMES = {
+  aqua: { card: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 38%), rgba(255,255,255,0.6)', border: 'rgba(255,255,255,0.95)', ink: '#0b2a45', soft: '#3a5870', accent: '#07609f', tint: 'rgba(10,112,188,0.14)', active: 'linear-gradient(180deg, #ffffff 0%, #d6efff 100%)', ring: '0 0 0 1px rgba(10,112,188,0.35), 0 2px 6px rgba(6,68,120,0.18)', line: 'rgba(11,42,69,0.14)', shadow: '0 10px 30px rgba(6,68,120,0.16)' },
+  prairie: { card: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 38%), rgba(255,255,255,0.6)', border: 'rgba(255,255,255,0.95)', ink: '#12321a', soft: '#3a5a40', accent: '#1d6e10', tint: 'rgba(31,125,18,0.14)', active: 'linear-gradient(180deg, #ffffff 0%, #e2f6d2 100%)', ring: '0 0 0 1px rgba(31,125,18,0.35), 0 2px 6px rgba(30,90,40,0.18)', line: 'rgba(18,50,26,0.14)', shadow: '0 10px 30px rgba(30,90,40,0.16)' },
+  automne: { card: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 38%), rgba(255,247,236,0.68)', border: 'rgba(255,250,240,0.95)', ink: '#3a1a0a', soft: '#6a3b22', accent: '#9a3b0a', tint: 'rgba(168,65,12,0.14)', active: 'linear-gradient(180deg, #fffaf2 0%, #ffe3c6 100%)', ring: '0 0 0 1px rgba(168,65,12,0.35), 0 2px 6px rgba(120,50,10,0.2)', line: 'rgba(58,26,10,0.14)', shadow: '0 10px 30px rgba(120,50,10,0.2)' },
+  nuit: { card: 'linear-gradient(180deg, rgba(160,200,255,0.14) 0%, rgba(160,200,255,0) 38%), rgba(12,26,72,0.62)', border: 'rgba(150,200,255,0.3)', ink: '#eef5ff', soft: '#b4c8e8', accent: '#8adbff', tint: 'rgba(114,210,255,0.18)', active: 'linear-gradient(180deg, rgba(90,150,255,0.5) 0%, rgba(40,80,200,0.4) 100%)', ring: '0 0 0 1px rgba(140,200,255,0.45), 0 0 12px rgba(90,160,255,0.35)', line: 'rgba(200,220,255,0.16)', shadow: '0 10px 30px rgba(0,0,0,0.35)' }
+};
+const AQ_MODULES = [
+  { key: 'accueil', label: 'Accueil', href: 'Main.dc.html', color: '#1e90e0', d: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z' },
+  { key: 'taches', label: 'Tâches', href: 'Taches.dc.html', color: '#2d6ff0', d: 'M4 4h16v16H4z M8 12l3 3 5-6', count: 5 },
+  { key: 'calendrier', label: 'Calendrier', href: 'Calendrier.dc.html', color: '#2fae4a', d: 'M4 6h16v14H4z M4 10h16 M8 3v5 M16 3v5' },
+  { key: 'obligations', label: 'Obligations', href: '#', color: '#e0671f', d: 'M6 3h9l4 4v14H6z M14 3v5h5 M9 13h7 M9 17h5', count: 2 },
+  { key: 'notes', label: 'Notes', href: '#', color: '#e3a712', d: 'M4 4h16v10l-6 6H4z M14 20v-6h6' },
+  { key: 'journal', label: 'Journal', href: '#', color: '#c2479a', d: 'M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h11' },
+  { key: 'habitudes', label: 'Habitudes', href: '#', color: '#16a3a3', d: 'M4 12a8 8 0 0 1 14-5l2 2 M20 4v5h-5 M20 12a8 8 0 0 1-14 5l-2-2 M4 20v-5h5' },
+  { key: 'objectifs', label: 'Objectifs', href: '#', color: '#e04848', d: 'M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0 M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0 M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0' },
+  { key: 'projets', label: 'Projets', href: '#', color: '#6d5ce0', d: 'M3 6h6l2 2h10v11H3z' },
+  { key: 'focus', label: 'Focus', href: '#', color: '#0a9cc4', d: 'M4 13a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 9v4l3 2 M9 2h6' },
+  { key: 'listes', label: 'Listes', href: '#', color: '#7f9a14', d: 'M9 6h11 M9 12h11 M9 18h11 M4 6h1 M4 12h1 M4 18h1' },
+  { key: 'contacts', label: 'Contacts', href: '#', color: '#d9567a', d: 'M12 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8z M4 21a8 8 0 0 1 16 0' },
+  { key: 'documents', label: 'Documents', href: '#', color: '#3d6fb8', d: 'M12 3l8 3v6c0 5-3.5 8-8 9c-4.5-1-8-4-8-9V6z M9 12l2 2 4-4' },
+  { key: 'bilan', label: 'Bilan', href: '#', color: '#7a4fd0', d: 'M4 20V10 M10 20V4 M16 20v-7 M3 20h18' },
+  { key: 'budget', label: 'Budget', href: '#', color: '#1f9a6e', d: 'M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3z M3 7l12-3v3 M16 13h2' }
+];
+class Component extends DCLogic {
+  renderVals() {
+    const key = AQ_THEMES[this.props.theme] ? this.props.theme : 'aqua';
+    const t = AQ_THEMES[key];
+    const active = this.props.active ?? 'accueil';
+    const items = AQ_MODULES.map((m) => {
+      const on = m.key === active;
+      return {
+        ...m,
+        bg: on ? t.active : 'transparent',
+        ring: on ? t.ring : 'none',
+        weight: on ? 600 : 500,
+        chip: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 55%), ' + m.color,
+        hasCount: typeof m.count === 'number',
+        count: m.count ?? ''
+      };
+    });
+    return { t, items };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+/* ——— Comptes de ce PC et images de profil (src/accounts) ——— */
+
+.profile-pic {
+  flex-shrink: 0;
+  display: block;
+  border-radius: 50%;
+  filter: drop-shadow(0 4px 10px var(--aq-glow));
+}
+
+/* Sans image : bulle teintée de l'accent, initiale du pseudo (comme sur l'écran de verrouillage). */
+.profile-pic--initial {
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--aq-on-accent);
+  background:
+    radial-gradient(circle at 32% 26%, color-mix(in oklch, var(--aq-on-accent) 38%, transparent) 0%, transparent 46%),
+    linear-gradient(160deg, color-mix(in oklch, var(--aq-accent) 72%, var(--aq-on-accent)) 0%, var(--aq-accent) 58%, color-mix(in oklch, var(--aq-accent) 78%, var(--aq-ink)) 100%);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--aq-on-accent) 35%, transparent);
+}
+
+.profile-pic--add {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1.5px dashed color-mix(in oklch, var(--aq-accent) 60%, transparent);
+  background: var(--aq-tint);
+  color: var(--aq-accent);
+  filter: none;
+}
+
+/* Écran de verrouillage : l'image remplace la bulle à l'initiale, le logo reste en pastille. */
+.lock-avatar--image {
+  background: none;
+  box-shadow: none;
+}
+
+.lock-avatar--image::before {
+  display: none;
+}
+
+/* ——— Autres comptes, sous la carte de verrouillage ——— */
+
+.account-switcher {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: -20px;
+}
+
+.account-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: min(720px, 92vw);
+}
+
+.account-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 220px;
+  padding: 5px 16px 5px 5px;
+  border: 1px solid var(--aq-border);
+  border-radius: 28px;
+  background: var(--aq-bar);
+  backdrop-filter: blur(var(--aq-blur));
+  box-shadow: 0 8px 20px -14px var(--aq-glow);
+  color: var(--aq-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--aq-fast) ease, background var(--aq-fast) ease;
+}
+
+.account-chip:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: var(--aq-card);
+}
+
+.account-chip:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+.account-chip:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.account-chip .spinner {
+  width: 40px;
+  height: 40px;
+}
+
+.account-chip-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-switcher-note {
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: var(--aq-bar);
+  color: var(--aq-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ——— Profil (Paramètres › Sécurité, création du compte) ——— */
+
+.profile-avatar {
+  position: relative;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.profile-avatar:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 3px;
+}
+
+.profile-avatar-edit {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--aq-card-solid);
+  border-radius: 50%;
+  background: var(--aq-accent);
+  color: var(--aq-on-accent);
+}
+
+.profile-row .setting-name {
+  width: min(260px, 40%);
+}
+
+.account-row .profile-pic {
+  filter: none;
+}
+
+.onb-profile {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.onb-profile .field {
+  flex: 1;
+  min-width: 0;
+}
+
+.onb-recovery-note {
+  align-items: flex-start;
+  font-size: 13px;
+  text-align: start;
+}
+
+.onb-recovery-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ——— Choix de l'image de profil ——— */
+
+.avatar-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.avatar-picker-current {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 10px;
+  min-height: 172px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.avatar-choice {
+  display: grid;
+  place-items: center;
+  padding: 6px;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  background: var(--aq-tint);
+  cursor: pointer;
+  transition: transform var(--aq-fast) ease, border-color var(--aq-fast) ease;
+}
+
+.avatar-choice:hover {
+  transform: translateY(-2px);
+}
+
+.avatar-choice[aria-checked="true"] {
+  border-color: var(--aq-accent);
+  background: color-mix(in oklch, var(--aq-accent) 14%, var(--aq-card-solid));
+}
+
+.avatar-choice:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 2px;
+}
+
+.onb-actions-spacer {
+  flex: 1;
+}
+
+[data-reduce-motion="true"] :is(.account-chip, .avatar-choice) {
+  transition: none;
+}
+
+[data-high-contrast="true"] .account-chip {
+  backdrop-filter: none;
+  background: var(--aq-card-solid);
+}
+
+/* La fenêtre de choix prend la hauteur de son contenu (pas celle des grandes fenêtres). */
+.dialog--wide.avatar-dialog {
+  width: min(900px, 100%);
+  height: auto;
+  max-height: 92vh;
+  overflow: auto;
+}

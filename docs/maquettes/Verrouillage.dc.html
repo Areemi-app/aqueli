@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Verrouillage Aqueli</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#8adbff}a:hover{color:#c4ecff}
+</style>
+</helmet>
+<div style="position: relative; width: 1280px; height: 800px; overflow: hidden; background: radial-gradient(45% 40% at 50% 42%, rgba(70,130,255,0.35), rgba(70,130,255,0) 70%), radial-gradient(55% 45% at 88% 6%, rgba(140,100,255,0.35), rgba(140,100,255,0) 70%), radial-gradient(55% 45% at 6% 96%, rgba(0,190,255,0.28), rgba(0,190,255,0) 70%), linear-gradient(180deg, #040922 0%, #0b1a52 55%, #16398c 100%); font-family: 'Figtree', 'Segoe UI Variable', 'Segoe UI', sans-serif; font-variant-numeric: tabular-nums; color: #eef5ff">
+<sc-for list="{{stars}}" as="s" hint-placeholder-count="40">
+<span aria-hidden="true" style="position: absolute; left: {{s.x}}px; top: {{s.y}}px; width: {{s.r}}px; height: {{s.r}}px; border-radius: 50%; background: #ffffff; opacity: {{s.o}}; box-shadow: 0 0 {{s.glow}}px rgba(180,220,255,0.9)"></span>
+</sc-for>
+<sc-for list="{{sparkles}}" as="k" hint-placeholder-count="4">
+<svg aria-hidden="true" width="{{k.size}}" height="{{k.size}}" viewBox="0 0 24 24" style="position: absolute; left: {{k.x}}px; top: {{k.y}}px; filter: drop-shadow(0 0 6px {{k.color}}); opacity: 0.85"><path d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z" fill="{{k.color}}"></path></svg>
+</sc-for>
+<div style="position: absolute; left: 0; top: 0; width: 1280px; height: 44px; display: flex; align-items: center; justify-content: flex-end">
+<button type="button" aria-label="Réduire" style="width: 46px; height: 44px; border: 0; background: transparent; color: #eef5ff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 6h10"></path></svg></button>
+<button type="button" aria-label="Agrandir" style="width: 46px; height: 44px; border: 0; background: transparent; color: #eef5ff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1.5 1.5h9v9h-9z"></path></svg></button>
+<button type="button" aria-label="Fermer" style="width: 46px; height: 44px; border: 0; background: transparent; color: #eef5ff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1.5 1.5l9 9M10.5 1.5l-9 9"></path></svg></button>
+</div>
+<div style="position: absolute; left: 430px; top: 92px; width: 420px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 34px 40px 30px 40px; border-radius: 28px; background: linear-gradient(180deg, rgba(170,210,255,0.18) 0%, rgba(170,210,255,0.02) 40%), rgba(10,24,72,0.55); backdrop-filter: blur(22px); border: 1px solid rgba(150,200,255,0.35); box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25)">
+<img src="/_blob/858e20c7d306c68197423b1098f549f3" alt="Logo Aqueli" style="width: 128px; height: 128px; filter: drop-shadow(0 8px 24px rgba(60,150,255,0.55))">
+<div style="text-align: center">
+<h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em">Aqueli</h1>
+<p style="margin: 4px 0 0 0; font-size: 15px; font-weight: 500; color: #b4c8e8">Bon retour ! Vos données sont verrouillées.</p>
+</div>
+<a href="Main.dc.html" style="margin-top: 6px; width: 100%; height: 50px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.28); background: radial-gradient(120% 90% at 50% -20%, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0) 70%), linear-gradient(180deg, #3c92f2 0%, #1a45b5 100%); color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 28px -10px rgba(70,150,255,0.8)">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"></path><path d="M9 9.5v1M15 9.5v1M12 10v3h-1M9.5 15.5a4 4 0 0 0 5 0"></path></svg>
+<span>Déverrouiller avec Windows Hello</span>
+</a>
+<div style="width: 100%; display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: #b4c8e8"><span style="flex-grow: 1; height: 1px; background: rgba(200,220,255,0.25)"></span>ou<span style="flex-grow: 1; height: 1px; background: rgba(200,220,255,0.25)"></span></div>
+<div style="width: 100%; display: flex; flex-direction: column; gap: 6px">
+<label for="mot-de-passe" style="font-size: 13px; font-weight: 600; color: #d4e2f6">Mot de passe</label>
+<div style="display: flex; gap: 8px">
+<div style="flex-grow: 1; height: 44px; box-sizing: border-box; display: flex; align-items: center; padding: 0 6px 0 14px; border-radius: 14px; background: rgba(4,12,40,0.7); border: 1px solid rgba(150,200,255,0.4); box-shadow: inset 0 2px 4px rgba(0,0,0,0.3)">
+<input id="mot-de-passe" type="password" value="motdepasse" style="flex-grow: 1; min-width: 0; border: 0; background: transparent; font-family: inherit; font-size: 16px; color: #eef5ff; outline: none; letter-spacing: 2px">
+<button type="button" aria-label="Afficher le mot de passe" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 16px; background: transparent; color: #b4c8e8; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><path d="M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0"></path></svg></button>
+</div>
+<a href="Main.dc.html" aria-label="Déverrouiller" style="width: 44px; height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: 22px; border: 1px solid rgba(150,200,255,0.45); background: radial-gradient(120% 90% at 50% -20%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%), rgba(40,90,200,0.55); color: #ffffff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</div>
+<a href="#" style="font-size: 13px; font-weight: 600; text-decoration: none">Mot de passe oublié ? Utiliser la clé de récupération</a>
+</div>
+<div style="position: absolute; left: 0; top: 660px; width: 1280px; display: flex; flex-direction: column; align-items: center">
+<span style="font-size: 54px; font-weight: 300; line-height: 1; letter-spacing: 1px; text-shadow: 0 0 24px rgba(120,180,255,0.5)">21:07</span>
+<span style="margin-top: 6px; font-size: 16px; font-weight: 500; color: #b4c8e8">dimanche 27 septembre</span>
+</div>
+<div style="position: absolute; left: 24px; bottom: 18px; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: #b4c8e8">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v9H6z"></path><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"></path></svg>
+<span>Verrouillé automatiquement après 10 min d'inactivité · données chiffrées</span>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    let seed = 7;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    const stars = [];
+    for (let i = 0; i < 70; i++) {
+      const r = rnd() < 0.12 ? 3 : (rnd() < 0.5 ? 2 : 1);
+      stars.push({ x: Math.round(rnd() * 1270), y: Math.round(rnd() * 640), r, o: (0.35 + rnd() * 0.6).toFixed(2), glow: r * 3 });
+    }
+    const sparkles = [
+      { x: 180, y: 150, size: 18, color: '#b6f03c' },
+      { x: 1040, y: 120, size: 16, color: '#ff5fa8' },
+      { x: 1110, y: 520, size: 14, color: '#2fd6c9' },
+      { x: 250, y: 560, size: 12, color: '#b04cff' }
+    ];
+    return { stars, sparkles };
+  }
+}
+</script>
+</body>
+</html>
