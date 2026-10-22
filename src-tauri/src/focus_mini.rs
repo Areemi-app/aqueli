@@ -59,10 +59,25 @@ fn place(app: &AppHandle, window: &tauri::WebviewWindow) {
     let _ = window.set_position(PhysicalPosition::new(x, y));
 }
 
+/// Montre le mini-lecteur sans lui donner le premier plan : il ne prend jamais le clavier, et la
+/// capture rapide, qui se cache dès qu'elle le perd, reste ouverte quand il apparaît.
+fn show_inactive(window: &tauri::WebviewWindow) -> tauri::Result<()> {
+    #[cfg(windows)]
+    if let Ok(hwnd) = window.hwnd() {
+        use windows::Win32::UI::WindowsAndMessaging::{ShowWindow, SW_SHOWNOACTIVATE};
+        // SAFETY: `hwnd` est la fenêtre du mini-lecteur, vivante tant que l'application tourne.
+        unsafe {
+            let _ = ShowWindow(hwnd, SW_SHOWNOACTIVATE);
+        }
+        return Ok(());
+    }
+    window.show()
+}
+
 /// Ouvre (ou ramène) le mini-lecteur.
 pub fn open(app: &AppHandle) -> tauri::Result<()> {
     if let Some(window) = app.get_webview_window(WINDOW) {
-        window.show()?;
+        show_inactive(&window)?;
         crate::system::discreet::protect(&window);
         return Ok(());
     }
@@ -86,7 +101,7 @@ pub fn open(app: &AppHandle) -> tauri::Result<()> {
             let _ = target.hide();
         }
     });
-    window.show()?;
+    show_inactive(&window)?;
     crate::system::discreet::protect(&window);
     Ok(())
 }

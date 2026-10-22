@@ -110,7 +110,8 @@ function createPreviewApi(): ContactsApi {
       return c;
     },
     update: async (id, input) => {
-      // Notes nettoyées comme par le cœur (`clean_notes`).
+      // Délai d'un aller-retour avec le cœur, et notes nettoyées comme par lui (`clean_notes`).
+      await new Promise((resolve) => setTimeout(resolve, 60));
       const c = { ...find(id), ...input, notes: input.notes.trimEnd().replace(/\r\n/g, "\n"), updatedAt: now() };
       contacts = contacts.map((x) => (x.id === id ? c : x));
       return c;

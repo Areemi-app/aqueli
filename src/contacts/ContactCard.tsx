@@ -503,15 +503,18 @@ export const storedNotes = (text: string) => text.trimEnd().replace(/\r\n/g, "\n
 function NotesZone({ contact }: { contact: Contact }) {
   const { update } = useContacts();
   const [text, setText] = useState(contact.notes);
-  const saved = useRef(contact.notes);
+  // Dernier texte enregistré, sous la forme que le cœur garde (`storedNotes`).
+  const saved = useRef(storedNotes(contact.notes));
   const timer = useRef<number | undefined>(undefined);
   const ids = useId();
-  // Une modification venue d'ailleurs (fiche, annulation) remplace le texte affiché. Le retour
-  // de notre propre enregistrement, nettoyé par le cœur, ne le remplace pas : sinon l'espace tapé
-  // juste avant la pause disparaîtrait et le curseur sauterait.
+  // Une modification venue d'ailleurs (fiche, annulation) remplace le texte affiché. Notre propre
+  // enregistrement revient deux fois, tel que tapé (affichage immédiat) puis nettoyé par le cœur :
+  // comparés sous la forme enregistrée, aucun des deux ne remplace le texte en cours de saisie,
+  // sinon l'espace tapé juste avant la pause disparaîtrait et le curseur sauterait.
   useEffect(() => {
-    if (contact.notes !== saved.current) {
-      saved.current = contact.notes;
+    const incoming = storedNotes(contact.notes);
+    if (incoming !== saved.current) {
+      saved.current = incoming;
       setText(contact.notes);
     }
   }, [contact.notes]);

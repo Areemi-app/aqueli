@@ -1,6 +1,6 @@
 [package]
 name = "aqueli"
-version = "1.21.3"
+version = "1.21.4"
 description = "Aqueli : productivité personnelle, locale et hors ligne"
 authors = ["Areemi"]
 license = "GPL-3.0-or-later"
