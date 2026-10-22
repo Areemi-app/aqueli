@@ -534,7 +534,10 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
       },
       {
         title: tr("Le mini-lecteur"),
-        text: [tr("Sur les autres écrans, un mini-lecteur garde la séance en vue, en bas à droite. Il suspend ou arrête la séance, et peut s'ouvrir dans une petite fenêtre toujours visible.")],
+        text: [
+          tr("Sur les autres écrans, un mini-lecteur garde la séance en vue, en bas à droite. Il suspend ou arrête la séance, et peut s'ouvrir dans une petite fenêtre toujours visible."),
+          tr("Cette petite fenêtre existe en trois tailles : compacte, standard et grande. Son bouton de taille passe de l'une à l'autre, et la touche Échap la ferme."),
+        ],
       },
       {
         title: tr("Ambiances et plein écran"),

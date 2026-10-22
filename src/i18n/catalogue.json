@@ -16333,6 +16333,11 @@
   "en": "Change size"
  },
  {
+  "id": "1bwqv4y",
+  "fr": "Cette petite fenêtre existe en trois tailles : compacte, standard et grande. Son bouton de taille passe de l'une à l'autre, et la touche Échap la ferme.",
+  "en": "This small window comes in three sizes: compact, standard and large. Its size button switches between them, and the Esc key closes it."
+ },
+ {
   "id": "16bdzl1",
   "fr": "Cartes masquées",
   "en": "Hidden cards"

@@ -176,6 +176,7 @@ fn main() {
             "focus_mini_publish",
             "focus_mini_current",
             "focus_mini_command",
+            "focus_mini_size",
             "note_folders_list",
             "note_folders_create",
             "note_folders_update",

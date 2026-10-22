@@ -1929,8 +1929,14 @@ pub async fn documents_restore(app: AppHandle, id: String) -> Result<Document, D
 /// Asynchrone : sous Windows, créer une fenêtre depuis une commande synchrone bloque toute
 /// l'application (la fenêtre principale attend la nouvelle, qui l'attend).
 #[tauri::command]
-pub async fn focus_mini_open(app: AppHandle) -> Result<(), String> {
-    crate::focus_mini::open(&app).map_err(|_| "mini-lecteur indisponible".to_string())
+pub async fn focus_mini_open(app: AppHandle, size: Option<String>) -> Result<(), String> {
+    crate::focus_mini::open(&app, size.as_deref().unwrap_or("standard")).map_err(|_| "mini-lecteur indisponible".to_string())
+}
+
+/// Une des trois tailles prévues du mini-lecteur (« compacte », « standard », « grande »).
+#[tauri::command]
+pub fn focus_mini_size(app: AppHandle, size: String) {
+    crate::focus_mini::resize(&app, &size);
 }
 
 #[tauri::command]

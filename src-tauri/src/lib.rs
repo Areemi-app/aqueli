@@ -98,6 +98,7 @@ pub fn run() {
             app.manage(StartHidden(hidden));
             app.manage(PendingCaptures(Mutex::new(Vec::new())));
             app.manage(focus_mini::MiniLatest::default());
+            app.manage(focus_mini::MiniSize::default());
             app.manage(HotkeyState::default());
             app.manage(backups::PickedFile::default());
             app.manage(import::ChosenFiles::default());
@@ -345,6 +346,7 @@ pub fn run() {
             commands::focus_mini_publish,
             commands::focus_mini_current,
             commands::focus_mini_command,
+            commands::focus_mini_size,
             commands::note_folders_list,
             commands::note_folders_create,
             commands::note_folders_update,

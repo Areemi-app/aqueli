@@ -3249,6 +3249,7 @@ export const EN: Readonly<Record<string, string>> = {
   "Déplacer (glisser, ou flèches du clavier)": "Move (drag, or the arrow keys)",
   "Taille de « {title} » : {x}": "Size of “{title}”: {x}",
   "Changer la taille": "Change size",
+  "Cette petite fenêtre existe en trois tailles : compacte, standard et grande. Son bouton de taille passe de l'une à l'autre, et la touche Échap la ferme.": "This small window comes in three sizes: compact, standard and large. Its size button switches between them, and the Esc key closes it.",
   "Cartes masquées": "Hidden cards",
   "Mise en page « {name} » supprimée.": "Layout “{name}” deleted.",
   "suppression de la mise en page": "layout deletion",

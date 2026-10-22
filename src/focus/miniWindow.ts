@@ -26,7 +26,21 @@ export interface MiniState {
 
 export const MINI_STATE_EVENT = "focus-etat";
 export const MINI_COMMAND_EVENT = "focus-commande";
-export type MiniAction = "basculer" | "arreter" | "passer" | "afficher" | "detacher";
+export type MiniAction = "basculer" | "arreter" | "passer" | "afficher" | "detacher" | "taille";
+
+/** Les trois tailles prévues du mini-lecteur (`SIZES` de src-tauri/src/focus_mini.rs). */
+export const MINI_SIZES = ["compacte", "standard", "grande"] as const;
+export type MiniSize = (typeof MINI_SIZES)[number];
+const SIZE_PREF = "focusMiniTaille";
+const isMiniSize = (v: unknown): v is MiniSize => MINI_SIZES.includes(v as MiniSize);
+export const miniSize = (): MiniSize => readPref(SIZE_PREF, "standard", isMiniSize);
+
+/** Taille suivante (compacte › standard › grande › compacte), appliquée tout de suite. */
+export function nextMiniSize(): void {
+  const next = MINI_SIZES[(MINI_SIZES.indexOf(miniSize()) + 1) % MINI_SIZES.length]!;
+  writePref(SIZE_PREF, next);
+  if (inTauri) void invoke("focus_mini_size", { size: next }).catch(() => undefined);
+}
 
 export function miniStateOf(t: TimerState): MiniState {
   return { phase: t.phase, status: t.status, endsAt: t.endsAt, remaining: t.remaining, total: phaseTotal(t), cycle: t.cycle, every: t.plan.every, flow: t.plan.flow === true };
@@ -59,6 +73,7 @@ export function applyMiniAction(action: string): void {
   else if (action === "arreter") focusStore.stop();
   else if (action === "passer") focusStore.skip();
   else if (action === "detacher") pinMiniWindow(false);
+  else if (action === "taille") nextMiniSize();
 }
 
 /** Une séance est en cours, en pause ou suspendue (pas seulement prête à démarrer). */
@@ -90,7 +105,7 @@ function setMini(next: Partial<MiniWindowState>): void {
   if (show === null || !inTauri) return;
   if (show) {
     void invoke("focus_mini_publish", { state: miniStateOf(focusStore.get()) })
-      .then(() => invoke("focus_mini_open"))
+      .then(() => invoke("focus_mini_open", { size: miniSize() }))
       .catch(() => setMini({ shown: false }));
   } else void invoke("focus_mini_close").catch(() => undefined);
 }

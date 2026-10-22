@@ -33,6 +33,8 @@ export const ICONS = {
   windowReturn: "M10 14H4v6 M4 20l8-8 M6 10.5V5a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-5.5",
   motion: "M3 12h4 M4 8h5 M5 16h4 M12 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0",
   layers: "M4 4h11v11H4z M9 9h11v11H9z",
+  /** Tailles : un petit et un grand cadre (mini-lecteur du Focus). */
+  sizes: "M4 14h6v6H4z M12 4h8v8h-8z",
   sparkle: "M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z",
   spaces: "M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z",
   enter: "M20 5v7a3 3 0 0 1-3 3H5 M9 11l-4 4 4 4",

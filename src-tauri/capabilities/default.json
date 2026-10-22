@@ -182,6 +182,7 @@
     "allow-focus-mini-open",
     "allow-focus-mini-close",
     "allow-focus-mini-publish",
+    "allow-focus-mini-size",
     "allow-note-folders-list",
     "allow-note-folders-create",
     "allow-note-folders-update",

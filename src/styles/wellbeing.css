@@ -2319,6 +2319,9 @@
 }
 
 .mini-focus-state {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--aq-soft);
   font-size: 11.5px;
   font-weight: 600;
@@ -2333,6 +2336,53 @@
   width: 28px;
   height: 28px;
   cursor: pointer;
+}
+
+/* Trois tailles prévues (focus_mini.rs) : compacte (anneau et trois boutons), standard, grande. */
+.mini-focus[data-size="compacte"] {
+  gap: 8px;
+  padding: 4px 8px 4px 6px;
+  border-radius: 18px;
+}
+
+.mini-focus[data-size="compacte"] .mini-focus-buttons {
+  margin-left: auto;
+}
+
+.mini-focus[data-size="compacte"] .focus-digits {
+  font-size: 12px;
+}
+
+.mini-focus[data-size="compacte"] .mini-btn {
+  width: 26px;
+  height: 26px;
+}
+
+.mini-focus[data-size="grande"] {
+  gap: 14px;
+  padding: 8px 14px 8px 10px;
+  border-radius: 26px;
+}
+
+.mini-focus[data-size="grande"] .focus-digits {
+  font-size: 20px;
+}
+
+.mini-focus[data-size="grande"] .mini-focus-phase {
+  font-size: 15px;
+}
+
+.mini-focus[data-size="grande"] .mini-focus-state {
+  font-size: 13px;
+}
+
+.mini-focus[data-size="grande"] .mini-focus-buttons {
+  gap: 6px;
+}
+
+.mini-focus[data-size="grande"] .mini-btn {
+  width: 34px;
+  height: 34px;
 }
 
 /* ——— Habitudes : jours de pause et force de l'habitude ——— */

@@ -6,7 +6,7 @@
 use std::sync::Mutex;
 
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Emitter, Manager, PhysicalPosition, WebviewUrl, WebviewWindowBuilder, WindowEvent};
+use tauri::{AppHandle, Emitter, LogicalSize, Manager, PhysicalPosition, WebviewUrl, WebviewWindowBuilder, WindowEvent};
 
 use crate::system::background;
 
@@ -15,8 +15,24 @@ pub const WINDOW: &str = "focus";
 pub const STATE_EVENT: &str = "focus-etat";
 /// Bouton du mini-lecteur, pour la fenêtre principale.
 pub const COMMAND_EVENT: &str = "focus-commande";
-/// Boutons du mini-lecteur ; « detacher » le ferme et le retire des écrans hors d'Aqueli.
-pub const ACTIONS: [&str; 5] = ["basculer", "arreter", "passer", "afficher", "detacher"];
+/// Boutons du mini-lecteur ; « detacher » le ferme et le retire des écrans hors d'Aqueli,
+/// « taille » demande à la fenêtre principale la taille suivante.
+pub const ACTIONS: [&str; 6] = ["basculer", "arreter", "passer", "afficher", "detacher", "taille"];
+
+/// Les trois tailles prévues du mini-lecteur (largeur, hauteur en pixels logiques). Il n'en a
+/// jamais d'autre : ni agrandi, ni plein écran, sans quoi, toujours au premier plan, il
+/// recouvrirait tout l'écran.
+pub const SIZES: [(&str, f64, f64); 3] = [("compacte", 216.0, 64.0), ("standard", 370.0, 84.0), ("grande", 460.0, 116.0)];
+
+/// Taille demandée, la standard si le nom est inconnu.
+pub fn size_of(name: &str) -> (f64, f64) {
+    let (_, w, h) = SIZES.iter().find(|(n, _, _)| *n == name).copied().unwrap_or(SIZES[1]);
+    (w, h)
+}
+
+/// Taille actuelle du mini-lecteur.
+#[derive(Default)]
+pub struct MiniSize(pub Mutex<Option<(f64, f64)>>);
 
 /// État du minuteur : rien de personnel (ni tâche, ni réglage).
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
@@ -62,6 +78,7 @@ fn place(app: &AppHandle, window: &tauri::WebviewWindow) {
 /// Montre le mini-lecteur sans lui donner le premier plan : il ne prend jamais le clavier, et la
 /// capture rapide, qui se cache dès qu'elle le perd, reste ouverte quand il apparaît.
 fn show_inactive(window: &tauri::WebviewWindow) -> tauri::Result<()> {
+    strip_caption(window);
     #[cfg(windows)]
     if let Ok(hwnd) = window.hwnd() {
         use windows::Win32::UI::WindowsAndMessaging::{ShowWindow, SW_SHOWNOACTIVATE};
@@ -74,20 +91,84 @@ fn show_inactive(window: &tauri::WebviewWindow) -> tauri::Result<()> {
     window.show()
 }
 
-/// Ouvre (ou ramène) le mini-lecteur.
-pub fn open(app: &AppHandle) -> tauri::Result<()> {
+/// Retire à la fenêtre sa barre de titre et ses boutons Agrandir et Réduire : sous Windows, une
+/// fenêtre sans cadre peut sinon les faire réapparaître, et passer en plein écran. Alt+F4 la
+/// ferme toujours.
+#[cfg(windows)]
+fn strip_caption(window: &tauri::WebviewWindow) {
+    use windows::Win32::UI::WindowsAndMessaging::{
+        GetWindowLongPtrW, SetWindowLongPtrW, SetWindowPos, GWL_STYLE, SWP_FRAMECHANGED, SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOSIZE, SWP_NOZORDER,
+        WS_CAPTION, WS_MAXIMIZEBOX, WS_MINIMIZEBOX,
+    };
+    let Ok(hwnd) = window.hwnd() else { return };
+    let remove = (WS_CAPTION.0 | WS_MAXIMIZEBOX.0 | WS_MINIMIZEBOX.0) as isize;
+    // SAFETY: `hwnd` est la fenêtre du mini-lecteur, vivante ; on ne retire que des styles.
+    unsafe {
+        let style = GetWindowLongPtrW(hwnd, GWL_STYLE);
+        if style & remove != 0 {
+            SetWindowLongPtrW(hwnd, GWL_STYLE, style & !remove);
+            let _ = SetWindowPos(hwnd, None, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+        }
+    }
+}
+
+#[cfg(not(windows))]
+fn strip_caption(_window: &tauri::WebviewWindow) {}
+
+/// Remet le mini-lecteur à sa taille prévue s'il a été agrandi (double-clic, glissé contre le
+/// haut de l'écran, Windows+Haut) ou mis en plein écran.
+fn keep_size(app: &AppHandle, window: &tauri::WebviewWindow) {
+    strip_caption(window);
+    if window.is_maximized().unwrap_or(false) {
+        let _ = window.unmaximize();
+    }
+    if window.is_fullscreen().unwrap_or(false) {
+        let _ = window.set_fullscreen(false);
+    }
+    let wanted = app.state::<MiniSize>().0.lock().ok().and_then(|s| *s).unwrap_or(size_of("standard"));
+    let scale = window.scale_factor().unwrap_or(1.0);
+    if let Ok(size) = window.inner_size() {
+        let current = (f64::from(size.width) / scale, f64::from(size.height) / scale);
+        if (current.0 - wanted.0).abs() > 1.0 || (current.1 - wanted.1).abs() > 1.0 {
+            let _ = window.set_size(LogicalSize::new(wanted.0, wanted.1));
+            place(app, window);
+        }
+    }
+}
+
+/// Change la taille du mini-lecteur parmi les trois prévues, en le gardant dans son coin.
+pub fn resize(app: &AppHandle, name: &str) {
+    let (w, h) = size_of(name);
+    if let Ok(mut size) = app.state::<MiniSize>().0.lock() {
+        *size = Some((w, h));
+    }
     if let Some(window) = app.get_webview_window(WINDOW) {
+        let _ = window.set_size(LogicalSize::new(w, h));
+        place(app, &window);
+    }
+}
+
+/// Ouvre (ou ramène) le mini-lecteur, à la taille demandée.
+pub fn open(app: &AppHandle, size: &str) -> tauri::Result<()> {
+    if let Some(window) = app.get_webview_window(WINDOW) {
+        resize(app, size);
         show_inactive(&window)?;
         crate::system::discreet::protect(&window);
         return Ok(());
     }
+    let (w, h) = size_of(size);
+    if let Ok(mut current) = app.state::<MiniSize>().0.lock() {
+        *current = Some((w, h));
+    }
     let window = WebviewWindowBuilder::new(app, WINDOW, WebviewUrl::App("index.html#focus".into()))
         .title("Focus")
-        .inner_size(300.0, 84.0)
+        .inner_size(w, h)
         .decorations(false)
         .transparent(true)
         .shadow(false)
         .resizable(false)
+        .maximizable(false)
+        .minimizable(false)
         .always_on_top(true)
         .skip_taskbar(true)
         .focused(false)
@@ -95,11 +176,14 @@ pub fn open(app: &AppHandle) -> tauri::Result<()> {
         .build()?;
     place(app, &window);
     let target = window.clone();
-    window.on_window_event(move |event| {
-        if let WindowEvent::CloseRequested { api, .. } = event {
+    let handle = app.clone();
+    window.on_window_event(move |event| match event {
+        WindowEvent::CloseRequested { api, .. } => {
             api.prevent_close();
             let _ = target.hide();
         }
+        WindowEvent::Resized(_) => keep_size(&handle, &target),
+        _ => {}
     });
     show_inactive(&window)?;
     crate::system::discreet::protect(&window);
@@ -144,6 +228,14 @@ mod tests {
         }
         assert!(!is_action("supprimer"));
         assert!(!is_action(""));
+    }
+
+    #[test]
+    fn trois_tailles_prevues_la_standard_par_defaut() {
+        assert_eq!(size_of("compacte"), (216.0, 64.0));
+        assert_eq!(size_of("grande"), (460.0, 116.0));
+        assert_eq!(size_of("plein-ecran"), size_of("standard"));
+        assert!(SIZES.iter().all(|(_, w, h)| *w <= 480.0 && *h <= 120.0), "jamais plus grand qu'un lecteur");
     }
 
     #[test]
