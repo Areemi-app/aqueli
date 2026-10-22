@@ -80,7 +80,7 @@ And around them:
 - **Encrypted by default.** Each account is a SQLCipher database (AES-256), opened by a key derived from your password with Argon2id. A 24-character recovery key is the only other way in. Windows Hello unlocks it day to day.
 - **Works offline.** Aqueli makes no network connections. Nothing is sent anywhere, and no internet connection is ever needed.
 - **Keyboard first.** A command palette (<kbd>Ctrl</kbd>+<kbd>K</kbd>), shortcuts you can change, <kbd>Ctrl</kbd>+<kbd>Z</kbd> for every change to your data, and a quick capture window from anywhere in Windows (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>A</kbd>).
-- **Everything connected.** Link a task to a note, an event to a contact, a bill to a document. One search finds them all, with or without accents.
+- **Everything connected.** Link a task to a note, an event to a contact, a bill to its contract, and find anything from one search bar.
 - **Import and export.** Bring in tasks, events, notes, contacts and more from Excel, CSV, text, Markdown, `.ics` and `.vcf` files, with a preview before anything is added. Export back to the same formats.
 - **31 themes.** Light and dark, each with its own sky, illustrations and sounds. Themes can change with the time of day, the season or the holidays, and you can design your own.
 - **17 languages,** chosen at installation and changeable at any time.
