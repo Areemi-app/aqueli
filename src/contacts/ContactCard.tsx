@@ -496,6 +496,9 @@ function FieldDialog({ contact, index, onClose }: { contact: Contact; index: num
   );
 }
 
+/** Texte tel que le cœur l'enregistre (`clean_notes` : fin de texte sans espaces, retours à la ligne « \n »). */
+export const storedNotes = (text: string) => text.trimEnd().replace(/\r\n/g, "\n");
+
 /** Notes du contact, modifiables sur place : enregistrées après une courte pause de saisie. */
 function NotesZone({ contact }: { contact: Contact }) {
   const { update } = useContacts();
@@ -503,7 +506,9 @@ function NotesZone({ contact }: { contact: Contact }) {
   const saved = useRef(contact.notes);
   const timer = useRef<number | undefined>(undefined);
   const ids = useId();
-  // Une modification venue d'ailleurs (fiche, annulation) remplace le texte affiché.
+  // Une modification venue d'ailleurs (fiche, annulation) remplace le texte affiché. Le retour
+  // de notre propre enregistrement, nettoyé par le cœur, ne le remplace pas : sinon l'espace tapé
+  // juste avant la pause disparaîtrait et le curseur sauterait.
   useEffect(() => {
     if (contact.notes !== saved.current) {
       saved.current = contact.notes;
@@ -512,8 +517,9 @@ function NotesZone({ contact }: { contact: Contact }) {
   }, [contact.notes]);
   const save = (value: string) => {
     window.clearTimeout(timer.current);
-    if (value === saved.current) return;
-    saved.current = value;
+    const stored = storedNotes(value);
+    if (stored === saved.current) return;
+    saved.current = stored;
     void update(contact, { notes: value });
   };
   useEffect(() => () => window.clearTimeout(timer.current), []);

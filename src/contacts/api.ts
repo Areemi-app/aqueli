@@ -110,7 +110,8 @@ function createPreviewApi(): ContactsApi {
       return c;
     },
     update: async (id, input) => {
-      const c = { ...find(id), ...input, updatedAt: now() };
+      // Notes nettoyées comme par le cœur (`clean_notes`).
+      const c = { ...find(id), ...input, notes: input.notes.trimEnd().replace(/\r\n/g, "\n"), updatedAt: now() };
       contacts = contacts.map((x) => (x.id === id ? c : x));
       return c;
     },
