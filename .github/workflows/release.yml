@@ -1,8 +1,14 @@
-# Fabrique l'installateur Windows quand une étiquette de version (v1.2.3) est poussée,
-# puis prépare la version GitHub en brouillon, avec ses notes et l'empreinte SHA-256.
+# Fabrique l'installateur Windows, puis prépare la version GitHub en brouillon, avec ses notes
+# (.github/release-notes/<version>.md) et l'empreinte SHA-256. Se lance d'un clic dans l'onglet
+# Actions (« Run workflow », version à saisir), ou quand une étiquette de version est poussée.
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to build, for example v1.21.1"
+        required: true
   push:
     tags: ["v*"]
 
@@ -30,11 +36,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = "${{ inputs.version || github.ref_name }}"
           $version = $tag.TrimStart("v")
           $exe = "src-tauri/target/release/bundle/nsis/Aqueli_${version}_x64-setup.exe"
           $hash = (Get-FileHash $exe -Algorithm SHA256).Hash
           $notes = Get-Content ".github/release-notes/$tag.md" -Raw
           $notes = $notes.TrimEnd() + "`n`nSHA-256: ``$hash``"
           Set-Content -Path notes.md -Value $notes -Encoding utf8
-          gh release create $tag $exe --draft --title "Aqueli $version" --notes-file notes.md
+          # Sans étiquette existante, GitHub la crée sur le commit fabriqué.
+          gh release create $tag $exe --draft --target "${{ github.sha }}" --title "Aqueli $version" --notes-file notes.md
