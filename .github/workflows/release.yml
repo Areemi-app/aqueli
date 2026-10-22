@@ -22,14 +22,16 @@ jobs:
       # Perl de Strawberry, présent sur les machines Windows de GitHub (OpenSSL pour SQLCipher).
       OPENSSL_SRC_PERL: C:\Strawberry\perl\bin\perl.exe
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
       # Mémoire de compilation : bibliothèques Rust déjà compilées (OpenSSL et SQLCipher compris),
-      # gardées d'une fabrication à l'autre tant que Cargo.lock ne change pas.
-      - uses: actions/cache@v4
+      # reprise d'une fabrication à l'autre, et enregistrée même si une étape suivante échoue.
+      - name: Restore the build cache
+        id: cache
+        uses: actions/cache/restore@v4
         with:
           path: |
             ~/.cargo/registry
@@ -41,6 +43,21 @@ jobs:
         run: npm ci
       - name: Build the installer
         run: npx --no-install tauri build --bundles nsis
+      - name: Save the build cache
+        if: always() && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: rust-windows-${{ hashFiles('src-tauri/Cargo.lock') }}
+      # L'installateur reste téléchargeable depuis la page de la fabrication, même si la suite échoue.
+      - name: Keep the installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer
+          path: src-tauri/target/release/bundle/nsis/*-setup.exe
       - name: Create the draft release
         shell: pwsh
         env:
