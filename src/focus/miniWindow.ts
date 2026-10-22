@@ -4,7 +4,6 @@
  * passe : ni la tâche, ni les réglages.
  */
 import { invoke } from "@tauri-apps/api/core";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { onAppEvent } from "../app/background";
 import { readPref, writePref } from "../lib/storage";
 import { inTauri } from "../lib/windowControls";
@@ -73,7 +72,6 @@ export function applyMiniAction(action: string): void {
   else if (action === "arreter") focusStore.stop();
   else if (action === "passer") focusStore.skip();
   else if (action === "detacher") pinMiniWindow(false);
-  else if (action === "afficher") backInAqueli();
   else if (action === "taille") nextMiniSize();
 }
 
@@ -81,8 +79,8 @@ export function applyMiniAction(action: string): void {
 export const sessionActive = (t: TimerState) => t.status !== "arret" || t.phase !== "concentration";
 
 // ——— Un seul lecteur à la fois ———
-// « Épinglé », le mini-lecteur sort d'Aqueli : la petite fenêtre s'affiche quand on quitte la
-// fenêtre principale et se cache quand on y revient (le lecteur intégré reprend alors sa place).
+// « Épinglé », le lecteur sort d'Aqueli : pendant une séance, la petite fenêtre toujours visible
+// est le seul lecteur, dans Aqueli comme ailleurs. Sinon, seul le lecteur intégré s'affiche.
 
 const PINNED = "focusMiniEpingle";
 
@@ -97,26 +95,29 @@ let mini: MiniWindowState = { pinned: readPref(PINNED, false, (v): v is boolean 
 const listeners = new Set<() => void>();
 
 // Ouvrir et fermer la petite fenêtre se font l'un après l'autre, chaque fois d'après l'état voulu
-// à ce moment : un ordre arrivé en retard ne peut plus la laisser affichée en plus du lecteur
-// intégré, ni la rouvrir après « Fermer ».
+// à ce moment : un ordre arrivé en retard ne peut pas la laisser affichée par erreur.
 let windowQueue: Promise<unknown> = Promise.resolve();
 
 function syncWindow(): void {
-  windowQueue = windowQueue.then(async () => {
-    if (!mini.shown) return invoke("focus_mini_close");
-    await invoke("focus_mini_publish", { state: miniStateOf(focusStore.get()) });
-    return invoke("focus_mini_open", { size: miniSize() });
-  }).catch(() => {
-    if (mini.shown) setMini({ shown: false });
-  });
+  windowQueue = windowQueue
+    .then(async () => {
+      if (!mini.shown) return invoke("focus_mini_close");
+      await invoke("focus_mini_publish", { state: miniStateOf(focusStore.get()) });
+      return invoke("focus_mini_open", { size: miniSize() });
+    })
+    .catch(() => {
+      if (mini.shown) update({ pinned: false });
+    });
 }
 
-function setMini(next: Partial<MiniWindowState>): void {
-  const merged = { ...mini, ...next };
-  if (merged.pinned === mini.pinned && merged.shown === mini.shown) return;
-  if (merged.pinned !== mini.pinned) writePref(PINNED, merged.pinned);
-  const changed = merged.shown !== mini.shown;
-  mini = merged;
+/** La petite fenêtre s'affiche si et seulement si elle est épinglée pendant une séance. */
+function update(next: Partial<Pick<MiniWindowState, "pinned">>): void {
+  const pinned = next.pinned ?? mini.pinned;
+  const shown = inTauri && pinned && sessionActive(focusStore.get());
+  if (pinned === mini.pinned && shown === mini.shown) return;
+  if (pinned !== mini.pinned) writePref(PINNED, pinned);
+  const changed = shown !== mini.shown;
+  mini = { pinned, shown };
   listeners.forEach((l) => l());
   if (changed && inTauri) syncWindow();
 }
@@ -127,48 +128,28 @@ export function subscribeMiniWindow(listener: () => void): () => void {
   return () => listeners.delete(listener);
 }
 
-/** Bouton « épingler » : la petite fenêtre s'affiche tout de suite ; « détacher » la retire. */
+/** Bouton « épingler » : la petite fenêtre remplace le lecteur intégré ; « Fermer » l'y ramène. */
 export function pinMiniWindow(on: boolean): void {
   if (!inTauri) return;
-  setMini({ pinned: on, shown: on && sessionActive(focusStore.get()) });
+  update({ pinned: on });
 }
 
 let started = false;
-/** La fenêtre principale a le premier plan. */
-let focused = typeof document !== "undefined" && document.hasFocus();
 
-/** « Ouvrir Aqueli » : la fenêtre principale revient, son lecteur intégré prend le relais, même si
- * Windows tarde à lui donner le premier plan. */
-function backInAqueli(): void {
-  focused = true;
-  setMini({ shown: false });
-}
-
-/** Fenêtre principale : transmet chaque changement du minuteur, reçoit les boutons, et montre la
- * petite fenêtre seulement quand on a quitté Aqueli. */
+/** Fenêtre principale : transmet chaque changement du minuteur et reçoit les boutons. */
 export function startMiniBridge(): void {
   if (started || !inTauri) return;
   started = true;
   let last = "";
-  focused = document.hasFocus();
   focusStore.subscribe(() => {
-    const t = focusStore.get();
-    const state = miniStateOf(t);
+    const state = miniStateOf(focusStore.get());
     const json = JSON.stringify(state);
     if (json !== last) {
       last = json;
       invoke("focus_mini_publish", { state }).catch(() => undefined);
     }
-    if (!sessionActive(t)) setMini({ shown: false });
-    else if (mini.pinned && !focused) setMini({ shown: true });
+    update({});
   });
-  void getCurrentWindow()
-    .onFocusChanged(({ payload }) => {
-      focused = payload;
-      // De retour dans Aqueli : le lecteur intégré reprend ; en partant : la petite fenêtre.
-      if (focused) setMini({ shown: false });
-      else if (mini.pinned && sessionActive(focusStore.get())) setMini({ shown: true });
-    })
-    .catch(() => undefined);
+  update({});
   onAppEvent<string>(MINI_COMMAND_EVENT, applyMiniAction);
 }

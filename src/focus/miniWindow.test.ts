@@ -9,45 +9,53 @@ vi.mock("@tauri-apps/api/core", () => ({
     return new Promise((resolve) => setTimeout(() => (calls.push(`fin ${cmd}`), resolve(null)), delay));
   },
 }));
-vi.mock("@tauri-apps/api/window", () => ({ getCurrentWindow: () => ({ onFocusChanged: () => Promise.resolve(() => {}) }) }));
 vi.mock("../lib/windowControls", () => ({ inTauri: true }));
+vi.mock("../app/background", () => ({ onAppEvent: () => () => {} }));
+
+let status: "arret" | "en-cours" = "en-cours";
+const subscribers = new Set<() => void>();
 vi.mock("./focusStore", () => ({
   focusStore: {
     get: () => ({
       phase: "concentration",
-      status: "en-cours",
-      endsAt: Date.now() + 60_000,
+      status,
+      endsAt: status === "en-cours" ? Date.now() + 60_000 : null,
       remaining: 60_000,
       cycle: 1,
-      startedAt: Date.now(),
+      startedAt: null,
       taskId: null,
       intention: null,
       plan: { focus: 25, pause: 5, longPause: 15, every: 4 },
     }),
-    subscribe: () => () => {},
+    subscribe: (fn: () => void) => (subscribers.add(fn), () => subscribers.delete(fn)),
     toggle: () => {},
     stop: () => {},
     skip: () => {},
   },
 }));
 
-const { applyMiniAction, miniWindowState, pinMiniWindow } = await import("./miniWindow");
+const { applyMiniAction, miniWindowState, pinMiniWindow, startMiniBridge } = await import("./miniWindow");
 const settle = () => new Promise((r) => setTimeout(r, 80));
+const setStatus = (s: typeof status) => {
+  status = s;
+  subscribers.forEach((fn) => fn());
+};
 
 describe("petite fenêtre du mini-lecteur", () => {
+  startMiniBridge();
   beforeEach(async () => {
+    setStatus("en-cours");
     pinMiniWindow(false);
     await settle();
     calls.length = 0;
   });
 
-  it("« Ouvrir Aqueli » juste après l'ouverture : la fenêtre finit fermée, après l'ouverture", async () => {
+  it("épinglée pendant une séance, elle est le seul lecteur, même en revenant dans Aqueli", async () => {
     pinMiniWindow(true);
     applyMiniAction("afficher");
     await settle();
-    expect(miniWindowState()).toEqual({ pinned: true, shown: false });
-    expect(calls.at(-1)).toBe("fin focus_mini_close");
-    expect(calls.indexOf("début focus_mini_close")).toBeGreaterThan(calls.indexOf("fin focus_mini_open"));
+    expect(miniWindowState()).toEqual({ pinned: true, shown: true });
+    expect(calls.at(-1)).toBe("fin focus_mini_open");
   });
 
   it("« Fermer » l'emporte toujours, même pendant une ouverture", async () => {
@@ -56,6 +64,17 @@ describe("petite fenêtre du mini-lecteur", () => {
     await settle();
     expect(miniWindowState()).toEqual({ pinned: false, shown: false });
     expect(calls.at(-1)).toBe("fin focus_mini_close");
+  });
+
+  it("la fin de la séance la ferme, la suivante la rouvre si elle reste épinglée", async () => {
+    pinMiniWindow(true);
+    setStatus("arret");
+    await settle();
+    expect(miniWindowState()).toEqual({ pinned: true, shown: false });
+    expect(calls.at(-1)).toBe("fin focus_mini_close");
+    setStatus("en-cours");
+    await settle();
+    expect(miniWindowState().shown).toBe(true);
   });
 
   it("chaque ordre attend le précédent", async () => {

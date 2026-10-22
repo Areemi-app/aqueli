@@ -128,6 +128,22 @@ fn show_inactive(window: &tauri::WebviewWindow) -> tauri::Result<()> {
 /// Retire à la fenêtre sa barre de titre et ses boutons Agrandir et Réduire : sous Windows, une
 /// fenêtre sans cadre peut sinon les faire réapparaître, et passer en plein écran. Alt+F4 la
 /// ferme toujours.
+/// Cache le mini-lecteur. Sous Windows, il est montré directement par Windows (voir
+/// `show_inactive`) : Tauri le croit donc toujours caché et ignorerait `hide()`. Il est caché de
+/// la même façon.
+fn hide_window(window: &tauri::WebviewWindow) {
+    #[cfg(windows)]
+    if let Ok(hwnd) = window.hwnd() {
+        use windows::Win32::UI::WindowsAndMessaging::{ShowWindow, SW_HIDE};
+        // SAFETY: `hwnd` est la fenêtre du mini-lecteur, vivante tant que l'application tourne.
+        unsafe {
+            let _ = ShowWindow(hwnd, SW_HIDE);
+        }
+        return;
+    }
+    let _ = window.hide();
+}
+
 #[cfg(windows)]
 fn strip_caption(window: &tauri::WebviewWindow) {
     use windows::Win32::UI::WindowsAndMessaging::{
@@ -215,7 +231,7 @@ pub fn open(app: &AppHandle, size: &str) -> tauri::Result<()> {
     window.on_window_event(move |event| match event {
         WindowEvent::CloseRequested { api, .. } => {
             api.prevent_close();
-            let _ = target.hide();
+            hide_window(&target);
         }
         WindowEvent::Resized(_) => keep_size(&handle, &target),
         _ => {}
@@ -227,7 +243,7 @@ pub fn open(app: &AppHandle, size: &str) -> tauri::Result<()> {
 
 pub fn close(app: &AppHandle) {
     if let Some(window) = app.get_webview_window(WINDOW) {
-        let _ = window.hide();
+        hide_window(&window);
     }
 }
 
@@ -241,11 +257,10 @@ pub fn publish(app: &AppHandle, state: MiniState) {
     }
 }
 
-/// Bouton du mini-lecteur : transmis à la fenêtre principale ; « afficher » la ramène (son
-/// lecteur intégré prend alors le relais) ; « detacher » le ferme. Dans les deux cas, la petite
-/// fenêtre se cache tout de suite, sans attendre la fenêtre principale.
+/// Bouton du mini-lecteur : transmis à la fenêtre principale ; « afficher » la ramène ;
+/// « detacher » le cache tout de suite, sans attendre la fenêtre principale.
 pub fn command(app: &AppHandle, action: &str) {
-    if action == "afficher" || action == "detacher" {
+    if action == "detacher" {
         close(app);
     }
     if action == "afficher" {
