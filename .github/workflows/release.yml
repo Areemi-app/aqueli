@@ -27,6 +27,16 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      # Mémoire de compilation : bibliothèques Rust déjà compilées (OpenSSL et SQLCipher compris),
+      # gardées d'une fabrication à l'autre tant que Cargo.lock ne change pas.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: rust-windows-${{ hashFiles('src-tauri/Cargo.lock') }}
+          restore-keys: rust-windows-
       - name: Install dependencies
         run: npm ci
       - name: Build the installer
