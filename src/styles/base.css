@@ -22,6 +22,10 @@
 /* Écritures non latines : Figtree garde le latin et les chiffres, puis la police de Windows faite
    pour chaque écriture (chinois, japonais et coréen chacun la sienne, pour la forme juste des
    caractères communs). Le cyrillique et le vietnamien passent par Segoe UI. */
+:root:lang(ar) {
+  --aq-font: "Figtree Variable", "Segoe UI", "Tahoma", sans-serif;
+}
+
 :root:lang(zh) {
   --aq-font: "Figtree Variable", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
 }
