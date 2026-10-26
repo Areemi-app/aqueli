@@ -149,7 +149,7 @@ describe("autres langues", () => {
 
   it("chaque langue proposée a son dictionnaire", () => {
     const codes = LANGUAGES.map((l) => l.id).filter((c) => c !== "fr" && c !== "en");
-    expect(codes).toHaveLength(15);
+    expect(codes).toHaveLength(16);
     expect(codes.filter((c) => !LOCALE_FILES[`./locales/${c}.json`])).toEqual([]);
   });
 
@@ -205,7 +205,8 @@ describe("pluriels des autres langues", () => {
   it("la langue de Windows, sinon l'anglais", () => {
     expect(systemLang("de-AT")).toBe("de");
     expect(systemLang("pt-PT")).toBe("pt");
-    expect(systemLang("ar-SA")).toBe("en");
+    expect(systemLang("ar-SA")).toBe("ar");
+    expect(systemLang("el-GR")).toBe("en");
     expect(systemLang("fr-CA")).toBe("fr");
   });
 });

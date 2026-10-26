@@ -20,7 +20,7 @@ import { invoke, isTauri } from "@tauri-apps/api/core";
 import { flushPrefs, readPref, writePref } from "../lib/storage";
 import { textId } from "./textId";
 
-export type Lang = "en" | "fr" | "es" | "pt" | "de" | "it" | "ru" | "uk" | "pl" | "nl" | "zh" | "ja" | "ko" | "hi" | "id" | "tr" | "vi";
+export type Lang = "en" | "fr" | "es" | "pt" | "de" | "it" | "ru" | "uk" | "pl" | "nl" | "zh" | "ja" | "ko" | "hi" | "id" | "tr" | "vi" | "ar";
 export type Vars = Record<string, string | number | null | undefined>;
 
 /** Une traduction : un texte, ou les formes d'un pluriel selon la catégorie de la langue. */
@@ -31,6 +31,7 @@ export type Dictionary = Readonly<Record<string, Entry>>;
 export const LANGUAGES: readonly { id: Lang; label: string; locale: string }[] = [
   { id: "en", label: "English", locale: "en-GB" },
   { id: "fr", label: "Français", locale: "fr-FR" },
+  { id: "ar", label: "العربية", locale: "ar-SA" },
   { id: "es", label: "Español", locale: "es-ES" },
   { id: "pt", label: "Português (Brasil)", locale: "pt-BR" },
   { id: "de", label: "Deutsch", locale: "de-DE" },
@@ -87,7 +88,10 @@ export async function initLanguage(): Promise<void> {
 async function load(next: Lang): Promise<void> {
   current = next;
   plurals = new Intl.PluralRules(locale());
-  if (typeof document !== "undefined") document.documentElement.lang = next;
+  if (typeof document !== "undefined") {
+    document.documentElement.lang = next;
+    document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
+  }
   english = next === "fr" ? null : (await import("./en")).EN;
   const loader = LOCALES[`./locales/${next}.json`];
   local = next === "fr" || next === "en" || !loader ? null : await loader();
