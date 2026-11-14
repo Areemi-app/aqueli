@@ -38,10 +38,12 @@ The interface takes its cue from the glossy, sky-blue look of the late 2000s, re
 
 Get the installer (`Aqueli_x.y.z_x64-setup.exe`) from the [latest release](https://github.com/Areemi-app/aqueli/releases/latest) and run it. It installs Aqueli for your Windows user account and does not need administrator rights. The installer starts by asking for your language, and Aqueli opens in the same language.
 
+Prefer no installation? Get the portable version (`Aqueli_x.y.z_x64-portable.zip`) from the same page. Extract the folder anywhere you can write, a USB drive for example, and open `Aqueli.exe`. Your accounts, data, settings and import folder all stay inside that folder, so moving to another PC is a matter of copying it.
+
 **Requirements:** Windows 11, 64-bit. Windows 10 may work but is not tested.
 
 > [!NOTE]
-> The installer is not code-signed yet. Windows SmartScreen may show "Windows protected your PC" the first time: choose **More info**, then **Run anyway**. Each release lists the SHA-256 checksum of the installer, which you can compare with the output of `Get-FileHash` in PowerShell.
+> The installer is not code-signed yet. Windows SmartScreen may show "Windows protected your PC" the first time: choose **More info**, then **Run anyway**. Each release lists the SHA-256 checksums of the installer and the portable version, which you can compare with the output of `Get-FileHash` in PowerShell.
 
 ## Features
 
@@ -83,7 +85,7 @@ And around them:
 - **Everything connected.** Link a task to a note, an event to a contact, a bill to its contract, and find anything from one search bar.
 - **Import and export.** Bring in tasks, events, notes, contacts and more from Excel, CSV, text, Markdown, `.ics` and `.vcf` files, with a preview before anything is added. Export back to the same formats.
 - **31 themes.** Light and dark, each with its own sky, illustrations and sounds. Themes can change with the time of day, the season or the holidays, and you can design your own.
-- **17 languages,** chosen at installation and changeable at any time.
+- **18 languages,** chosen at installation and changeable at any time, including Arabic with a right-to-left layout.
 - **Several accounts on one PC,** each with its own password, data and backups.
 - **Backups** to a folder or an external drive, and a 30-day bin for anything deleted.
 - **Accessible.** Full keyboard navigation, a high-contrast mode that follows Windows, and options to reduce motion and transparency.
@@ -136,7 +138,7 @@ cd src-tauri; cargo test; cd ..
 npx tauri build --bundles nsis
 ```
 
-The installer is written to `src-tauri\target\release\bundle\nsis\`.
+The installer is written to `src-tauri\target\release\bundle\nsis\`. Then `scripts\portable-zip.ps1 -Version x.y.z` builds the portable version in `src-tauri\target\release\bundle\portable\`.
 
 The interface is written in React and TypeScript; the core, in Rust, is built on [Tauri](https://tauri.app).
 

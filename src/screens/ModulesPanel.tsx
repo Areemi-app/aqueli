@@ -3,7 +3,9 @@ import { ICONS } from "../components/icons";
 import { ModuleChip } from "../components/ModuleChip";
 import { MODULE_GROUPS, MODULES, type ModuleDef, type ModuleKey } from "../modules/modules";
 import { useNavigation } from "../navigation/NavigationProvider";
-import { usePreferences } from "../prefs/PreferencesProvider";
+import { usePreferences, useShortcut } from "../prefs/PreferencesProvider";
+import { SelectRow } from "../components/SelectRow";
+import { setSidebarMode, useSidebarMode, type SidebarMode } from "../shell/sidebarMode";
 import { tr } from "../i18n/i18n";
 
 /** Paramètres › Modules : modules affichés dans la barre latérale et la palette, par catégorie. */
@@ -12,6 +14,8 @@ export function ModulesPanel() {
   const { go } = useNavigation();
   const openMenu = useContextMenu();
   const hidden = prefs.hiddenModules;
+  const sidebar = useSidebarMode();
+  const sidebarKeys = useShortcut("sidebar");
   const toggle = (key: ModuleKey, shown: boolean) =>
     setPref("hiddenModules", shown ? hidden.filter((k) => k !== key) : [...hidden, key]);
 
@@ -61,6 +65,19 @@ export function ModulesPanel() {
   return (
     <div className="settings-section">
       <h2 className="settings-heading">{tr("Barre latérale")}</h2>
+      <div className="settings-card glass">
+        <SelectRow<SidebarMode>
+          label={tr("Forme de la barre latérale")}
+          description={tr("Réduite ou masquée, elle se déploie au passage de la souris, par-dessus l'écran affiché. {keys} l'ouvre ou la replie.", { keys: sidebarKeys })}
+          value={sidebar}
+          options={[
+            { value: "ouverte", label: tr("Ouverte") },
+            { value: "reduite", label: tr("Réduite aux icônes") },
+            { value: "masquee", label: tr("Masquée sur le bord") },
+          ]}
+          onChange={setSidebarMode}
+        />
+      </div>
       <p className="settings-intro">
         {tr("Les modules masqués disparaissent de la barre latérale et de la palette.")}
       </p>

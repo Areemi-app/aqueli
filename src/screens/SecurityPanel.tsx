@@ -1,5 +1,6 @@
 import { useId, useState, type FormEvent } from "react";
 import { useToast } from "../app/ToastProvider";
+import { readBackgroundPrefs, writeBackgroundPrefs, type BackgroundPrefs } from "../app/background";
 import { usePreferences, useShortcut } from "../prefs/PreferencesProvider";
 import { AccountsSection, ProfileSection } from "../accounts/AccountsSection";
 import { Dialog } from "../components/Dialog";
@@ -15,9 +16,10 @@ import type { VaultError } from "../vault/api";
 import { vaultErrorMessage } from "../vault/messages";
 import { passwordStrength } from "../vault/password";
 import { RecoveryKeyPanel } from "../vault/RecoveryKeyPanel";
-import { AUTO_LOCK_CHOICES, useVault, type AutoLockMinutes } from "../vault/VaultProvider";
+import { AUTO_LOCK_CHOICES, autoLockLabel, useVault, type AutoLockMinutes } from "../vault/VaultProvider";
 import { Select } from "../components/Select";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 function AutoLockSetting() {
   const { autoLockMinutes, setAutoLockMinutes } = useVault();
@@ -34,7 +36,7 @@ function AutoLockSetting() {
       <Select
         id={id}
         value={String(autoLockMinutes)}
-        options={AUTO_LOCK_CHOICES.map((m) => ({ value: String(m), label: `${m} min` }))}
+        options={AUTO_LOCK_CHOICES.map((m) => ({ value: String(m), label: autoLockLabel(m) }))}
         onChange={(v) => setAutoLockMinutes(Number(v) as AutoLockMinutes)}
       />
     </div>
@@ -233,6 +235,31 @@ function NewRecoveryKeyDialog({ onClose }: { onClose: () => void }) {
   );
 }
 
+/** Verrouillage avec Windows et à la fermeture de la fenêtre (réglages transmis au cœur). */
+function LockTriggers() {
+  const [prefs, setPrefs] = useState(readBackgroundPrefs);
+  const change = (next: BackgroundPrefs) => {
+    setPrefs(next);
+    writeBackgroundPrefs(next);
+  };
+  return (
+    <>
+      <SwitchRow
+        label={isLinux ? tr("Verrouiller avec la session") : tr("Verrouiller avec Windows")}
+        description={isLinux ? tr("Aqueli se verrouille avec la session (Super+L) et à la mise en veille.") : tr("Aqueli se verrouille avec Windows (Windows+L) et à la mise en veille.")}
+        checked={prefs.lockWithWindows}
+        onChange={(lockWithWindows) => change({ ...prefs, lockWithWindows })}
+      />
+      <SwitchRow
+        label={tr("Verrouiller en fermant la fenêtre")}
+        description={tr("Aqueli se verrouille quand sa fenêtre se ferme et qu'il reste en arrière-plan.")}
+        checked={prefs.lockOnClose}
+        onChange={(lockOnClose) => change({ ...prefs, lockOnClose })}
+      />
+    </>
+  );
+}
+
 /** Mode discret : rien d'Aqueli dans les captures ni les partages d'écran. */
 function DiscreetSetting() {
   const { prefs, setPref } = usePreferences();
@@ -259,18 +286,22 @@ export function SecurityPanel() {
         <h2 className="settings-heading">{tr("Verrouillage")}</h2>
         <div className="settings-card glass">
           <AutoLockSetting />
-          <HelloSetting />
+          <LockTriggers />
+          {!isLinux && <HelloSetting />}
         </div>
       </div>
 
       <AccountsSection />
 
-      <div className="settings-section">
-        <h2 className="settings-heading">{tr("Confidentialité")}</h2>
-        <div className="settings-card glass">
-          <DiscreetSetting />
+      {/* Le mode discret n'existe que sous Windows. */}
+      {!isLinux && (
+        <div className="settings-section">
+          <h2 className="settings-heading">{tr("Confidentialité")}</h2>
+          <div className="settings-card glass">
+            <DiscreetSetting />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="settings-section">
         <h2 className="settings-heading">{tr("Mot de passe")}</h2>

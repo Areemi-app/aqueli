@@ -69,9 +69,13 @@ export interface BackgroundPrefs {
   keepInBackground: boolean;
   /** Les notifications montrent le titre des tâches même quand Aqueli est verrouillé. */
   showTitlesWhenLocked: boolean;
+  /** Fermer la fenêtre verrouille Aqueli (Paramètres › Sécurité). */
+  lockOnClose: boolean;
+  /** Le verrouillage de Windows (Win+L) et la mise en veille verrouillent Aqueli. */
+  lockWithWindows: boolean;
 }
 
-const DEFAULTS: BackgroundPrefs = { keepInBackground: true, showTitlesWhenLocked: false };
+const DEFAULTS: BackgroundPrefs = { keepInBackground: true, showTitlesWhenLocked: false, lockOnClose: true, lockWithWindows: true };
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -83,6 +87,8 @@ export function readBackgroundPrefs(): BackgroundPrefs {
     keepInBackground: typeof saved.keepInBackground === "boolean" ? saved.keepInBackground : DEFAULTS.keepInBackground,
     showTitlesWhenLocked:
       typeof saved.showTitlesWhenLocked === "boolean" ? saved.showTitlesWhenLocked : DEFAULTS.showTitlesWhenLocked,
+    lockOnClose: typeof saved.lockOnClose === "boolean" ? saved.lockOnClose : DEFAULTS.lockOnClose,
+    lockWithWindows: typeof saved.lockWithWindows === "boolean" ? saved.lockWithWindows : DEFAULTS.lockWithWindows,
   };
 }
 
@@ -92,6 +98,8 @@ export async function syncBackground(prefs: BackgroundPrefs = readBackgroundPref
   await invoke("background_settings_set", {
     keepInBackground: prefs.keepInBackground,
     hideTitlesWhenLocked: !prefs.showTitlesWhenLocked,
+    lockOnClose: prefs.lockOnClose,
+    lockWithWindows: prefs.lockWithWindows,
   }).catch(() => {});
 }
 

@@ -8,7 +8,8 @@ import { isModuleKey, type ModuleKey } from "../modules/modules";
 import { avatarById } from "../accounts/avatars";
 
 /** Tailles du texte proposées, en pourcentage de la taille normale (14 px). */
-export const TEXT_SCALES = [90, 100, 115, 130] as const;
+/** Tailles de l'interface (zoom de toute la fenêtre), en pour cent. */
+export const TEXT_SCALES = [75, 85, 90, 100, 115, 130] as const;
 export type TextScale = (typeof TEXT_SCALES)[number];
 
 /** Options d'accessibilité (elles suivent aussi les réglages de Windows) et modules affichés. */
@@ -103,7 +104,7 @@ interface PreferencesContextValue {
 
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 
-function useMediaQuery(query: string): boolean {
+export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(() => window.matchMedia?.(query).matches ?? false);
   useEffect(() => {
     const mql = window.matchMedia?.(query);
@@ -159,7 +160,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     if (inTauri) void invoke("discreet_set", { enabled: prefs.discreetMode }).catch(() => {});
   }, [prefs.discreetMode]);
 
-  // Taille du texte : zoom de toute la fenêtre, comme Ctrl + molette.
+  // Taille de l'interface : zoom de toute la fenêtre, comme Ctrl + molette.
   useEffect(() => {
     if (inTauri) void getCurrentWebview().setZoom(prefs.textScale / 100).catch(() => {});
   }, [prefs.textScale]);

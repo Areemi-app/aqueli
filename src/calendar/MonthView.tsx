@@ -10,7 +10,7 @@ import { dayItems, isMovable, type CalItem } from "./items";
 import type { DayMark } from "./specialDays";
 import { isoWeek } from "./calendarSettings";
 import { monthGrid } from "./view";
-import { locale, tr, trn } from "../i18n/i18n";
+import { locale, readingKey, tr, trn } from "../i18n/i18n";
 
 const HEADS = ["LUN", "MAR", "MER", "JEU", "VEN", "SAM", "DIM"];
 /** Hauteurs d'une case (calendar.css) : numéro du jour, puis une ligne par élément. */
@@ -165,9 +165,9 @@ export function MonthView({ anchor, today, items, open, shift, createOn, pickDay
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       open(item);
-    } else if (isMovable(item) && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
+    } else if (isMovable(item) && (readingKey(e.key) === "ArrowLeft" || readingKey(e.key) === "ArrowRight")) {
       e.preventDefault();
-      shift(item, e.key === "ArrowLeft" ? -DAY : DAY);
+      shift(item, readingKey(e.key) === "ArrowLeft" ? -DAY : DAY);
     }
   };
 

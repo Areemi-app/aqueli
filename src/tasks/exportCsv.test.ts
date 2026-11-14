@@ -66,6 +66,8 @@ describe("export des tâches", () => {
         notes: 'Penser au "budget"\net aux congés',
         subtasks: [
           { id: "a", title: "Chiffres", done: true },
+          { id: "c", title: "Budget", done: false, level: 1 },
+          { id: "d", title: "Congés", done: false, level: 2 },
           { id: "b", title: "Ordre du jour", done: false },
         ],
       }),
@@ -89,7 +91,8 @@ describe("export des tâches", () => {
           dueTime: "09:30",
           reminder: null,
           notes: 'Penser au "budget"\net aux congés',
-          subtasks: [{ title: "Chiffres" }, { title: "Ordre du jour" }],
+          // Les niveaux reviennent : un « > » par niveau dans le fichier.
+          subtasks: [{ title: "Chiffres" }, { title: "Budget", level: 1 }, { title: "Congés", level: 2 }, { title: "Ordre du jour" }],
         },
       },
       { kind: "task", input: { title: "Payer le loyer", dueDate: "2026-11-05", recurrence: { kind: "monthly", interval: 1, day: 5 }, reminder: 0 } },

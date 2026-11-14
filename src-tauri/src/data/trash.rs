@@ -7,7 +7,7 @@ use rusqlite::{params, Connection};
 use serde::Serialize;
 
 use super::tasks::invalid;
-use super::{budget, contacts, documents, events, goals, habits, journal, links, lists, notes, obligations, projects, tasks, DataError};
+use super::{budget, contacts, documents, events, goals, habits, journal, links, lists, notes, obligations, projects, savings, tasks, DataError};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -83,6 +83,7 @@ pub fn list(conn: &Connection) -> Result<Vec<TrashItem>, DataError> {
     )?);
     items.extend(rows(conn, "goal", "SELECT id, title, deleted_at, NULL FROM goals WHERE deleted_at IS NOT NULL")?);
     items.extend(rows(conn, "transaction", "SELECT id, label, deleted_at, NULL FROM transactions WHERE deleted_at IS NOT NULL")?);
+    items.extend(rows(conn, "savings", "SELECT id, name, deleted_at, NULL FROM savings_goals WHERE deleted_at IS NOT NULL")?);
     items.sort_by(|a, b| b.deleted_at.cmp(&a.deleted_at).then_with(|| a.title.cmp(&b.title)));
     Ok(items)
 }
@@ -103,6 +104,7 @@ pub fn restore(conn: &Connection, kind: &str, id: &str, now: u64) -> Result<(), 
         "list" => lists::restore_list(conn, id, now).map(|_| ()),
         "goal" => goals::restore(conn, id, now).map(|_| ()),
         "transaction" => budget::restore(conn, id, now).map(|_| ()),
+        "savings" => savings::restore(conn, id, now).map(|_| ()),
         _ => Err(invalid("kind")),
     }
 }
@@ -174,6 +176,7 @@ pub fn purge(conn: &Connection, kind: &str, id: &str) -> Result<(), DataError> {
         "list" => lists::purge(&tx, id)?,
         "goal" => goals::purge(&tx, id)?,
         "transaction" => tx.execute("DELETE FROM transactions WHERE id = ?1 AND deleted_at IS NOT NULL", params![id])?,
+        "savings" => savings::purge(&tx, id)?,
         _ => return Err(invalid("kind")),
     };
     if changed == 0 {
@@ -209,7 +212,9 @@ pub fn empty(conn: &Connection) -> Result<usize, DataError> {
          DELETE FROM goal_steps WHERE goal_id IN (SELECT id FROM goals WHERE deleted_at IS NOT NULL);
          DELETE FROM goal_entries WHERE goal_id IN (SELECT id FROM goals WHERE deleted_at IS NOT NULL);
          DELETE FROM goals WHERE deleted_at IS NOT NULL;
-         DELETE FROM transactions WHERE deleted_at IS NOT NULL;",
+         DELETE FROM transactions WHERE deleted_at IS NOT NULL;
+         DELETE FROM savings_entries WHERE goal_id IN (SELECT id FROM savings_goals WHERE deleted_at IS NOT NULL);
+         DELETE FROM savings_goals WHERE deleted_at IS NOT NULL;",
     )?;
     links::prune(&tx)?;
     tx.commit()?;

@@ -1,6 +1,6 @@
 ; Textes de l'installateur d'Aqueli, langue « Dutch » (remplacent ceux de Tauri, au ton sobre de
 ; l'application ; les cinq derniers servent aux pages d'accueil et de fin, voir crochets.nsh).
-; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 17 fichiers d'accord.
+; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 18 fichiers d'accord.
 LangString addOrReinstall ${LANG_DUTCH} "Onderdelen toevoegen of opnieuw installeren"
 LangString alreadyInstalled ${LANG_DUTCH} "Al geïnstalleerd"
 LangString alreadyInstalledLong ${LANG_DUTCH} "Aqueli ${VERSION} is al geïnstalleerd. Kies de gewenste bewerking en klik op Volgende."

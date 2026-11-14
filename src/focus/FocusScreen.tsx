@@ -27,6 +27,7 @@ import { miniWindowState, pinMiniWindow, subscribeMiniWindow } from "./miniWindo
 import { durationLabel, type FocusPlan } from "./timer";
 import { locale, tr, trn } from "../i18n/i18n";
 import { Sentences } from "../components/Sentences";
+import { NumberField } from "../components/NumberField";
 
 const PLAN_OPTIONS = (Object.keys(PLAN_LABELS) as PlanId[]).map((value) => ({ value, label: PLAN_LABELS[value] }));
 const AMBIENCES = Object.keys(AMBIENCE_LABELS) as Ambience[];
@@ -100,17 +101,12 @@ function CustomPlan() {
             {f.label}
           </label>
           <div className="field-box focus-number">
-            <input
+            <NumberField
               id={`${ids}-${f.key}`}
-              className="field-input"
-              type="number"
               min={f.key === "every" ? 2 : 1}
               max={f.max}
               value={settings.custom[f.key]}
-              onChange={(e) => {
-                const v = Math.round(Number(e.target.value));
-                if (Number.isFinite(v) && v >= (f.key === "every" ? 2 : 1) && v <= f.max) setSettings({ custom: { ...settings.custom, [f.key]: v } });
-              }}
+              onChange={(v) => setSettings({ custom: { ...settings.custom, [f.key]: v } })}
             />
             <span className="field-suffix">{f.unit}</span>
           </div>

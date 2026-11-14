@@ -15,7 +15,7 @@ import { fromDayKey, weekday, type DayKey } from "../tasks/day";
 import { dayMarkAttributes } from "./dayMarkStyle";
 import { allDaySpans, isMovable, timedSegments, type CalItem, type Segment, type Span } from "./items";
 import type { DayMark } from "./specialDays";
-import { locale, tr } from "../i18n/i18n";
+import { isRtl, locale, readingKey, tr } from "../i18n/i18n";
 import { weekdayNames, withoutDot } from "../i18n/calendarNames";
 
 /** Hauteur d'une heure, en pixels (maquette Calendrier.dc.html : 45). */
@@ -128,8 +128,10 @@ export function TimeGrid({ days, items, today, now, actions, special, workHours 
     const r = bodyRef.current?.getBoundingClientRect();
     if (!r) return { col: 0, minute: 0 };
     const width = (r.width - GUTTER_PX) / cols;
+    // De droite à gauche, les heures sont à droite et les jours se suivent vers la gauche.
+    const along = isRtl() ? r.right - x : x - r.left;
     return {
-      col: clamp(Math.floor((x - r.left - GUTTER_PX) / width), 0, cols - 1),
+      col: clamp(Math.floor((along - GUTTER_PX) / width), 0, cols - 1),
       minute: clamp((y - r.top) / PX, 0, DAY),
     };
   };
@@ -236,7 +238,7 @@ export function TimeGrid({ days, items, today, now, actions, special, workHours 
       actions.open(seg.item);
       return;
     }
-    const delta = moves[e.key];
+    const delta = moves[readingKey(e.key)];
     if (delta === undefined || !isMovable(seg.item)) return;
     e.preventDefault();
     if (e.shiftKey && Math.abs(delta) === STEP) {
@@ -252,16 +254,16 @@ export function TimeGrid({ days, items, today, now, actions, special, workHours 
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       actions.open(span.item);
-    } else if ((e.key === "ArrowLeft" || e.key === "ArrowRight") && isMovable(span.item)) {
+    } else if ((readingKey(e.key) === "ArrowLeft" || readingKey(e.key) === "ArrowRight") && isMovable(span.item)) {
       e.preventDefault();
-      actions.shift(span.item, e.key === "ArrowLeft" ? -DAY : DAY);
+      actions.shift(span.item, readingKey(e.key) === "ArrowLeft" ? -DAY : DAY);
     }
   };
 
   const blockPosition = (col: number, start: number, end: number, lane: number, lanes: number): CSSProperties => ({
     top: start * PX + 1,
     height: Math.max((end - start) * PX - 2, 14),
-    left: `calc(var(--tg-gutter) + (100% - var(--tg-gutter)) * ${(col + lane / lanes) / cols})`,
+    insetInlineStart: `calc(var(--tg-gutter) + (100% - var(--tg-gutter)) * ${(col + lane / lanes) / cols})`,
     width: `calc((100% - var(--tg-gutter)) / ${cols * lanes} - 4px)`,
   });
 
@@ -365,7 +367,7 @@ export function TimeGrid({ days, items, today, now, actions, special, workHours 
                 className="tg-col"
                 data-weekend={weekday(d) % 6 === 0 || undefined}
                 {...attributes}
-                style={{ ...attributes.style, left: `calc(var(--tg-gutter) + (100% - var(--tg-gutter)) * ${col / cols})`, width: `calc((100% - var(--tg-gutter)) / ${cols})` }}
+                style={{ ...attributes.style, insetInlineStart: `calc(var(--tg-gutter) + (100% - var(--tg-gutter)) * ${col / cols})`, width: `calc((100% - var(--tg-gutter)) / ${cols})` }}
               >
                 {workHours && (
                   <>
@@ -391,7 +393,7 @@ export function TimeGrid({ days, items, today, now, actions, special, workHours 
               className="tg-now"
               style={{
                 top: nowMin * PX,
-                left: `calc(var(--tg-gutter) + (100% - var(--tg-gutter)) * ${todayCol / cols})`,
+                insetInlineStart: `calc(var(--tg-gutter) + (100% - var(--tg-gutter)) * ${todayCol / cols})`,
                 width: `calc((100% - var(--tg-gutter)) / ${cols})`,
               }}
               aria-hidden="true"

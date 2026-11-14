@@ -5,7 +5,7 @@ import { MODULE_GROUPS, MODULES } from "../modules/modules";
 import { useNavigation } from "../navigation/NavigationProvider";
 import { usePreferences } from "../prefs/PreferencesProvider";
 import { preselectSettingsTab } from "../screens/settingsTab";
-import { tr } from "../i18n/i18n";
+import { isRtl, tr } from "../i18n/i18n";
 
 interface ModulesPopoverProps {
   /** Bouton qui ouvre le panneau (à côté de « Modules »). */
@@ -38,7 +38,7 @@ export function ModulesPopover({ anchor, onClose }: ModulesPopoverProps) {
       className="modules-popover glass-popover"
       role="dialog"
       aria-label={tr("Modules affichés")}
-      style={{ left: Math.max(8, rect.left - 8), top, maxHeight: `calc(100vh - ${top + 12}px)` }}
+      style={{ insetInlineStart: Math.max(8, isRtl() ? window.innerWidth - rect.right - 8 : rect.left - 8), top, maxHeight: `calc(100vh - ${top + 12}px)` }}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
           e.stopPropagation();

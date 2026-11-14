@@ -173,6 +173,10 @@ export const TRADITIONS: readonly Tradition[] = [
       } else if (country.clock === "amerique") {
         list.push(fete(nthWeekday(y, 3, 0, 2), tr("Passage à l'heure d'été"), HUE.jaune, tr("On avance d'une heure : à 2 h, il est 3 h.")));
         list.push(fete(nthWeekday(y, 11, 0, 1), tr("Passage à l'heure d'hiver"), HUE.ardoise, tr("On recule d'une heure : à 2 h, il est 1 h.")));
+      } else if (country.clock === "australie") {
+        // Hémisphère sud : l'heure d'été commence en octobre et finit en avril.
+        list.push(fete(nthWeekday(y, 4, 0, 1), tr("Passage à l'heure d'hiver"), HUE.ardoise, tr("On recule d'une heure : à 3 h, il est 2 h.")));
+        list.push(fete(nthWeekday(y, 10, 0, 1), tr("Passage à l'heure d'été"), HUE.jaune, tr("On avance d'une heure : à 2 h, il est 3 h.")));
       }
       return list;
     },

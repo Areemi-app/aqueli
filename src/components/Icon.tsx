@@ -1,3 +1,21 @@
+import { ICONS } from "./icons";
+
+/** Icônes qui montrent un sens de lecture (flèches, chevrons, listes, annuler) : retournées de droite
+ * à gauche, en arabe (base.css). Les horloges, la lecture du Focus et les symboles restent tels quels. */
+const MIRRORED = new Set<string>([
+  ICONS.chevronRight,
+  ICONS.arrowLeft,
+  ICONS.arrowRight,
+  ICONS.sidebar,
+  ICONS.undo,
+  ICONS.redo,
+  ICONS.subtasks,
+  ICONS.listBullet,
+  ICONS.listOrdered,
+  ICONS.listCheck,
+  ICONS.enter,
+]);
+
 interface IconProps {
   d: string;
   size?: number;
@@ -23,6 +41,7 @@ export function Icon({ d, size = 16, stroke = 2, filled = false, grid = 24, clas
       aria-hidden="true"
       focusable="false"
       className={className}
+      data-mirror={MIRRORED.has(d) || undefined}
     >
       <path d={d} />
     </svg>

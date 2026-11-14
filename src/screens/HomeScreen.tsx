@@ -51,7 +51,7 @@ import { useTodayTasks } from "../tasks/TodayWidget";
 import { useVault } from "../vault/VaultProvider";
 import { KEYS } from "../lib/itemKeys";
 import { preselectSettingsTab } from "./settingsTab";
-import { tr, trn } from "../i18n/i18n";
+import { readingKey, tr, trn } from "../i18n/i18n";
 
 /** « Planifier ma journée » : chargé à sa première ouverture. */
 const DayPlanner = lazy(() => import("../planner/DayPlanner").then((m) => ({ default: m.DayPlanner })));
@@ -158,7 +158,7 @@ function HomeGrid({ layout, editing, onChange, announce, onCustomize }: HomeGrid
       Home: 0,
       End: count - 1,
     };
-    const to = targets[e.key];
+    const to = targets[readingKey(e.key)];
     if (to === undefined) return;
     e.preventDefault();
     if (to < 0 || to >= count || to === index) return;

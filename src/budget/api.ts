@@ -6,6 +6,7 @@ import { demo } from "../lib/demo";
 import { inTauri } from "../lib/windowControls";
 import { addDays, dayKey } from "../tasks/day";
 import { nextOccurrence, type BudgetCategory, type CategoryInput, type Transaction, type TransactionInput } from "./budget";
+import type { SavingsEntry, SavingsEntryInput, SavingsGoal, SavingsGoalInput } from "./savings";
 
 export interface BudgetApi {
   categories(): Promise<BudgetCategory[]>;
@@ -21,6 +22,15 @@ export interface BudgetApi {
   restore(id: string): Promise<Transaction>;
   /** Crée les échéances des opérations récurrentes arrivées jusqu'à `today`. */
   generate(today: string): Promise<Transaction[]>;
+  savings(): Promise<SavingsGoal[]>;
+  createSavings(goal: SavingsGoalInput): Promise<SavingsGoal>;
+  updateSavings(id: string, goal: SavingsGoalInput): Promise<SavingsGoal>;
+  removeSavings(id: string): Promise<void>;
+  restoreSavings(id: string): Promise<SavingsGoal>;
+  reorderSavings(ids: string[]): Promise<void>;
+  savingsEntries(): Promise<SavingsEntry[]>;
+  addSavingsEntry(goalId: string, entry: SavingsEntryInput): Promise<SavingsEntry>;
+  removeSavingsEntry(id: string): Promise<void>;
 }
 
 async function call<T>(command: string, args?: Record<string, unknown>): Promise<T> {
@@ -43,6 +53,15 @@ const tauriApi: BudgetApi = {
   remove: (id) => call("transactions_delete", { id }),
   restore: (id) => call("transactions_restore", { id }),
   generate: (today) => call("transactions_generate", { today }),
+  savings: () => call("savings_list"),
+  createSavings: (goal) => call("savings_create", { goal }),
+  updateSavings: (id, goal) => call("savings_update", { id, goal }),
+  removeSavings: (id) => call("savings_delete", { id }),
+  restoreSavings: (id) => call("savings_restore", { id }),
+  reorderSavings: (ids) => call("order_save", { kind: "epargne", ids }),
+  savingsEntries: () => call("savings_entries_list"),
+  addSavingsEntry: (goalId, entry) => call("savings_entries_create", { goalId, entry }),
+  removeSavingsEntry: (id) => call("savings_entries_delete", { id }),
 };
 
 /** Budget d'exemple pour l'aperçu dans un navigateur (développement seulement). */
@@ -106,7 +125,56 @@ function createPreviewApi(): BudgetApi {
     return made;
   };
   const deleted = new Map<string, Transaction>();
+  // Épargne d'exemple : un voyage daté, un coussin de sécurité sans date.
+  let goals: SavingsGoal[] = [];
+  let entries: SavingsEntry[] = [];
+  const deletedGoals = new Map<string, SavingsGoal>();
+  const saved = (id: string) => entries.filter((e) => e.goalId === id).reduce((s, e) => s + e.amountCents, 0);
+  const withSaved = (g: SavingsGoal): SavingsGoal => ({ ...g, savedCents: saved(g.id) });
+  const addGoal = (input: SavingsGoalInput): SavingsGoal => {
+    const g: SavingsGoal = { ...input, id: `apercu-epargne${++seq}`, position: goals.length, createdAt: now(), updatedAt: now(), savedCents: 0 };
+    goals = [...goals, g];
+    return g;
+  };
+  const addEntry = (goalId: string, input: SavingsEntryInput): SavingsEntry => {
+    const e: SavingsEntry = { ...input, id: `apercu-versement${++seq}`, goalId, createdAt: now() };
+    entries = [e, ...entries];
+    return e;
+  };
+  const trip = addGoal({ name: demo("Vacances au Japon", "Trip to Japan"), targetCents: 300_000, targetDate: `${Number(today.slice(0, 4)) + 1}-07-01`, color: "#e0508a", icon: "avion", spaceId: null });
+  const cushion = addGoal({ name: demo("Coussin de sécurité", "Emergency fund"), targetCents: 500_000, targetDate: null, color: "#2fae4a", icon: "tirelire", spaceId: null });
+  addEntry(trip.id, { day: addDays(today, -60), amountCents: 50_000, note: demo("Prime", "Bonus") });
+  addEntry(trip.id, { day: addDays(today, -30), amountCents: 40_000, note: "" });
+  addEntry(trip.id, { day: addDays(today, -2), amountCents: 25_000, note: "" });
+  addEntry(cushion.id, { day: addDays(today, -90), amountCents: 240_000, note: "" });
   return {
+    savings: async () => goals.map(withSaved),
+    createSavings: async (input) => withSaved(addGoal(input)),
+    updateSavings: async (id, input) => {
+      const g = { ...goals.find((x) => x.id === id)!, ...input, updatedAt: now() };
+      goals = goals.map((x) => (x.id === id ? g : x));
+      return withSaved(g);
+    },
+    removeSavings: async (id) => {
+      const g = goals.find((x) => x.id === id);
+      if (!g) throw asDataError({ code: "notFound" });
+      deletedGoals.set(id, g);
+      goals = goals.filter((x) => x.id !== id);
+    },
+    restoreSavings: async (id) => {
+      const g = deletedGoals.get(id);
+      if (!g) throw asDataError({ code: "notFound" });
+      goals = [...goals, g].sort((a, b) => a.position - b.position);
+      return withSaved(g);
+    },
+    reorderSavings: async (ids) => {
+      goals = goals.map((x) => (ids.includes(x.id) ? { ...x, position: ids.indexOf(x.id) } : x)).sort((a, b) => a.position - b.position);
+    },
+    savingsEntries: async () => entries.filter((e) => goals.some((g) => g.id === e.goalId)),
+    addSavingsEntry: async (goalId, input) => addEntry(goalId, input),
+    removeSavingsEntry: async (id) => {
+      entries = entries.filter((e) => e.id !== id);
+    },
     categories: async () => categories,
     createCategory: async (input) => {
       const c = { ...input, id: `apercu-cat${++seq}`, position: categories.length };

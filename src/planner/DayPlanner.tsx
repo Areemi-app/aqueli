@@ -69,7 +69,7 @@ function blockStyle(start: number, duration: number, lane: number, lanes: number
   return {
     top: start * PX + 1,
     height: Math.max(duration * PX - 2, 14),
-    left: `calc(var(--agenda-gutter) + (100% - var(--agenda-gutter)) * ${lane / lanes})`,
+    insetInlineStart: `calc(var(--agenda-gutter) + (100% - var(--agenda-gutter)) * ${lane / lanes})`,
     width: `calc((100% - var(--agenda-gutter)) / ${lanes} - 4px)`,
     ...(color ? { "--row-color": color } : {}),
   } as CSSProperties;

@@ -9,6 +9,7 @@ import { dayKey } from "../tasks/day";
 import { useSpaces } from "../spaces/SpacesProvider";
 import { budgetApi } from "./api";
 import { toTransactionInput, type BudgetCategory, type CategoryInput, type Transaction, type TransactionInput } from "./budget";
+import { toSavingsInput, type SavingsEntry, type SavingsEntryInput, type SavingsGoal, type SavingsGoalInput } from "./savings";
 import { tr } from "../i18n/i18n";
 
 interface BudgetContextValue {
@@ -28,6 +29,18 @@ interface BudgetContextValue {
   removeCategory: (c: BudgetCategory) => Promise<void>;
   /** Nouvel ordre d'une partie (glisser-déposer) ; les autres gardent leur place. Ctrl+Z le défait. */
   reorderCategories: (ids: string[]) => Promise<void>;
+  /** Objectifs d'épargne de l'espace choisi, dans l'ordre choisi. */
+  savings: readonly SavingsGoal[];
+  /** Versements de tous les objectifs, du plus récent au plus ancien. */
+  savingsEntries: readonly SavingsEntry[];
+  createSavings: (input: SavingsGoalInput) => Promise<SavingsGoal | null>;
+  updateSavings: (g: SavingsGoal, input: SavingsGoalInput) => Promise<void>;
+  /** Met l'objectif à la corbeille, avec « Annuler ». */
+  removeSavings: (g: SavingsGoal) => Promise<void>;
+  reorderSavings: (ids: string[]) => Promise<void>;
+  /** Versement (montant positif) ou retrait (négatif) ; Ctrl+Z le retire. */
+  addSavingsEntry: (g: SavingsGoal, input: SavingsEntryInput) => Promise<void>;
+  removeSavingsEntry: (e: SavingsEntry) => Promise<void>;
 }
 
 const BudgetContext = createContext<BudgetContextValue | null>(null);
@@ -37,6 +50,8 @@ const byDay = (a: Transaction, b: Transaction) => b.day.localeCompare(a.day) || 
 export function BudgetProvider({ children }: { children: ReactNode }) {
   const [categories, setCategories] = useState<BudgetCategory[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [goals, setGoals] = useState<SavingsGoal[]>([]);
+  const [entries, setEntries] = useState<SavingsEntry[]>([]);
   const [loaded, setLoaded] = useState(false);
   const notify = useToast();
   const { filter } = useSpaces();
@@ -50,9 +65,11 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const reload = useCallback(async () => {
-    const [cats, list] = await enqueue(() => Promise.all([budgetApi.categories(), budgetApi.list()]));
+    const [cats, list, savingGoals, savingEntries] = await enqueue(() => Promise.all([budgetApi.categories(), budgetApi.list(), budgetApi.savings(), budgetApi.savingsEntries()]));
     setCategories([...cats].sort((a, b) => a.position - b.position));
     setTransactions([...list].sort(byDay));
+    setGoals([...savingGoals].sort((a, b) => a.position - b.position));
+    setEntries(savingEntries);
   }, [enqueue]);
 
   useEffect(() => {
@@ -141,7 +158,97 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
         },
       });
     };
+    // ——— Épargne ———
+    const putGoal = (g: SavingsGoal) => setGoals((list) => (list.some((x) => x.id === g.id) ? list.map((x) => (x.id === g.id ? g : x)) : [...list, g]).sort((a, b) => a.position - b.position));
+    /** Somme d'un objectif après un versement ajouté ou retiré. */
+    const shiftSaved = (goalId: string, by: number) => setGoals((list) => list.map((x) => (x.id === goalId ? { ...x, savedCents: x.savedCents + by } : x)));
+    const removeSavings = async (g: SavingsGoal) => {
+      try {
+        await enqueue(() => budgetApi.removeSavings(g.id));
+      } catch (err) {
+        fail(err);
+        return;
+      }
+      setGoals((list) => list.filter((x) => x.id !== g.id));
+      notify(tr("Objectif d'épargne supprimé."), {
+        label: tr("Annuler|action"),
+        undo: tr("suppression de l'objectif d'épargne"),
+        run: () => {
+          enqueue(() => budgetApi.restoreSavings(g.id))
+            .then(putGoal)
+            .then(() => reload())
+            .catch(fail);
+        },
+      });
+    };
+    const removeSavingsEntry = async (e: SavingsEntry) => {
+      try {
+        await enqueue(() => budgetApi.removeSavingsEntry(e.id));
+      } catch (err) {
+        fail(err);
+        return;
+      }
+      setEntries((list) => list.filter((x) => x.id !== e.id));
+      shiftSaved(e.goalId, -e.amountCents);
+      recordUndo(tr("suppression du versement"), async () => {
+        const again = await enqueue(() => budgetApi.addSavingsEntry(e.goalId, { day: e.day, amountCents: e.amountCents, note: e.note }));
+        setEntries((list) => [again, ...list]);
+        shiftSaved(e.goalId, e.amountCents);
+      });
+    };
+    const savingsPart = {
+      savings: filter === "tous" ? goals : goals.filter((g) => g.spaceId === filter || g.spaceId === null),
+      savingsEntries: entries,
+      createSavings: async (input: SavingsGoalInput) => {
+        try {
+          const g = await enqueue(() => budgetApi.createSavings(input));
+          putGoal(g);
+          recordUndo(tr("ajout de l'objectif d'épargne"), () => removeSavings(g));
+          return g;
+        } catch (err) {
+          fail(err);
+          return null;
+        }
+      },
+      updateSavings: async (g: SavingsGoal, input: SavingsGoalInput) => {
+        try {
+          const next = await enqueue(() => budgetApi.updateSavings(g.id, input));
+          putGoal(next);
+          recordUndo(tr("modification de l'objectif d'épargne"), () => enqueue(() => budgetApi.updateSavings(g.id, toSavingsInput(g))).then(putGoal), `epargne:${g.id}`);
+        } catch (err) {
+          fail(err);
+        }
+      },
+      removeSavings,
+      reorderSavings: async (part: string[]) => {
+        const before = goals.map((x) => x.id);
+        const ids = mergeOrder(before, part);
+        if (ids.join() === before.join()) return;
+        const apply = async (order: string[]) => {
+          setGoals((list) => [...list].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id)).map((x, position) => ({ ...x, position })));
+          await enqueue(() => budgetApi.reorderSavings(order));
+        };
+        try {
+          await apply(ids);
+          recordUndo(tr("déplacement de l'objectif d'épargne"), () => apply(before));
+        } catch (err) {
+          fail(err);
+        }
+      },
+      addSavingsEntry: async (g: SavingsGoal, input: SavingsEntryInput) => {
+        try {
+          const e = await enqueue(() => budgetApi.addSavingsEntry(g.id, input));
+          setEntries((list) => [e, ...list].sort((a, b) => b.day.localeCompare(a.day) || b.createdAt - a.createdAt));
+          shiftSaved(g.id, e.amountCents);
+          recordUndo(input.amountCents > 0 ? tr("ajout du versement") : tr("ajout du retrait"), () => removeSavingsEntry(e));
+        } catch (err) {
+          fail(err);
+        }
+      },
+      removeSavingsEntry,
+    };
     return {
+      ...savingsPart,
       reorderCategories: async (part: string[]) => {
         const before = categories.map((x) => x.id);
         const ids = mergeOrder(before, part);
@@ -207,7 +314,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       },
       removeCategory,
     };
-  }, [categories, transactions, loaded, filter, enqueue, notify, reload]);
+  }, [categories, transactions, goals, entries, loaded, filter, enqueue, notify, reload]);
 
   return <BudgetContext.Provider value={value}>{children}</BudgetContext.Provider>;
 }

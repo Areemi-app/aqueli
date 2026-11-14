@@ -7,7 +7,7 @@ import { useContactsIfAny } from "../contacts/ContactsProvider";
 import { useDocumentsIfAny } from "../documents/DocumentsProvider";
 import { useBudgetIfAny } from "../budget/BudgetProvider";
 import { useGoalsIfAny } from "../goals/GoalsProvider";
-import { contactRequest, documentRequest, goalRequest, listRequest, projectRequest, transactionRequest } from "../lib/request";
+import { contactRequest, documentRequest, goalRequest, listRequest, projectRequest, savingsRequest, transactionRequest } from "../lib/request";
 import { useListsIfAny } from "../lists/ListsProvider";
 import { useProjectsIfAny } from "../projects/ProjectsProvider";
 import { requestJournal } from "../journal/journalRequest";
@@ -52,6 +52,7 @@ const MODULE_OF: Record<SearchKind, ModuleKey> = {
   list: "listes",
   goal: "objectifs",
   transaction: "budget",
+  savings: "budget",
 };
 const CLOSED: Record<SearchKind, string> = {
   task: tr("Terminée"),
@@ -66,6 +67,7 @@ const CLOSED: Record<SearchKind, string> = {
   list: tr("Archivée ou cochée"),
   goal: tr("Atteint ou abandonné"),
   transaction: "",
+  savings: tr("Atteint"),
 };
 /** Résultats par type quand tous les types sont affichés ; « N de plus » montre le reste. */
 const PER_GROUP = 5;
@@ -123,8 +125,9 @@ export function GlobalSearch({ initialQuery = "", onClose }: GlobalSearchProps) 
         goals,
         transactions: budget?.transactions,
         budgetCategories: budget?.categories,
+        savings: budget?.savings,
       }),
-    [tasks, events, obligations, notes, journal, habits, projects, contacts, documents, listsData?.lists, listsData?.items, goals, budget?.transactions, budget?.categories],
+    [tasks, events, obligations, notes, journal, habits, projects, contacts, documents, listsData?.lists, listsData?.items, goals, budget?.transactions, budget?.categories, budget?.savings],
   );
   const tags = useMemo(() => knownTags(docs), [docs]);
 
@@ -215,6 +218,9 @@ export function GlobalSearch({ initialQuery = "", onClose }: GlobalSearchProps) 
     } else if (doc.kind === "transaction") {
       go("budget");
       transactionRequest.request(doc.id);
+    } else if (doc.kind === "savings") {
+      go("budget");
+      savingsRequest.request(doc.id);
     } else {
       go("notes");
       requestNote({ id: doc.id });

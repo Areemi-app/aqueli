@@ -27,3 +27,32 @@ export function isCompleteRecoveryKey(formatted: string): boolean {
 export function recoveryGroups(key: string): string[] {
   return key.split("-");
 }
+
+/** Nombre de caractères de clé dans un texte saisi. */
+function keyChars(text: string): number {
+  return formatRecoveryInput(text).replace(/-/g, "").length;
+}
+
+/**
+ * Clé et place du curseur après une frappe : le curseur reste après le même caractère de clé
+ * (sinon il saute à la fin dès qu'un tiret s'ajoute), et effacer un tiret efface le caractère
+ * voisin, dans le sens de la touche.
+ */
+export function editRecoveryInput(
+  previous: string,
+  raw: string,
+  caret: number,
+  forward = false,
+): { value: string; caret: number } {
+  let before = keyChars(raw.slice(0, caret));
+  let value = formatRecoveryInput(raw);
+  if (value === previous && raw.length < previous.length) {
+    const chars = previous.replace(/-/g, "");
+    if (forward) value = formatRecoveryInput(chars.slice(0, before) + chars.slice(before + 1));
+    else if (before > 0) {
+      value = formatRecoveryInput(chars.slice(0, before - 1) + chars.slice(before));
+      before -= 1;
+    }
+  }
+  return { value, caret: before === 0 ? 0 : before + Math.floor((before - 1) / 4) };
+}

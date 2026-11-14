@@ -26,6 +26,8 @@ export type ShortcutAction =
   /** Aide intégrée (F1) et liste des raccourcis (Ctrl+/). */
   | { type: "help" }
   | { type: "shortcuts" }
+  /** Réduire la barre latérale aux icônes, ou l'agrandir. */
+  | { type: "sidebar" }
   /** Imprimer la vue affichée (Ctrl+P, raccourci de Windows). */
   | { type: "print" }
   /** Raccourci du navigateur intégré qui n'a pas de sens dans une application (Actualiser, Imprimer…). */
@@ -62,7 +64,8 @@ export type CommandId =
   | "forward"
   | "duplicate"
   | "help"
-  | "shortcuts";
+  | "shortcuts"
+  | "sidebar";
 
 export interface CommandDef {
   id: CommandId;
@@ -98,6 +101,7 @@ export const COMMANDS: readonly CommandDef[] = [
   { id: "duplicate", name: tr("Dupliquer"), label: tr("Dupliquer"), combo: combo("d", { ctrl: true }) },
   { id: "help", name: tr("Aide"), label: tr("Aide"), combo: combo("F1") },
   { id: "shortcuts", name: tr("Liste des raccourcis"), label: tr("Liste des raccourcis clavier"), combo: combo("/", { ctrl: true }) },
+  { id: "sidebar", name: tr("Barre latérale"), label: tr("Réduire ou agrandir la barre latérale"), combo: combo("m", { ctrl: true, shift: true }) },
 ];
 
 export type ShortcutMap = Record<CommandId, Combo>;
@@ -260,7 +264,7 @@ export function comboProblem(
 }
 
 /** Commandes lancées depuis toute la fenêtre (Dupliquer agit sur l'élément qui a le focus). */
-const GLOBAL: readonly Exclude<CommandId, "duplicate">[] = ["palette", "search", "newItem", "spaces", "lock", "backup", "settings", "back", "forward", "help", "shortcuts"];
+const GLOBAL: readonly Exclude<CommandId, "duplicate">[] = ["palette", "search", "newItem", "spaces", "lock", "backup", "settings", "back", "forward", "help", "shortcuts", "sidebar"];
 
 export function shortcutFor(e: KeyInput, map: ShortcutMap = active): ShortcutAction | null {
   const key = keyOf(e);

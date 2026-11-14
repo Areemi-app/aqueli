@@ -16,7 +16,7 @@ import { useNavigation } from "../navigation/NavigationProvider";
 import { usePreferences } from "../prefs/PreferencesProvider";
 import { placeBubble, type Box } from "./placement";
 import { tourOf, type TourId } from "./tours";
-import { tr } from "../i18n/i18n";
+import { readingKey, tr } from "../i18n/i18n";
 
 /** Marge autour de l'élément éclairé. */
 const PAD = 6;
@@ -163,8 +163,8 @@ export function TourOverlay({ id, onClose }: { id: TourId; onClose: () => void }
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowRight") next();
-      else if (e.key === "ArrowLeft") previous();
+      else if (readingKey(e.key) === "ArrowRight") next();
+      else if (readingKey(e.key) === "ArrowLeft") previous();
       else if (e.key === "Tab") {
         const buttons = [...(bubbleRef.current?.querySelectorAll<HTMLButtonElement>("button:not([disabled])") ?? [])];
         const at = buttons.indexOf(document.activeElement as HTMLButtonElement);

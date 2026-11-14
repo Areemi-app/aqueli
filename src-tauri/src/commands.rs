@@ -85,14 +85,16 @@ pub struct DataPlace {
     path: String,
     /// Les données ne sont plus dans le dossier d'origine.
     moved: bool,
-    /// Faux en développement (dossier jetable).
+    /// Faux en développement (dossier jetable) et dans la version portable.
     movable: bool,
+    /// Version portable : les données restent dans le dossier d'Aqueli.
+    portable: bool,
 }
 
 #[tauri::command]
 pub fn data_location_get(place: State<'_, crate::data_location::PlaceState>) -> DataPlace {
     let p = &place.0;
-    DataPlace { path: p.location.dir.to_string_lossy().into_owned(), moved: p.location.moved, movable: p.movable }
+    DataPlace { path: p.location.dir.to_string_lossy().into_owned(), moved: p.location.moved, movable: p.movable, portable: p.portable }
 }
 
 fn refused(e: crate::data_location::MoveError) -> VaultError {
@@ -116,13 +118,7 @@ pub async fn data_move(app: AppHandle, password: String, to_default: bool) -> Re
     } else {
         let picker = app.clone();
         tauri::async_runtime::spawn_blocking(move || {
-            #[cfg(windows)]
             let chosen = pick(&picker, crate::system::dialogs::Pick::Folder { title: crate::lang::text(crate::lang::of(&picker), "Nouvel emplacement des données") });
-            #[cfg(not(windows))]
-            let chosen: Option<PathBuf> = {
-                let _ = &picker;
-                None
-            };
             chosen.map(|c| crate::data_location::target_in(&c))
         })
         .await
@@ -145,6 +141,7 @@ pub async fn data_move(app: AppHandle, password: String, to_default: bool) -> Re
             return Err(refused(e));
         }
         // Le coffre suit les données, puis Aqueli redémarre sur le nouvel emplacement.
+        #[cfg_attr(not(windows), allow(unused_mut))]
         let mut moved = Vault::new(target.clone());
         #[cfg(windows)]
         moved.set_logon(crate::system::session::logon_marker());
@@ -914,9 +911,17 @@ pub fn background_settings_set(
     state: State<'_, BackgroundState>,
     keep_in_background: bool,
     hide_titles_when_locked: bool,
+    lock_on_close: Option<bool>,
+    lock_with_windows: Option<bool>,
 ) -> Result<(), String> {
     let mut settings = state.0.lock().map_err(|_| "réglages indisponibles".to_string())?;
-    *settings = BackgroundSettings { keep_in_background, hide_titles_when_locked };
+    // Sans réglage transmis, Aqueli se verrouille (le plus prudent).
+    *settings = BackgroundSettings {
+        keep_in_background,
+        hide_titles_when_locked,
+        lock_on_close: lock_on_close.unwrap_or(true),
+        lock_with_windows: lock_with_windows.unwrap_or(true),
+    };
     Ok(())
 }
 
@@ -934,13 +939,13 @@ pub struct AutostartStatus {
     enabled: bool,
 }
 
-const AUTOSTART_SUPPORTED: bool = cfg!(all(windows, not(debug_assertions)));
+const AUTOSTART_SUPPORTED: bool = cfg!(all(any(windows, target_os = "linux"), not(debug_assertions)));
 
 #[tauri::command]
 pub fn autostart_get() -> AutostartStatus {
-    #[cfg(windows)]
+    #[cfg(any(windows, target_os = "linux"))]
     let enabled = crate::system::autostart::is_enabled();
-    #[cfg(not(windows))]
+    #[cfg(not(any(windows, target_os = "linux")))]
     let enabled = false;
     AutostartStatus { supported: AUTOSTART_SUPPORTED, enabled }
 }
@@ -950,7 +955,7 @@ pub fn autostart_set(enabled: bool) -> Result<AutostartStatus, String> {
     if !AUTOSTART_SUPPORTED {
         return Err("disponible dans la version installée".into());
     }
-    #[cfg(windows)]
+    #[cfg(any(windows, target_os = "linux"))]
     crate::system::autostart::set(enabled)?;
     let _ = enabled;
     Ok(autostart_get())
@@ -1007,6 +1012,12 @@ pub fn hotkey_get(app: AppHandle) -> Option<Hotkey> {
 #[tauri::command]
 pub fn hotkey_set(app: AppHandle, hotkey: Hotkey) -> Result<(), HotkeyError> {
     hotkey::register(&app, hotkey)
+}
+
+/// Sous Wayland : raccourci tenu par le bureau (combinaison retenue, commande de repli).
+#[tauri::command]
+pub fn hotkey_desktop() -> Option<hotkey::DesktopShortcut> {
+    hotkey::desktop()
 }
 
 // ——— Sauvegardes ———
@@ -1145,31 +1156,33 @@ pub fn backups_delete(app: AppHandle, path: String) -> Result<(), VaultError> {
 }
 
 /// Fenêtre principale, propriétaire des fenêtres de choix de Windows.
+#[cfg(windows)]
 fn owner(app: &AppHandle) -> isize {
-    #[cfg(windows)]
-    {
-        app.get_webview_window("main").and_then(|w| w.hwnd().ok()).map_or(0, |h| h.0 as isize)
-    }
-    #[cfg(not(windows))]
-    {
-        let _ = app;
-        0
-    }
+    app.get_webview_window("main").and_then(|w| w.hwnd().ok()).map_or(0, |h| h.0 as isize)
 }
 
-#[cfg(windows)]
+/// Fenêtre de choix du système (Windows ou Linux) au-dessus de la fenêtre principale ; `None` si
+/// la personne a annulé.
 fn pick(app: &AppHandle, what: crate::system::dialogs::Pick) -> Option<PathBuf> {
-    crate::system::dialogs::pick(owner(app), what)
+    #[cfg(windows)]
+    return crate::system::dialogs::pick(owner(app), what);
+    #[cfg(not(windows))]
+    return crate::system::dialogs::pick(app, what);
+}
+
+/// Fenêtre « Ouvrir » à plusieurs fichiers ; vide si la personne a annulé.
+fn pick_files(app: &AppHandle, title: &str) -> Vec<PathBuf> {
+    #[cfg(windows)]
+    return crate::system::dialogs::pick_files(owner(app), title);
+    #[cfg(not(windows))]
+    return crate::system::dialogs::pick_files(app, title);
 }
 
 /// Choisit la destination externe (clé USB, disque) et y copie la dernière sauvegarde.
 #[tauri::command]
 pub async fn backups_choose_destination(app: AppHandle) -> Result<Option<String>, VaultError> {
     tauri::async_runtime::spawn_blocking(move || {
-        #[cfg(windows)]
         let chosen = pick(&app, crate::system::dialogs::Pick::Folder { title: crate::lang::text(crate::lang::of(&app), "Destination des sauvegardes") });
-        #[cfg(not(windows))]
-        let chosen: Option<PathBuf> = None;
         let Some(mut folder) = chosen else {
             return Ok(None);
         };
@@ -1206,7 +1219,6 @@ pub async fn backups_export(app: AppHandle) -> Result<Option<String>, VaultError
     let logger = app.clone();
     let written = tauri::async_runtime::spawn_blocking(move || -> Result<Option<String>, VaultError> {
         let (day, _) = backups::local_now();
-        #[cfg(windows)]
         let target = pick(
             &app,
             crate::system::dialogs::Pick::SaveFile {
@@ -1216,8 +1228,6 @@ pub async fn backups_export(app: AppHandle) -> Result<Option<String>, VaultError
                 extension: backups::EXTENSION,
             },
         );
-        #[cfg(not(windows))]
-        let target: Option<PathBuf> = None;
         let Some(target) = target else {
             return Ok(None);
         };
@@ -1242,7 +1252,6 @@ pub async fn backups_export(app: AppHandle) -> Result<Option<String>, VaultError
 #[tauri::command]
 pub async fn backups_pick_file(app: AppHandle) -> Result<Option<BackupInfo>, VaultError> {
     tauri::async_runtime::spawn_blocking(move || {
-        #[cfg(windows)]
         let chosen = pick(
             &app,
             crate::system::dialogs::Pick::OpenFile {
@@ -1251,8 +1260,6 @@ pub async fn backups_pick_file(app: AppHandle) -> Result<Option<BackupInfo>, Vau
                 folder: Some(&backups::local_folder(&app.state::<DataDir>().0)),
             },
         );
-        #[cfg(not(windows))]
-        let chosen: Option<PathBuf> = None;
         let Some(path) = chosen else {
             return Ok(None);
         };
@@ -1311,7 +1318,6 @@ pub async fn import_status(app: AppHandle) -> Result<ImportStatus, ImportError> 
 pub async fn import_pick_file(app: AppHandle) -> Result<Option<ImportFile>, ImportError> {
     blocking(move || {
         unlocked(&app)?;
-        #[cfg(windows)]
         let chosen = pick(
             &app,
             crate::system::dialogs::Pick::OpenFile {
@@ -1320,8 +1326,6 @@ pub async fn import_pick_file(app: AppHandle) -> Result<Option<ImportFile>, Impo
                 folder: None,
             },
         );
-        #[cfg(not(windows))]
-        let chosen: Option<PathBuf> = None;
         let Some(path) = chosen else {
             return Ok(None);
         };
@@ -1733,10 +1737,7 @@ pub async fn folders_delete(app: AppHandle, id: String) -> Result<(), DataError>
 #[tauri::command]
 pub async fn documents_pick(app: AppHandle) -> Result<Vec<String>, DataError> {
     tauri::async_runtime::spawn_blocking(move || {
-        #[cfg(windows)]
-        let chosen = crate::system::dialogs::pick_files(owner(&app), crate::lang::text(crate::lang::of(&app), "Ajouter des documents"));
-        #[cfg(not(windows))]
-        let chosen: Vec<PathBuf> = Vec::new();
+        let chosen = pick_files(&app, crate::lang::text(crate::lang::of(&app), "Ajouter des documents"));
         import::remember(&app, &chosen);
         chosen.iter().map(|p| p.to_string_lossy().into_owned()).collect()
     })
@@ -1833,7 +1834,6 @@ pub async fn documents_export(app: AppHandle, id: String) -> Result<Option<Strin
     let (doc, bytes) = with_db(reader, move |c| Ok((documents::get(c, &id)?, documents::data(c, &id)?))).await?;
     let logger = app.clone();
     let written = tauri::async_runtime::spawn_blocking(move || -> Result<Option<String>, DataError> {
-        #[cfg(windows)]
         let target = {
             let (label, spec) = if doc.ext.is_empty() {
                 (crate::lang::text(crate::lang::of(&app), "Tous les fichiers").to_string(), "*.*".to_string())
@@ -1849,11 +1849,6 @@ pub async fn documents_export(app: AppHandle, id: String) -> Result<Option<Strin
                     extension: &doc.ext,
                 },
             )
-        };
-        #[cfg(not(windows))]
-        let target: Option<PathBuf> = {
-            let _ = (&app, &doc);
-            None
         };
         let Some(target) = target else {
             return Ok(None);
@@ -1878,13 +1873,7 @@ pub async fn documents_export_many(app: AppHandle, ids: Vec<String>) -> Result<O
     }
     let chooser = app.clone();
     let dir = tauri::async_runtime::spawn_blocking(move || {
-        #[cfg(windows)]
         let chosen = pick(&chooser, crate::system::dialogs::Pick::Folder { title: crate::lang::text(crate::lang::of(&chooser), "Exporter les documents") });
-        #[cfg(not(windows))]
-        let chosen: Option<PathBuf> = {
-            let _ = &chooser;
-            None
-        };
         chosen
     })
     .await
@@ -2040,7 +2029,6 @@ pub async fn export_file(app: AppHandle, name: String, format: String, content: 
     let logger = app.clone();
     let kind = format.clone();
     let written = tauri::async_runtime::spawn_blocking(move || -> Result<Option<String>, DataError> {
-        #[cfg(windows)]
         let target = pick(
             &app,
             crate::system::dialogs::Pick::SaveFile {
@@ -2056,11 +2044,6 @@ pub async fn export_file(app: AppHandle, name: String, format: String, content: 
                 extension: &format,
             },
         );
-        #[cfg(not(windows))]
-        let target: Option<PathBuf> = {
-            let _ = (&app, &file_name, &format);
-            None
-        };
         let Some(target) = target else {
             return Ok(None);
         };
@@ -2134,7 +2117,6 @@ pub async fn theme_export(app: AppHandle, name: String, content: String) -> Resu
     let file_name = documents::export_name(&name, "aqtheme");
     let logger = app.clone();
     let written = tauri::async_runtime::spawn_blocking(move || -> Result<Option<String>, DataError> {
-        #[cfg(windows)]
         let target = pick(
             &app,
             crate::system::dialogs::Pick::SaveFile {
@@ -2144,11 +2126,6 @@ pub async fn theme_export(app: AppHandle, name: String, content: String) -> Resu
                 extension: "aqtheme",
             },
         );
-        #[cfg(not(windows))]
-        let target: Option<PathBuf> = {
-            let _ = (&app, &file_name);
-            None
-        };
         let Some(target) = target else {
             return Ok(None);
         };
@@ -2298,6 +2275,50 @@ pub async fn transactions_restore(app: AppHandle, id: String) -> Result<Transact
 #[tauri::command]
 pub async fn transactions_generate(app: AppHandle, today: String) -> Result<Vec<Transaction>, DataError> {
     with_db(app, move |c| budget::generate(c, &today, now())).await
+}
+
+// ——— Objectifs d'épargne du Budget ———
+
+use crate::data::savings::{self, SavingsEntry, SavingsEntryInput, SavingsGoal, SavingsGoalInput};
+
+#[tauri::command]
+pub async fn savings_list(app: AppHandle) -> Result<Vec<SavingsGoal>, DataError> {
+    with_db(app, |c| savings::list(c, now())).await
+}
+
+#[tauri::command]
+pub async fn savings_create(app: AppHandle, goal: SavingsGoalInput) -> Result<SavingsGoal, DataError> {
+    with_db(app, move |c| savings::create(c, &goal, now())).await
+}
+
+#[tauri::command]
+pub async fn savings_update(app: AppHandle, id: String, goal: SavingsGoalInput) -> Result<SavingsGoal, DataError> {
+    with_db(app, move |c| savings::update(c, &id, &goal, now())).await
+}
+
+#[tauri::command]
+pub async fn savings_delete(app: AppHandle, id: String) -> Result<(), DataError> {
+    with_db(app, move |c| savings::delete(c, &id, now())).await
+}
+
+#[tauri::command]
+pub async fn savings_restore(app: AppHandle, id: String) -> Result<SavingsGoal, DataError> {
+    with_db(app, move |c| savings::restore(c, &id, now())).await
+}
+
+#[tauri::command]
+pub async fn savings_entries_list(app: AppHandle) -> Result<Vec<SavingsEntry>, DataError> {
+    with_db(app, |c| savings::entries(c)).await
+}
+
+#[tauri::command]
+pub async fn savings_entries_create(app: AppHandle, goal_id: String, entry: SavingsEntryInput) -> Result<SavingsEntry, DataError> {
+    with_db(app, move |c| savings::add_entry(c, &goal_id, &entry, now())).await
+}
+
+#[tauri::command]
+pub async fn savings_entries_delete(app: AppHandle, id: String) -> Result<(), DataError> {
+    with_db(app, move |c| savings::delete_entry(c, &id)).await
 }
 
 // ——— Version 3 : objectifs ———

@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type MouseEvent } from "react";
 import { useContextMenu, type MenuEntry } from "../components/ContextMenu";
 import { Icon } from "../components/Icon";
 import { ICONS } from "../components/icons";
@@ -6,10 +6,11 @@ import { ModuleChip } from "../components/ModuleChip";
 import { readPref, writePref } from "../lib/storage";
 import { MODULE_GROUPS, visibleModules, type ModuleDef, type ModuleGroup } from "../modules/modules";
 import { useNavigation } from "../navigation/NavigationProvider";
-import { usePreferences, useShortcut } from "../prefs/PreferencesProvider";
+import { useMediaQuery, usePreferences, useShortcut } from "../prefs/PreferencesProvider";
 import { useTasks } from "../tasks/TasksProvider";
 import { preselectSettingsTab } from "../screens/settingsTab";
 import { ModulesPopover } from "./ModulesPopover";
+import { toggleSidebar, useSidebarMode } from "./sidebarMode";
 import { PinnedSection } from "../pins/PinnedSection";
 import { tr } from "../i18n/i18n";
 
@@ -24,7 +25,34 @@ export function Sidebar() {
   const { visible, today } = useTasks();
   const { prefs, setPref } = usePreferences();
   const settingsKeys = useShortcut("settings");
+  const sidebarKeys = useShortcut("sidebar");
   const openMenu = useContextMenu();
+  // Réduite (choix de la personne ou fenêtre étroite) : un rail d'icônes ; masquée : un mince
+  // bord de verre. Elle se déploie par-dessus le contenu au survol ou quand le clavier y entre.
+  const mode = useSidebarMode();
+  const narrow = useMediaQuery("(max-width: 899px)");
+  const edge = mode === "masquee";
+  const compact = mode === "reduite" || edge || narrow;
+  const [peek, setPeek] = useState(false);
+  const peekTimer = useRef<number | undefined>(undefined);
+  const schedulePeek = (open: boolean, delay: number) => {
+    window.clearTimeout(peekTimer.current);
+    peekTimer.current = window.setTimeout(() => setPeek(open), delay);
+  };
+  useEffect(() => {
+    if (!compact) setPeek(false);
+    document.documentElement.dataset.sidebar = edge ? "masquee" : compact ? "reduite" : "ouverte";
+  }, [compact, edge]);
+  useEffect(() => () => window.clearTimeout(peekTimer.current), []);
+  const leaveOnBlur = (e: FocusEvent<HTMLElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) schedulePeek(false, 0);
+  };
+  const sidebarEntry: MenuEntry = {
+    label: mode === "ouverte" ? tr("Réduire la barre latérale") : tr("Garder la barre latérale ouverte"),
+    icon: ICONS.sidebar,
+    shortcut: sidebarKeys,
+    run: toggleSidebar,
+  };
   const [modulesOpen, setModulesOpen] = useState(false);
   const [closed, setClosed] = useState<ModuleGroup[]>(() => readPref(CLOSED_GROUPS, [], isGroupList));
   const customizeRef = useRef<HTMLButtonElement>(null);
@@ -62,6 +90,7 @@ export function Sidebar() {
         run: () => setPref("hiddenModules", [...prefs.hiddenModules, m.key]),
       },
       "separator",
+      ...(narrow ? [] : [sidebarEntry]),
       { label: tr("Personnaliser la barre latérale"), icon: ICONS.settings, run: customize },
     ]);
 
@@ -78,6 +107,7 @@ export function Sidebar() {
         run: () => saveClosed(() => MODULE_GROUPS.map((g) => g.key)),
       },
       "separator",
+      ...(narrow ? [] : [sidebarEntry]),
       { label: tr("Personnaliser la barre latérale"), icon: ICONS.settings, run: customize },
     ];
     openMenu(e, entries);
@@ -104,116 +134,144 @@ export function Sidebar() {
     </button>
   );
 
+  const rail = compact && !peek;
   return (
-    <nav className="sidebar glass" aria-label={tr("Modules")}>
-      <div className="sidebar-scroll">
-        <div className="sidebar-head">
-          <div className="section-label">{tr("Modules")}</div>
-          <button
-            ref={customizeRef}
-            type="button"
-            className="icon-btn icon-btn--xs sidebar-customize"
-            aria-label={tr("Choisir les modules affichés")}
-            title={tr("Choisir les modules affichés")}
-            aria-haspopup="dialog"
-            aria-expanded={modulesOpen}
-            onClick={() => setModulesOpen((open) => !open)}
-          >
-            <Icon d={ICONS.settings} size={12} stroke={2.4} />
-          </button>
-        </div>
-        {modulesOpen && customizeRef.current && (
-          <ModulesPopover anchor={customizeRef.current} onClose={() => setModulesOpen(false)} />
-        )}
-        {shown.filter((m) => !m.group && !m.featured).map(navItem)}
-        {shown
-          .filter((m) => m.featured)
-          .map((m) => (
+    <div
+      className="sidebar-slot"
+      data-compact={compact || undefined}
+      data-edge={edge || undefined}
+      onMouseEnter={() => compact && schedulePeek(true, 180)}
+      onMouseLeave={() => compact && schedulePeek(false, 280)}
+      onFocus={() => compact && schedulePeek(true, 0)}
+      onBlur={leaveOnBlur}
+      // Un module choisi dans la barre déployée la referme.
+      onClickCapture={(e) => compact && (e.target as HTMLElement).closest(".nav-item, .nav-featured, .nav-mini, .nav-pin") && schedulePeek(false, 0)}
+    >
+      {edge && <span className="sidebar-edge" aria-hidden="true" />}
+      <nav className="sidebar glass" aria-label={tr("Modules")} data-rail={rail || undefined} data-peek={(compact && peek) || undefined}>
+        <div className="sidebar-scroll">
+          <div className="sidebar-head">
+            <div className="section-label">{tr("Modules")}</div>
             <button
-              key={m.key}
+              ref={customizeRef}
               type="button"
-              className="nav-featured"
-              style={{ "--nav-color": m.color } as CSSProperties}
-              aria-current={route === m.key ? "page" : undefined}
-              title={hintOf(m)}
-              onClick={() => go(m.key)}
-              onContextMenu={(e) => moduleMenu(e, m)}
+              className="icon-btn icon-btn--xs sidebar-customize"
+              aria-label={tr("Choisir les modules affichés")}
+              title={tr("Choisir les modules affichés")}
+              aria-haspopup="dialog"
+              aria-expanded={modulesOpen}
+              onClick={() => setModulesOpen((open) => !open)}
             >
-              <ModuleChip color={m.color} icon={m.icon} />
-              <span className="nav-label">{m.label}</span>
+              <Icon d={ICONS.settings} size={12} stroke={2.4} />
             </button>
-          ))}
-        <PinnedSection />
-        {MODULE_GROUPS.map((g) => {
-          const list = shown.filter((m) => m.group === g.key);
-          if (list.length === 0) return null;
-          const isClosed = closed.includes(g.key);
-          return (
-            <div key={g.key} className="nav-group" data-closed={isClosed || undefined}>
+          </div>
+          {modulesOpen && customizeRef.current && (
+            <ModulesPopover anchor={customizeRef.current} onClose={() => setModulesOpen(false)} />
+          )}
+          {shown.filter((m) => !m.group && !m.featured).map(navItem)}
+          {shown
+            .filter((m) => m.featured)
+            .map((m) => (
               <button
+                key={m.key}
                 type="button"
-                className="nav-group-head"
-                aria-expanded={!isClosed}
-                title={isClosed ? tr("Déplier « {label} »", { label: g.label }) : tr("Replier « {label} »", { label: g.label })}
-                onClick={() => toggleGroup(g.key)}
-                onContextMenu={(e) => groupMenu(e, g.key)}
+                className="nav-featured"
+                style={{ "--nav-color": m.color } as CSSProperties}
+                aria-current={route === m.key ? "page" : undefined}
+                title={hintOf(m)}
+                onClick={() => go(m.key)}
+                onContextMenu={(e) => moduleMenu(e, m)}
               >
-                <span className="nav-group-label">{g.label}</span>
-                <span className="nav-group-line" aria-hidden="true" />
-                <Icon d={ICONS.chevronDown} size={11} stroke={2.6} />
+                <ModuleChip color={m.color} icon={m.icon} />
+                <span className="nav-label">{m.label}</span>
               </button>
-              {isClosed ? (
-                <div className="nav-group-chips">
-                  {list.map((m) => (
-                    <button
-                      key={m.key}
-                      type="button"
-                      className="nav-mini"
-                      style={{ "--nav-color": m.color } as CSSProperties}
-                      aria-current={route === m.key ? "page" : undefined}
-                      aria-label={m.label}
-                      title={hintOf(m)}
-                      onClick={() => go(m.key)}
-                      onContextMenu={(e) => moduleMenu(e, m)}
-                    >
-                      <ModuleChip color={m.color} icon={m.icon} size={24} />
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                list.map(navItem)
-              )}
-            </div>
-          );
-        })}
-      </div>
-      <div className="sidebar-footer">
-        <div className="sidebar-sep" />
-        <button
-          type="button"
-          className="nav-item nav-item--quiet"
-          aria-current={route === "corbeille" ? "page" : undefined}
-          title={tr("Corbeille")}
-          onClick={() => go("corbeille")}
-        >
-          <span className="nav-icon">
-            <Icon d={ICONS.trash} size={18} />
-          </span>
-          <span className="nav-label">{tr("Corbeille")}</span>
-        </button>
-        <button
-          type="button"
-          className="nav-item nav-item--quiet"
-          aria-current={route === "parametres" ? "page" : undefined}
-          title={tr("Paramètres ({settingsKeys})", { settingsKeys })}
-          onClick={() => go("parametres")}
-        >
-          <span className="nav-icon">
-            <Icon d={ICONS.settings} size={18} />
-          </span>
-          <span className="nav-label">{tr("Paramètres")}</span>
-        </button>
-      </div>
-    </nav>
+            ))}
+          <PinnedSection />
+          {MODULE_GROUPS.map((g) => {
+            const list = shown.filter((m) => m.group === g.key);
+            if (list.length === 0) return null;
+            const isClosed = closed.includes(g.key);
+            return (
+              <div key={g.key} className="nav-group" data-closed={isClosed || undefined}>
+                <button
+                  type="button"
+                  className="nav-group-head"
+                  aria-expanded={!isClosed}
+                  title={isClosed ? tr("Déplier « {label} »", { label: g.label }) : tr("Replier « {label} »", { label: g.label })}
+                  onClick={() => toggleGroup(g.key)}
+                  onContextMenu={(e) => groupMenu(e, g.key)}
+                >
+                  <span className="nav-group-label">{g.label}</span>
+                  <span className="nav-group-line" aria-hidden="true" />
+                  <Icon d={ICONS.chevronDown} size={11} stroke={2.6} />
+                </button>
+                {isClosed ? (
+                  <div className="nav-group-chips">
+                    {list.map((m) => (
+                      <button
+                        key={m.key}
+                        type="button"
+                        className="nav-mini"
+                        style={{ "--nav-color": m.color } as CSSProperties}
+                        aria-current={route === m.key ? "page" : undefined}
+                        aria-label={m.label}
+                        title={hintOf(m)}
+                        onClick={() => go(m.key)}
+                        onContextMenu={(e) => moduleMenu(e, m)}
+                      >
+                        <ModuleChip color={m.color} icon={m.icon} size={24} />
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  list.map(navItem)
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div className="sidebar-footer">
+          <div className="sidebar-sep" />
+          <button
+            type="button"
+            className="nav-item nav-item--quiet"
+            aria-current={route === "corbeille" ? "page" : undefined}
+            title={tr("Corbeille")}
+            onClick={() => go("corbeille")}
+          >
+            <span className="nav-icon">
+              <Icon d={ICONS.trash} size={18} />
+            </span>
+            <span className="nav-label">{tr("Corbeille")}</span>
+          </button>
+          <button
+            type="button"
+            className="nav-item nav-item--quiet"
+            aria-current={route === "parametres" ? "page" : undefined}
+            title={tr("Paramètres ({settingsKeys})", { settingsKeys })}
+            onClick={() => go("parametres")}
+          >
+            <span className="nav-icon">
+              <Icon d={ICONS.settings} size={18} />
+            </span>
+            <span className="nav-label">{tr("Paramètres")}</span>
+          </button>
+          {!narrow && (
+            <button
+              type="button"
+              className="nav-item nav-item--quiet sidebar-toggle"
+              title={`${sidebarEntry.label} (${sidebarKeys})`}
+              aria-pressed={mode !== "ouverte"}
+              onClick={toggleSidebar}
+            >
+              <span className="nav-icon">
+                <Icon d={ICONS.sidebar} size={18} />
+              </span>
+              <span className="nav-label">{mode === "ouverte" ? tr("Réduire la barre") : tr("Garder ouverte")}</span>
+            </button>
+          )}
+        </div>
+      </nav>
+    </div>
   );
 }

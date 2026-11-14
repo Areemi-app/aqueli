@@ -101,8 +101,8 @@
   content: "";
   position: absolute;
   top: 7px;
-  left: 18px;
-  right: 18px;
+  inset-inline-start: 18px;
+  inset-inline-end: 18px;
   height: 38%;
   border-radius: 50% 50% 46% 46%;
   background: linear-gradient(180deg, color-mix(in oklch, var(--aq-on-accent) 55%, transparent), transparent);
@@ -120,7 +120,7 @@
 
 .lock-avatar-badge {
   position: absolute;
-  right: -4px;
+  inset-inline-end: -4px;
   bottom: -2px;
   width: 38px;
   height: 38px;
@@ -236,7 +236,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  text-align: left;
+  text-align: start;
 }
 
 .field--center {
@@ -253,7 +253,8 @@
   height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 6px 0 14px;
+  padding-block: 0;
+  padding-inline: 14px 6px;
   border-radius: 14px;
   border: 1px solid var(--aq-field-border);
   background: var(--aq-field);
@@ -358,7 +359,7 @@
   color: var(--aq-danger);
   font-size: 13px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
 }
 
 .form-warning {
@@ -368,7 +369,7 @@
   color: var(--aq-warn);
   font-size: 13px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
 }
 
 .form-error--shake {
@@ -429,7 +430,7 @@
   color: var(--aq-soft);
   font-size: 12px;
   font-weight: 500;
-  text-align: left;
+  text-align: start;
 }
 
 .strength-label {
@@ -446,7 +447,7 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
 }
 
 .checkbox-input {
@@ -733,7 +734,8 @@
   top: -22px;
   z-index: 3;
   margin: -22px -26px 0;
-  padding: 16px 22px 12px 26px;
+  padding-block: 16px 12px;
+  padding-inline: 26px 22px;
   border-bottom: 1px solid color-mix(in srgb, var(--aq-row) 22%, transparent);
   /* Bandeau en partie transparent : le décor du coin se voit au travers. */
   background:
@@ -918,7 +920,8 @@
   align-items: center;
   max-width: 100%;
   height: 36px;
-  padding: 0 34px 0 14px;
+  padding-block: 0;
+  padding-inline: 14px 34px;
   border-radius: 18px;
   border: 1px solid var(--aq-button-border);
   background: var(--aq-button);
@@ -926,7 +929,7 @@
   color: var(--aq-button-ink);
   font-size: 14px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
   white-space: nowrap;
   cursor: pointer;
   transition:
@@ -1056,14 +1059,14 @@
 
 .select-check {
   flex: none;
-  margin-left: auto;
-  padding-left: 4px;
+  margin-inline-start: auto;
+  padding-inline-start: 4px;
   color: var(--aq-accent);
 }
 
 .select-chevron {
   position: absolute;
-  right: 12px;
+  inset-inline-end: 12px;
   top: 11px;
   pointer-events: none;
   color: var(--aq-button-ink);
@@ -1097,7 +1100,8 @@
 
 .notice--banner {
   flex-shrink: 0;
-  padding: 10px 12px 10px 16px;
+  padding-block: 10px;
+  padding-inline: 16px 12px;
   border-radius: 16px;
   background: var(--aq-card);
   color: var(--aq-ink);
@@ -1387,8 +1391,8 @@
 }
 
 .time-note {
-  margin-left: auto;
-  padding-left: 14px;
+  margin-inline-start: auto;
+  padding-inline-start: 14px;
   color: var(--aq-soft);
   font-size: 12px;
   font-weight: 600;
@@ -1408,5 +1412,5 @@
 
 /* Déverrouillage : à droite du bas de la fenêtre. */
 .lock-language {
-  margin-left: auto;
+  margin-inline-start: auto;
 }

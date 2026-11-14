@@ -1,6 +1,6 @@
 [package]
 name = "aqueli"
-version = "1.21.6"
+version = "2.0.0"
 description = "Aqueli : productivité personnelle, locale et hors ligne"
 authors = ["Areemi"]
 license = "GPL-3.0-or-later"
@@ -31,6 +31,14 @@ getrandom = "=0.4.3"
 zeroize = { version = "=1.9.0", features = ["derive"] }
 hex = "=0.4.3"
 sha2 = "=0.11.0"
+
+# Linux : fenêtres de choix de fichiers. GTK est déjà utilisé par Tauri sous Linux (même version).
+[target.'cfg(target_os = "linux")'.dependencies]
+gtk = "=0.18.2"
+# Linux : notifications du bureau par D-Bus. Déjà utilisé par Tauri (une seule instance).
+zbus = "=5.19.0"
+# Linux sous X11 : raccourci global de la capture rapide. Déjà utilisé par Tauri.
+x11-dl = "=2.21.0"
 
 # API Windows : Windows Hello (clé protégée par le TPM), verrouillage de session et mise en veille.
 # Même version que celle utilisée par Tauri, pour ne pas la compiler deux fois.

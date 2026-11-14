@@ -83,9 +83,13 @@ pub fn is_chosen(app: &AppHandle, path: &Path) -> bool {
 }
 
 /// Documents\Aqueli pour le compte principal, Documents\Aqueli\<pseudo> pour un compte ajouté :
-/// les fichiers déposés par une personne n'apparaissent jamais dans l'import d'une autre.
+/// les fichiers déposés par une personne n'apparaissent jamais dans l'import d'une autre. La
+/// version portable garde ce dossier à côté d'Aqueli.exe (« Documents »).
 pub fn root(app: &AppHandle) -> Result<PathBuf, ImportError> {
-    let base = app.path().document_dir().map(|d| d.join(ROOT)).map_err(|_| ImportError::Unavailable)?;
+    let base = match crate::portable::folder() {
+        Some(folder) => crate::portable::documents_dir(folder),
+        None => app.path().document_dir().map(|d| d.join(ROOT)).map_err(|_| ImportError::Unavailable)?,
+    };
     let active = &app.state::<crate::accounts::ActiveAccount>().0;
     let dir = crate::accounts::dir_of(&active.root, &active.id);
     let (pseudo, _) = crate::accounts::profile(&crate::prefs::load(&dir));
@@ -293,7 +297,7 @@ const fn translated(folder: &'static str, readme: &'static str) -> Guide {
 }
 
 /// Guides des langues autres que le français et l'anglais.
-static TRANSLATED: [(Lang, Guide); 15] = [
+static TRANSLATED: [(Lang, Guide); 16] = [
     (Lang::Es, translated("Guía de importación", include_str!("../guide/es/README.html"))),
     (Lang::Pt, translated("Guia de importação", include_str!("../guide/pt/README.html"))),
     (Lang::De, translated("Importanleitung", include_str!("../guide/de/README.html"))),
@@ -309,6 +313,7 @@ static TRANSLATED: [(Lang, Guide); 15] = [
     (Lang::Zh, translated("导入指南", include_str!("../guide/zh/README.html"))),
     (Lang::Ja, translated("取り込みガイド", include_str!("../guide/ja/README.html"))),
     (Lang::Ko, translated("가져오기 안내서", include_str!("../guide/ko/README.html"))),
+    (Lang::Ar, translated("دليل الاستيراد", include_str!("../guide/ar/README.html"))),
 ];
 
 /// Fichiers des versions précédentes du guide français, retirés.
@@ -1100,7 +1105,7 @@ mod tests {
 
     #[test]
     fn each_language_has_its_guide() {
-        let codes = ["fr", "en", "es", "pt", "de", "it", "nl", "pl", "ru", "uk", "tr", "hi", "id", "vi", "zh", "ja", "ko"];
+        let codes = ["fr", "en", "es", "pt", "de", "it", "nl", "pl", "ru", "uk", "tr", "hi", "id", "vi", "zh", "ja", "ko", "ar"];
         let mut folders = Vec::new();
         for code in codes {
             let lang = Lang::from_code(code).unwrap();

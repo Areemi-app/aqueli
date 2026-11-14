@@ -15,6 +15,7 @@ import { HABIT_TEMPLATES, MOMENTS, toInput, WEEK_ORDER, WEEKDAY_SHORT, type Freq
 import { useHabits } from "./HabitsProvider";
 import { TimeField } from "../components/TimeField";
 import { tr, trn } from "../i18n/i18n";
+import { NumberField } from "../components/NumberField";
 
 type FrequencyKind = Frequency["kind"];
 
@@ -148,15 +149,7 @@ export function HabitEditor({ habit, onClose }: HabitEditorProps) {
                   {tr("Objectif")}
                 </label>
                 <div className="field-box habit-number">
-                  <input
-                    id={`${ids}-objectif`}
-                    className="field-input"
-                    type="number"
-                    min={1}
-                    max={1000}
-                    value={form.target}
-                    onChange={(e) => set({ target: Math.max(0, Math.min(1000, Math.round(Number(e.target.value) || 0))) })}
-                  />
+                  <NumberField id={`${ids}-objectif`} min={1} max={1000} value={form.target} onChange={(target) => set({ target })} />
                 </div>
               </div>
               <div className="field">

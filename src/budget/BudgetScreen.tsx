@@ -25,7 +25,7 @@ import { symbolPath } from "../components/symbols";
 import { ColorChoices } from "../components/ColorChoices";
 import { KEYS } from "../lib/itemKeys";
 import { dragLabel, dropTarget, moved, startDrag } from "../lib/dragDrop";
-import { NEW_ITEM, transactionRequest } from "../lib/request";
+import { NEW_ITEM, savingsRequest, transactionRequest } from "../lib/request";
 import { useNow } from "../lib/useNow";
 import { getModule } from "../modules/modules";
 import { useNavigation } from "../navigation/NavigationProvider";
@@ -59,6 +59,7 @@ import {
 import { exportBudgetCsv } from "./api";
 import { useBudget } from "./BudgetProvider";
 import { toBudgetCsv } from "./exportCsv";
+import { SavingsCard } from "./SavingsCard";
 import { DateField } from "../components/DateField";
 import { tr, trn } from "../i18n/i18n";
 
@@ -430,6 +431,7 @@ export function BudgetScreen() {
       { label: tr("Nouvelle catégorie de dépense…"), icon: ICONS.folder, run: () => setCategoryEdit({ kind: "depense" }) },
       { label: tr("Nouvelle catégorie de revenu…"), icon: ICONS.folder, run: () => setCategoryEdit({ kind: "revenu" }) },
     ]),
+    { label: tr("Nouvel objectif d'épargne"), icon: ICONS.plus, run: () => savingsRequest.request(NEW_ITEM) },
     "separator",
     { label: tr("Exporter les opérations du mois (.csv)…"), icon: ICONS.save, run: () => void exportMonth() },
   ]);
@@ -787,6 +789,8 @@ export function BudgetScreen() {
               })}
             </ul>
           </section>
+
+          <SavingsCard />
 
           <section className="glass budget-card" aria-label={tr("Revenus du mois")}>
             <div className="budget-card-head">

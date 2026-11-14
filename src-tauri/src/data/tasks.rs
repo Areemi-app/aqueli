@@ -18,6 +18,8 @@ pub const MAX_TAGS: usize = 20;
 pub const MAX_TAG_CHARS: usize = 40;
 pub const MAX_SUBTASKS: usize = 100;
 pub const MAX_SUBTASK_CHARS: usize = 300;
+/// Sous-tâches sur cinq niveaux au plus (0 : directement sous la tâche ; src/tasks/subtaskTree.ts).
+pub const MAX_SUBTASK_LEVEL: u8 = 4;
 /// Priorité : 0 aucune, 1 basse, 2 moyenne, 3 haute.
 pub const MAX_PRIORITY: u8 = 3;
 /// Durée estimée : 24 h au plus, en minutes.
@@ -33,6 +35,9 @@ pub struct Subtask {
     pub id: String,
     pub title: String,
     pub done: bool,
+    /// Niveau dans l'arbre des sous-tâches ; absent des données d'avant les niveaux (0).
+    #[serde(default)]
+    pub level: u8,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
@@ -191,14 +196,19 @@ fn clean_subtasks(subtasks: &[Subtask]) -> Result<Vec<Subtask>, DataError> {
     if subtasks.len() > MAX_SUBTASKS {
         return Err(invalid("subtasks"));
     }
+    // Niveaux remis en ordre : le premier à 0, jamais plus d'un niveau sous la précédente.
+    let mut previous: i16 = -1;
     subtasks
         .iter()
         .map(|s| {
             let id_ok = !s.id.is_empty() && s.id.len() <= 32 && s.id.chars().all(|c| c.is_ascii_alphanumeric());
+            let level = i16::from(s.level).min(previous + 1).min(i16::from(MAX_SUBTASK_LEVEL)).max(0);
+            previous = level;
             Ok(Subtask {
                 id: if id_ok { s.id.clone() } else { random_id()? },
                 title: clean_line(&s.title, MAX_SUBTASK_CHARS, "subtasks")?,
                 done: s.done,
+                level: level as u8,
             })
         })
         .collect()
@@ -575,8 +585,8 @@ mod tests {
             estimate: Some(90),
             tags: vec!["#réunion".into(), "Réunion".into(), "maison/jardin".into()],
             subtasks: vec![
-                Subtask { id: "a1".into(), title: "Relire le compte rendu".into(), done: true },
-                Subtask { id: String::new(), title: "Envoyer l'ordre du jour".into(), done: false },
+                Subtask { id: "a1".into(), title: "Relire le compte rendu".into(), done: true, level: 0 },
+                Subtask { id: String::new(), title: "Envoyer l'ordre du jour".into(), done: false, level: 0 },
             ],
             recurrence: None,
             color: Some("#2FAE4A".into()),
@@ -584,6 +594,20 @@ mod tests {
             inbox: true,
             ..Default::default()
         }
+    }
+
+    #[test]
+    fn les_sous_taches_gardent_des_niveaux_possibles() {
+        let (_dir, vault) = open_vault();
+        let conn = vault.connection().unwrap();
+        let sub = |title: &str, level: u8| Subtask { id: String::new(), title: title.into(), done: false, level };
+        let input = TaskInput { subtasks: vec![sub("A", 2), sub("B", 1), sub("C", 9), sub("D", 3), sub("E", 0)], ..input("Arbre") };
+        let task = new(conn, &input);
+        let levels: Vec<u8> = task.subtasks.iter().map(|s| s.level).collect();
+        assert_eq!(levels, vec![0, 1, 2, 3, 0], "premier à 0, un niveau de plus au plus, cinq niveaux au plus");
+        // Données d'avant les niveaux : sans « level », la sous-tâche est au premier niveau.
+        let old: Vec<Subtask> = serde_json::from_str(r#"[{"id":"a","title":"Ancienne","done":false}]"#).unwrap();
+        assert_eq!(old[0].level, 0);
     }
 
     #[test]
@@ -598,7 +622,7 @@ mod tests {
         assert_eq!((task.due_date.as_deref(), task.due_time.as_deref()), (Some("2026-09-28"), Some("14:00")));
         assert_eq!((task.priority, task.estimate), (2, Some(90)));
         assert_eq!(task.tags, vec!["réunion", "maison/jardin"], "« # » retiré, doublon ignoré");
-        assert_eq!(task.subtasks[0], Subtask { id: "a1".into(), title: "Relire le compte rendu".into(), done: true });
+        assert_eq!(task.subtasks[0], Subtask { id: "a1".into(), title: "Relire le compte rendu".into(), done: true, level: 0 });
         assert_eq!(task.subtasks[1].id.len(), 16, "une sous-tâche sans identifiant en reçoit un");
         assert!(!task.inbox, "une tâche datée n'est pas dans la boîte de réception");
         assert_eq!(task.recurrence, None);
@@ -652,7 +676,7 @@ mod tests {
             (TaskInput { estimate: Some(0), ..input("T") }, "estimate"),
             (TaskInput { tags: vec!["deux mots".into()], ..input("T") }, "tags"),
             (TaskInput { tags: (0..=MAX_TAGS).map(|i| format!("t{i}")).collect(), ..input("T") }, "tags"),
-            (TaskInput { subtasks: vec![Subtask { id: "a".into(), title: " ".into(), done: false }], ..input("T") }, "subtasks"),
+            (TaskInput { subtasks: vec![Subtask { id: "a".into(), title: " ".into(), done: false, level: 0 }], ..input("T") }, "subtasks"),
             (TaskInput { recurrence: Some(Recurrence::Daily { interval: 0 }), ..input("T") }, "recurrence"),
             (TaskInput { color: Some("vert".into()), ..input("T") }, "color"),
             (TaskInput { reminder: Some(MAX_REMINDER_MINUTES + 1), ..input("T") }, "reminder"),
@@ -749,7 +773,7 @@ mod tests {
                 due_time: Some("08:00".into()),
                 priority: 2,
                 tags: vec!["maison".into()],
-                subtasks: vec![Subtask { id: "s1".into(), title: "Tri".into(), done: true }],
+                subtasks: vec![Subtask { id: "s1".into(), title: "Tri".into(), done: true, level: 0 }],
                 recurrence: Some(Recurrence::Weekly { interval: 2, days: vec![2] }),
                 color: Some("#e89a1c".into()),
                 reminder: Some(15),

@@ -9,6 +9,7 @@ import { Suggestion, type SuggestionKeyDownProps, type SuggestionProps } from "@
 import { ICONS } from "../../components/icons";
 import { fold } from "../../lib/fold";
 import { locale, tr } from "../../i18n/i18n";
+import { isLinux } from "../../lib/platform";
 
 export interface SlashItem {
   id: string;
@@ -49,7 +50,7 @@ export function slashItems(image: () => void): SlashItem[] {
     { id: "code", label: tr("Bloc de code"), hint: tr("Texte à chasse fixe"), icon: ICONS.code, keywords: tr("programme informatique"), run: (e) => chain(e).toggleCodeBlock().run() },
     { id: "separateur", label: tr("Séparateur"), hint: tr("Ligne horizontale"), icon: ICONS.divider, keywords: tr("ligne trait"), run: (e) => chain(e).setHorizontalRule().run() },
     { id: "tableau", label: tr("Tableau"), hint: tr("Trois colonnes, trois lignes"), icon: ICONS.table, keywords: tr("grille colonnes"), run: (e) => chain(e).insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run() },
-    { id: "image", label: tr("Image"), hint: tr("Depuis un fichier de ce PC"), icon: ICONS.image, keywords: tr("photo illustration"), run: () => image() },
+    { id: "image", label: tr("Image"), hint: isLinux ? tr("Depuis un fichier de cet ordinateur") : tr("Depuis un fichier de ce PC"), icon: ICONS.image, keywords: tr("photo illustration"), run: () => image() },
     { id: "lien", label: tr("Lien vers une note"), hint: tr("« [[ » puis le titre"), icon: ICONS.link, keywords: tr("relier note"), run: (e) => chain(e).insertContent("[[").run() },
     {
       id: "date",

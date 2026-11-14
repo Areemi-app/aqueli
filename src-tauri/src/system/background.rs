@@ -26,11 +26,15 @@ pub struct BackgroundSettings {
     pub keep_in_background: bool,
     /// Les notifications ne montrent pas le titre des tâches quand Aqueli est verrouillé.
     pub hide_titles_when_locked: bool,
+    /// Fermer la fenêtre verrouille Aqueli (Paramètres › Sécurité).
+    pub lock_on_close: bool,
+    /// Le verrouillage de Windows (Win+L) et la mise en veille verrouillent Aqueli.
+    pub lock_with_windows: bool,
 }
 
 impl Default for BackgroundSettings {
     fn default() -> Self {
-        BackgroundSettings { keep_in_background: true, hide_titles_when_locked: true }
+        BackgroundSettings { keep_in_background: true, hide_titles_when_locked: true, lock_on_close: true, lock_with_windows: true }
     }
 }
 
@@ -39,7 +43,7 @@ pub struct BackgroundState(pub Mutex<BackgroundSettings>);
 /// Aqueli a été lancé au démarrage de Windows, sans fenêtre.
 pub struct StartHidden(pub bool);
 
-fn settings(app: &AppHandle) -> BackgroundSettings {
+pub(crate) fn settings(app: &AppHandle) -> BackgroundSettings {
     app.state::<BackgroundState>().0.lock().map(|s| *s).unwrap_or_default()
 }
 
@@ -104,16 +108,45 @@ pub fn retitle(app: &AppHandle, lang: crate::lang::Lang) {
     }
 }
 
+/// Sous Linux, l'icône près de l'horloge n'existe que si le bureau en accueille (KDE, GNOME avec
+/// l'extension AppIndicator).
+#[cfg(target_os = "linux")]
+fn tray_hosted() -> bool {
+    let Ok(conn) = zbus::blocking::Connection::session() else {
+        return false;
+    };
+    zbus::blocking::Proxy::new(&conn, "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus")
+        .and_then(|p| p.call("NameHasOwner", &("org.kde.StatusNotifierWatcher",)))
+        .unwrap_or(false)
+}
+
+/// Range la fenêtre fermée : cachée, ou réduite dans la barre des tâches quand aucune icône près
+/// de l'horloge ne permet de la rouvrir (Linux sans hôte d'icônes).
+fn put_away(window: &WebviewWindow) {
+    #[cfg(target_os = "linux")]
+    if !tray_hosted() {
+        let _ = window.minimize();
+        return;
+    }
+    let _ = window.hide();
+}
+
 /// Fermer la fenêtre : Aqueli se cache et se verrouille, sauf si la personne a choisi de
-/// vraiment quitter à la fermeture.
+/// vraiment quitter à la fermeture, ou de ne pas verrouiller à la fermeture.
 pub fn on_close_requested(window: &WebviewWindow, api: &CloseRequestApi) {
     let app = window.app_handle();
-    if !settings(app).keep_in_background {
+    let current = settings(app);
+    if !current.keep_in_background {
         return;
     }
     api.prevent_close();
+    if !current.lock_on_close {
+        note(app, "fenêtre fermée : Aqueli reste en arrière-plan, ouvert");
+        put_away(window);
+        return;
+    }
     note(app, "fenêtre fermée : Aqueli reste en arrière-plan et se verrouille");
-    let _ = window.hide();
+    put_away(window);
     let handle = app.clone();
     // Le coffre est fermé sur un autre fil pour ne jamais bloquer la fenêtre.
     std::thread::spawn(move || {
@@ -153,7 +186,7 @@ pub fn start_reminders(app: AppHandle) {
             use super::notify;
             note(&app, &format!("notifications dans Windows : {}", notify::setting_label()));
             for notice in notices(&due, hide) {
-                let kind = notify::kind(&notice);
+                let kind = super::alerts::kind(&notice);
                 match notify::show(&app, &notice) {
                     Ok(()) => note(&app, &format!("notification {kind} : transmise à Windows")),
                     Err(e) => note(&app, &format!("notification {kind} : refusée ({:#010x} {})", e.code().0, e.message())),
@@ -163,7 +196,15 @@ pub fn start_reminders(app: AppHandle) {
             let count = notify::history_count().map_or("inconnu".to_string(), |n| n.to_string());
             note(&app, &format!("centre de notifications : {count} notification(s) d'Aqueli"));
         }
-        #[cfg(not(windows))]
+        #[cfg(target_os = "linux")]
+        for notice in notices(&due, hide) {
+            let kind = super::alerts::kind(&notice);
+            match super::notify_linux::show(&app, &notice) {
+                Ok(()) => note(&app, &format!("notification {kind} : transmise au bureau")),
+                Err(e) => note(&app, &format!("notification {kind} : refusée ({e})")),
+            }
+        }
+        #[cfg(not(any(windows, target_os = "linux")))]
         let _ = notices(&due, hide);
     });
 }

@@ -11,6 +11,8 @@ export interface Subtask {
   id: string;
   title: string;
   done: boolean;
+  /** Niveau dans l'arbre des sous-tâches (0 : directement sous la tâche ; src/tasks/subtaskTree.ts). */
+  level?: number;
 }
 
 /** Tâche telle que renvoyée par le cœur (src-tauri/src/data/tasks.rs). */

@@ -54,7 +54,7 @@ import { useNotes } from "./NotesProvider";
 import { closeNoteWindow, flushNoteWindows, openNoteWindow, useDetachedNotes } from "./noteWindows";
 import { inTauri } from "../lib/windowControls";
 import { BUILTIN_TEMPLATES, fillDoc, fillVariables } from "./templates";
-import { tr, trn } from "../i18n/i18n";
+import { isRtl, tr, trn } from "../i18n/i18n";
 
 const NOTES_MODULE = getModule("notes");
 
@@ -611,7 +611,7 @@ export function NotesScreen() {
             onClick={(e) => {
               const r = e.currentTarget.getBoundingClientRect();
               openMenu(
-                { clientX: r.right - 230, clientY: r.bottom + 6, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
+                { clientX: isRtl() ? r.left + 230 : r.right - 230, clientY: r.bottom + 6, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
                 templateEntries(),
               );
             }}
@@ -706,7 +706,7 @@ export function NotesScreen() {
                 onClick={(e) => {
                   const r = e.currentTarget.getBoundingClientRect();
                   openMenu(
-                    { clientX: r.left, clientY: r.bottom + 4, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
+                    { clientX: isRtl() ? r.right : r.left, clientY: r.bottom + 4, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
                     filterEntries(),
                   );
                 }}
@@ -726,7 +726,7 @@ export function NotesScreen() {
               onClick={(e) => {
                 const r = e.currentTarget.getBoundingClientRect();
                 openMenu(
-                  { clientX: r.left, clientY: r.bottom + 4, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
+                  { clientX: isRtl() ? r.right : r.left, clientY: r.bottom + 4, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
                   NOTE_SORTS.map((s) => ({ label: s.label, checked: s.value === sort, run: () => setSort(s.value) })),
                 );
               }}

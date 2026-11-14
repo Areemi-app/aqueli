@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { inTauri } from "../lib/windowControls";
 import type { Capture } from "./buildCapture";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 /** Enregistré tout de suite, ou en attente du déverrouillage. */
 export type Outcome = "saved" | "pending";
@@ -36,6 +37,26 @@ export function onHotkeyChange(listener: () => void): () => void {
 /** Préférence lue par le cœur au démarrage. */
 export const HOTKEY_PREF = "raccourciCapture";
 
+/** Sous Wayland, le raccourci appartient au bureau : combinaison qu'il a retenue (vide s'il ne
+ * l'a pas décrite, `null` s'il ne l'a pas acceptée), et commande à associer soi-même à un
+ * raccourci du bureau. */
+export interface DesktopShortcut {
+  trigger: string | null;
+  command: string;
+}
+
+/** Aperçu du navigateur, en développement : « aqueli-apercu.wayland » à la combinaison
+ * retenue, ou vide pour un raccourci que le bureau n'a pas accepté. */
+function previewDesktop(): DesktopShortcut | null {
+  if (!import.meta.env.DEV || !isLinux) return null;
+  try {
+    const trigger = localStorage.getItem("aqueli-apercu.wayland");
+    return trigger === null ? null : { trigger: trigger || null, command: '"/usr/bin/aqueli" --capture-rapide' };
+  } catch {
+    return null;
+  }
+}
+
 export const captureApi = {
   submit: (capture: Capture): Promise<Outcome> =>
     inTauri ? invoke<Outcome>("capture_submit", { capture }) : Promise.resolve("saved"),
@@ -43,6 +64,8 @@ export const captureApi = {
     inTauri ? invoke<CaptureStatus>("capture_status") : Promise.resolve({ locked: false, pending: 0 }),
   hide: (): Promise<void> => (inTauri ? invoke<void>("capture_hide") : Promise.resolve()),
   show: (): Promise<void> => (inTauri ? invoke<void>("capture_show") : Promise.resolve()),
+  desktop: (): Promise<DesktopShortcut | null> =>
+    inTauri ? invoke<DesktopShortcut | null>("hotkey_desktop") : Promise.resolve(previewDesktop()),
   hotkey: (): Promise<Hotkey | null> => (inTauri ? invoke<Hotkey | null>("hotkey_get") : Promise.resolve(DEFAULT_HOTKEY)),
   setHotkey: async (hotkey: Hotkey): Promise<void> => {
     if (inTauri) await invoke<void>("hotkey_set", { hotkey });
@@ -59,7 +82,7 @@ export function keyName(code: number): string {
 
 /** Touches d'un raccourci, dans l'ordre de Windows : Ctrl, Alt, Maj, Windows, touche. */
 export function hotkeyKeys(h: Hotkey): string[] {
-  return [...(h.ctrl ? ["Ctrl"] : []), ...(h.alt ? ["Alt"] : []), ...(h.shift ? [tr("Maj")] : []), ...(h.win ? ["Windows"] : []), keyName(h.key)];
+  return [...(h.ctrl ? ["Ctrl"] : []), ...(h.alt ? ["Alt"] : []), ...(h.shift ? [tr("Maj")] : []), ...(h.win ? [isLinux ? "Super" : "Windows"] : []), keyName(h.key)];
 }
 
 /** Raccourci saisi au clavier, s'il est accepté (Ctrl, Alt ou Windows, et une lettre, un

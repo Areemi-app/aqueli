@@ -79,7 +79,7 @@
   grid-template-columns: minmax(max-content, 1fr) minmax(160px, 440px) minmax(max-content, 1fr);
   align-items: center;
   gap: 12px;
-  padding-left: 16px;
+  padding-inline-start: 16px;
   background: var(--aq-bar);
   border-bottom: 1px solid var(--aq-border);
   box-shadow: var(--aq-titlebar-shadow);
@@ -89,8 +89,8 @@
   content: "";
   position: absolute;
   z-index: 1;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: -1px;
   height: 2px;
   background: var(--aq-bar-edge);
@@ -113,7 +113,7 @@
 .history-buttons {
   display: flex;
   gap: 4px;
-  margin-left: 4px;
+  margin-inline-start: 4px;
 }
 
 .space-selector {
@@ -183,18 +183,20 @@
   position: absolute;
   inset: -5px -6px;
   background: var(--banner) center bottom / auto 100% no-repeat;
-  -webkit-mask-image: linear-gradient(to right, transparent 120px, #000 300px, #000 calc(100% - 210px), transparent calc(100% - 140px));
-  mask-image: linear-gradient(to right, transparent 120px, #000 300px, #000 calc(100% - 210px), transparent calc(100% - 140px));
+  -webkit-mask-image: linear-gradient(calc(90deg * var(--aq-dir)), transparent 120px, #000 300px, #000 calc(100% - 210px), transparent calc(100% - 140px));
+  mask-image: linear-gradient(calc(90deg * var(--aq-dir)), transparent 120px, #000 300px, #000 calc(100% - 210px), transparent calc(100% - 140px));
 }
 
-/* Boutons de la fenêtre dans la capsule : survol arrondi. */
+/* Boutons de la fenêtre dans la capsule : leur survol la remplit sur toute sa hauteur, jusqu'à son
+   bout, et la croix en suit l'arrondi (capsule à 5 et 6 px des bords, bord de 1 px, rayon de 20 px). */
 .titlebar[data-banner] .window-controls {
-  margin-right: 10px;
-  padding: 10px 0;
+  margin-inline-end: 7px;
+  padding: 6px 0;
 }
 
-.titlebar[data-banner] .window-btn {
-  border-radius: 12px;
+.titlebar[data-banner] .window-btn--close {
+  border-start-end-radius: 19px;
+  border-end-end-radius: 19px;
 }
 
 .titlebar-start,
@@ -211,8 +213,10 @@
   min-width: 0;
 }
 
+/* Toute la hauteur de la barre : les boutons de la fenêtre s'étendent du haut au bas. */
 .titlebar-end {
   justify-self: end;
+  align-self: stretch;
 }
 
 .titlebar-center {
@@ -229,14 +233,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 8px 0 14px;
+  padding-block: 0;
+  padding-inline: 14px 8px;
   border-radius: 17px;
   border: 1px solid var(--aq-border);
   background: var(--aq-field);
   box-shadow: var(--aq-field-inset);
   color: var(--aq-soft);
   font-size: 13px;
-  text-align: left;
+  text-align: start;
   cursor: text;
   transition: box-shadow var(--aq-fast) ease;
 }
@@ -265,7 +270,7 @@
   display: flex;
   align-self: stretch;
   flex-shrink: 0;
-  margin-left: 6px;
+  margin-inline-start: 6px;
 }
 
 .window-btn {
@@ -340,7 +345,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 4px;
+  padding-inline-end: 4px;
 }
 
 .sidebar-customize {
@@ -376,7 +381,7 @@
   color: var(--aq-ink);
   font-size: 14px;
   font-weight: 500;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition:
     background var(--aq-fast) ease,
@@ -457,7 +462,7 @@
 .nav-group-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, var(--aq-line-strong), transparent);
+  background: linear-gradient(calc(90deg * var(--aq-dir)), var(--aq-line-strong), transparent);
 }
 
 .nav-group-head svg {
@@ -467,7 +472,7 @@
 }
 
 .nav-group[data-closed] .nav-group-head svg {
-  transform: rotate(-90deg);
+  transform: rotate(calc(-90deg * var(--aq-dir)));
 }
 
 /* Catégorie repliée : ses modules restent à portée, en pastilles. */
@@ -561,53 +566,142 @@
   flex: 1;
 }
 
-/* ——— Fenêtre étroite (moins de 900 px) : barre latérale repliée en icônes ——— */
+/* ——— Barre latérale réduite aux icônes ———
+   Choisie par la personne (Ctrl+Maj+M) ou imposée par une fenêtre étroite. Le rail garde sa place ;
+   au survol, la barre se déploie par-dessus le contenu sans le décaler. */
+
+.sidebar-slot {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.sidebar-slot[data-compact] {
+  width: 58px;
+}
+
+.sidebar-slot[data-compact] .sidebar {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 40;
+  transition:
+    width var(--aq-fast) var(--aq-ease),
+    box-shadow var(--aq-fast) ease;
+}
+
+/* Déployée par-dessus le contenu : verre plus couvrant et ombre de fenêtre, pour se détacher. */
+.sidebar-slot .sidebar.glass[data-peek] {
+  width: 232px;
+  background: var(--aq-popover);
+  box-shadow: var(--aq-shadow);
+}
+
+[data-reduce-transparency="true"] .sidebar-slot .sidebar.glass[data-peek] {
+  background: var(--aq-popover-solid);
+}
+
+.sidebar[data-rail] {
+  width: 58px;
+  padding: 12px 8px;
+}
+
+.sidebar[data-rail] .section-label,
+.sidebar[data-rail] .nav-label {
+  display: none;
+}
+
+.sidebar[data-rail] .sidebar-head {
+  justify-content: center;
+  padding-inline-end: 0;
+}
+
+.sidebar[data-rail] .nav-item,
+.sidebar[data-rail] .nav-featured {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar[data-rail] .nav-group-head {
+  justify-content: center;
+  height: 14px;
+  padding: 0 4px;
+}
+
+.sidebar[data-rail] .nav-group-label,
+.sidebar[data-rail] .nav-group-head svg {
+  display: none;
+}
+
+.sidebar[data-rail] .nav-group-line {
+  background: var(--aq-line-strong);
+}
+
+.sidebar[data-rail] .nav-group-chips {
+  flex-direction: column;
+  align-items: center;
+  padding: 2px 0;
+}
+
+/* Masquée sur le bord : un mince liseré de verre, qui s'ouvre au survol. La zone sensible s'étend
+   jusqu'au bord de la fenêtre ; le contenu de la barre reste dans la page pour le clavier (Tab
+   l'ouvre aussi). */
+
+.sidebar-slot[data-edge] {
+  width: 12px;
+}
+
+.sidebar-slot[data-edge]::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -16px;
+  width: calc(100% + 16px);
+}
+
+.sidebar-edge {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--aq-border);
+  border-radius: 8px;
+  background: var(--aq-card);
+  backdrop-filter: blur(var(--aq-blur));
+  box-shadow: inset 0 1px 0 var(--aq-row-gloss);
+  transition: background var(--aq-fast) ease;
+}
+
+/* Petite poignée au milieu du bord, pour qu'on le trouve. */
+.sidebar-edge::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--aq-accent);
+  opacity: 0.55;
+  transform: translate(-50%, -50%);
+}
+
+.sidebar-slot[data-edge]:hover .sidebar-edge {
+  background: var(--aq-popover);
+}
+
+.sidebar-slot[data-edge] .sidebar[data-rail] {
+  width: 12px;
+  padding: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ——— Fenêtre étroite (moins de 900 px) ——— */
 
 @media (max-width: 899px) {
   .workspace {
     gap: 12px;
     padding: 10px 12px;
-  }
-
-  .sidebar {
-    width: 58px;
-    padding: 12px 8px;
-  }
-
-  .sidebar .section-label,
-  .sidebar .nav-label {
-    display: none;
-  }
-
-  .sidebar-head {
-    justify-content: center;
-    padding-right: 0;
-  }
-
-  .sidebar .nav-item {
-    justify-content: center;
-    padding: 0;
-  }
-
-  .nav-group-head {
-    justify-content: center;
-    height: 14px;
-    padding: 0 4px;
-  }
-
-  .nav-group-label,
-  .nav-group-head svg {
-    display: none;
-  }
-
-  .nav-group-line {
-    background: var(--aq-line-strong);
-  }
-
-  .nav-group-chips {
-    flex-direction: column;
-    align-items: center;
-    padding: 2px 0;
   }
 
   .titlebar {
@@ -627,7 +721,8 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 0 12px 0 8px;
+  padding-block: 0;
+  padding-inline: 8px 12px;
   border: 1px solid var(--aq-border);
   border-radius: 17px;
   background: var(--aq-tile);
@@ -658,7 +753,7 @@
 /* Pastille de fraîcheur : verte (moins d'un jour), ambre (plus de 3 jours), grise (aucune). */
 .backup-button-dot {
   position: absolute;
-  right: -3px;
+  inset-inline-end: -3px;
   bottom: -2px;
   width: 7px;
   height: 7px;
@@ -726,7 +821,7 @@
   font: inherit;
   font-size: 14px;
   font-weight: 650;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: background var(--aq-fast) ease;
 }
@@ -745,12 +840,6 @@
   outline-offset: 1px;
 }
 
-@media (max-width: 899px) {
-  .nav-featured {
-    justify-content: center;
-    padding: 0;
-  }
-}
 
 /* Épinglés : liste remise en ordre par glisser-déposer, sans changer la mise en page. */
 .nav-pins-list {

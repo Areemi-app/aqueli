@@ -3,6 +3,7 @@ import { Select, type SelectOption } from "../components/SelectRow";
 import { fromDayKey, type DayKey } from "./day";
 import { presetsFor, recurrenceLabel, sameRecurrence, sortWeekdays, WEEKDAY_NAMES, type Recurrence } from "./recurrence";
 import { tr } from "../i18n/i18n";
+import { NumberField } from "../components/NumberField";
 
 type Unit = "jours" | "semaines" | "mois" | "ans" | "apres";
 
@@ -111,14 +112,13 @@ export function RecurrenceField({ id, value, base, onChange, allowAfterDone = tr
         <div className="recurrence-editor" role="group" aria-label={tr("Répétition personnalisée")}>
           <div className="recurrence-line">
             <label htmlFor={`${ids}-n`}>{draft.unit === "apres" ? tr("Après") : tr("Tous les")}</label>
-            <input
+            <NumberField
               id={`${ids}-n`}
-              type="number"
               min={1}
               max={draft.unit === "apres" ? 365 : 99}
               className="detail-input recurrence-every"
               value={draft.every}
-              onChange={(e) => setDraft((d) => ({ ...d, every: Number(e.target.value) }))}
+              onChange={(every) => setDraft((d) => ({ ...d, every }))}
             />
             <Select
               label={tr("Unité")}

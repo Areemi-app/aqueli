@@ -27,11 +27,15 @@ export type Vars = Record<string, string | number | null | undefined>;
 export type Entry = string | Partial<Record<Intl.LDMLPluralRule, string>>;
 export type Dictionary = Readonly<Record<string, Entry>>;
 
-/** Langues proposées, chacune écrite dans sa propre langue ; l'anglais d'abord, la langue internationale. */
-export const LANGUAGES: readonly { id: Lang; label: string; locale: string }[] = [
+/**
+ * Langues proposées, chacune écrite dans sa propre langue ; l'anglais d'abord, la langue
+ * internationale. L'arabe s'écrit de droite à gauche (`rtl`) : toute l'interface se retourne. Ses
+ * dates suivent le calendrier grégorien et ses nombres les chiffres latins, comme la saisie rapide
+ * et l'import.
+ */
+export const LANGUAGES: readonly { id: Lang; label: string; locale: string; rtl?: true }[] = [
   { id: "en", label: "English", locale: "en-GB" },
   { id: "fr", label: "Français", locale: "fr-FR" },
-  { id: "ar", label: "العربية", locale: "ar-SA" },
   { id: "es", label: "Español", locale: "es-ES" },
   { id: "pt", label: "Português (Brasil)", locale: "pt-BR" },
   { id: "de", label: "Deutsch", locale: "de-DE" },
@@ -41,6 +45,7 @@ export const LANGUAGES: readonly { id: Lang; label: string; locale: string }[] =
   { id: "ru", label: "Русский", locale: "ru-RU" },
   { id: "uk", label: "Українська", locale: "uk-UA" },
   { id: "tr", label: "Türkçe", locale: "tr-TR" },
+  { id: "ar", label: "العربية", locale: "ar-u-ca-gregory-nu-latn", rtl: true },
   { id: "hi", label: "हिन्दी", locale: "hi-IN" },
   { id: "id", label: "Bahasa Indonesia", locale: "id-ID" },
   { id: "vi", label: "Tiếng Việt", locale: "vi-VN" },
@@ -90,7 +95,10 @@ async function load(next: Lang): Promise<void> {
   plurals = new Intl.PluralRules(locale());
   if (typeof document !== "undefined") {
     document.documentElement.lang = next;
-    document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
+    // Seule une langue de droite à gauche pose `dir` : ailleurs, chaque texte garde le sens de sa
+    // première lettre (base.css).
+    if (isRtl()) document.documentElement.dir = "rtl";
+    else document.documentElement.removeAttribute("dir");
   }
   english = next === "fr" ? null : (await import("./en")).EN;
   const loader = LOCALES[`./locales/${next}.json`];
@@ -99,6 +107,18 @@ async function load(next: Lang): Promise<void> {
 
 export function lang(): Lang {
   return current;
+}
+
+/** L'interface s'écrit de droite à gauche (arabe). */
+export function isRtl(): boolean {
+  return LANGUAGES.some((l) => l.id === current && l.rtl);
+}
+
+/** Flèche gauche ou droite selon le sens de lecture : de droite à gauche, la flèche gauche avance
+ * (élément suivant, jour suivant, sous-menu). */
+export function readingKey(key: string): string {
+  if (!isRtl()) return key;
+  return key === "ArrowLeft" ? "ArrowRight" : key === "ArrowRight" ? "ArrowLeft" : key;
 }
 
 /** Langue et format régional des dates et des nombres. */

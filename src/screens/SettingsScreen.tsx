@@ -24,11 +24,14 @@ import { SoundsPanel } from "./SoundsPanel";
 import { SpacesPanel } from "./SpacesPanel";
 import { isSettingsTab, pageOf, searchSettings, SETTINGS_GROUPS, SETTINGS_PAGES, type SettingEntry, type SettingsTab } from "./settingsIndex";
 import { lang, LANGUAGES, setLanguage, tr, type Lang } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 import { SETTINGS_TAB_EVENT as TAB_EVENT } from "./settingsTab";
 import { Sentences } from "../components/Sentences";
 
 const TEXT_LABELS: Record<TextScale, string> = {
+  75: tr("Très petite (75 %)"),
+  85: tr("Compacte (85 %)"),
   90: tr("Petite (90 %)"),
   100: tr("Normale (100 %)"),
   115: tr("Grande (115 %)"),
@@ -46,14 +49,14 @@ function AccessibilityPanel() {
           description={tr("Désactive les fondus et les effets animés.")}
           checked={prefs.reduceMotion}
           onChange={(v) => setPref("reduceMotion", v)}
-          note={system.reduceMotion ? tr("Activé par un paramètre de Windows.") : undefined}
+          note={system.reduceMotion ? (isLinux ? tr("Activé par un paramètre du système.") : tr("Activé par un paramètre de Windows.")) : undefined}
         />
         <SwitchRow
           label={tr("Contraste élevé")}
           description={tr("Texte plus marqué, contours visibles et surfaces opaques, dans tous les thèmes.")}
           checked={prefs.highContrast}
           onChange={(v) => setPref("highContrast", v)}
-          note={system.highContrast ? tr("Activé par un paramètre de Windows.") : undefined}
+          note={system.highContrast ? (isLinux ? tr("Activé par un paramètre du système.") : tr("Activé par un paramètre de Windows.")) : undefined}
         />
         <SwitchRow
           label={tr("Réduire la transparence")}
@@ -62,15 +65,15 @@ function AccessibilityPanel() {
           onChange={(v) => setPref("reduceTransparency", v)}
           note={
             system.reduceTransparency
-              ? tr("Activé par un paramètre de Windows.")
+              ? (isLinux ? tr("Activé par un paramètre du système.") : tr("Activé par un paramètre de Windows."))
               : prefs.highContrast || system.highContrast
                 ? tr("Compris dans le contraste élevé.")
                 : undefined
           }
         />
         <SelectRow
-          label={tr("Taille du texte")}
-          description={tr("S'applique à toute la fenêtre. Ctrl + molette permet aussi de zoomer.")}
+          label={tr("Taille de l'interface")}
+          description={tr("Agrandit ou réduit toute la fenêtre : textes, boutons et panneaux. Ctrl + molette permet aussi de zoomer.")}
           value={String(prefs.textScale)}
           options={TEXT_SCALES.map((s) => ({ value: String(s), label: TEXT_LABELS[s] }))}
           onChange={(v) => setPref("textScale", Number(v) as TextScale)}

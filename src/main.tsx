@@ -23,6 +23,7 @@ import "./styles/signature.css";
 import { initLanguage, lang } from "./i18n/i18n";
 import { prefsBackend } from "./lib/prefsBackend";
 import { flushPrefs, loadPrefs } from "./lib/storage";
+import { installEllipsisDirection } from "./lib/ellipsisDirection";
 import { installTextDirection } from "./lib/textDirection";
 import { installTruncationTitles } from "./lib/truncationTitles";
 import { noteWindowId } from "./notes/noteWindows";
@@ -77,6 +78,8 @@ void Promise.race([loaded, timeout])
   .then(() => initLanguage().catch(() => undefined))
   .then(windowApp)
   .then((Screen) => {
+    // Arabe sous Linux : les points de suspension d'un texte anglais coupé vont à sa fin.
+    installEllipsisDirection();
     // Un changement fait juste avant la fermeture est enregistré quand même.
     window.addEventListener("pagehide", () => void flushPrefs());
     if (isCapture || isMini || noteId) {

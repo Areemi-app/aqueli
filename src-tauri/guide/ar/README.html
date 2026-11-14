@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Import guide · Aqueli</title>
+<title>دليل الاستيراد · Aqueli</title>
 <style>
   :root {
     --ink: #0b2a45;
@@ -53,7 +53,7 @@
     padding: 32px 16px 48px;
     background: var(--sky) fixed;
     color: var(--ink);
-    font: 15px/1.55 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    font: 15.5px/1.7 "Segoe UI", Tahoma, system-ui, sans-serif;
   }
   @media (prefers-color-scheme: dark) { html { background: #0c1c56; } }
   main {
@@ -151,6 +151,16 @@
     body { background: #fff; padding: 0; }
     main { box-shadow: none; border: 0; }
   }
+  /* Page de droite à gauche : bords, retraits et alignements suivent le sens de lecture ; le code,
+     les noms de colonnes et les exemples (en anglais, lus par l'import) gardent leur sens. */
+  th { text-align: right; }
+  ul { padding-left: 0; padding-right: 22px; }
+  td:first-child { border-radius: 0 12px 12px 0; }
+  td:last-child { border-radius: 12px 0 0 12px; }
+  .req { margin-left: 0; margin-right: 6px; }
+  code, kbd { unicode-bidi: isolate; direction: ltr; }
+  pre { direction: ltr; text-align: left; }
+  td.col, td.ex { unicode-bidi: plaintext; text-align: right; }
 </style>
 </head>
 <body>
@@ -175,226 +185,226 @@
       <path d="M18 33l9 9 19-21" fill="none" stroke="url(#check)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <div>
-      <h1>Import guide</h1>
-      <p class="lead">Add tasks, events, obligations, notes, habits and contacts in one go.</p>
+      <h1>دليل الاستيراد</h1>
+      <p class="lead">أضف المهام والأحداث والالتزامات والملاحظات والعادات وجهات الاتصال دفعة واحدة.</p>
     </div>
   </header>
 
-  <nav aria-label="Contents">
-    <a href="#in-short">In short</a>
-    <a href="#folder">In this folder</a>
-    <a href="#spreadsheet">With Excel</a>
-    <a href="#columns">Columns</a>
-    <a href="#values">Accepted values</a>
-    <a href="#text">With a text file</a>
-    <a href="#calendars">Calendars and contacts</a>
-    <a href="#preview">Preview and duplicates</a>
-    <a href="#good-to-know">Good to know</a>
+  <nav aria-label="المحتويات">
+    <a href="#in-short">باختصار</a>
+    <a href="#folder">في هذا المجلد</a>
+    <a href="#spreadsheet">باستخدام Excel</a>
+    <a href="#columns">الأعمدة</a>
+    <a href="#values">القيم المقبولة</a>
+    <a href="#text">بملف نصي</a>
+    <a href="#calendars">التقاويم وجهات الاتصال</a>
+    <a href="#preview">المعاينة والمكررات</a>
+    <a href="#good-to-know">معلومات مفيدة</a>
   </nav>
 
-  <h2 id="in-short"><span class="n">1</span>In short</h2>
+  <h2 id="in-short"><span class="n">1</span>باختصار</h2>
   <div class="steps">
     <div class="step">
       <span class="n">1</span>
-      <b>Prepare</b>
-      Copy <code>Aqueli template.xlsx</code> out of this folder, then fill it in: one row per item.
+      <b>التحضير</b>
+      انسخ <code>Aqueli template.xlsx</code> خارج هذا المجلد، ثم املأه: صف لكل عنصر.
     </div>
     <div class="step">
       <span class="n">2</span>
-      <b>Import</b>
-      Drop the file into <code>Documents\Aqueli\Import</code>, or drag it onto the Aqueli window.
+      <b>الاستيراد</b>
+      ضع الملف في مجلد <code>Import</code> المجاور لمجلد هذا الدليل، أو اسحبه إلى نافذة Aqueli.
     </div>
     <div class="step">
       <span class="n">3</span>
-      <b>Check</b>
-      Read the preview, then click “Import”. <kbd>Ctrl+Z</kbd> removes the whole import.
+      <b>التحقق</b>
+      اقرأ المعاينة، ثم انقر «استيراد». يزيل <kbd>Ctrl+Z</kbd> الاستيراد كله.
     </div>
   </div>
-  <p>Aqueli spots a file dropped into the Import folder within a few seconds. You can also choose a file in Settings › Import › “Import a file”, or with the “Import a file” command in <kbd>Ctrl+K</kbd>.</p>
+  <p>يكتشف Aqueli الملف الموضوع في مجلد الاستيراد خلال ثوانٍ. ويمكنك أيضًا اختيار ملف في الإعدادات › الاستيراد › «استيراد ملف»، أو بالأمر «استيراد ملف» في <kbd>Ctrl+K</kbd>.</p>
 
-  <h2 id="folder"><span class="n">2</span>In this folder</h2>
+  <h2 id="folder"><span class="n">2</span>في هذا المجلد</h2>
   <table class="files">
-    <thead><tr><th>File</th><th>Contents</th></tr></thead>
+    <thead><tr><th>الملف</th><th>المحتوى</th></tr></thead>
     <tbody>
-      <tr><td class="col">Aqueli template.xlsx</td><td>Empty workbook: one sheet per type, with the columns already named.</td></tr>
-      <tr><td class="col">Aqueli example.xlsx</td><td>The same workbook, filled with examples. It imports as it is.</td></tr>
-      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>The columns of each type, for a spreadsheet other than Excel.</td></tr>
-      <tr><td class="col">Example.txt</td><td>Text file examples, one row per item.</td></tr>
+      <tr><td class="col">Aqueli template.xlsx</td><td>مصنف فارغ: ورقة لكل نوع، بأعمدة مسماة مسبقًا.</td></tr>
+      <tr><td class="col">Aqueli example.xlsx</td><td>المصنف نفسه مملوءًا بأمثلة. ويُستورد كما هو.</td></tr>
+      <tr><td class="col">Template tasks.csv<br>Template events.csv<br>Template obligations.csv<br>Template notes.csv<br>Template habits.csv<br>Template contacts.csv<br>Template expenses.csv<br>Template lists.csv</td><td>أعمدة كل نوع، لجدول بيانات غير Excel.</td></tr>
+      <tr><td class="col">Example.txt</td><td>أمثلة لملف نصي، سطر لكل عنصر.</td></tr>
     </tbody>
   </table>
-  <p class="note">This folder is recreated each time Aqueli opens. Copy a template somewhere else (Desktop, Documents…) before filling it in.</p>
+  <p class="note">يُعاد إنشاء هذا المجلد عند كل فتح لـ Aqueli. انسخ القالب إلى مكان آخر (سطح المكتب، المستندات…) قبل تعبئته.</p>
 
-  <h2 id="spreadsheet"><span class="n">3</span>With Excel or another spreadsheet</h2>
+  <h2 id="spreadsheet"><span class="n">3</span>باستخدام Excel أو جدول بيانات آخر</h2>
   <ul>
-    <li>One sheet per type, named “Tasks”, “Events”, “Obligations”, “Notes”, “Habits”, “Contacts”, “Expenses” or “Lists”.</li>
-    <li>First row: the column names. After that, one row per item.</li>
-    <li>Only the title is required (the name of a habit; the first name, last name or company of a contact), together with the date of an event, the due date of an obligation, the date and amount of a transaction, and the list of a list item. Leave unused cells empty.</li>
-    <li>The columns can be in any order. Unknown columns are ignored. Capital letters and accents make no difference.</li>
-    <li>CSV file: one type per file, recognised from its name (<code>tasks.csv</code>) or its columns. A “Type” column (Task, Event, Obligation, Note, Habit, Contact, Expense, Income, List) lets you mix types. Separator <code>;</code> or <code>,</code>.</li>
-    <li>Column names and values can be written in English or in French.</li>
+    <li>ورقة لكل نوع، باسم «Tasks» أو «Events» أو «Obligations» أو «Notes» أو «Habits» أو «Contacts» أو «Expenses» أو «Lists».</li>
+    <li>الصف الأول: أسماء الأعمدة. وبعده صف لكل عنصر.</li>
+    <li>العنوان وحده مطلوب (اسم العادة، والاسم الأول أو اسم العائلة أو الشركة لجهة الاتصال)، ومعه تاريخ الحدث، وموعد استحقاق الالتزام، وتاريخ المعاملة ومبلغها، وقائمة عنصر القائمة. اترك الخلايا غير المستخدمة فارغة.</li>
+    <li>يمكن أن تكون الأعمدة بأي ترتيب. وتُتجاهل الأعمدة غير المعروفة. ولا فرق بين الأحرف الكبيرة والصغيرة ولا للعلامات.</li>
+    <li>ملف CSV: نوع واحد لكل ملف، يُعرف من اسمه (<code>tasks.csv</code>) أو من أعمدته. ويتيح عمود «Type» (Task, Event, Obligation, Note, Habit, Contact, Expense, Income, List) خلط الأنواع. الفاصل <code>;</code> أو <code>,</code>.</li>
+    <li>تُكتب أسماء الأعمدة والقيم بالإنجليزية أو بالفرنسية، فهما اللغتان اللتان يقرؤهما الاستيراد.</li>
   </ul>
 
-  <h2 id="columns"><span class="n">4</span>Columns</h2>
+  <h2 id="columns"><span class="n">4</span>الأعمدة</h2>
 
-  <h3>Tasks</h3>
+  <h3>المهام</h3>
   <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
     <tbody>
-      <tr><td class="col">Title<span class="req">required</span></td><td>What there is to do.</td><td class="ex">Call the garage</td></tr>
-      <tr><td class="col">Due date</td><td>Date, with or without the time. Without a date, the task goes to the inbox.</td><td class="ex">03/10/2026</td></tr>
-      <tr><td class="col">Time</td><td>Time of the due date.</td><td class="ex">14:00</td></tr>
-      <tr><td class="col">Start on</td><td>Start date, no later than the due date. Until then, the task only appears in “Upcoming”.</td><td class="ex">01/10/2026</td></tr>
-      <tr><td class="col">Priority</td><td>high, medium, low or none.</td><td class="ex">high</td></tr>
-      <tr><td class="col">Tags</td><td>Separated by commas.</td><td class="ex">car, garage</td></tr>
-      <tr><td class="col">Space</td><td>Name of an Aqueli space.</td><td class="ex">Personal</td></tr>
-      <tr><td class="col">Duration</td><td>Estimated duration, 24 h at most.</td><td class="ex">1 h 30</td></tr>
-      <tr><td class="col">Reminder</td><td>How long before the due date.</td><td class="ex">15 min</td></tr>
-      <tr><td class="col">Repeat</td><td>See “Accepted values”.</td><td class="ex">every Monday</td></tr>
-      <tr><td class="col">Subtasks</td><td>Separated by semicolons, 100 at most.</td><td class="ex">Kitchen; Living room</td></tr>
-      <tr><td class="col">Notes</td><td>Free text.</td><td class="ex">Ask for a quote.</td></tr>
+      <tr><td class="col">Title<span class="req">مطلوب</span></td><td>ما يجب فعله.</td><td class="ex">Call the garage</td></tr>
+      <tr><td class="col">Due date</td><td>التاريخ، مع الوقت أو بدونه. ومن دون تاريخ، تذهب المهمة إلى الوارد.</td><td class="ex">03/10/2026</td></tr>
+      <tr><td class="col">Time</td><td>وقت الاستحقاق.</td><td class="ex">14:00</td></tr>
+      <tr><td class="col">Start on</td><td>تاريخ البدء، لا يتجاوز موعد الاستحقاق. وحتى ذلك الحين، تظهر المهمة في «القادمة» فقط.</td><td class="ex">01/10/2026</td></tr>
+      <tr><td class="col">Priority</td><td><code>high</code> أو <code>medium</code> أو <code>low</code> أو <code>none</code>.</td><td class="ex">high</td></tr>
+      <tr><td class="col">Tags</td><td>مفصولة بفواصل.</td><td class="ex">car, garage</td></tr>
+      <tr><td class="col">Space</td><td>اسم مساحة في Aqueli.</td><td class="ex">Personal</td></tr>
+      <tr><td class="col">Duration</td><td>المدة المقدرة، 24 ساعة كحد أقصى.</td><td class="ex">1 h 30</td></tr>
+      <tr><td class="col">Reminder</td><td>كم قبل موعد الاستحقاق.</td><td class="ex">15 min</td></tr>
+      <tr><td class="col">Repeat</td><td>انظر «القيم المقبولة».</td><td class="ex">every Monday</td></tr>
+      <tr><td class="col">Subtasks</td><td>مفصولة بفاصلة منقوطة، 100 كحد أقصى. وتجعلها «&gt;» في البداية مهمة فرعية للتي قبلها («&gt;&gt;»: مستوى أعمق).</td><td class="ex">Kitchen; &gt; Dishes; Living room</td></tr>
+      <tr><td class="col">Notes</td><td>نص حر.</td><td class="ex">Ask for a quote.</td></tr>
     </tbody>
   </table>
 
-  <h3>Events</h3>
+  <h3>الأحداث</h3>
   <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
     <tbody>
-      <tr><td class="col">Title<span class="req">required</span></td><td>Name of the event.</td><td class="ex">Dentist</td></tr>
-      <tr><td class="col">Date<span class="req">required</span></td><td>Day of the event; it can include the times.</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
-      <tr><td class="col">Start</td><td>Start time. Empty: all day.</td><td class="ex">09:30</td></tr>
-      <tr><td class="col">End</td><td>End time. Empty: one hour after the start.</td><td class="ex">10:00</td></tr>
-      <tr><td class="col">End date</td><td>Last day of an event that lasts several days.</td><td class="ex">18/10/2026</td></tr>
-      <tr><td class="col">Location</td><td>Address or place.</td><td class="ex">Martin surgery</td></tr>
-      <tr><td class="col">Space</td><td>Name of an Aqueli space.</td><td class="ex">Health</td></tr>
-      <tr><td class="col">Reminder</td><td>How long before the start.</td><td class="ex">1 h</td></tr>
-      <tr><td class="col">Repeat</td><td>See “Accepted values”.</td><td class="ex">every year</td></tr>
-      <tr><td class="col">Notes</td><td>Free text.</td><td class="ex">Bring your health card.</td></tr>
+      <tr><td class="col">Title<span class="req">مطلوب</span></td><td>اسم الحدث.</td><td class="ex">Dentist</td></tr>
+      <tr><td class="col">Date<span class="req">مطلوب</span></td><td>يوم الحدث، ويمكن أن يتضمن الأوقات.</td><td class="ex">08/10/2026 09:30-10:00</td></tr>
+      <tr><td class="col">Start</td><td>وقت البداية. فارغ: اليوم كله.</td><td class="ex">09:30</td></tr>
+      <tr><td class="col">End</td><td>وقت النهاية. فارغ: بعد ساعة من البداية.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">End date</td><td>آخر يوم لحدث يمتد عدة أيام.</td><td class="ex">18/10/2026</td></tr>
+      <tr><td class="col">Location</td><td>عنوان أو مكان.</td><td class="ex">Martin surgery</td></tr>
+      <tr><td class="col">Space</td><td>اسم مساحة في Aqueli.</td><td class="ex">Health</td></tr>
+      <tr><td class="col">Reminder</td><td>كم قبل البداية.</td><td class="ex">1 h</td></tr>
+      <tr><td class="col">Repeat</td><td>انظر «القيم المقبولة».</td><td class="ex">every year</td></tr>
+      <tr><td class="col">Notes</td><td>نص حر.</td><td class="ex">Bring your health card.</td></tr>
     </tbody>
   </table>
 
-  <h3>Obligations</h3>
+  <h3>الالتزامات</h3>
   <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
     <tbody>
-      <tr><td class="col">Title<span class="req">required</span></td><td>Name of the obligation.</td><td class="ex">Home insurance</td></tr>
-      <tr><td class="col">Category</td><td>Taxes and returns, Bills, Subscriptions, Insurance, Contracts, Warranties, Identity papers, Health, Vehicle, Housing, or the name given in Aqueli. Empty: Bills.</td><td class="ex">Insurance</td></tr>
-      <tr><td class="col">Due date<span class="req">required</span></td><td>Next date to meet.</td><td class="ex">15/11/2026</td></tr>
-      <tr><td class="col">Amount</td><td>In euros.</td><td class="ex">€45.90</td></tr>
-      <tr><td class="col">Frequency</td><td>one-off, monthly, every two months, quarterly, half-yearly or yearly. Empty: one-off.</td><td class="ex">yearly</td></tr>
-      <tr><td class="col">Cancel by</td><td>Cancellation deadline, no later than the due date.</td><td class="ex">15/10/2026</td></tr>
-      <tr><td class="col">Organisation</td><td>Insurer, supplier, public body…</td><td class="ex">Insurer</td></tr>
-      <tr><td class="col">Reference</td><td>Contract number, customer number…</td><td class="ex">HOM-4521</td></tr>
-      <tr><td class="col">Direct debit</td><td><code>yes</code> for a direct debit: the obligation is paid by itself on each due date. Empty: no.</td><td class="ex">yes</td></tr>
-      <tr><td class="col">Space</td><td>Name of an Aqueli space.</td><td class="ex">Personal</td></tr>
-      <tr><td class="col">Notes</td><td>Free text.</td><td class="ex">Chase in October.</td></tr>
+      <tr><td class="col">Title<span class="req">مطلوب</span></td><td>اسم الالتزام.</td><td class="ex">Home insurance</td></tr>
+      <tr><td class="col">Category</td><td>Taxes and returns أو Bills أو Subscriptions أو Insurance أو Contracts أو Warranties أو Identity papers أو Health أو Vehicle أو Housing، أو الاسم المعطى في Aqueli. فارغ: Bills.</td><td class="ex">Insurance</td></tr>
+      <tr><td class="col">Due date<span class="req">مطلوب</span></td><td>الموعد التالي الواجب احترامه.</td><td class="ex">15/11/2026</td></tr>
+      <tr><td class="col">Amount</td><td>باليورو.</td><td class="ex">€45.90</td></tr>
+      <tr><td class="col">Frequency</td><td><code>one-off</code> أو <code>monthly</code> أو <code>every two months</code> أو <code>quarterly</code> أو <code>half-yearly</code> أو <code>yearly</code>. فارغ: لمرة واحدة.</td><td class="ex">yearly</td></tr>
+      <tr><td class="col">Cancel by</td><td>آخر موعد للفسخ، لا يتجاوز موعد الاستحقاق.</td><td class="ex">15/10/2026</td></tr>
+      <tr><td class="col">Organisation</td><td>شركة تأمين، مورّد، جهة عامة…</td><td class="ex">Insurer</td></tr>
+      <tr><td class="col">Reference</td><td>رقم العقد، رقم العميل…</td><td class="ex">HOM-4521</td></tr>
+      <tr><td class="col">Direct debit</td><td><code>yes</code> للاقتطاع التلقائي: يُدفع الالتزام وحده في كل موعد استحقاق. فارغ: لا.</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Space</td><td>اسم مساحة في Aqueli.</td><td class="ex">Personal</td></tr>
+      <tr><td class="col">Notes</td><td>نص حر.</td><td class="ex">Chase in October.</td></tr>
     </tbody>
   </table>
 
-  <h3>Notes</h3>
+  <h3>الملاحظات</h3>
   <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
     <tbody>
-      <tr><td class="col">Title<span class="req">required</span></td><td>Title of the note.</td><td class="ex">Gift ideas</td></tr>
-      <tr><td class="col">Text</td><td>Contents of the note. Simple formatting is recognised: <code>#</code> heading, <code>-</code> list, <code>- [ ]</code> checkbox, <code>**bold**</code>, <code>*italic*</code>.</td><td class="ex">Book, scarf…</td></tr>
-      <tr><td class="col">Notebook</td><td>Name of an existing notebook.</td><td class="ex">Home</td></tr>
-      <tr><td class="col">Tags</td><td>Separated by commas.</td><td class="ex">gifts</td></tr>
-      <tr><td class="col">Space</td><td>Name of an Aqueli space.</td><td class="ex">Family</td></tr>
-      <tr><td class="col">Pinned</td><td>yes or no.</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Title<span class="req">مطلوب</span></td><td>عنوان الملاحظة.</td><td class="ex">Gift ideas</td></tr>
+      <tr><td class="col">Text</td><td>محتوى الملاحظة. ويُتعرّف على التنسيق البسيط: <code>#</code> عنوان، <code>-</code> قائمة، <code>- [ ]</code> خانة اختيار، <code>**bold**</code>، <code>*italic*</code>.</td><td class="ex">Book, scarf…</td></tr>
+      <tr><td class="col">Notebook</td><td>اسم دفتر موجود.</td><td class="ex">Home</td></tr>
+      <tr><td class="col">Tags</td><td>مفصولة بفواصل.</td><td class="ex">gifts</td></tr>
+      <tr><td class="col">Space</td><td>اسم مساحة في Aqueli.</td><td class="ex">Family</td></tr>
+      <tr><td class="col">Pinned</td><td><code>yes</code> أو <code>no</code>.</td><td class="ex">yes</td></tr>
     </tbody>
   </table>
 
-  <h3>Habits</h3>
+  <h3>العادات</h3>
   <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
     <tbody>
-      <tr><td class="col">Name<span class="req">required</span></td><td>Name of the habit, 60 characters at most.</td><td class="ex">Drink water</td></tr>
-      <tr><td class="col">Frequency</td><td>See “Accepted values”. Empty: every day.</td><td class="ex">Mon, Wed, Fri</td></tr>
-      <tr><td class="col">Target</td><td>Amount to reach each day, from 1 to 1000. Empty: the habit is simply ticked off.</td><td class="ex">8</td></tr>
-      <tr><td class="col">Unit</td><td>What is being counted.</td><td class="ex">glasses</td></tr>
-      <tr><td class="col">Reminder</td><td>Time of the reminder, on the planned days.</td><td class="ex">10:00</td></tr>
-      <tr><td class="col">To break</td><td>yes for a habit to drop: each day ticked off is a day kept.</td><td class="ex">no</td></tr>
-      <tr><td class="col">Time of day</td><td>morning, midday or evening: the day's list is arranged by time of day. Empty: during the day.</td><td class="ex">morning</td></tr>
-      <tr><td class="col">Space</td><td>Name of an Aqueli space.</td><td class="ex">Personal</td></tr>
+      <tr><td class="col">Name<span class="req">مطلوب</span></td><td>اسم العادة، 60 حرفًا كحد أقصى.</td><td class="ex">Drink water</td></tr>
+      <tr><td class="col">Frequency</td><td>انظر «القيم المقبولة». فارغ: كل يوم.</td><td class="ex">Mon, Wed, Fri</td></tr>
+      <tr><td class="col">Target</td><td>الكمية المراد بلوغها كل يوم، من 1 إلى 1000. فارغ: يُؤشَّر على العادة ببساطة.</td><td class="ex">8</td></tr>
+      <tr><td class="col">Unit</td><td>ما يُعدّ.</td><td class="ex">glasses</td></tr>
+      <tr><td class="col">Reminder</td><td>وقت التذكير، في الأيام المخططة.</td><td class="ex">10:00</td></tr>
+      <tr><td class="col">To break</td><td><code>yes</code> لعادة يراد تركها: كل يوم مؤشَّر عليه يوم التُزم فيه.</td><td class="ex">no</td></tr>
+      <tr><td class="col">Time of day</td><td><code>morning</code> أو <code>midday</code> أو <code>evening</code>: تُرتب قائمة اليوم حسب الوقت. فارغ: خلال النهار.</td><td class="ex">morning</td></tr>
+      <tr><td class="col">Space</td><td>اسم مساحة في Aqueli.</td><td class="ex">Personal</td></tr>
     </tbody>
   </table>
-  <p class="note">A habit named after one of Aqueli's templates (Read, Meditate, Exercise…) takes its symbol and colour; the others get those of the Habits module. Both can be changed afterwards in Aqueli.</p>
+  <p class="note">تأخذ العادة التي تحمل اسم أحد قوالب Aqueli (Read, Meditate, Exercise…) رمزه ولونه، وتأخذ العادات الأخرى رمز وحدة العادات ولونها. ويمكن تغييرهما لاحقًا في Aqueli.</p>
 
-  <h3>Contacts</h3>
+  <h3>جهات الاتصال</h3>
   <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
     <tbody>
-      <tr><td class="col">First name</td><td>First name of the contact.</td><td class="ex">Lea</td></tr>
-      <tr><td class="col">Last name</td><td>Family name.</td><td class="ex">Bernard</td></tr>
-      <tr><td class="col">Company</td><td>Company or organisation; enough on its own for a tradesperson or a shop.</td><td class="ex">Dupont Garage</td></tr>
-      <tr><td class="col">Phone</td><td>One or more numbers, separated by semicolons.</td><td class="ex">07700 900123</td></tr>
-      <tr><td class="col">Email</td><td>One or more addresses, separated by semicolons.</td><td class="ex">lea.bernard@example.com</td></tr>
-      <tr><td class="col">Address</td><td>Postal address.</td><td class="ex">12 Lilac Road, London</td></tr>
-      <tr><td class="col">Birthday</td><td>Date of birth, or just the day and month. Shown in the calendar.</td><td class="ex">14/05/2016</td></tr>
-      <tr><td class="col">Tags</td><td>Separated by commas.</td><td class="ex">family</td></tr>
-      <tr><td class="col">Keep in touch</td><td>How often to catch up: <code>every week</code>, <code>every 2 weeks</code>, <code>every month</code>, <code>every 3 months</code>, <code>every 6 months</code> or <code>every year</code>. The contact appears in “To get back in touch” when the time comes. Empty: no follow-up.</td><td class="ex">every month</td></tr>
-      <tr><td class="col">Space</td><td>Name of an Aqueli space.</td><td class="ex">Family</td></tr>
-      <tr><td class="col">Notes</td><td>Free text.</td><td class="ex">Prefers text messages.</td></tr>
-    </tbody>
-  </table>
-
-  <h3>Expenses</h3>
-  <p>Transactions of the Budget module: expenses and income. A bank statement downloaded from your bank's website (in Excel or CSV format) imports as it is.</p>
-  <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
-    <tbody>
-      <tr><td class="col">Date<span class="req">required</span></td><td>Day of the transaction.</td><td class="ex">26/09/2026</td></tr>
-      <tr><td class="col">Description</td><td>What the transaction is. Empty: the name of the category.</td><td class="ex">Saturday market</td></tr>
-      <tr><td class="col">Amount<span class="req">required</span></td><td>In euros. A negative amount is an expense; in a table that contains negative amounts, such as a statement, a positive amount is income. Otherwise, an amount is an expense.</td><td class="ex">42.50</td></tr>
-      <tr><td class="col">Category</td><td>Name of a Budget category (Groceries, Housing, Transport, Salary…). Unknown: transaction without a category, flagged in the preview.</td><td class="ex">Groceries</td></tr>
-      <tr><td class="col">Direction</td><td><code>expense</code> or <code>income</code>. Takes precedence over the sign of the amount.</td><td class="ex">income</td></tr>
-      <tr><td class="col">Debit</td><td>Instead of Amount, as on a statement: amount of an expense.</td><td class="ex">21.00</td></tr>
-      <tr><td class="col">Credit</td><td>Instead of Amount, as on a statement: amount of income.</td><td class="ex">2,450.00</td></tr>
-      <tr><td class="col">Repeat</td><td>A transaction that comes back (salary, rent…): <code>every month</code>, <code>every 2 months</code>, <code>quarterly</code>, <code>half-yearly</code> or <code>every year</code>. Each instalment is added to the Budget on its day. Empty: once only.</td><td class="ex">every month</td></tr>
-      <tr><td class="col">Until</td><td>Last day of the repeat. Empty: no end.</td><td class="ex">31/12/2027</td></tr>
-      <tr><td class="col">Space</td><td>Name of an Aqueli space.</td><td class="ex">Personal</td></tr>
-      <tr><td class="col">Notes</td><td>Free text.</td><td class="ex">Two tickets.</td></tr>
+      <tr><td class="col">First name</td><td>الاسم الأول لجهة الاتصال.</td><td class="ex">Lea</td></tr>
+      <tr><td class="col">Last name</td><td>اسم العائلة.</td><td class="ex">Bernard</td></tr>
+      <tr><td class="col">Company</td><td>الشركة أو الجهة، وتكفي وحدها لحرفي أو متجر.</td><td class="ex">Dupont Garage</td></tr>
+      <tr><td class="col">Phone</td><td>رقم أو أكثر، مفصولة بفاصلة منقوطة.</td><td class="ex">07700 900123</td></tr>
+      <tr><td class="col">Email</td><td>عنوان أو أكثر، مفصولة بفاصلة منقوطة.</td><td class="ex">lea.bernard@example.com</td></tr>
+      <tr><td class="col">Address</td><td>العنوان البريدي.</td><td class="ex">12 Lilac Road, London</td></tr>
+      <tr><td class="col">Birthday</td><td>تاريخ الميلاد، أو اليوم والشهر فقط. يظهر في التقويم.</td><td class="ex">14/05/2016</td></tr>
+      <tr><td class="col">Tags</td><td>مفصولة بفواصل.</td><td class="ex">family</td></tr>
+      <tr><td class="col">Keep in touch</td><td>وتيرة التواصل: <code>every week</code> أو <code>every 2 weeks</code> أو <code>every month</code> أو <code>every 3 months</code> أو <code>every 6 months</code> أو <code>every year</code>. تظهر جهة الاتصال في «للتواصل من جديد» عند حلول الموعد. فارغ: بلا متابعة.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Space</td><td>اسم مساحة في Aqueli.</td><td class="ex">Family</td></tr>
+      <tr><td class="col">Notes</td><td>نص حر.</td><td class="ex">Prefers text messages.</td></tr>
     </tbody>
   </table>
 
-  <h3>Lists</h3>
-  <p>Items of the lists in the Lists module: shopping, books, films, gift ideas…</p>
+  <h3>المصروفات</h3>
+  <p>معاملات وحدة الميزانية: المصروفات والدخل. ويُستورد كشف الحساب المنزّل من موقع بنكك (بصيغة Excel أو CSV) كما هو.</p>
   <table>
-    <thead><tr><th>Column</th><th>Contents</th><th>Example</th></tr></thead>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
     <tbody>
-      <tr><td class="col">List<span class="req">required</span></td><td>Name of the list. An existing list receives the item; otherwise the list is created, with the template that matches its name (Shopping, Books, Films, Gifts, Travel, Wishes).</td><td class="ex">Shopping</td></tr>
-      <tr><td class="col">Item<span class="req">required</span></td><td>Name of the item.</td><td class="ex">Apples</td></tr>
-      <tr><td class="col">Aisle</td><td>Aisle or section of the list. Unknown to an existing list: the item is added without an aisle.</td><td class="ex">Fruit and vegetables</td></tr>
-      <tr><td class="col">Done</td><td>yes for an item already ticked off.</td><td class="ex">yes</td></tr>
+      <tr><td class="col">Date<span class="req">مطلوب</span></td><td>يوم المعاملة.</td><td class="ex">26/09/2026</td></tr>
+      <tr><td class="col">Description</td><td>ما هي المعاملة. فارغ: اسم الفئة.</td><td class="ex">Saturday market</td></tr>
+      <tr><td class="col">Amount<span class="req">مطلوب</span></td><td>باليورو. المبلغ السالب مصروف. وفي جدول يحتوي على مبالغ سالبة، مثل كشف الحساب، يكون المبلغ الموجب دخلًا. وفي غير ذلك، المبلغ مصروف.</td><td class="ex">42.50</td></tr>
+      <tr><td class="col">Category</td><td>اسم فئة في الميزانية (Groceries, Housing, Transport, Salary…). غير معروفة: معاملة بلا فئة، يُنبَّه إليها في المعاينة.</td><td class="ex">Groceries</td></tr>
+      <tr><td class="col">Direction</td><td><code>expense</code> أو <code>income</code>. وله الأولوية على إشارة المبلغ.</td><td class="ex">income</td></tr>
+      <tr><td class="col">Debit</td><td>بدل Amount، كما في كشف الحساب: مبلغ مصروف.</td><td class="ex">21.00</td></tr>
+      <tr><td class="col">Credit</td><td>بدل Amount، كما في كشف الحساب: مبلغ دخل.</td><td class="ex">2,450.00</td></tr>
+      <tr><td class="col">Repeat</td><td>معاملة تتكرر (راتب، إيجار…): <code>every month</code> أو <code>every 2 months</code> أو <code>quarterly</code> أو <code>half-yearly</code> أو <code>every year</code>. يُضاف كل موعد إلى الميزانية في يومه. فارغ: مرة واحدة.</td><td class="ex">every month</td></tr>
+      <tr><td class="col">Until</td><td>آخر يوم للتكرار. فارغ: بلا نهاية.</td><td class="ex">31/12/2027</td></tr>
+      <tr><td class="col">Space</td><td>اسم مساحة في Aqueli.</td><td class="ex">Personal</td></tr>
+      <tr><td class="col">Notes</td><td>نص حر.</td><td class="ex">Two tickets.</td></tr>
     </tbody>
   </table>
-  <p class="note">Other columns (“Author”, “Rating”, “Price”, “Link”…) fill the list's columns of the same name. For a list created by the import, they become its columns: a rating from 0 to 5 for “Rating”, a price for “Price”, a date for “Date”, a link for “Link”, text otherwise. 12 columns at most.</p>
 
-  <h2 id="values"><span class="n">5</span>Accepted values</h2>
+  <h3>القوائم</h3>
+  <p>عناصر القوائم في وحدة القوائم: المشتريات، الكتب، الأفلام، أفكار الهدايا…</p>
+  <table>
+    <thead><tr><th>العمود</th><th>المحتوى</th><th>مثال</th></tr></thead>
+    <tbody>
+      <tr><td class="col">List<span class="req">مطلوب</span></td><td>اسم القائمة. تستقبل القائمة الموجودة العنصر، وإلا تُنشأ القائمة بالقالب المطابق لاسمها (Shopping, Books, Films, Gifts, Travel, Wishes).</td><td class="ex">Shopping</td></tr>
+      <tr><td class="col">Item<span class="req">مطلوب</span></td><td>اسم العنصر.</td><td class="ex">Apples</td></tr>
+      <tr><td class="col">Aisle</td><td>رف القائمة أو قسمها. وإن لم تعرفه قائمة موجودة، يُضاف العنصر بلا رف.</td><td class="ex">Fruit and vegetables</td></tr>
+      <tr><td class="col">Done</td><td><code>yes</code> لعنصر مؤشَّر عليه مسبقًا.</td><td class="ex">yes</td></tr>
+    </tbody>
+  </table>
+  <p class="note">تملأ الأعمدة الأخرى («Author»، «Rating»، «Price»، «Link»…) أعمدة القائمة التي تحمل الاسم نفسه. وفي قائمة ينشئها الاستيراد تصبح أعمدتها: تقييم من 0 إلى 5 لـ «Rating»، وسعر لـ «Price»، وتاريخ لـ «Date»، ورابط لـ «Link»، ونص في غير ذلك. 12 عمودًا كحد أقصى.</p>
+
+  <h2 id="values"><span class="n">5</span>القيم المقبولة</h2>
   <dl>
-    <dt>Dates</dt>
-    <dd>Day first, then month: <code>03/10/2026</code>, <code>3/10/26</code>, <code>2026-10-03</code>, <code>3 October 2026</code>. Without a year (<code>03/10</code>): the next such date. Also: <code>today</code>, <code>tomorrow</code>, <code>Monday</code>, <code>in 3 days</code>. Dates entered as dates in Excel are recognised.</dd>
-    <dt>Times</dt>
-    <dd><code>14:00</code>, <code>2pm</code>, <code>2:30pm</code>, <code>noon</code>. Time slot: <code>09:30-10:00</code>.</dd>
-    <dt>Durations and reminders</dt>
-    <dd><code>15 min</code>, <code>1 h</code>, <code>1 h 30</code>, <code>2 days</code>. For a reminder, also <code>on time</code> or <code>none</code>. When no reminder is given, the default reminder (Settings › Reminders) applies to items with a set time.</dd>
-    <dt>Repeats</dt>
-    <dd><code>every day</code>, <code>every 2 days</code>, <code>weekdays</code>, <code>every Monday</code>, <code>every Monday and Thursday</code>, <code>every week</code>, <code>every 2 weeks</code>, <code>every month</code>, <code>every 3 months</code>, <code>the first Monday of the month</code>, <code>every year</code>. For a task, also <code>3 days after completion</code>.</dd>
-    <dt>Habit frequencies</dt>
-    <dd><code>every day</code>, <code>3 times a week</code>, <code>Mon, Wed, Fri</code>, <code>Tuesday and Thursday</code>, <code>weekdays</code>, <code>weekends</code>.</dd>
-    <dt>Birthdays</dt>
-    <dd><code>14/05/1990</code>, <code>1990-05-14</code>, <code>14 May 1990</code>; without the year: <code>14/05</code>, <code>14 May</code>.</dd>
-    <dt>Amounts</dt>
-    <dd><code>312</code>, <code>45.90</code>, <code>€1,234.50</code>. For a transaction, also <code>-42.50</code>.</dd>
-    <dt>Tags</dt>
-    <dd>Letters, numbers, <code>-</code>, <code>_</code> and <code>/</code>; 40 characters and 20 tags at most.</dd>
-    <dt>Spaces and notebooks</dt>
-    <dd>Their name in Aqueli. An unknown name is flagged in the preview; the item then goes to the space shown, or to the first one.</dd>
-    <dt>Yes or no</dt>
-    <dd><code>yes</code>, <code>no</code>, <code>x</code> for yes.</dd>
+    <dt>التواريخ</dt>
+    <dd>اليوم أولًا ثم الشهر: <code>03/10/2026</code>، <code>3/10/26</code>، <code>2026-10-03</code>، <code>3 October 2026</code>. ومن دون سنة (<code>03/10</code>): أقرب تاريخ مطابق قادم. وأيضًا: <code>today</code>، <code>tomorrow</code>، <code>Monday</code>، <code>in 3 days</code>. ويُتعرّف على التواريخ المُدخلة كتواريخ في Excel.</dd>
+    <dt>الأوقات</dt>
+    <dd><code>14:00</code>، <code>2pm</code>، <code>2:30pm</code>، <code>noon</code>. فترة زمنية: <code>09:30-10:00</code>.</dd>
+    <dt>المدد والتذكيرات</dt>
+    <dd><code>15 min</code>، <code>1 h</code>، <code>1 h 30</code>، <code>2 days</code>. وللتذكير أيضًا <code>on time</code> أو <code>none</code>. وحين لا يُعطى تذكير، يُطبَّق التذكير الافتراضي (الإعدادات › التذكيرات) على العناصر ذات الوقت المحدد.</dd>
+    <dt>التكرار</dt>
+    <dd><code>every day</code>، <code>every 2 days</code>، <code>weekdays</code>، <code>every Monday</code>، <code>every Monday and Thursday</code>، <code>every week</code>، <code>every 2 weeks</code>، <code>every month</code>، <code>every 3 months</code>، <code>the first Monday of the month</code>، <code>every year</code>. وللمهمة أيضًا <code>3 days after completion</code>.</dd>
+    <dt>وتيرة العادات</dt>
+    <dd><code>every day</code>، <code>3 times a week</code>، <code>Mon, Wed, Fri</code>، <code>Tuesday and Thursday</code>، <code>weekdays</code>، <code>weekends</code>.</dd>
+    <dt>أعياد الميلاد</dt>
+    <dd><code>14/05/1990</code>، <code>1990-05-14</code>، <code>14 May 1990</code>. ومن دون السنة: <code>14/05</code>، <code>14 May</code>.</dd>
+    <dt>المبالغ</dt>
+    <dd><code>312</code>، <code>45.90</code>، <code>€1,234.50</code>. وللمعاملة أيضًا <code>-42.50</code>.</dd>
+    <dt>الوسوم</dt>
+    <dd>أحرف وأرقام و<code>-</code> و<code>_</code> و<code>/</code>، 40 حرفًا و20 وسمًا كحد أقصى.</dd>
+    <dt>المساحات والدفاتر</dt>
+    <dd>اسمها في Aqueli. يُنبَّه إلى الاسم غير المعروف في المعاينة، ويذهب العنصر عندئذ إلى المساحة المعروضة أو إلى الأولى.</dd>
+    <dt>نعم أو لا</dt>
+    <dd><code>yes</code>، <code>no</code>، و<code>x</code> تعني نعم.</dd>
   </dl>
 
-  <h2 id="text"><span class="n">6</span>With a text file</h2>
-  <p>A <code>.txt</code> or <code>.md</code> file contains one item per line: its type, then its fields separated by <code>|</code>. The first field is the title.</p>
+  <h2 id="text"><span class="n">6</span>بملف نصي</h2>
+  <p>يحتوي ملف <code>.txt</code> أو <code>.md</code> على عنصر في كل سطر: نوعه، ثم حقوله مفصولة بـ <code>|</code>. والحقل الأول هو العنوان.</p>
   <pre>TASK | Call the garage | 03/10/2026 14:00 | #car | !high | space: Personal
 EVENT | Dentist | 08/10/2026 09:30-10:00 | location: Martin surgery
 OBLIGATION | Home insurance | due 15/11/2026 | cancel by 15/10/2026 | €312 | yearly
@@ -405,50 +415,50 @@ EXPENSE | €42.50 | Groceries | 27/09/2026
 INCOME | September salary | €2,450 | Salary | 01/10/2026
 LIST | Milk | Shopping | Fresh</pre>
   <ul>
-    <li>Types: <code>TASK</code>, <code>EVENT</code> (or <code>APPOINTMENT</code>), <code>OBLIGATION</code> (or <code>BILL</code>), <code>NOTE</code>, <code>HABIT</code>, <code>CONTACT</code>, <code>EXPENSE</code>, <code>INCOME</code>, <code>LIST</code>.</li>
-    <li>For an expense or income, the title can be the amount; the date, amount and category are recognised on their own. For a list item, the field after the title is the list, then the aisle.</li>
-    <li>Dates, times, <code>#tags</code>, priorities (<code>!high</code>, <code>!medium</code>, <code>!low</code>), amounts, frequencies, categories and repeats are recognised on their own; for a habit, the frequency, the target (<code>20 pages</code>) and the reminder time; for a contact, the phone numbers, email addresses and date of birth.</li>
-    <li>Other fields are written <code>name: value</code>, using the column names: <code>location: Martin surgery</code>, <code>space: Work</code>, <code>reminder: 1 h</code>, <code>subtasks: Kitchen; Living room</code>. A field that is not recognised goes into the item's notes.</li>
-    <li>A line without a type is a task, written as in quick add: <code>Call the garage tomorrow 2pm #car !high</code>. Bullets (<code>-</code>, <code>*</code>, <code>1.</code>) and checkboxes (<code>- [ ]</code>) at the start of a line are accepted.</li>
-    <li>Empty lines, headings (<code># Heading</code>) and lines that start with <code>//</code> are ignored.</li>
-    <li>A <code>.md</code> file without types becomes a single note: the first heading (<code># Heading</code>) is its title, otherwise the file name. The formatting is kept: headings, lists, checkboxes, quotes, code blocks, <code>**bold**</code>, <code>*italic*</code>, <code>~~strikethrough~~</code>, <code>==highlight==</code> and <code>`code`</code>. A note exported from Aqueli as Markdown can be imported again this way. In the preview, a file without types can also be read as a list of tasks, of events, or as a single note.</li>
+    <li>الأنواع: <code>TASK</code>، <code>EVENT</code> (أو <code>APPOINTMENT</code>)، <code>OBLIGATION</code> (أو <code>BILL</code>)، <code>NOTE</code>، <code>HABIT</code>، <code>CONTACT</code>، <code>EXPENSE</code>، <code>INCOME</code>، <code>LIST</code>.</li>
+    <li>للمصروف أو الدخل، يمكن أن يكون العنوان هو المبلغ، ويُتعرّف على التاريخ والمبلغ والفئة وحدها. ولعنصر القائمة، الحقل بعد العنوان هو القائمة، ثم الرف.</li>
+    <li>يُتعرّف وحدها على التواريخ والأوقات و<code>#tags</code> والأولويات (<code>!high</code>، <code>!medium</code>، <code>!low</code>) والمبالغ والوتيرة والفئات والتكرار. وللعادة على الوتيرة والهدف (<code>20 pages</code>) ووقت التذكير. ولجهة الاتصال على أرقام الهاتف وعناوين البريد الإلكتروني وتاريخ الميلاد.</li>
+    <li>تُكتب الحقول الأخرى <code>name: value</code> بأسماء الأعمدة: <code>location: Martin surgery</code>، <code>space: Work</code>، <code>reminder: 1 h</code>، <code>subtasks: Kitchen; Living room</code>. ويذهب الحقل غير المعروف إلى ملاحظات العنصر.</li>
+    <li>السطر بلا نوع مهمة، يُكتب كما في الإدخال السريع: <code>Call the garage tomorrow 2pm #car !high</code>. وتُقبل النقاط (<code>-</code>، <code>*</code>، <code>1.</code>) وخانات الاختيار (<code>- [ ]</code>) في بداية السطر.</li>
+    <li>تُتجاهل الأسطر الفارغة والعناوين (<code># Heading</code>) والأسطر التي تبدأ بـ <code>//</code>.</li>
+    <li>يصبح ملف <code>.md</code> بلا أنواع ملاحظة واحدة: العنوان الأول (<code># Heading</code>) عنوانها، وإلا اسم الملف. ويُحتفظ بالتنسيق: العناوين، القوائم، خانات الاختيار، الاقتباسات، كتل الرمز البرمجي، <code>**bold**</code>، <code>*italic*</code>، <code>~~strikethrough~~</code>، <code>==highlight==</code> و<code>`code`</code>. ويمكن استيراد ملاحظة صدّرها Aqueli بصيغة Markdown بهذه الطريقة. وفي المعاينة، يمكن أيضًا قراءة الملف بلا أنواع كقائمة مهام أو أحداث أو كملاحظة واحدة.</li>
   </ul>
 
-  <h2 id="calendars"><span class="n">7</span>Calendars and contacts</h2>
+  <h2 id="calendars"><span class="n">7</span>التقاويم وجهات الاتصال</h2>
   <ul>
-    <li>A calendar file <code>.ics</code> (exported from Outlook, Google Calendar or Apple Calendar) becomes events: title, dates and times, location, description, repeat and reminder.</li>
-    <li>A contacts file <code>.vcf</code> (exported from a phone, Gmail or Outlook) becomes contacts: name, company, numbers, email addresses, address, birthday, notes and tags.</li>
-    <li>Times written in universal time are converted to the time on this PC. A repeat that is too unusual is not carried over: the preview flags it, and you can then set it in the calendar.</li>
-    <li>Cancelled events and contact photos are not imported.</li>
+    <li>يصبح ملف التقويم <code>.ics</code> (المُصدَّر من Outlook أو Google Calendar أو Apple Calendar) أحداثًا: العنوان، التواريخ والأوقات، المكان، الوصف، التكرار والتذكير.</li>
+    <li>يصبح ملف جهات الاتصال <code>.vcf</code> (المُصدَّر من هاتف أو Gmail أو Outlook) جهات اتصال: الاسم، الشركة، الأرقام، عناوين البريد الإلكتروني، العنوان، عيد الميلاد، الملاحظات والوسوم.</li>
+    <li>تُحوَّل الأوقات المكتوبة بالتوقيت العالمي إلى توقيت هذا الكمبيوتر. ولا يُنقل التكرار غير المألوف جدًا: تنبّه إليه المعاينة، ويمكنك ضبطه بعد ذلك في التقويم.</li>
+    <li>لا تُستورد الأحداث الملغاة ولا صور جهات الاتصال.</li>
   </ul>
 
-  <h2 id="preview"><span class="n">8</span>Preview, errors and duplicates</h2>
+  <h2 id="preview"><span class="n">8</span>المعاينة والأخطاء والمكررات</h2>
   <ul>
-    <li>Each row appears in the preview before the import. Nothing is added before you click “Import”.</li>
-    <li>A row with an error is shown in red, with the explanation. It is not imported: correct the file, then import it again.</li>
-    <li>A duplicate has the same type, title and date (the same name for a habit or a contact) as an item in Aqueli or an earlier row; for a transaction, also the same amount; for a list item, the same list. It is unticked; ticking it imports it anyway.</li>
-    <li>Unticking a row leaves it out of the import. The “Content” menu changes the type of a sheet or a file.</li>
-    <li>After the import, “Undo” or <kbd>Ctrl+Z</kbd> removes all the imported items at once.</li>
+    <li>يظهر كل صف في المعاينة قبل الاستيراد. ولا يُضاف شيء قبل النقر على «استيراد».</li>
+    <li>يُعرض الصف الذي فيه خطأ بالأحمر، مع الشرح. ولا يُستورد: صحّح الملف ثم استورده مجددًا.</li>
+    <li>المكرر له النوع والعنوان والتاريخ نفسها (الاسم نفسه للعادة أو جهة الاتصال) لعنصر في Aqueli أو لصف سابق. وللمعاملة المبلغ نفسه أيضًا، ولعنصر القائمة القائمة نفسها. ويُلغى التأشير عليه، والتأشير عليه يستورده رغم ذلك.</li>
+    <li>إلغاء التأشير على صف يستبعده من الاستيراد. وتغيّر قائمة «المحتوى» نوع الورقة أو الملف.</li>
+    <li>بعد الاستيراد، يزيل «تراجع» أو <kbd>Ctrl+Z</kbd> كل العناصر المستوردة دفعة واحدة.</li>
   </ul>
 
-  <h3>Updating existing items</h3>
+  <h3>تحديث العناصر الموجودة</h3>
   <ul>
-    <li>Tables exported by Aqueli (tasks, contacts, budget transactions) have a last column <code>ID</code>; exported <code>.ics</code> and <code>.vcf</code> files carry it too. Do not change it.</li>
-    <li>When imported again, the file updates the items that carry this ID instead of creating new ones: the row is marked “Update of an existing item.”. Before the import, a window lists the items that will be replaced and asks you to confirm.</li>
-    <li>What the file does not describe is kept: colour, project and ticked subtasks of a task; photo, category and card of a contact; occurrences removed from a series of events.</li>
-    <li>A row without an ID, or whose ID does not exist in this account (a file from another PC), creates a new item.</li>
-    <li>“Undo”, after the import, also restores the previous values of the updated items.</li>
+    <li>للجداول التي يصدّرها Aqueli (المهام، جهات الاتصال، معاملات الميزانية) عمود أخير <code>ID</code>، وتحمله أيضًا ملفات <code>.ics</code> و<code>.vcf</code> المُصدَّرة. لا تغيّره.</li>
+    <li>عند استيراده مجددًا، يحدّث الملف العناصر التي تحمل هذا المعرّف بدل إنشاء عناصر جديدة: يُعلَّم الصف «تحديث عنصر موجود.». وقبل الاستيراد، تسرد نافذة العناصر التي ستُستبدل وتطلب تأكيدك.</li>
+    <li>يُحتفظ بما لا يصفه الملف: لون المهمة ومشروعها ومهامها الفرعية المؤشَّر عليها، وصورة جهة الاتصال وفئتها وبطاقتها، والمرات المحذوفة من سلسلة أحداث.</li>
+    <li>الصف بلا معرّف، أو الذي لا يوجد معرّفه في هذا الحساب (ملف من كمبيوتر آخر)، ينشئ عنصرًا جديدًا.</li>
+    <li>يستعيد «تراجع»، بعد الاستيراد، أيضًا القيم السابقة للعناصر المحدَّثة.</li>
   </ul>
 
-  <h2 id="good-to-know"><span class="n">9</span>Good to know</h2>
+  <h2 id="good-to-know"><span class="n">9</span>معلومات مفيدة</h2>
   <ul>
-    <li>A file dropped into the Import folder is deleted after the import, because this folder is not encrypted. To keep it in <code>Import\Traités</code> instead: Settings › Import › “After the import”. A file dragged onto the window or chosen elsewhere stays where it is.</li>
-    <li>10 MB and 5,000 items at most per file.</li>
-    <li>Excel: formulas are not recalculated, the last saved value is read; macros are never run.</li>
-    <li>Workbooks in <code>.xls</code> format and workbooks protected by a password cannot be read: save them in <code>.xlsx</code> format, without a password.</li>
+    <li>يُحذف الملف الموضوع في مجلد الاستيراد بعد الاستيراد، لأن هذا المجلد غير مشفّر. ولإبقائه في <code>Import\Traités</code> بدلًا من ذلك: الإعدادات › الاستيراد › «بعد الاستيراد». ويبقى الملف المسحوب إلى النافذة أو المختار من مكان آخر في مكانه.</li>
+    <li>10 م.ب و5000 عنصر كحد أقصى لكل ملف.</li>
+    <li>Excel: لا يُعاد حساب الصيغ، بل تُقرأ آخر قيمة محفوظة، ولا تُشغَّل وحدات الماكرو أبدًا.</li>
+    <li>لا يمكن قراءة المصنفات بصيغة <code>.xls</code> ولا المصنفات المحمية بكلمة مرور: احفظها بصيغة <code>.xlsx</code> بلا كلمة مرور.</li>
   </ul>
 
-  <footer>Aqueli · Import guide</footer>
+  <footer>Aqueli · دليل الاستيراد</footer>
 </main>
 </body>
 </html>

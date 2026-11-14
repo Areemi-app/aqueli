@@ -41,7 +41,7 @@ import { HabitEditor } from "./HabitEditor";
 import { NEW_HABIT, onHabitRequest, takePendingHabit } from "./habitRequest";
 import { HabitToday } from "./HabitToday";
 import { useHabits } from "./HabitsProvider";
-import { locale, tr } from "../i18n/i18n";
+import { isRtl, locale, tr } from "../i18n/i18n";
 import { Sentences } from "../components/Sentences";
 
 type View = "jour" | "toutes" | "archivees";
@@ -224,10 +224,10 @@ interface DetailBodyProps {
 function HabitDetailBody({ habit, onEdit, current, best, rate, weeks, force }: DetailBodyProps) {
   const { checks, archive } = useHabits();
   const heatRef = useRef<HTMLDivElement>(null);
-  // Les semaines les plus récentes en vue.
+  // Les semaines les plus récentes en vue (à gauche, de droite à gauche).
   useLayoutEffect(() => {
     const el = heatRef.current;
-    if (el) el.scrollLeft = el.scrollWidth;
+    if (el) el.scrollLeft = isRtl() ? -el.scrollWidth : el.scrollWidth;
   }, [habit.id]);
   return (
     <aside className="habit-detail glass" style={{ "--row-color": colorOf(habit) } as CSSProperties} aria-label={tr("Statistiques : {name}", { name: habit.name })}>

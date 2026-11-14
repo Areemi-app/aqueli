@@ -6,6 +6,7 @@ import { vaultErrorMessage } from "../vault/messages";
 import { backupsApi, ORIGIN_LABELS, previewText, type BackupInfo, type Preview } from "./backupsApi";
 import { locale, tr } from "../i18n/i18n";
 import { Sentences } from "../components/Sentences";
+import { isLinux } from "../lib/platform";
 
 /** Après le rechargement de la fenêtre : « Sauvegarde restaurée. ». */
 export const RESTORED_FLAG = "aqueli:sauvegarde-restauree";
@@ -85,7 +86,7 @@ export function RestoreDialog({ backup, newAccount = false, onClose }: RestoreDi
   };
 
   const consequence = newAccount
-    ? tr("Le compte de la sauvegarde s'ouvre sur ce PC, avec son mot de passe et sa clé de récupération.")
+    ? isLinux ? tr("Le compte de la sauvegarde s'ouvre sur cet ordinateur, avec son mot de passe et sa clé de récupération.") : tr("Le compte de la sauvegarde s'ouvre sur ce PC, avec son mot de passe et sa clé de récupération.")
     : needsPassword
       ? tr("Cette sauvegarde vient d'un autre compte. Elle remplace le compte actuel, avec son mot de passe et sa clé de récupération. Les données actuelles sont d'abord sauvegardées.")
       : tr("Les données actuelles sont remplacées. Elles sont d'abord sauvegardées (« Avant restauration »).");

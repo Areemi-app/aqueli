@@ -17,7 +17,7 @@ import { parseDateWords } from "../tasks/quickAdd";
 import { Icon } from "./Icon";
 import { ICONS } from "./icons";
 import { useAnchoredPopover } from "./popover";
-import { locale, tr } from "../i18n/i18n";
+import { locale, readingKey, tr } from "../i18n/i18n";
 import { weekdayInitials } from "../i18n/calendarNames";
 
 const SHORT = new Intl.DateTimeFormat(locale(), { weekday: "short", day: "numeric", month: "short" });
@@ -157,7 +157,7 @@ export function DateField({ id, value, onChange, label, className, clearable, mi
       Home: () => startOfWeek(cursor),
       End: () => addDays(startOfWeek(cursor), 6),
     };
-    const move = moves[e.key];
+    const move = moves[readingKey(e.key)];
     if (move) moveCursor(move());
     else if (e.key === "Enter" || e.key === " ") {
       if (allowed(cursor)) pick(cursor);

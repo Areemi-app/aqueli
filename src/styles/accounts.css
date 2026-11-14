@@ -64,7 +64,8 @@
   align-items: center;
   gap: 10px;
   max-width: 220px;
-  padding: 5px 16px 5px 5px;
+  padding-block: 5px;
+  padding-inline: 5px 16px;
   border: 1px solid var(--aq-border);
   border-radius: 28px;
   background: var(--aq-bar);
@@ -132,7 +133,7 @@
 
 .profile-avatar-edit {
   position: absolute;
-  right: -2px;
+  inset-inline-end: -2px;
   bottom: -2px;
   display: grid;
   place-items: center;

@@ -1,6 +1,6 @@
 ; Textes de l'installateur d'Aqueli, langue « Japanese » (remplacent ceux de Tauri, au ton sobre de
 ; l'application ; les cinq derniers servent aux pages d'accueil et de fin, voir crochets.nsh).
-; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 17 fichiers d'accord.
+; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 18 fichiers d'accord.
 LangString addOrReinstall ${LANG_JAPANESE} "コンポーネントの追加または再インストール"
 LangString alreadyInstalled ${LANG_JAPANESE} "インストール済み"
 LangString alreadyInstalledLong ${LANG_JAPANESE} "Aqueli ${VERSION} はすでにインストールされています。実行する操作を選んで、[次へ] をクリックしてください。"

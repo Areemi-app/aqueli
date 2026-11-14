@@ -12,7 +12,7 @@ import { spaceFilterLabel } from "../spaces/spaces";
 import { useShortcut } from "../prefs/PreferencesProvider";
 import { setBannerEnabled, useBannerEnabled } from "../theme/bannerPref";
 import { useTheme } from "../theme/ThemeProvider";
-import { AUTO_LOCK_CHOICES, useVault } from "../vault/VaultProvider";
+import { AUTO_LOCK_CHOICES, autoLockLabel, useVault } from "../vault/VaultProvider";
 import { tr } from "../i18n/i18n";
 
 /**
@@ -66,7 +66,7 @@ export function StatusBar() {
       { label: tr("Verrouiller maintenant"), icon: ICONS.lock, shortcut: lockKeys, run: () => void lock("manuel") },
       "separator",
       { label: tr("Verrouiller automatiquement après"), disabled: true, run: () => {} },
-      ...AUTO_LOCK_CHOICES.map((m) => ({ label: `${m} min`, checked: m === autoLockMinutes, run: () => setAutoLockMinutes(m) })),
+      ...AUTO_LOCK_CHOICES.map((m) => ({ label: autoLockLabel(m), checked: m === autoLockMinutes, run: () => setAutoLockMinutes(m) })),
       "separator",
       { label: tr("Paramètres › Sécurité"), icon: ICONS.settings, run: () => openSettings("securite") },
     ]);
@@ -105,8 +105,7 @@ export function StatusBar() {
       <button type="button" className="status-item status-link" aria-haspopup="menu" onClick={lockMenu} title={tr("Délai de verrouillage")}>
         <Icon d={ICONS.clock} size={13} stroke={2.2} className="status-clock" />
         <span className="hide-when-narrow">{tr("Verrouillage automatique : ")}</span>
-        {autoLockMinutes}
-        {tr(" min")}
+        {autoLockLabel(autoLockMinutes)}
         <Icon d={ICONS.chevronUp} size={12} stroke={2.6} className="status-extra" />
       </button>
     </footer>

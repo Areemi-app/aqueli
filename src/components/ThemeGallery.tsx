@@ -13,7 +13,7 @@ import { useTheme } from "../theme/ThemeProvider";
 import { FAMILY_INFO, THEME_FAMILIES, type AnyThemeId, type ThemeDef, type ThemeFamily } from "../theme/themes";
 import { bannerImage, hasBanner } from "../theme/banners";
 import { useBannerEnabled } from "../theme/bannerPref";
-import { tr } from "../i18n/i18n";
+import { isRtl, readingKey, tr } from "../i18n/i18n";
 
 const MOTIF_SPOTS = [
   { x: 262, y: 100, s: 22 },
@@ -82,7 +82,8 @@ function centerInStrip(card: HTMLElement | null | undefined, smooth = true): voi
   const offset = card.getBoundingClientRect().left - strip.getBoundingClientRect().left;
   const left = strip.scrollLeft + offset - (strip.clientWidth - card.offsetWidth) / 2;
   const animate = smooth && document.documentElement.dataset.reduceMotion !== "true";
-  strip.scrollTo({ left: Math.max(0, left), behavior: animate ? "smooth" : "auto" });
+  // Le navigateur garde la position dans la bande (négative de droite à gauche).
+  strip.scrollTo({ left, behavior: animate ? "smooth" : "auto" });
 }
 
 function useThemeCard(themes: readonly ThemeDef[], onEdit?: (theme: CustomTheme) => void) {
@@ -96,8 +97,8 @@ function useThemeCard(themes: readonly ThemeDef[], onEdit?: (theme: CustomTheme)
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const index = themes.findIndex((t) => t.id === currentId);
     let next = index;
-    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (index + 1) % themes.length;
-    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (index - 1 + themes.length) % themes.length;
+    if (readingKey(e.key) === "ArrowRight" || e.key === "ArrowDown") next = (index + 1) % themes.length;
+    else if (readingKey(e.key) === "ArrowLeft" || e.key === "ArrowUp") next = (index - 1 + themes.length) % themes.length;
     else if (e.key === "Home") next = 0;
     else if (e.key === "End") next = themes.length - 1;
     else return;
@@ -204,8 +205,8 @@ export function ThemeBrowser({ onEdit, actions, onCreate }: { onEdit: (theme: Cu
   const onFamilyKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const index = THEME_FAMILIES.indexOf(family);
     let next = index;
-    if (e.key === "ArrowDown" || e.key === "ArrowRight") next = (index + 1) % THEME_FAMILIES.length;
-    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = (index - 1 + THEME_FAMILIES.length) % THEME_FAMILIES.length;
+    if (e.key === "ArrowDown" || readingKey(e.key) === "ArrowRight") next = (index + 1) % THEME_FAMILIES.length;
+    else if (e.key === "ArrowUp" || readingKey(e.key) === "ArrowLeft") next = (index - 1 + THEME_FAMILIES.length) % THEME_FAMILIES.length;
     else if (e.key === "Home") next = 0;
     else if (e.key === "End") next = THEME_FAMILIES.length - 1;
     else return;
@@ -214,11 +215,13 @@ export function ThemeBrowser({ onEdit, actions, onCreate }: { onEdit: (theme: Cu
     familyRefs.current[next]?.focus();
   };
 
-  // Flèches : visibles seulement quand il reste des thèmes de ce côté.
+  // Flèches : visibles seulement quand il reste des thèmes de ce côté. De droite à gauche, la bande
+  // part de droite et `scrollLeft` est négatif.
   const measure = () => {
     const el = scrollRef.current;
     if (!el) return;
-    setEdges({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 });
+    const along = Math.abs(el.scrollLeft);
+    setEdges({ start: along <= 2, end: along + el.clientWidth >= el.scrollWidth - 2 });
   };
   useEffect(() => {
     const el = scrollRef.current;
@@ -243,9 +246,10 @@ export function ThemeBrowser({ onEdit, actions, onCreate }: { onEdit: (theme: Cu
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
       const max = el.scrollWidth - el.clientWidth;
-      if ((e.deltaY > 0 && el.scrollLeft >= max - 1) || (e.deltaY < 0 && el.scrollLeft <= 1)) return;
+      const along = Math.abs(el.scrollLeft);
+      if ((e.deltaY > 0 && along >= max - 1) || (e.deltaY < 0 && along <= 1)) return;
       e.preventDefault();
-      el.scrollLeft += e.deltaY;
+      el.scrollLeft += (isRtl() ? -1 : 1) * e.deltaY;
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
@@ -253,7 +257,7 @@ export function ThemeBrowser({ onEdit, actions, onCreate }: { onEdit: (theme: Cu
 
   const page = (direction: -1 | 1) => {
     const el = scrollRef.current;
-    if (el) el.scrollBy({ left: direction * Math.max(240, el.clientWidth * 0.8), behavior: "smooth" });
+    if (el) el.scrollBy({ left: (isRtl() ? -direction : direction) * Math.max(240, el.clientWidth * 0.8), behavior: "smooth" });
   };
 
   return (

@@ -1,6 +1,8 @@
-# Fabrique l'installateur Windows, puis prépare la version GitHub en brouillon, avec ses notes
-# (.github/release-notes/<version>.md) et l'empreinte SHA-256. Se lance d'un clic dans l'onglet
-# Actions (« Run workflow », version à saisir), ou quand une étiquette de version est poussée.
+# Fabrique l'installateur Windows et la version portable (.zip), puis prépare la version GitHub
+# en brouillon, avec ses notes (.github/release-notes/<version>.md) et les empreintes SHA-256.
+# Se lance d'un clic dans l'onglet Actions (« Run workflow », version à saisir), ou quand une
+# étiquette de version est poussée. Avec « publish », la version est publiée tout de suite et les
+# brouillons restants sont supprimés.
 name: Release
 
 on:
@@ -9,6 +11,10 @@ on:
       version:
         description: "Version to build, for example v1.21.1"
         required: true
+      publish:
+        description: "Publish the release right away and remove leftover drafts"
+        type: boolean
+        default: false
   push:
     tags: ["v*"]
 
@@ -52,12 +58,23 @@ jobs:
             ~/.cargo/git
             src-tauri/target
           key: rust-windows-${{ hashFiles('src-tauri/Cargo.lock') }}
-      # L'installateur reste téléchargeable depuis la page de la fabrication, même si la suite échoue.
+      # Même exécutable, avec portable.txt : les données restent dans le dossier d'Aqueli.
+      - name: Build the portable version
+        shell: pwsh
+        run: |
+          $version = "${{ inputs.version || github.ref_name }}".TrimStart("v")
+          ./scripts/portable-zip.ps1 -Version $version
+      # Les fichiers restent téléchargeables depuis la page de la fabrication, même si la suite échoue.
       - name: Keep the installer
         uses: actions/upload-artifact@v4
         with:
           name: installer
           path: src-tauri/target/release/bundle/nsis/*-setup.exe
+      - name: Keep the portable version
+        uses: actions/upload-artifact@v4
+        with:
+          name: portable
+          path: src-tauri/target/release/bundle/portable/*-portable.zip
       - name: Create the draft release
         shell: pwsh
         env:
@@ -66,9 +83,19 @@ jobs:
           $tag = "${{ inputs.version || github.ref_name }}"
           $version = $tag.TrimStart("v")
           $exe = "src-tauri/target/release/bundle/nsis/Aqueli_${version}_x64-setup.exe"
+          $zip = "src-tauri/target/release/bundle/portable/Aqueli_${version}_x64-portable.zip"
           $hash = (Get-FileHash $exe -Algorithm SHA256).Hash
+          $zipHash = (Get-FileHash $zip -Algorithm SHA256).Hash
           $notes = Get-Content ".github/release-notes/$tag.md" -Raw
-          $notes = $notes.TrimEnd() + "`n`nSHA-256: ``$hash``"
+          $notes = $notes.TrimEnd() + "`n`nSHA-256:`n- ``Aqueli_${version}_x64-setup.exe``: ``$hash```n- ``Aqueli_${version}_x64-portable.zip``: ``$zipHash``"
           Set-Content -Path notes.md -Value $notes -Encoding utf8
+          $publish = "${{ inputs.publish }}" -eq "true"
+          if ($publish) {
+            # Brouillons restants (fabrications précédentes) : supprimés par leur numéro, jamais
+            # par leur étiquette, qu'une version publiée peut porter aussi.
+            $drafts = gh api "repos/${{ github.repository }}/releases" --paginate --jq '.[] | select(.draft) | .id'
+            foreach ($id in $drafts) { gh api -X DELETE "repos/${{ github.repository }}/releases/$id" }
+          }
+          $draft = if ($publish) { @() } else { @("--draft") }
           # Sans étiquette existante, GitHub la crée sur le commit fabriqué.
-          gh release create $tag $exe --draft --target "${{ github.sha }}" --title "Aqueli $version" --notes-file notes.md
+          gh release create $tag $exe $zip @draft --target "${{ github.sha }}" --title "Aqueli $version" --notes-file notes.md

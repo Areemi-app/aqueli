@@ -9,6 +9,7 @@ import { useSound } from "../sound/SoundProvider";
 import { inTauri } from "../lib/windowControls";
 import { asVaultError, vaultApi, type VaultError } from "./api";
 import { localizeDefaults } from "../i18n/defaults";
+import { tr } from "../i18n/i18n";
 
 /**
  * - « chargement » : on interroge le coffre au démarrage ;
@@ -33,9 +34,13 @@ export interface HelloState {
 /** Événement envoyé par le cœur quand Windows se verrouille ou se met en veille. */
 const SYSTEM_LOCK_EVENT = "verrouillage-systeme";
 
-export const AUTO_LOCK_CHOICES = [1, 5, 10, 15, 30, 60] as const;
+/** Délais d'inactivité avant le verrouillage, en minutes ; 0 : jamais. */
+export const AUTO_LOCK_CHOICES = [1, 5, 10, 15, 30, 60, 0] as const;
 export type AutoLockMinutes = (typeof AUTO_LOCK_CHOICES)[number];
 const DEFAULT_AUTO_LOCK: AutoLockMinutes = 10;
+
+/** Libellé d'un délai : « 10 min », ou « Jamais ». */
+export const autoLockLabel = (minutes: AutoLockMinutes): string => (minutes === 0 ? tr("Jamais") : tr("{n} min", { n: minutes }));
 
 function isAutoLock(value: unknown): value is AutoLockMinutes {
   return AUTO_LOCK_CHOICES.includes(value as AutoLockMinutes);
@@ -328,6 +333,8 @@ const ACTIVITY_EVENTS = ["pointerdown", "pointermove", "keydown", "wheel", "touc
  */
 export function useAutoLock(minutes: number, onIdle: () => void): void {
   useEffect(() => {
+    // « Jamais » : aucun verrouillage pour inactivité.
+    if (minutes <= 0) return;
     let last = Date.now();
     const bump = () => {
       last = Date.now();

@@ -42,5 +42,7 @@ export const NEW_ITEM = "nouveau";
 export const listRequest = itemRequest<string>("liste");
 export const goalRequest = itemRequest<string>("objectif");
 export const transactionRequest = itemRequest<string>("operation");
+/** Ouvrir un objectif d'épargne du Budget ; « nouveau » : en créer un. */
+export const savingsRequest = itemRequest<string>("epargne");
 /** Ouvrir le Bilan sur un onglet : « revue », « statistiques » ou « rapport ». */
 export const reviewRequest = itemRequest<string>("bilan");

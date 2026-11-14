@@ -1,5 +1,6 @@
 import type { VaultError } from "./api";
 import { tr, trn } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 /** « 30 s », « 1 min », « 15 min », « 1 h ». */
 export function formatWait(seconds: number): string {
@@ -47,9 +48,9 @@ export function vaultErrorMessage(error: VaultError): string {
         return tr("Clé de récupération incorrecte. Réessayez dans {wait}.", { wait: formatWait(error.waitSeconds) });
       return tr("Clé de récupération incorrecte.");
     case "notFound":
-      return tr("Aucun compte Aqueli sur ce PC.");
+      return isLinux ? tr("Aucun compte Aqueli sur cet ordinateur.") : tr("Aucun compte Aqueli sur ce PC.");
     case "alreadyExists":
-      return tr("Un compte Aqueli existe déjà sur ce PC.");
+      return isLinux ? tr("Un compte Aqueli existe déjà sur cet ordinateur.") : tr("Un compte Aqueli existe déjà sur ce PC.");
     case "locked":
       return tr("Aqueli est verrouillé.");
     case "corrupted":
@@ -75,9 +76,9 @@ export function vaultErrorMessage(error: VaultError): string {
     case "moveRefused":
       return moveRefusalMessage(error.reason, error.detail);
     case "accountUnknown":
-      return tr("Ce compte n'existe plus sur ce PC.");
+      return isLinux ? tr("Ce compte n'existe plus sur cet ordinateur.") : tr("Ce compte n'existe plus sur ce PC.");
     case "tooManyAccounts":
-      return tr("Ce PC compte déjà {max} comptes, le nombre maximal.", { max: error.max });
+      return isLinux ? tr("Cet ordinateur compte déjà {max} comptes, le nombre maximal.", { max: error.max }) : tr("Ce PC compte déjà {max} comptes, le nombre maximal.", { max: error.max });
     case "capturesPending":
       return trn(
         error.count,

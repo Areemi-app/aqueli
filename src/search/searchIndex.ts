@@ -3,6 +3,7 @@
  * contacts, documents, pages du journal et habitudes à la fois,
  * filtres par type, date et étiquette, résultats groupés par type. Fonctions pures.
  */
+import type { SavingsGoal } from "../budget/savings";
 import type { CalendarEvent } from "../calendar/events";
 import { contactName, type Contact } from "../contacts/contacts";
 import { documentDetail, type Document } from "../documents/documents";
@@ -22,7 +23,7 @@ import type { Task } from "../tasks/tasks";
 import { matchScore, words, type Searchable } from "./fuzzy";
 import { tr, trn } from "../i18n/i18n";
 
-export type SearchKind = "task" | "event" | "obligation" | "note" | "project" | "contact" | "document" | "journal" | "habit" | "list" | "goal" | "transaction";
+export type SearchKind = "task" | "event" | "obligation" | "note" | "project" | "contact" | "document" | "journal" | "habit" | "list" | "goal" | "transaction" | "savings";
 
 export const SEARCH_KINDS: readonly { id: SearchKind; label: string }[] = [
   { id: "task", label: tr("Tâches") },
@@ -37,6 +38,7 @@ export const SEARCH_KINDS: readonly { id: SearchKind; label: string }[] = [
   { id: "list", label: tr("Listes") },
   { id: "goal", label: tr("Objectifs") },
   { id: "transaction", label: tr("Budget") },
+  { id: "savings", label: tr("Épargne") },
 ];
 
 export interface SearchDoc extends Searchable {
@@ -76,6 +78,7 @@ export interface SearchData {
   goals?: readonly Goal[];
   transactions?: readonly Transaction[];
   budgetCategories?: readonly BudgetCategory[];
+  savings?: readonly SavingsGoal[];
 }
 
 /** Identifiant d'un élément de liste dans l'index : « liste/élément ». */
@@ -97,8 +100,22 @@ export function buildDocs({
   goals = [],
   transactions = [],
   budgetCategories = [],
+  savings = [],
 }: SearchData): SearchDoc[] {
   return [
+    ...savings.map((g) =>
+      doc({
+        kind: "savings",
+        id: g.id,
+        title: g.name,
+        detail: tr("Épargne · {saved} sur {target}", { saved: formatAmount(g.savedCents), target: formatAmount(g.targetCents) }),
+        body: formatAmount(g.targetCents),
+        day: g.targetDate,
+        tags: [],
+        spaceId: g.spaceId,
+        closed: g.savedCents >= g.targetCents,
+      }),
+    ),
     ...lists.flatMap((l) => [
       doc({
         kind: "list",

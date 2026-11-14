@@ -111,7 +111,7 @@ export function startDrag(event: { button: number; clientX: number; clientY: num
     over?.setAttribute("data-drop-over", "");
   };
 
-  const showLine = (rect: DOMRect | null, after: boolean, across = false) => {
+  const showLine = (rect: DOMRect | null, after: boolean, across = false, rtl = false) => {
     if (!line) return;
     if (!rect) {
       line.hidden = true;
@@ -119,8 +119,9 @@ export function startDrag(event: { button: number; clientX: number; clientY: num
     }
     line.hidden = false;
     if (across) {
-      // Éléments en ligne : trait vertical avant ou après l'élément visé.
-      line.style.left = `${(after ? rect.right : rect.left) - 1.5}px`;
+      // Éléments en ligne : trait vertical avant ou après l'élément visé (« après » est à gauche de
+      // droite à gauche).
+      line.style.left = `${(after !== rtl ? rect.right : rect.left) - 1.5}px`;
       line.style.top = `${rect.top + 2}px`;
       line.style.width = "3px";
       line.style.height = `${Math.max(0, rect.height - 4)}px`;
@@ -142,12 +143,13 @@ export function startDrag(event: { button: number; clientX: number; clientY: num
     const order = rows.map((r) => r.dataset.sortId!);
     const row = hit.closest<HTMLElement>("[data-sort-id]");
     const across = list.dataset.sortAxis === "x";
+    const rtl = across && getComputedStyle(list).direction === "rtl";
     let before: string | null = null;
     let rect: DOMRect | null = null;
     let after = false;
     if (row && row.closest("[data-sort]") === list) {
       rect = row.getBoundingClientRect();
-      after = across ? x > rect.left + rect.width / 2 : y > rect.top + rect.height / 2;
+      after = across ? (x > rect.left + rect.width / 2) !== rtl : y > rect.top + rect.height / 2;
       const i = order.indexOf(row.dataset.sortId!);
       before = after ? (order[i + 1] ?? null) : order[i]!;
     } else if (rows.length > 0) {
@@ -161,7 +163,7 @@ export function startDrag(event: { button: number; clientX: number; clientY: num
     const ids = reorderIds(order, item.ids, before);
     const into = list.dataset.sortInto ?? null;
     const unchanged = ids.join() === order.join() && into === (source?.closest<HTMLElement>("[data-sort]")?.dataset.sortInto ?? null);
-    return { ids, into, rect, after, across, unchanged };
+    return { ids, into, rect, after, across, rtl, unchanged };
   };
 
   trackDrag(event, {
@@ -200,7 +202,7 @@ export function startDrag(event: { button: number; clientX: number; clientY: num
       const sorted = sortAt(hit, x, y);
       if (sorted) {
         highlight(null);
-        showLine(sorted.unchanged ? null : sorted.rect, sorted.after, sorted.across);
+        showLine(sorted.unchanged ? null : sorted.rect, sorted.after, sorted.across, sorted.rtl);
         drop = sorted.unchanged ? null : { ids: sorted.ids, into: sorted.into };
       } else {
         showLine(null, false);

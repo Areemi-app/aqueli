@@ -37,6 +37,7 @@ export const SHORTCUT_GROUPS: readonly { title: string; shortcuts: readonly Shor
       { command: "settings" },
       { command: "help", label: tr("Aide : la rubrique de l'écran affiché") },
       { command: "shortcuts" },
+      { command: "sidebar" },
       { keys: ["Ctrl", "P"], label: tr("Imprimer la vue affichée : liste de tâches, semaine, liste, note, obligations, rapport du mois") },
       { keys: [tr("Échap")], label: tr("Fermer une fenêtre ou un menu") },
       { keys: ["Ctrl", tr("Maj droite")], label: tr("Écrire de droite à gauche dans le champ ou le paragraphe de note en cours") },
@@ -69,6 +70,8 @@ export const SHORTCUT_GROUPS: readonly { title: string; shortcuts: readonly Shor
     shortcuts: [
       { keys: [tr("Glisser")], label: tr("Kanban : changer une tâche de colonne (avancement, priorité ou espace)") },
       { keys: [tr("Glisser")], label: tr("Matrice : changer une tâche de quadrant (priorité et échéance ajustées)") },
+      { keys: ["Alt", tr("Maj"), "→"], label: tr("Sous-tâche : la ranger sous celle du dessus") },
+      { keys: ["Alt", tr("Maj"), "←"], label: tr("Sous-tâche : la remonter d'un niveau") },
     ],
   },
   {

@@ -58,7 +58,7 @@
 }
 
 .tasks-header .segmented {
-  margin-left: 12px;
+  margin-inline-start: 12px;
 }
 
 .tasks-header-spacer {
@@ -83,15 +83,15 @@
 }
 
 .menu--right {
-  left: auto;
-  right: 0;
+  inset-inline-start: auto;
+  inset-inline-end: 0;
 }
 
 /* Menu « Affichage » (src/tasks/TaskDisplayMenu.tsx) : réglages de la liste affichée. */
 .display-menu {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
+  inset-inline-end: 0;
   z-index: 50;
   width: 320px;
   display: grid;
@@ -168,7 +168,7 @@
   color: var(--aq-ink);
   font-size: 14px;
   font-weight: 500;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: background var(--aq-fast) ease;
 }
@@ -305,7 +305,8 @@
 .quick-add-callout {
   position: relative;
   align-self: flex-start;
-  margin: 4px 0 0 18px;
+  margin-block: 4px 0;
+  margin-inline: 18px 0;
   padding: 6px 12px;
   border-radius: 10px;
   background: var(--aq-accent);
@@ -321,7 +322,7 @@
   content: "";
   position: absolute;
   top: -5px;
-  left: 14px;
+  inset-inline-start: 14px;
   width: 10px;
   height: 10px;
   border-radius: 2px;
@@ -367,7 +368,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding-left: 26px;
+  padding-inline-start: 26px;
   animation: aq-fade var(--aq-fast) ease;
 }
 
@@ -382,7 +383,8 @@
 }
 
 .quick-add-error {
-  margin: 2px 0 0 26px;
+  margin-block: 2px 0;
+  margin-inline: 26px 0;
 }
 
 .task-scroll {
@@ -419,7 +421,7 @@
 }
 
 .task-section-sub {
-  margin-left: 4px;
+  margin-inline-start: 4px;
   font-weight: 600;
   color: var(--aq-soft);
 }
@@ -591,7 +593,7 @@
   border: 0;
   background: transparent;
   color: var(--aq-ink);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -738,14 +740,15 @@
 
 .task-detail .select {
   height: 30px;
-  padding: 0 28px 0 10px;
+  padding-block: 0;
+  padding-inline: 10px 28px;
   border-radius: 10px;
   font-size: 13px;
 }
 
 .task-detail .select-chevron {
   top: 8px;
-  right: 9px;
+  inset-inline-end: 9px;
 }
 
 .detail-space .select {
@@ -753,7 +756,7 @@
   border-color: transparent;
   background: transparent;
   box-shadow: none;
-  padding-left: 2px;
+  padding-inline-start: 2px;
   font-size: 12px;
   color: var(--aq-soft);
 }
@@ -859,7 +862,7 @@
 
 .pill--removable {
   gap: 4px;
-  padding-right: 4px;
+  padding-inline-end: 4px;
 }
 
 .pill-remove {
@@ -901,7 +904,7 @@
 
 .detail-inbox {
   align-self: flex-start;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .detail-sep {
@@ -1075,7 +1078,7 @@
   .task-detail {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     bottom: 0;
     z-index: 5;
     width: 320px;
@@ -1134,7 +1137,7 @@
   color: var(--aq-ink);
   font-size: 14px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
@@ -1158,7 +1161,7 @@
 
 .today-more {
   align-self: flex-start;
-  padding-left: 30px;
+  padding-inline-start: 30px;
 }
 
 .today-progress {
@@ -1358,7 +1361,8 @@
   align-items: center;
   gap: 10px;
   min-height: 38px;
-  padding: 6px 8px 6px 11px;
+  padding-block: 6px;
+  padding-inline: 11px 8px;
   border-radius: 12px;
   background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
 }
@@ -1574,7 +1578,8 @@
 .timeline {
   position: relative;
   margin: 0;
-  padding: 4px 0 4px 22px;
+  padding-block: 4px;
+  padding-inline: 22px 0;
   list-style: none;
 }
 
@@ -1583,7 +1588,7 @@
   position: absolute;
   top: 10px;
   bottom: 10px;
-  left: 7px;
+  inset-inline-start: 7px;
   width: 2px;
   border-radius: 1px;
   background: var(--aq-line-strong);
@@ -1597,7 +1602,7 @@
 .timeline-dot {
   position: absolute;
   top: 4px;
-  left: -21px;
+  inset-inline-start: -21px;
   width: 12px;
   height: 12px;
   border: 2px solid var(--aq-tile);
@@ -1613,7 +1618,7 @@
 .timeline-group[data-tone="today"] .timeline-dot {
   width: 14px;
   height: 14px;
-  left: -22px;
+  inset-inline-start: -22px;
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--aq-accent) 25%, transparent);
 }
 
@@ -1642,7 +1647,8 @@
   align-items: center;
   gap: 10px;
   min-height: 38px;
-  padding: 4px 10px 4px 8px;
+  padding-block: 4px;
+  padding-inline: 8px 10px;
   border: 1px solid color-mix(in srgb, var(--row-color) 22%, transparent);
   border-radius: 12px;
   background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
@@ -1664,7 +1670,7 @@
   font: inherit;
   font-size: 13.5px;
   font-weight: 650;
-  text-align: left;
+  text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
@@ -1769,4 +1775,44 @@
 /* Filtres enregistrés : liste remise en ordre par glisser-déposer, sans changer la mise en page. */
 .task-filters {
   display: contents;
+}
+
+/* ——— Sous-tâches sur plusieurs niveaux : retrait par niveau, flèche qui replie une branche ——— */
+
+.subtask-card[data-level] {
+  margin-inline-start: calc(var(--subtask-level) * 16px);
+}
+
+.subtask-fold,
+.subtask-fold-space {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-inline-end: -4px;
+}
+
+.subtask-fold {
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--aq-soft);
+  cursor: pointer;
+  transition: transform var(--aq-fast) var(--aq-ease), background var(--aq-fast) ease;
+}
+
+.subtask-fold:hover {
+  background: var(--aq-hover);
+  color: var(--aq-ink);
+}
+
+.subtask-fold[aria-expanded="false"] {
+  transform: rotate(calc(-90deg * var(--aq-dir)));
+}
+
+.subtask-fold:focus-visible {
+  outline: 2px solid var(--aq-focus);
+  outline-offset: 1px;
 }

@@ -12,6 +12,7 @@ import { vaultErrorMessage } from "../vault/messages";
 import { backupsApi } from "./backupsApi";
 import { backupAgo, backupFreshness, backupState, onBackupRequest, refreshLastBackup, setBackupState, subscribeBackup } from "./backupState";
 import { locale, tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 const LONG_DATE = new Intl.DateTimeFormat(locale(), { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
 
@@ -40,7 +41,7 @@ export function BackupButton() {
       const { backup, external } = await backupsApi.create();
       setBackupState({ last: backup.createdAt });
       setNow(Math.floor(Date.now() / 1000));
-      notify(external ? tr("Sauvegarde faite, sur ce PC et sur la destination externe.") : tr("Sauvegarde faite."));
+      notify(external ? (isLinux ? tr("Sauvegarde faite, sur cet ordinateur et sur la destination externe.") : tr("Sauvegarde faite, sur ce PC et sur la destination externe.")) : tr("Sauvegarde faite."));
     } catch (err) {
       notify(vaultErrorMessage(err as VaultError));
     } finally {

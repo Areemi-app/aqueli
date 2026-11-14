@@ -1,4 +1,5 @@
 import { useRef, type KeyboardEvent } from "react";
+import { readingKey } from "../i18n/i18n";
 
 export interface SegmentOption<T extends string> {
   value: T;
@@ -16,7 +17,7 @@ interface SegmentedProps<T extends string> {
 export function Segmented<T extends string>({ value, options, onChange, label }: SegmentedProps<T>) {
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+    const step = readingKey(e.key) === "ArrowRight" || e.key === "ArrowDown" ? 1 : readingKey(e.key) === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
     if (!step) return;
     e.preventDefault();
     const index = options.findIndex((o) => o.value === value);

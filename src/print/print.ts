@@ -15,8 +15,8 @@ export interface PrintRow {
   meta?: string;
   /** Case à cocher : cochée, vide, ou aucune (`undefined`). */
   checked?: boolean;
-  /** Retrait (sous-tâche, élément d'un groupe). */
-  indent?: boolean;
+  /** Retrait (sous-tâche, élément d'un groupe) ; un nombre : plusieurs crans (sous-tâches sur plusieurs niveaux). */
+  indent?: boolean | number;
   tone?: "late";
 }
 
@@ -63,7 +63,10 @@ export function buildSheet(doc: PrintDoc, printedOn: Date = new Date()): HTMLEle
     const list = el("ul", "view-print-rows");
     for (const row of section.rows) {
       const item = el("li", "view-print-row");
-      if (row.indent) item.dataset.indent = "true";
+      if (row.indent) {
+        item.dataset.indent = "true";
+        if (typeof row.indent === "number" && row.indent > 1) item.style.setProperty("--print-indent", String(row.indent));
+      }
       if (row.tone) item.dataset.tone = row.tone;
       if (row.checked !== undefined) {
         const box = el("span", "view-print-check", row.checked ? "✓" : "");

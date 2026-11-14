@@ -1,7 +1,7 @@
 import { useRef, useState, type KeyboardEvent } from "react";
 import { Dialog } from "../components/Dialog";
 import { Tabs } from "../components/Tabs";
-import { tr } from "../i18n/i18n";
+import { readingKey, tr } from "../i18n/i18n";
 import { AvatarImage } from "./AvatarImage";
 import { AVATAR_CATEGORIES, AVATARS, avatarById, type AvatarCategory } from "./avatars";
 
@@ -30,7 +30,7 @@ export function AvatarPicker({ value, name, onChoose, onClose }: AvatarPickerPro
     if (i < 0) return;
     const top = buttons[0]?.offsetTop ?? 0;
     const columns = Math.max(1, buttons.filter((b) => b.offsetTop === top).length);
-    const step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: columns, ArrowUp: -columns }[e.key];
+    const step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: columns, ArrowUp: -columns }[readingKey(e.key)];
     if (step === undefined) return;
     e.preventDefault();
     buttons[Math.min(buttons.length - 1, Math.max(0, i + step))]?.focus();

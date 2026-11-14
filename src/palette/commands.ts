@@ -9,6 +9,7 @@ import type { AnyThemeId, ThemeDef } from "../theme/themes";
 import type { Searchable } from "./search";
 import { tr, trValue } from "../i18n/i18n";
 import { openSupport } from "../lib/support";
+import { sidebarMode, toggleSidebar } from "../shell/sidebarMode";
 
 export type CommandGroup = "Module" | "Thème" | "Espace" | "Action";
 
@@ -65,6 +66,7 @@ export interface CommandContext {
   newList: () => void;
   /** Ouvre le Budget et « Nouvelle dépense ». */
   newExpense: () => void;
+  newSavings: () => void;
   /** Ouvre les Objectifs et « Nouvel objectif ». */
   newGoal: () => void;
   /** Ouvre le Bilan sur un onglet. */
@@ -221,6 +223,15 @@ export function buildCommands(ctx: CommandContext): Command[] {
       run: ctx.newExpense,
     },
     {
+      id: "savings:new",
+      group: "Action",
+      label: tr("Nouvel objectif d'épargne"),
+      keywords: [tr("épargne"), tr("économies"), tr("tirelire"), tr("mettre de côté"), tr("budget"), tr("créer"), tr("ajouter")],
+      color: MODULES.find((m) => m.key === "budget")?.color ?? "var(--aq-gel)",
+      icon: MODULES.find((m) => m.key === "budget")?.icon ?? ICONS.plus,
+      run: ctx.newSavings,
+    },
+    {
       id: "goal:new",
       group: "Action",
       label: tr("Nouvel objectif"),
@@ -284,6 +295,16 @@ export function buildCommands(ctx: CommandContext): Command[] {
       icon: ICONS.lock,
       shortcut: shortcutText("lock", ctx.keys, " "),
       run: ctx.lock,
+    },
+    {
+      id: "view:sidebar",
+      group: "Action",
+      label: sidebarMode() === "ouverte" ? tr("Réduire la barre latérale") : tr("Garder la barre latérale ouverte"),
+      keywords: [tr("barre latérale"), tr("icônes"), tr("masquer"), tr("compact"), tr("survol")],
+      color: "var(--aq-gel)",
+      icon: ICONS.sidebar,
+      shortcut: shortcutText("sidebar", ctx.keys, " "),
+      run: toggleSidebar,
     },
     {
       id: "route:parametres",

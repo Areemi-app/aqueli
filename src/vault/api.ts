@@ -50,6 +50,8 @@ export interface DataPlace {
   /** Hors du dossier d'origine (%APPDATA%\Aqueli). */
   moved: boolean;
   movable: boolean;
+  /** Version portable : les données restent dans le dossier d'Aqueli (« Data »). */
+  portable: boolean;
 }
 
 export function isVaultError(value: unknown): value is VaultError {
@@ -171,7 +173,7 @@ function createPreviewApi(): VaultApi {
       Object.assign(state, { password: "", recovery: "", unlocked: false, failures: 0, hello: false });
       return false;
     },
-    dataLocation: async () => ({ path: "C:\\Users\\…\\AppData\\Roaming\\Aqueli", moved: false, movable: true }),
+    dataLocation: async () => ({ path: "C:\\Users\\…\\AppData\\Roaming\\Aqueli", moved: false, movable: true, portable: false }),
     moveData: async (password) => {
       await delay();
       if (password !== state.password) throw wrong();

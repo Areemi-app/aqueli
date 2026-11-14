@@ -1,3 +1,6 @@
+; Textes de l'installateur d'Aqueli, langue « Arabic » (remplacent ceux de Tauri, au ton sobre de
+; l'application ; les cinq derniers servent aux pages d'accueil et de fin, voir crochets.nsh).
+; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 18 fichiers d'accord.
 LangString addOrReinstall ${LANG_ARABIC} "إضافة أو إعادة تثبيت المكونات"
 LangString alreadyInstalled ${LANG_ARABIC} "مثبت بالفعل"
 LangString alreadyInstalledLong ${LANG_ARABIC} "Aqueli ${VERSION} مثبت بالفعل. اختر العملية المراد تنفيذها، ثم انقر فوق التالي."
@@ -10,7 +13,7 @@ LangString deleteAppData ${LANG_ARABIC} "حذف جميع الحسابات وكا
 LangString dontUninstall ${LANG_ARABIC} "عدم إلغاء التثبيت"
 LangString dontUninstallDowngrade ${LANG_ARABIC} "عدم إلغاء التثبيت (الرجوع إلى إصدار سابق يتطلب إلغاء التثبيت أولاً)"
 LangString failedToKillApp ${LANG_ARABIC} "تعذر إغلاق Aqueli. أغلق التطبيق، ثم أعد المحاولة."
-LangString installingWebview2 ${LANG_ARABIC} "جاري تثبيت WebView2…"
+LangString installingWebview2 ${LANG_ARABIC} "جارٍ تثبيت WebView2…"
 LangString newerVersionInstalled ${LANG_ARABIC} "يوجد إصدار أحدث من Aqueli مثبت بالفعل. لتثبيت هذا الإصدار الأقدم، قم بإلغاء تثبيت الإصدار الحالي أولاً. اختر العملية، ثم انقر فوق التالي."
 LangString older ${LANG_ARABIC} "سابق"
 LangString olderOrUnknownVersionInstalled ${LANG_ARABIC} "الإصدار $R4 من Aqueli مثبت. يوصى بإلغاء تثبيته قبل تثبيت هذا الإصدار. اختر العملية، ثم انقر فوق التالي."
@@ -22,7 +25,7 @@ LangString unknown ${LANG_ARABIC} "غير معروف"
 LangString webview2AbortError ${LANG_ARABIC} "تعذر تثبيت WebView2. لا يمكن تشغيل Aqueli بدون WebView2. ابدأ التثبيت مرة أخرى."
 LangString webview2DownloadError ${LANG_ARABIC} "تعذر تنزيل WebView2: $0"
 LangString webview2DownloadSuccess ${LANG_ARABIC} "تم تنزيل WebView2 بنجاح."
-LangString webview2Downloading ${LANG_ARABIC} "جاري تنزيل WebView2…"
+LangString webview2Downloading ${LANG_ARABIC} "جارٍ تنزيل WebView2…"
 LangString webview2InstallError ${LANG_ARABIC} "تعذر تثبيت WebView2 (رمز الخطأ $1)."
 LangString webview2InstallSuccess ${LANG_ARABIC} "تم تثبيت WebView2 بنجاح."
 LangString aqWelcomeTitle ${LANG_ARABIC} "إعداد Aqueli"

@@ -81,7 +81,7 @@
   align-items: center;
   gap: 12px;
   min-height: 36px;
-  padding-left: 10px;
+  padding-inline-start: 10px;
 }
 
 .import-source-title {
@@ -113,7 +113,7 @@
 }
 
 .import-note {
-  padding-left: 10px;
+  padding-inline-start: 10px;
   color: var(--aq-soft);
   font-size: 12.5px;
   font-weight: 600;
@@ -184,7 +184,7 @@
   font-size: 12px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  text-align: right;
+  text-align: end;
 }
 
 .import-main {

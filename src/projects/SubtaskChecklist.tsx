@@ -5,6 +5,7 @@
 import type { CSSProperties } from "react";
 import { Icon } from "../components/Icon";
 import { ICONS } from "../components/icons";
+import { levelOf, setDone } from "../tasks/subtaskTree";
 import type { Task } from "../tasks/tasks";
 import { useTasks } from "../tasks/TasksProvider";
 import { tr } from "../i18n/i18n";
@@ -16,7 +17,11 @@ export function SubtaskChecklist({ task, max = 4, onOpen }: { task: Task; max?: 
   const done = subtasks.filter((s) => s.done).length;
   const percent = Math.round((done / subtasks.length) * 100);
   const shown = subtasks.slice(0, max);
-  const toggle = (id: string) => void update(task, { subtasks: subtasks.map((s) => (s.id === id ? { ...s, done: !s.done } : s)) });
+  // Cocher une sous-tâche coche aussi celles qu'elle contient (src/tasks/subtaskTree.ts).
+  const toggle = (id: string) => {
+    const i = subtasks.findIndex((s) => s.id === id);
+    if (i >= 0) void update(task, { subtasks: setDone(subtasks, i, !subtasks[i]!.done) });
+  };
   return (
     <div className="subtask-checklist" data-complete={done === subtasks.length || undefined}>
       <div className="subtask-progress" role="img" aria-label={tr("{done} sous-tâches terminées sur {length}", { done, length: subtasks.length })}>
@@ -29,7 +34,7 @@ export function SubtaskChecklist({ task, max = 4, onOpen }: { task: Task; max?: 
       </div>
       <ul className="subtask-items">
         {shown.map((s) => (
-          <li key={s.id} className="subtask-item" data-done={s.done || undefined}>
+          <li key={s.id} className="subtask-item" data-done={s.done || undefined} style={levelOf(s) ? ({ "--subtask-level": levelOf(s) } as CSSProperties) : undefined} data-level={levelOf(s) || undefined}>
             <button
               type="button"
               className="subtask-tick"

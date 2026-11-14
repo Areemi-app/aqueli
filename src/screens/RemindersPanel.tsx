@@ -14,6 +14,7 @@ import { JOURNAL_REMINDER_TIMES, readJournalReminder, writeJournalReminder } fro
 import { readKeepReminder, writeKeepReminder } from "../contacts/keepInTouchReminders";
 import { reminderChoices, reminderLabel } from "../tasks/reminders";
 import { tr, trn } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 import { Sentences } from "../components/Sentences";
 
 const DEFAULT_OPTIONS: SelectOption<string>[] = [
@@ -56,12 +57,12 @@ export function RemindersPanel() {
       <div className="settings-card glass">
         <SwitchRow
           label={tr("Garder Aqueli en arrière-plan à la fermeture")}
-          description={tr("Aqueli se verrouille et reste près de l'horloge. Les rappels continuent d'arriver. « Quitter Aqueli », depuis l'icône, l'arrête.")}
+          description={tr("Aqueli reste près de l'horloge et les rappels continuent d'arriver. « Quitter Aqueli », depuis l'icône, l'arrête.")}
           checked={prefs.keepInBackground}
           onChange={(keepInBackground) => change({ ...prefs, keepInBackground })}
         />
         <SwitchRow
-          label={tr("Lancer Aqueli au démarrage de Windows")}
+          label={isLinux ? tr("Lancer Aqueli à l'ouverture de la session") : tr("Lancer Aqueli au démarrage de Windows")}
           description={tr("Aqueli démarre verrouillé, sans ouvrir de fenêtre.")}
           checked={start?.enabled ?? false}
           disabled={!start?.supported}
@@ -70,7 +71,7 @@ export function RemindersPanel() {
             autostart
               .set(enabled)
               .then(setStart)
-              .catch(() => notify(tr("Réglage de Windows impossible à modifier.")));
+              .catch(() => notify(isLinux ? tr("Réglage du système impossible à modifier.") : tr("Réglage de Windows impossible à modifier.")));
           }}
         />
       </div>

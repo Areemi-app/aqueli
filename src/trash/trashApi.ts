@@ -4,7 +4,7 @@ import { asDataError } from "../lib/dataError";
 import { inTauri } from "../lib/windowControls";
 import { tr } from "../i18n/i18n";
 
-export type TrashKind = "task" | "event" | "obligation" | "note" | "notebook" | "journal" | "habit" | "project" | "contact" | "document" | "list" | "goal" | "transaction";
+export type TrashKind = "task" | "event" | "obligation" | "note" | "notebook" | "journal" | "habit" | "project" | "contact" | "document" | "list" | "goal" | "transaction" | "savings";
 
 export interface TrashItem {
   kind: TrashKind;

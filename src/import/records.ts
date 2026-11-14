@@ -4,6 +4,7 @@
  * Signale les doublons (même type, même titre, même date, dans Aqueli ou plus haut dans le
  * fichier). Fonctions pures.
  */
+import { normalizeLevels, parseSubtaskLine } from "../tasks/subtaskTree";
 import { addMinutes } from "../calendar/eventTime";
 import { birthdayLabel, contactName, EMPTY_CONTACT, type Contact, type ContactInput } from "../contacts/contacts";
 import { frequencyLabel, HABIT_TEMPLATES, targetLabel, type Habit, type HabitInput, type HabitMoment } from "../habits/habits";
@@ -317,12 +318,14 @@ function buildTask(r: RawRecord, ctx: ImportContext, c: Check): Built {
   const subtasks: Subtask[] = [];
   if (f.subtasks) {
     for (const s of f.subtasks.split(/\s*[;\n]\s*/)) {
-      const st = oneLine(s);
+      // « > » au début : sous-tâche de la précédente (« >> » : un niveau de plus).
+      const { title: st, level } = parseSubtaskLine(oneLine(s));
       if (!st) continue;
       if (st.length > 300) c.errors.push(tr("Sous-tâche trop longue (300 caractères au plus)."));
-      subtasks.push({ id: "", title: st, done: false });
+      subtasks.push({ id: "", title: st, done: false, ...(level ? { level } : {}) });
     }
     if (subtasks.length > 100) c.errors.push(tr("100 sous-tâches au plus."));
+    subtasks.splice(0, subtasks.length, ...normalizeLevels(subtasks));
   }
   const notes = notesOf([f.notes, ...r.extra], c);
   const input: TaskInput = {

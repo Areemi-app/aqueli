@@ -26,11 +26,14 @@ import {
   HOTKEY_PREF,
   hotkeyFromEvent,
   hotkeyKeys,
+  type DesktopShortcut,
   type Hotkey,
 } from "../capture/captureApi";
+import { useToast } from "../app/ToastProvider";
 import { writePref } from "../lib/storage";
 import { usePreferences } from "../prefs/PreferencesProvider";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 import { Sentences } from "../components/Sentences";
 
 const sameHotkey = (a: Hotkey, b: Hotkey) =>
@@ -38,8 +41,54 @@ const sameHotkey = (a: Hotkey, b: Hotkey) =>
 
 const IGNORED_KEYS = ["Control", "Alt", "Shift", "Meta", "AltGraph"];
 
+/** Sous Wayland : la combinaison retenue par le bureau, ou la commande à lui associer. */
+function DesktopHotkey({ desktop }: { desktop: DesktopShortcut }) {
+  const notify = useToast();
+  const copy = () =>
+    void navigator.clipboard
+      .writeText(desktop.command)
+      .then(() => notify(tr("Commande copiée.")))
+      .catch(() => notify(tr("Copie impossible.")));
+  if (desktop.trigger !== null)
+    return (
+      <div className="setting-row">
+        <div className="setting-text">
+          <span className="setting-label">{tr("Raccourci")}</span>
+          <span className="setting-desc">{tr("Le bureau gère ce raccourci. Il se modifie dans ses paramètres.")}</span>
+        </div>
+        {desktop.trigger && <Keys keys={desktop.trigger.split("+")} />}
+      </div>
+    );
+  return (
+    <div className="setting-row setting-row--column">
+      <div className="setting-text">
+        <span className="setting-label">{tr("Raccourci")}</span>
+        <span className="setting-desc">
+          <Sentences text={tr("Le bureau n'a pas accepté ce raccourci. Créez-le dans ses paramètres, avec la commande ci-dessous.")} />
+        </span>
+      </div>
+      <div className="shortcut-command">
+        <code dir="ltr">{desktop.command}</code>
+        <button type="button" className="btn-glass btn-glass--sm" onClick={copy}>
+          {tr("Copier")}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /** Raccourci global de la capture rapide : « Modifier », puis la combinaison voulue. */
-function CaptureShortcut({ hotkey, onChange, appKeys }: { hotkey: Hotkey | null; onChange: (h: Hotkey) => void; appKeys: ShortcutMap }) {
+function CaptureShortcut({
+  hotkey,
+  desktop,
+  onChange,
+  appKeys,
+}: {
+  hotkey: Hotkey | null;
+  desktop: DesktopShortcut | null;
+  onChange: (h: Hotkey) => void;
+  appKeys: ShortcutMap;
+}) {
   const [recording, setRecording] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -72,49 +121,53 @@ function CaptureShortcut({ hotkey, onChange, appKeys }: { hotkey: Hotkey | null;
     if (IGNORED_KEYS.includes(e.key)) return;
     const next = hotkeyFromEvent(e);
     if (next) void apply(next);
-    else setError(tr("Combinaison refusée : Ctrl, Alt ou Windows, avec une lettre, un chiffre, Espace ou F1 à F12."));
+    else setError(isLinux ? tr("Combinaison refusée : Ctrl, Alt ou Super, avec une lettre, un chiffre, Espace ou F1 à F12.") : tr("Combinaison refusée : Ctrl, Alt ou Windows, avec une lettre, un chiffre, Espace ou F1 à F12."));
   };
 
   return (
     <section className="settings-section" aria-label={tr("Capture rapide")}>
       <h2 className="settings-heading">{tr("Capture rapide")}</h2>
       <div className="settings-card glass">
-        <div className="setting-row">
-          <div className="setting-text">
-            <span className="setting-label">{tr("Raccourci")}</span>
-            <span className="setting-desc">
-              {tr("Ouvre la capture rapide depuis n'importe quel logiciel, même Aqueli réduit ou verrouillé. Aussi depuis l'icône près de l'horloge.")}
-            </span>
-          </div>
-          {recording ? (
-            <button type="button" className="btn-glass btn-glass--sm shortcut-recording" autoFocus onKeyDown={record} onBlur={() => setRecording(false)}>
-              {tr("Saisir la combinaison…")}
-            </button>
-          ) : (
-            <div className="shortcut-edit">
-              {hotkey ? (
-                <Keys keys={hotkeyKeys(hotkey)} custom={!sameHotkey(hotkey, DEFAULT_HOTKEY)} />
-              ) : (
-                <span className="setting-desc">{tr("Indisponible : déjà utilisé par un autre logiciel.")}</span>
-              )}
-              <button
-                type="button"
-                className="btn-glass btn-glass--sm"
-                onClick={() => {
-                  setError(null);
-                  setRecording(true);
-                }}
-              >
-                {tr("Modifier")}
-              </button>
-              {hotkey && !sameHotkey(hotkey, DEFAULT_HOTKEY) && (
-                <button type="button" className="link-btn" onClick={() => void apply(DEFAULT_HOTKEY)}>
-                  {tr("Rétablir|défaut")}
-                </button>
-              )}
+        {desktop ? (
+          <DesktopHotkey desktop={desktop} />
+        ) : (
+          <div className="setting-row">
+            <div className="setting-text">
+              <span className="setting-label">{tr("Raccourci")}</span>
+              <span className="setting-desc">
+                {tr("Ouvre la capture rapide depuis n'importe quel logiciel, même Aqueli réduit ou verrouillé. Aussi depuis l'icône près de l'horloge.")}
+              </span>
             </div>
-          )}
-        </div>
+            {recording ? (
+              <button type="button" className="btn-glass btn-glass--sm shortcut-recording" autoFocus onKeyDown={record} onBlur={() => setRecording(false)}>
+                {tr("Saisir la combinaison…")}
+              </button>
+            ) : (
+              <div className="shortcut-edit">
+                {hotkey ? (
+                  <Keys keys={hotkeyKeys(hotkey)} custom={!sameHotkey(hotkey, DEFAULT_HOTKEY)} />
+                ) : (
+                  <span className="setting-desc">{tr("Indisponible : déjà utilisé par un autre logiciel.")}</span>
+                )}
+                <button
+                  type="button"
+                  className="btn-glass btn-glass--sm"
+                  onClick={() => {
+                    setError(null);
+                    setRecording(true);
+                  }}
+                >
+                  {tr("Modifier")}
+                </button>
+                {hotkey && !sameHotkey(hotkey, DEFAULT_HOTKEY) && (
+                  <button type="button" className="link-btn" onClick={() => void apply(DEFAULT_HOTKEY)}>
+                    {tr("Rétablir|défaut")}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         {error && (
           <p className="form-error shortcut-error" role="alert">
             {error}
@@ -235,12 +288,17 @@ export function KeyboardPanel() {
   const { prefs, setPref } = usePreferences();
   const map = resolveShortcuts(prefs.shortcuts);
   const [hotkey, setHotkey] = useState<Hotkey | null>(null);
+  const [desktop, setDesktop] = useState<DesktopShortcut | null>(null);
 
   useEffect(() => {
     void captureApi
       .hotkey()
       .then(setHotkey)
       .catch(() => setHotkey(null));
+    void captureApi
+      .desktop()
+      .then(setDesktop)
+      .catch(() => setDesktop(null));
   }, []);
 
   const taken = hotkey ? [{ keys: hotkeyKeys(hotkey), name: tr("Capture rapide") }] : [];
@@ -257,9 +315,15 @@ export function KeyboardPanel() {
   return (
     <div className="settings-section">
       <p className="settings-intro">
-        <Sentences text={tr("Pour modifier un raccourci d'Aqueli, cliquez sur « Modifier », puis saisissez la nouvelle combinaison. Les raccourcis de Windows et de la saisie restent fixes (Ctrl+Z, Ctrl+C, Entrée, Suppr, F2, Échap…).")} />
+        <Sentences
+          text={
+            isLinux
+              ? tr("Pour modifier un raccourci d'Aqueli, cliquez sur « Modifier », puis saisissez la nouvelle combinaison. Les raccourcis du système et de la saisie restent fixes (Ctrl+Z, Ctrl+C, Entrée, Suppr, F2, Échap…).")
+              : tr("Pour modifier un raccourci d'Aqueli, cliquez sur « Modifier », puis saisissez la nouvelle combinaison. Les raccourcis de Windows et de la saisie restent fixes (Ctrl+Z, Ctrl+C, Entrée, Suppr, F2, Échap…).")
+          }
+        />
       </p>
-      <CaptureShortcut hotkey={hotkey} onChange={setHotkey} appKeys={map} />
+      <CaptureShortcut hotkey={hotkey} desktop={desktop} onChange={setHotkey} appKeys={map} />
       <div className="shortcut-groups">
         {SHORTCUT_GROUPS.map((group) => (
           <section key={group.title} aria-label={group.title}>

@@ -1,6 +1,6 @@
 ; Textes de l'installateur d'Aqueli, langue « Korean » (remplacent ceux de Tauri, au ton sobre de
 ; l'application ; les cinq derniers servent aux pages d'accueil et de fin, voir crochets.nsh).
-; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 17 fichiers d'accord.
+; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 18 fichiers d'accord.
 LangString addOrReinstall ${LANG_KOREAN} "구성 요소 추가 또는 다시 설치"
 LangString alreadyInstalled ${LANG_KOREAN} "이미 설치됨"
 LangString alreadyInstalledLong ${LANG_KOREAN} "Aqueli ${VERSION}이(가) 이미 설치되어 있습니다. 수행할 작업을 선택한 다음 [다음]을 클릭하세요."

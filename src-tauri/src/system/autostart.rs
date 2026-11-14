@@ -1,5 +1,6 @@
 //! Lancement discret d'Aqueli à l'ouverture de la session Windows (valeur « Aqueli » de la
-//! clé Run de l'utilisateur, la même que l'installateur crée et que le désinstallateur retire).
+//! clé Run de l'utilisateur, la même que l'installateur crée et que le désinstallateur retire ;
+//! « Aqueli portable » pour la version portable, qui suit le dossier s'il change de place).
 
 use windows::core::{w, PCWSTR};
 use windows::Win32::Foundation::ERROR_SUCCESS;
@@ -10,6 +11,7 @@ pub const BACKGROUND_ARG: &str = "--arriere-plan";
 
 const RUN_KEY: PCWSTR = w!(r"Software\Microsoft\Windows\CurrentVersion\Run");
 const RUN_VALUE: PCWSTR = w!("Aqueli");
+const PORTABLE_RUN_VALUE: PCWSTR = w!("Aqueli portable");
 /// Choix de la personne, relu par l'installateur lors d'une mise à jour.
 const CHOICE_KEY: PCWSTR = w!(r"Software\Aqueli");
 const CHOICE_VALUE: PCWSTR = w!("DemarrageAuto");
@@ -23,22 +25,33 @@ fn set_string(key: PCWSTR, name: PCWSTR, value: &str) -> bool {
     }
 }
 
+fn run_value() -> PCWSTR {
+    if crate::portable::is_portable() {
+        PORTABLE_RUN_VALUE
+    } else {
+        RUN_VALUE
+    }
+}
+
 pub fn is_enabled() -> bool {
     // SAFETY: simple lecture de l'existence de la valeur.
-    unsafe { RegGetValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VALUE, RRF_RT_REG_SZ, None, None, None) == ERROR_SUCCESS }
+    unsafe { RegGetValueW(HKEY_CURRENT_USER, RUN_KEY, run_value(), RRF_RT_REG_SZ, None, None, None) == ERROR_SUCCESS }
 }
 
 /// Active ou désactive le lancement au démarrage, et retient ce choix.
 pub fn set(enabled: bool) -> Result<(), String> {
     let done = if enabled {
         let exe = std::env::current_exe().map_err(|e| e.to_string())?;
-        set_string(RUN_KEY, RUN_VALUE, &format!("\"{}\" {BACKGROUND_ARG}", exe.display()))
+        set_string(RUN_KEY, run_value(), &format!("\"{}\" {BACKGROUND_ARG}", exe.display()))
     } else {
         // SAFETY: suppression d'une valeur de la session ; absente, rien à faire.
-        let result = unsafe { RegDeleteKeyValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VALUE) };
+        let result = unsafe { RegDeleteKeyValueW(HKEY_CURRENT_USER, RUN_KEY, run_value()) };
         result == ERROR_SUCCESS || !is_enabled()
     };
-    set_string(CHOICE_KEY, CHOICE_VALUE, if enabled { "1" } else { "0" });
+    // Le choix n'est relu que par l'installateur.
+    if !crate::portable::is_portable() {
+        set_string(CHOICE_KEY, CHOICE_VALUE, if enabled { "1" } else { "0" });
+    }
     if done {
         Ok(())
     } else {

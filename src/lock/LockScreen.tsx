@@ -12,13 +12,14 @@ import { usePreferences } from "../prefs/PreferencesProvider";
 import type { VaultError } from "../vault/api";
 import { errorWaitSeconds, formatWait, vaultErrorMessage } from "../vault/messages";
 import { passwordStrength } from "../vault/password";
-import { formatRecoveryInput, isCompleteRecoveryKey } from "../vault/recoveryKey";
+import { editRecoveryInput, isCompleteRecoveryKey } from "../vault/recoveryKey";
 import { useVault } from "../vault/VaultProvider";
 import { FullWindow } from "./FullWindow";
 import { AccountSwitcher } from "../accounts/AccountSwitcher";
 import { AvatarImage, initialOf } from "../accounts/AvatarImage";
 import { avatarById } from "../accounts/avatars";
 import { locale, tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 const CLOCK = new Intl.DateTimeFormat(locale(), { hour: "2-digit", minute: "2-digit" });
 const DAY = new Intl.DateTimeFormat(locale(), { weekday: "long", day: "numeric", month: "long" });
@@ -230,7 +231,13 @@ function RecoveryForm({ onBack }: { onBack: () => void }) {
             className="field-input field-input--code"
             value={key}
             placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"
-            onChange={(e) => setKey(formatRecoveryInput(e.target.value))}
+            onChange={(e) => {
+              const input = e.target;
+              const forward = (e.nativeEvent as InputEvent).inputType === "deleteContentForward";
+              const next = editRecoveryInput(key, input.value, input.selectionStart ?? input.value.length, forward);
+              setKey(next.value);
+              requestAnimationFrame(() => input.setSelectionRange(next.caret, next.caret));
+            }}
             autoFocus
             autoComplete="off"
             spellCheck={false}
@@ -295,7 +302,9 @@ export function LockScreen() {
         {lockReason === "auto"
           ? tr("Verrouillé après {autoLockMinutes} min d'inactivité · données chiffrées", { autoLockMinutes })
           : lockReason === "systeme"
-            ? tr("Verrouillé avec Windows · données chiffrées")
+            ? isLinux
+              ? tr("Verrouillé avec la session · données chiffrées")
+              : tr("Verrouillé avec Windows · données chiffrées")
             : tr("Données chiffrées")}
       </span>
       <LanguagePicker className="lock-language" />

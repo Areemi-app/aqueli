@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useReducer, useRef, useState, type Keyboard
 import { useContextMenu } from "./ContextMenu";
 import { Icon } from "./Icon";
 import { ICONS } from "./icons";
-import { tr } from "../i18n/i18n";
+import { readingKey, tr } from "../i18n/i18n";
 
 export interface TabItem<T extends string> {
   id: T;
@@ -78,8 +78,8 @@ export function Tabs<T extends string>({ items, value, onChange, label, idPrefix
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     let next = active;
-    if (e.key === "ArrowRight") next = (active + 1) % items.length;
-    else if (e.key === "ArrowLeft") next = (active - 1 + items.length) % items.length;
+    if (readingKey(e.key) === "ArrowRight") next = (active + 1) % items.length;
+    else if (readingKey(e.key) === "ArrowLeft") next = (active - 1 + items.length) % items.length;
     else if (e.key === "Home") next = 0;
     else if (e.key === "End") next = items.length - 1;
     else return;

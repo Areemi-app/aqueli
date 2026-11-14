@@ -29,7 +29,7 @@ import { useFocus } from "../focus/FocusProvider";
 import { NEW_HABIT, requestHabit } from "../habits/habitRequest";
 import { requestJournal } from "../journal/journalRequest";
 import { dayKey } from "../tasks/day";
-import { contactRequest, documentRequest, goalRequest, listRequest, NEW_ITEM, projectRequest, reviewRequest, transactionRequest } from "../lib/request";
+import { contactRequest, documentRequest, goalRequest, listRequest, NEW_ITEM, projectRequest, reviewRequest, savingsRequest, transactionRequest } from "../lib/request";
 import { requestDayPlanner } from "../planner/plannerRequest";
 import { requestQuickAdd } from "../tasks/quickAddFocus";
 import { useSpaces } from "../spaces/SpacesProvider";
@@ -43,6 +43,7 @@ import { runNewItem } from "./newItem";
 import { Sidebar } from "./Sidebar";
 import { StatusBar } from "./StatusBar";
 import { TitleBar } from "./TitleBar";
+import { toggleSidebar } from "./sidebarMode";
 import { tr } from "../i18n/i18n";
 
 /**
@@ -227,6 +228,9 @@ export function Shell() {
             requestQuickAdd();
           }
           break;
+        case "sidebar":
+          toggleSidebar();
+          break;
         case "block":
           break;
       }
@@ -284,9 +288,15 @@ export function Shell() {
   useEffect(() => onHelpRequest((topic) => setHelp(topic ?? topicForRoute(navRef.current.route))), []);
 
   // La visite est chargée en avance, quand la fenêtre est au repos : elle s'ouvre sans attente.
+  // WebKit (Linux) n'a pas `requestIdleCallback` : un court délai en tient lieu.
   useEffect(() => {
-    const idle = requestIdleCallback(() => void import("../tour/TourOverlay"), { timeout: 5000 });
-    return () => cancelIdleCallback(idle);
+    const load = () => void import("../tour/TourOverlay");
+    if (typeof requestIdleCallback === "function") {
+      const idle = requestIdleCallback(load, { timeout: 5000 });
+      return () => cancelIdleCallback(idle);
+    }
+    const timer = window.setTimeout(load, 2000);
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Visite demandée (Paramètres › Aide, palette, aide), ou proposée après la création du compte.
@@ -382,6 +392,10 @@ export function Shell() {
         newExpense: () => {
           nav.go("budget");
           transactionRequest.request(NEW_ITEM);
+        },
+        newSavings: () => {
+          nav.go("budget");
+          savingsRequest.request(NEW_ITEM);
         },
         newGoal: () => {
           nav.go("objectifs");

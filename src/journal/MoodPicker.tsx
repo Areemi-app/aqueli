@@ -1,6 +1,6 @@
 import { useRef, type CSSProperties, type KeyboardEvent } from "react";
 import { ENERGIES, MOODS } from "./journal";
-import { tr } from "../i18n/i18n";
+import { readingKey, tr } from "../i18n/i18n";
 
 /** Bouche de chaque humeur, de la plus difficile à la meilleure. */
 const MOUTHS = ["M8 16.6Q12 13.2 16 16.6", "M8.5 15.8Q12 14.2 15.5 15.8", "M8.5 15.2H15.5", "M8.5 14.6Q12 16.6 15.5 14.6", "M8 14Q12 18.2 16 14"];
@@ -21,7 +21,7 @@ export function MoodFace({ value, size = 34 }: { value: number; size?: number })
 
 /** Flèches gauche/droite dans un groupe de boutons radio. */
 function arrows(e: KeyboardEvent<HTMLDivElement>, value: number | null, onChange: (v: number) => void, refs: (HTMLButtonElement | null)[]) {
-  const step = e.key === "ArrowRight" || e.key === "ArrowUp" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowDown" ? -1 : 0;
+  const step = readingKey(e.key) === "ArrowRight" || e.key === "ArrowUp" ? 1 : readingKey(e.key) === "ArrowLeft" || e.key === "ArrowDown" ? -1 : 0;
   if (!step) return;
   e.preventDefault();
   const next = Math.min(5, Math.max(1, (value ?? 3) + (value === null ? 0 : step)));

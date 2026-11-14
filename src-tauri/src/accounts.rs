@@ -298,8 +298,12 @@ impl Active {
         self.id == MAIN_ID
     }
 
-    /// Nom de la clé Windows Hello du compte : celle d'avant les comptes pour le principal.
+    /// Nom de la clé Windows Hello du compte : celle d'avant les comptes pour le principal. La
+    /// version portable a ses propres clés, pour ne pas remplacer celles de la version installée.
     pub fn hello_names(&self) -> Vec<String> {
+        if crate::portable::is_portable() {
+            return vec![if self.is_main() { "Aqueli-portable".into() } else { format!("Aqueli-portable-{}", self.id) }];
+        }
         if self.is_main() {
             vec!["Aqueli".into(), crate::legacy::OLD_HELLO_KEY.into()]
         } else {

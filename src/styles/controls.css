@@ -76,7 +76,8 @@
 
 .btn-gel--sm {
   height: 34px;
-  padding: 0 16px 0 12px;
+  padding-block: 0;
+  padding-inline: 12px 16px;
   gap: 6px;
   border-radius: 17px;
   font-size: 13px;
@@ -299,7 +300,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 0 10px 0 12px;
+  padding-block: 0;
+  padding-inline: 12px 10px;
 }
 
 .segment[aria-selected="true"],
@@ -338,7 +340,7 @@
 .switch-thumb {
   position: absolute;
   top: 2px;
-  left: 2px;
+  inset-inline-start: 2px;
   width: 20px;
   height: 20px;
   border-radius: 10px;
@@ -354,7 +356,7 @@
 }
 
 .switch[aria-checked="true"] .switch-thumb {
-  transform: translateX(20px);
+  transform: translateX(calc(20px * var(--aq-dir)));
 }
 
 .setting-row {
@@ -429,7 +431,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  text-align: left;
+  text-align: start;
 }
 
 .feature-list li {
@@ -471,7 +473,8 @@
   z-index: 5;
   flex-shrink: 0;
   margin: 6px 8px 8px;
-  padding: 7px 8px 7px 14px;
+  padding-block: 7px;
+  padding-inline: 14px 8px;
   border-radius: 14px;
   animation: aq-pop var(--aq-fast) var(--aq-ease);
 }
@@ -484,7 +487,7 @@
 }
 
 .selection-count {
-  margin-right: auto;
+  margin-inline-end: auto;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -495,7 +498,7 @@
 }
 
 .selection-noun {
-  margin-left: -2px;
+  margin-inline-start: -2px;
 }
 
 .selection-actions {
@@ -629,7 +632,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 8px 4px 4px;
+  padding-block: 4px;
+  padding-inline: 4px 8px;
   border: 0;
   border-radius: 8px;
   background: none;

@@ -1,7 +1,7 @@
 # Installateur d'Aqueli (NSIS)
 
 - `crochets.nsh` : textes d'accueil et de fin, couleurs (fond `F3F9FF`, texte `10243A`), choix de la langue au lancement, nettoyage à la désinstallation.
-- `langues/<Langue>.nsh` : les textes de l'installateur dans les 17 langues d'Aqueli (UTF-8). Chaque fichier porte les mêmes `LangString` ; une clé ajoutée l'est dans les 17. Déclarés dans `tauri.conf.json` (`bundle.windows.nsis.customLanguageFiles`).
+- `langues/<Langue>.nsh` : les textes de l'installateur dans les 18 langues d'Aqueli (UTF-8). Chaque fichier porte les mêmes `LangString` ; une clé ajoutée l'est dans les 18. Déclarés dans `tauri.conf.json` (`bundle.windows.nsis.customLanguageFiles`).
 - `cote.svg` → `cote.bmp` (164 × 314) : bandeau des pages d'accueil et de fin. Ciel Aqua, reflets irisés et nacrés, logo sur un disque de verre.
 - `entete.svg` → `entete.bmp` (150 × 57) : en-tête des autres pages, qui se fond à gauche dans la couleur de fond.
 

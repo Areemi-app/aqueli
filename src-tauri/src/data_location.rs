@@ -51,8 +51,11 @@ pub struct Place {
     /// Dossier d'origine (%APPDATA%\Aqueli), qui garde le fichier d'emplacement.
     pub default_dir: PathBuf,
     pub location: Location,
-    /// Faux en développement avec AQUELI_DATA_DIR : le dossier d'origine réel n'est jamais touché.
+    /// Faux en développement avec AQUELI_DATA_DIR et dans la version portable : le dossier
+    /// d'origine réel n'est jamais touché.
     pub movable: bool,
+    /// Version portable : les données restent à côté d'Aqueli.exe.
+    pub portable: bool,
 }
 
 pub struct PlaceState(pub Place);

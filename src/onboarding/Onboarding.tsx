@@ -24,6 +24,7 @@ import { AvatarImage } from "../accounts/AvatarImage";
 import { AvatarPicker } from "../accounts/AvatarPicker";
 import { randomAvatarId } from "../accounts/avatars";
 import { Sentences } from "../components/Sentences";
+import { isLinux } from "../lib/platform";
 
 type Step = "bienvenue" | "mot-de-passe" | "cle" | "windows-hello" | "theme";
 const ALL_STEPS: readonly Step[] = ["bienvenue", "mot-de-passe", "cle", "windows-hello", "theme"];
@@ -71,7 +72,7 @@ function Welcome({ onNext }: { onNext: () => void }) {
     <>
       <img className="onb-logo" src={logo} alt="" draggable={false} />
       <p className="onb-text">
-        {tr("Tâches, agenda, obligations et notes réunis dans une seule application. Vos données sont chiffrées et restent sur ce PC.")}
+        {isLinux ? tr("Tâches, agenda, obligations et notes réunis dans une seule application. Vos données sont chiffrées et restent sur cet ordinateur.") : tr("Tâches, agenda, obligations et notes réunis dans une seule application. Vos données sont chiffrées et restent sur ce PC.")}
       </p>
       <div className="onb-actions onb-actions--center">
         <button type="button" className="btn-gel" onClick={onNext} autoFocus>
@@ -83,7 +84,7 @@ function Welcome({ onNext }: { onNext: () => void }) {
       </button>
       {added && (
         <button type="button" className="link-btn onb-restore" onClick={() => void back()}>
-          {tr("Revenir aux comptes de ce PC")}
+          {isLinux ? tr("Revenir aux comptes de cet ordinateur") : tr("Revenir aux comptes de ce PC")}
         </button>
       )}
       <div className="onb-language">

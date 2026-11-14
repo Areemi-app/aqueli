@@ -20,7 +20,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "./Icon";
 import { ICONS } from "./icons";
 import { menuKeys, onItemKeys } from "../lib/itemKeys";
-import { tr } from "../i18n/i18n";
+import { isRtl, readingKey, tr } from "../i18n/i18n";
 
 export interface MenuAction {
   label: string;
@@ -121,8 +121,9 @@ interface MenuState {
 /** Sous-menu ouvert depuis une entrée : il se referme seul (←, Échap) et rend le focus à son entrée. */
 interface ParentLink {
   close: () => void;
-  /** Bord gauche de l'entrée : le sous-menu s'y ouvre à gauche s'il manque de place à droite. */
+  /** Bords de l'entrée : le sous-menu s'ouvre de l'autre côté s'il manque de place. */
   left: number;
+  right: number;
   /** Ouvert au clavier : son premier choix reçoit le focus. */
   focusFirst: boolean;
   /** Le pointeur entre dans le sous-menu : il reste ouvert. */
@@ -150,8 +151,15 @@ function Menu({
     if (!box) return;
     // Taille réelle, sans l'effet de l'animation d'ouverture.
     const r = { width: box.offsetWidth, height: box.offsetHeight };
-    // Un sous-menu s'ouvre à droite de son entrée, ou à gauche s'il n'y a pas la place.
-    const left = parent && x + r.width > window.innerWidth - 8 ? parent.left - r.width + 4 : x;
+    // Le menu s'ouvre après le pointeur dans le sens de lecture : à sa droite, ou à sa gauche de droite à
+    // gauche. Un sous-menu passe de l'autre côté de son entrée s'il n'y a pas la place.
+    const left = isRtl()
+      ? parent && x - r.width < 8
+        ? parent.right - 4
+        : x - r.width
+      : parent && x + r.width > window.innerWidth - 8
+        ? parent.left - r.width + 4
+        : x;
     setPosition({
       left: Math.max(8, Math.min(left, window.innerWidth - r.width - 8)),
       top: y + r.height > window.innerHeight - 8 ? Math.max(8, above - r.height) : y,
@@ -192,8 +200,8 @@ function Menu({
     else if (e.key === "ArrowUp") go(index - 1);
     else if (e.key === "Home") go(0);
     else if (e.key === "End") go(items.length - 1);
-    else if (e.key === "ArrowRight" && focused?.dataset.sub !== undefined) openSub(Number(focused.dataset.sub), focused, true);
-    else if (e.key === "ArrowLeft" && parent) parent.close();
+    else if (readingKey(e.key) === "ArrowRight" && focused?.dataset.sub !== undefined) openSub(Number(focused.dataset.sub), focused, true);
+    else if (readingKey(e.key) === "ArrowLeft" && parent) parent.close();
     else if (e.key === "Escape") (parent ? parent.close() : onClose(true));
     else if (e.key === "Tab") onClose(false);
     else return;
@@ -264,7 +272,7 @@ function Menu({
       {sub && subEntry && subEntry !== "separator" && subEntry.submenu && subRect &&
         createPortal(
           <Menu
-            x={subRect.right - 4}
+            x={isRtl() ? subRect.left + 4 : subRect.right - 4}
             y={subRect.top - 7}
             above={subRect.bottom + 7}
             entries={subEntry.submenu}
@@ -276,6 +284,7 @@ function Menu({
                 sub.item.focus();
               },
               left: subRect.left,
+              right: subRect.right,
               focusFirst: sub.focusFirst,
               keep: () => window.clearTimeout(closeTimer.current),
             }}
@@ -304,7 +313,7 @@ export function ContextMenuProvider({ children, closed = false }: { children: Re
     // le porte, marquée `data-menu-edge`) s'il est en bas de la fenêtre.
     if (x === 0 && y === 0 && e.currentTarget instanceof HTMLElement) {
       const r = e.currentTarget.getBoundingClientRect();
-      x = r.left + 16;
+      x = isRtl() ? r.right - 16 : r.left + 16;
       y = r.bottom + 4;
       above = (e.currentTarget.closest<HTMLElement>("[data-menu-edge]") ?? e.currentTarget).getBoundingClientRect().top - 6;
     }

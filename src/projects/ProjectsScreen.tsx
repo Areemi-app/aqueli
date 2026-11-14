@@ -473,7 +473,7 @@ function ProjectTimeline({ project, milestones, today }: { project: Project; mil
         {showToday && <span className="project-timeline-done" style={{ width: at(today) }} />}
       </div>
       {showToday && (
-        <span className="project-timeline-today" style={{ left: at(today) }} title={tr("Aujourd'hui, {date}", { date: SHORT_DATE.format(fromDayKey(today)) })}>
+        <span className="project-timeline-today" style={{ insetInlineStart: at(today) }} title={tr("Aujourd'hui, {date}", { date: SHORT_DATE.format(fromDayKey(today)) })}>
           <span className="sr-only">{tr("Aujourd'hui")}</span>
         </span>
       )}
@@ -481,7 +481,7 @@ function ProjectTimeline({ project, milestones, today }: { project: Project; mil
         const late = m.doneAt === null && m.dueDate! < today;
         const label = `${m.title} · ${SHORT_DATE.format(fromDayKey(m.dueDate!))}${m.doneAt !== null ? tr(" · atteinte") : late ? tr(" · dépassée") : ""}`;
         return (
-          <span key={m.id} className="project-timeline-step" data-done={m.doneAt !== null || undefined} data-late={late || undefined} data-below={i % 2 === 1 || undefined} style={{ left: at(m.dueDate!) }} title={label}>
+          <span key={m.id} className="project-timeline-step" data-done={m.doneAt !== null || undefined} data-late={late || undefined} data-below={i % 2 === 1 || undefined} style={{ insetInlineStart: at(m.dueDate!) }} title={label}>
             <span className="project-timeline-dot" />
             {dated.length <= 8 && <span className="project-timeline-label">{m.title}</span>}
             <span className="sr-only">{label}</span>

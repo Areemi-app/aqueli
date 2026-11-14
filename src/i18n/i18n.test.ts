@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { EN } from "./en";
-import { fr, lang, LANGUAGES, locale, setLanguageForTests, systemLang, tr, trn, trValue } from "./i18n";
+import { fr, isRtl, lang, LANGUAGES, locale, readingKey, setLanguageForTests, systemLang, tr, trn, trValue } from "./i18n";
 import { textId } from "./textId";
 
 // Tout le code de l'interface (hors tests), lu comme du texte.
@@ -200,6 +200,13 @@ describe("pluriels des autres langues", () => {
   it("une langue sans pluriel n'a qu'une forme", () => {
     setLanguageForTests("ja", EN, { [textId("{n} tâches")]: "{n} 件のタスク" });
     expect([1, 3].map((n) => trn(n, "{n} tâche", "{n} tâches"))).toEqual(["1 件のタスク", "3 件のタスク"]);
+  });
+
+  it("de droite à gauche, les flèches gauche et droite s'échangent", () => {
+    expect(readingKey("ArrowLeft")).toBe("ArrowLeft");
+    setLanguageForTests("ar", EN);
+    expect(isRtl()).toBe(true);
+    expect(["ArrowLeft", "ArrowRight", "ArrowUp", "Home"].map(readingKey)).toEqual(["ArrowRight", "ArrowLeft", "ArrowUp", "Home"]);
   });
 
   it("la langue de Windows, sinon l'anglais", () => {

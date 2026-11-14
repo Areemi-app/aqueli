@@ -9,6 +9,7 @@ import type { VaultError } from "../vault/api";
 import { vaultErrorMessage } from "../vault/messages";
 import { accountsApi, type AccountInfo } from "./accountsApi";
 import { AvatarImage } from "./AvatarImage";
+import { isLinux } from "../lib/platform";
 
 /** Comptes de ce PC, lus une fois (ils ne changent qu'avec un redémarrage). */
 export function useAccounts(): AccountInfo[] | null {
@@ -70,7 +71,7 @@ export function AccountSwitcher() {
   };
 
   return (
-    <nav className="account-switcher" aria-label={tr("Comptes de ce PC")}>
+    <nav className="account-switcher" aria-label={isLinux ? tr("Comptes de cet ordinateur") : tr("Comptes de ce PC")}>
       <div className="account-chips">
         {others.map((a) => (
           <button

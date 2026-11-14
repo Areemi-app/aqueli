@@ -3,7 +3,7 @@
 
 use std::path::Path;
 
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::AppHandle;
 use windows::core::{Interface, HSTRING, IInspectable};
 use windows::Data::Xml::Dom::XmlDocument;
 use windows::Foundation::TypedEventHandler;
@@ -13,27 +13,11 @@ use windows::UI::Notifications::{
 use windows::Win32::System::Registry::{RegSetKeyValueW, HKEY_CURRENT_USER, REG_SZ};
 use windows::Win32::UI::Shell::SetCurrentProcessExplicitAppUserModelID;
 
-use super::background;
-use crate::reminders::{Notice, ReminderState};
+use super::alerts;
+use crate::reminders::Notice;
 
 /// Identifiant d'Aqueli pour Windows (le même que celui des raccourcis de l'installateur).
 pub const APP_ID: &str = "fr.aqueli.desktop";
-/// « Terminé » depuis une notification : l'interface termine la tâche.
-pub const DONE_EVENT: &str = "rappel-terminer";
-/// Clic sur une notification : l'interface ouvre la tâche ou le rendez-vous.
-pub const OPEN_EVENT: &str = "rappel-ouvrir";
-/// Rappels des tâches (identifiant sans « : ») et des habitudes (« habitude:… ») : « Terminé »
-/// les coche ; les autres (« evt:… » pour les rendez-vous, « obl:… » pour les obligations)
-/// s'ouvrent au lieu de se terminer.
-fn is_task(id: &str) -> bool {
-    !id.contains(':') || id.starts_with("habitude:")
-}
-
-/// Fin d'une séance de Focus : ni « Reporter » ni « Terminé ».
-fn is_focus(id: &str) -> bool {
-    id.starts_with("focus:")
-}
-
 fn set_string(key: &HSTRING, name: &str, value: &str) {
     let wide: Vec<u16> = value.encode_utf16().chain(Some(0)).collect();
     // SAFETY: `wide` (UTF-16 terminé par zéro) vit pendant tout l'appel ; taille en octets.
@@ -66,92 +50,23 @@ fn escape(text: &str) -> String {
     text.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;").replace('\'', "&apos;")
 }
 
-fn plural(count: usize, one: &str, many: &str) -> String {
-    if count > 1 {
-        format!("{count} {many}")
-    } else {
-        one.to_string()
-    }
-}
-
 /// Contenu XML de la notification (schéma « ToastGeneric » de Windows).
 pub fn toast_xml(notice: &Notice, lang: crate::lang::Lang) -> String {
-    let t = |fr: &'static str| crate::lang::text(lang, fr);
-    let text = |title: &str, body: &str| {
-        format!(
-            r#"<visual><binding template="ToastGeneric"><text>{}</text><text>{}</text></binding></visual>"#,
-            escape(title),
-            escape(body)
-        )
-    };
+    let c = alerts::content(notice, lang);
+    let actions: String = c
+        .actions
+        .iter()
+        .map(|(arguments, label)| format!(r#"<action content="{}" arguments="{}" activationType="foreground"/>"#, escape(label), escape(arguments)))
+        .collect();
     // Toutes les notifications sont des « rappels » pour Windows : elles restent à l'écran et
     // passent en mode « Ne pas déranger » si Windows y autorise les rappels. Ce scénario
     // exige au moins un bouton.
-    let open_only = format!(r#"<actions><action content="{}" arguments="ouvrir:" activationType="foreground"/></actions>"#, t("Ouvrir Aqueli"));
-    match notice {
-        Notice::Masked { count } => format!(
-            r#"<toast launch="ouvrir:" scenario="reminder">{}{open_only}</toast>"#,
-            text(
-                &plural(*count, crate::lang::text(lang, "Rappel Aqueli"), crate::lang::text(lang, "rappels Aqueli")),
-                if *count > 1 { crate::lang::text(lang, "Ouvrez Aqueli pour voir les tâches.") } else { crate::lang::text(lang, "Ouvrez Aqueli pour voir la tâche.") }
-            )
-        ),
-        Notice::Many { count } => format!(
-            r#"<toast launch="ouvrir:" scenario="reminder">{}{open_only}</toast>"#,
-            text(&format!("{count} {}", crate::lang::text(lang, "rappels")), crate::lang::text(lang, "Ouvrez Aqueli pour les voir."))
-        ),
-        Notice::Task { id, title, when } if is_focus(id) => {
-            let id = escape(id);
-            format!(
-                r#"<toast launch="ouvrir:{id}" scenario="reminder">{}<actions><action content="{}" arguments="ouvrir:{id}" activationType="foreground"/></actions></toast>"#,
-                text(title, when),
-                t("Ouvrir Aqueli")
-            )
-        }
-        Notice::Task { id, title, when } => {
-            let last = if is_task(id) { (crate::lang::text(lang, "Terminé"), "terminer") } else { (crate::lang::text(lang, "Ouvrir"), "ouvrir") };
-            let id = escape(id);
-            format!(
-                r#"<toast launch="ouvrir:{id}" scenario="reminder">{}<actions><action content="{}" arguments="reporter:{id}" activationType="foreground"/><action content="{}" arguments="{}:{id}" activationType="foreground"/></actions></toast>"#,
-                text(title, when),
-                t("Reporter 10 min"),
-                last.0,
-                last.1
-            )
-        }
-    }
-}
-
-/// Genre de notification, pour le journal de diagnostic (jamais son texte).
-pub fn kind(notice: &Notice) -> &'static str {
-    match notice {
-        Notice::Masked { .. } => "« Rappel Aqueli »",
-        Notice::Many { .. } => "groupée",
-        Notice::Task { .. } => "de tâche",
-    }
-}
-
-/// Réponse à un clic sur la notification ou sur l'un de ses boutons.
-fn on_activated(app: &AppHandle, arguments: &str) {
-    let (action, id) = arguments.split_once(':').unwrap_or((arguments, ""));
-    crate::diagnostic::note(app, &format!("notification : clic « {action} »"));
-    match action {
-        "reporter" => {
-            let now = crate::unix_now();
-            if let Ok(mut scheduler) = app.state::<ReminderState>().0.lock() {
-                scheduler.snooze_task(id, now);
-            }
-        }
-        "terminer" => {
-            let _ = app.emit(DONE_EVENT, id.to_string());
-        }
-        _ => {
-            background::show_main(app);
-            if !id.is_empty() {
-                let _ = app.emit(OPEN_EVENT, id.to_string());
-            }
-        }
-    }
+    format!(
+        r#"<toast launch="{}" scenario="reminder"><visual><binding template="ToastGeneric"><text>{}</text><text>{}</text></binding></visual><actions>{actions}</actions></toast>"#,
+        escape(&c.launch),
+        escape(&c.title),
+        escape(&c.body)
+    )
 }
 
 /// Affiche une notification Windows.
@@ -164,7 +79,7 @@ pub fn show(app: &AppHandle, notice: &Notice) -> windows::core::Result<()> {
         if let Some(args) = args.as_ref() {
             if let Ok(activated) = args.cast::<ToastActivatedEventArgs>() {
                 if let Ok(arguments) = activated.Arguments() {
-                    on_activated(&handle, &arguments.to_string());
+                    alerts::on_activated(&handle, &arguments.to_string());
                 }
             }
         }

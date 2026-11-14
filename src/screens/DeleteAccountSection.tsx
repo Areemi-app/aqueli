@@ -14,6 +14,7 @@ import { vaultApi, type VaultError } from "../vault/api";
 import { vaultErrorMessage } from "../vault/messages";
 import { tr } from "../i18n/i18n";
 import { Sentences } from "../components/Sentences";
+import { isLinux } from "../lib/platform";
 
 /** Mot à saisir pour confirmer. */
 export const CONFIRM_WORD = tr("SUPPRIMER");
@@ -51,9 +52,9 @@ function DeleteAccountDialog({ onClose }: { onClose: () => void }) {
       <form className="settings-form" onSubmit={(e) => void submit(e)} noValidate>
         <p className="notice notice--danger">
           <Icon d={ICONS.warning} size={16} stroke={2.2} />
-          <Sentences text={tr("Toutes les données de ce compte seront effacées de ce PC. Cette action est définitive.")} />
+          <Sentences text={isLinux ? tr("Toutes les données de ce compte seront effacées de cet ordinateur. Cette action est définitive.") : tr("Toutes les données de ce compte seront effacées de ce PC. Cette action est définitive.")} />
         </p>
-        <Checkbox label={tr("Supprimer aussi les sauvegardes enregistrées sur ce PC")} checked={includeBackups} onChange={setIncludeBackups} />
+        <Checkbox label={isLinux ? tr("Supprimer aussi les sauvegardes enregistrées sur cet ordinateur") : tr("Supprimer aussi les sauvegardes enregistrées sur ce PC")} checked={includeBackups} onChange={setIncludeBackups} />
         <p className="settings-hint">{tr("Les sauvegardes copiées ailleurs (clé USB, disque externe) ne sont pas supprimées.")}</p>
         <PasswordField
           id={`${ids}-mdp`}
@@ -103,7 +104,7 @@ export function DeleteAccountSection() {
     <div className="settings-section">
       <h2 className="settings-heading">{tr("Suppression du compte")}</h2>
       <div className="settings-card settings-card--padded glass">
-        <p className="settings-intro"><Sentences text={tr("Efface définitivement le compte et toutes ses données de ce PC. Les fichiers sont écrasés avant d'être supprimés.")} /></p>
+        <p className="settings-intro"><Sentences text={isLinux ? tr("Efface définitivement le compte et toutes ses données de cet ordinateur. Les fichiers sont écrasés avant d'être supprimés.") : tr("Efface définitivement le compte et toutes ses données de ce PC. Les fichiers sont écrasés avant d'être supprimés.")} /></p>
         <div>
           <button type="button" className="btn-glass btn-danger" onClick={() => setOpen(true)}>
             <Icon d={ICONS.trash} size={15} stroke={2.2} />

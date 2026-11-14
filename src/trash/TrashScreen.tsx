@@ -47,6 +47,7 @@ const KIND_FILTER: Record<TrashKind, Filter> = {
   list: "listes",
   goal: "objectifs",
   transaction: "budget",
+  savings: "budget",
 };
 
 const KIND_MODULE: Record<TrashKind, ModuleKey> = {
@@ -63,6 +64,7 @@ const KIND_MODULE: Record<TrashKind, ModuleKey> = {
   list: "listes",
   goal: "objectifs",
   transaction: "budget",
+  savings: "budget",
 };
 
 /** Liste à relire après une restauration. */
@@ -80,6 +82,7 @@ const KIND_DATA: Record<TrashKind, DataKind> = {
   list: "list",
   goal: "goal",
   transaction: "transaction",
+  savings: "transaction",
 };
 
 const DATE = new Intl.DateTimeFormat(locale(), { day: "numeric", month: "short" });
@@ -91,6 +94,7 @@ export function trashTitle(item: TrashItem): string {
   if (item.kind === "notebook") return tr("Carnet « {name} »", { name: item.title });
   if (item.kind === "list") return tr("Liste « {name} »", { name: item.title });
   if (item.kind === "transaction") return item.title.trim() || tr("Opération sans libellé");
+  if (item.kind === "savings") return tr("Épargne « {name} »", { name: item.title });
   return item.title.trim() || tr("Sans titre");
 }
 

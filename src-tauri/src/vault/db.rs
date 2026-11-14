@@ -42,7 +42,7 @@ pub fn adopt_old_files(dir: &Path) -> &'static str {
 /// Version du schéma ; chaque nouvelle version ajoute une étape dans `migrate`.
 /// 1 : journal de sécurité · 2 : espaces · 3 : tâches · 4 : répétition des tâches ·
 /// 5 : couleur des tâches · 6 : rappel des tâches.
-pub const SCHEMA_VERSION: i64 = 21;
+pub const SCHEMA_VERSION: i64 = 22;
 
 /// Espaces créés avec la base (couleurs validées dans docs/reference-projet.md).
 const DEFAULT_SPACES: [(&str, &str, &str, &str); 4] = [
@@ -702,6 +702,33 @@ fn migrate(conn: &mut Connection, now: u64) -> Result<(), VaultError> {
                  ALTER TABLE documents ADD COLUMN doc_type TEXT;",
             )?;
         }
+    }
+    if version < 22 {
+        // Objectifs d'épargne du Budget et leurs versements. Rejouable sans erreur.
+        tx.execute_batch(
+            "CREATE TABLE IF NOT EXISTS savings_goals (
+                 id           TEXT PRIMARY KEY,
+                 name         TEXT NOT NULL,
+                 target_cents INTEGER NOT NULL,
+                 target_date  TEXT,
+                 color        TEXT,
+                 icon         TEXT NOT NULL,
+                 space_id     TEXT,
+                 position     INTEGER NOT NULL,
+                 created_at   INTEGER NOT NULL,
+                 updated_at   INTEGER NOT NULL,
+                 deleted_at   INTEGER
+             );
+             CREATE TABLE IF NOT EXISTS savings_entries (
+                 id           TEXT PRIMARY KEY,
+                 goal_id      TEXT NOT NULL,
+                 day          TEXT NOT NULL,
+                 amount_cents INTEGER NOT NULL,
+                 note         TEXT NOT NULL DEFAULT '',
+                 created_at   INTEGER NOT NULL
+             );
+             CREATE INDEX IF NOT EXISTS savings_entries_goal ON savings_entries(goal_id, day);",
+        )?;
     }
     tx.pragma_update(None, "user_version", SCHEMA_VERSION)?;
     tx.commit()?;

@@ -14,6 +14,7 @@ import { FAMILY_INFO, getTheme, isThemeId, THEMES } from "../theme/themes";
 import { setBannerEnabled, useBannerEnabled } from "../theme/bannerPref";
 import { DateField } from "../components/DateField";
 import { locale, tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 import { capitalize, weekdayNames } from "../i18n/calendarNames";
 
 // Du lundi au dimanche, dans la langue de l'interface.
@@ -116,7 +117,11 @@ function AutomaticSettings() {
       <div className="settings-card glass">
         <SwitchRow
           label={tr("Changer de thème automatiquement")}
-          description={tr("Ordre de priorité : fêtes › humeur › nuit › mode sombre de Windows › saisons.")}
+          description={
+            isLinux
+              ? tr("Ordre de priorité : fêtes › humeur › nuit › mode sombre du système › saisons.")
+              : tr("Ordre de priorité : fêtes › humeur › nuit › mode sombre de Windows › saisons.")
+          }
           checked={auto.enabled}
           onChange={(v) => set("enabled", v)}
         />
@@ -142,8 +147,12 @@ function AutomaticSettings() {
           disabled={!auto.enabled}
         />
         <SwitchRow
-          label={tr("Mode sombre de Windows")}
-          description={tr("Nuit étoilée (ou Minuit pour les thèmes Signature) quand Windows est en mode sombre.")}
+          label={isLinux ? tr("Mode sombre du système") : tr("Mode sombre de Windows")}
+          description={
+            isLinux
+              ? tr("Nuit étoilée (ou Minuit pour les thèmes Signature) quand le système est en mode sombre.")
+              : tr("Nuit étoilée (ou Minuit pour les thèmes Signature) quand Windows est en mode sombre.")
+          }
           checked={auto.windowsDark}
           onChange={(v) => set("windowsDark", v)}
           disabled={!auto.enabled}

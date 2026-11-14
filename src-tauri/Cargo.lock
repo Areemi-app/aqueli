@@ -86,11 +86,12 @@ checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
 name = "aqueli"
-version = "1.21.6"
+version = "2.0.0"
 dependencies = [
  "aes-gcm",
  "argon2",
  "getrandom 0.4.3",
+ "gtk",
  "hex",
  "rusqlite",
  "serde",
@@ -102,6 +103,8 @@ dependencies = [
  "tauri-plugin-window-state",
  "tempfile",
  "windows",
+ "x11-dl",
+ "zbus",
  "zeroize",
 ]
 

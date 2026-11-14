@@ -8,6 +8,7 @@
  */
 import { isoWeek } from "../lib/dates";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 /** Identifiant de thème, y compris ceux qui ne sont pas encore disponibles (« noel », « zen »…). */
 export type ThemeKey = string;
 
@@ -306,7 +307,7 @@ export function reasonLabel(reason: ThemeReason): string {
     case "nuit":
       return tr("nuit");
     case "windows-sombre":
-      return tr("mode sombre de Windows");
+      return isLinux ? tr("mode sombre du système") : tr("mode sombre de Windows");
     case "rotation":
       return tr("rotation aléatoire");
     case "saison":

@@ -13,7 +13,7 @@
 !define MUI_BGCOLOR "F3F9FF"
 !define MUI_TEXTCOLOR "10243A"
 
-; Choix de la langue au lancement : les 17 langues d'Aqueli, toujours toutes proposées ; la
+; Choix de la langue au lancement : les 18 langues d'Aqueli, toujours toutes proposées ; la
 ; langue de Windows est choisie d'avance si Aqueli la parle.
 !define MUI_LANGDLL_WINDOWTITLE "Aqueli"
 !define MUI_LANGDLL_INFO "Choisissez une langue · Choose a language"

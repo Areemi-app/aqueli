@@ -1,6 +1,6 @@
 ; Textes de l'installateur d'Aqueli, langue « German » (remplacent ceux de Tauri, au ton sobre de
 ; l'application ; les cinq derniers servent aux pages d'accueil et de fin, voir crochets.nsh).
-; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 17 fichiers d'accord.
+; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 18 fichiers d'accord.
 LangString addOrReinstall ${LANG_GERMAN} "Komponenten hinzufügen oder neu installieren"
 LangString alreadyInstalled ${LANG_GERMAN} "Bereits installiert"
 LangString alreadyInstalledLong ${LANG_GERMAN} "Aqueli ${VERSION} ist bereits installiert. Wählen Sie den gewünschten Vorgang und klicken Sie dann auf Weiter."

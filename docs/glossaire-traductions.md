@@ -1,6 +1,6 @@
 # Glossaire des traductions
 
-Aqueli parle 17 langues : français (langue du code), anglais britannique (`src/i18n/en.ts`, indexé par le texte français) et 15 autres (`src/i18n/locales/<langue>.json`, indexés par l'identifiant du texte, `textId`). Ce glossaire fixe les mots à employer partout, pour que chaque langue reste cohérente d'un écran à l'autre.
+Aqueli parle 18 langues : français (langue du code), anglais britannique (`src/i18n/en.ts`, indexé par le texte français) et 16 autres (`src/i18n/locales/<langue>.json`, indexés par l'identifiant du texte, `textId`). Ce glossaire fixe les mots à employer partout, pour que chaque langue reste cohérente d'un écran à l'autre.
 
 **Ajouter ou modifier un texte** : écrire le texte français dans `tr()` ou `trn()`, sa traduction anglaise dans `en.ts`, puis `node scripts/i18n.mjs catalogue` ; `node scripts/i18n.mjs manquants <langue>` liste ce qui manque, `node scripts/i18n.mjs lot <langue> <n>` en extrait une série (identifiant, anglais, français) et `node scripts/i18n.mjs ajouter <langue> <fichier.json>` enregistre les traductions ; `node scripts/i18n.mjs bilan` donne l'avancement. Le test `src/i18n/i18n.test.ts` vérifie que chaque langue est complète, avec les mêmes accolades et les bonnes formes de pluriel (russe et ukrainien : one, few, many ; polonais : few, many).
 
@@ -10,7 +10,7 @@ Garder tel quel : Aqueli, Ko-fi, Windows Hello, Excel, CSV, Ctrl/Alt/Maj→Shift
 Exemples de saisie rapide (« Appeler le garage vendredi 14h #voiture !haute ») : la saisie ne comprend les mots qu'en français et en anglais, mais les formes chiffrées partout. Écrire l'exemple dans la langue avec ces formes (« Werkstatt anrufen 24/10 14:00 #auto !!! », « Abendessen mit Paul 24/10 20:00 ») ; une répétition reste en anglais (« Yoga every Tuesday 18:30 ») ; un test (`src/i18n/examples.test.ts`) vérifie que les exemples se comprennent. Dans l'aide, « Dates et heures » décrit ces formes (24/10, 2026-10-24, 14:00, !!!, !high, +Espace).
 Mots à double sens (contexte après « | ») : « Espace » = un espace d'Aqueli (es Espacio, de Bereich, ru Пространство, zh 空间…), « Espace|touche » = la touche ; « Taille » = taille de vêtement (fiche contact), « Taille|carte » et « Taille|fichier » = dimension ; « Tableau|vue » = tableau Kanban (Board) ; « Réduire|fenêtre » = réduire la fenêtre (Minimize) ; « Rétablir|défaut » = remettre la valeur d'origine (Reset, jamais « Redo »).
 Phrases : toujours entières, valeurs entre accolades (jamais un morceau « Les  » + nombre + « plus récentes ») ; questions du Journal neutres en genre quand la langue le permet (pl « Co dzisiaj napawa cię dumą? », es « ¿Qué te enorgullece hoy? »).
-Guillemets : es/it/ru/uk «…», pt/tr/hi/id/vi/zh “…”, de „…“, pl „…”, nl ‘…’, ja 「…」, ko ‘…’.
+Guillemets : es/it/ru/uk/ar «…», pt/tr/hi/id/vi/zh “…”, de „…“, pl „…”, nl ‘…’, ja 「…」, ko ‘…’.
 Pluriels (marques [one]/[other]) : pl, ru, uk → la clé [other] reçoit un objet {"few","many","other"} ; les autres langues une chaîne. zh, ja, ko, vi, id : la clé [other] sert aussi pour 1 (pas de pluriel).
 
 Modules (Accueil, Bilan, Tâches, Calendrier, Obligations, Notes, Journal, Habitudes, Focus, Projets, Listes, Contacts, Documents, Objectifs, Budget, Corbeille, Paramètres) :
@@ -29,6 +29,7 @@ Modules (Accueil, Bilan, Tâches, Calendrier, Obligations, Notes, Journal, Habit
 - zh : 主页, 回顾, 任务, 日历, 账单与合同, 笔记, 日记, 习惯, 专注, 项目, 清单, 联系人, 文档, 目标, 预算, 回收站, 设置
 - ja : ホーム, 振り返り, タスク, カレンダー, 支払いと契約, ノート, 日記, 習慣, 集中, プロジェクト, リスト, 連絡先, ドキュメント, 目標, 予算, ごみ箱, 設定
 - ko : 홈, 돌아보기, 작업, 캘린더, 청구서와 계약, 노트, 일기, 습관, 집중, 프로젝트, 목록, 연락처, 문서, 목표, 예산, 휴지통, 설정
+- ar : الرئيسية, المراجعة, المهام, التقويم, الالتزامات, الملاحظات, اليوميات, العادات, التركيز, المشاريع, القوائم, جهات الاتصال, المستندات, الأهداف, الميزانية, سلة المحذوفات, الإعدادات
 
 Termes (espace, thème, rappel, sauvegarde, capture rapide, palette de commandes, échéance, événement, étiquette, compte, mot de passe, clé de récupération, verrouiller, épingler, séance, modèle, carnet, obligation, opération (budget), dépense, revenu, catégorie) :
 - es : espacio, tema, recordatorio, copia de seguridad, captura rápida, paleta de comandos, vencimiento, evento, etiqueta, cuenta, contraseña, clave de recuperación, bloquear, anclar, sesión, plantilla, cuaderno, obligación, operación, gasto, ingreso, categoría
@@ -46,6 +47,7 @@ Termes (espace, thème, rappel, sauvegarde, capture rapide, palette de commandes
 - zh : 空间, 主题, 提醒, 备份, 快速记录, 命令面板, 截止日期, 日程, 标签, 账户, 密码, 恢复密钥, 锁定, 固定, 时段, 模板, 笔记本, 事项, 收支记录, 支出, 收入, 类别
 - ja : スペース, テーマ, リマインダー, バックアップ, クイックキャプチャ, コマンドパレット, 期限, 予定, タグ, アカウント, パスワード, 回復キー, ロック, ピン留め, セッション, テンプレート, ノートブック, 支払い項目, 取引, 支出, 収入, カテゴリ
 - ko : 공간, 테마, 알림, 백업, 빠른 기록, 명령 팔레트, 마감일, 일정, 태그, 계정, 비밀번호, 복구 키, 잠금, 고정, 세션, 템플릿, 노트북, 항목, 거래, 지출, 수입, 카테고리
+- ar : مساحة, سمة, تذكير, نسخة احتياطية, التدوين السريع, لوحة الأوامر, موعد الاستحقاق, حدث, وسم, حساب, كلمة المرور, مفتاح الاسترداد, قفل, تثبيت, جلسة, قالب, دفتر, التزام, معاملة, مصروف, دخل, فئة
 
 Thèmes Signature (Aqua, Jade, Glycine, Ambre, Nuage, Minuit) :
 - es Aqua, Jade, Glicinia, Ámbar, Nube, Medianoche · pt Aqua, Jade, Glicínia, Âmbar, Nuvem, Meia-noite · de Aqua, Jade, Glyzinie, Bernstein, Wolke, Mitternacht · it Aqua, Giada, Glicine, Ambra, Nuvola, Mezzanotte
@@ -61,17 +63,19 @@ Apparence : es Apariencia, pt Aparência, de Darstellung, it Aspetto
 - zh Aqua, 翡翠, 紫藤, 琥珀, 云朵, 午夜 ; Apparence = 外观 ; session Focus = 时段 ; vue Agenda = 日程列表
 - ja Aqua, 翡翠, 藤, 琥珀, 雲, 真夜中 ; Apparence = 外観 ; étape (objectifs) = ステップ
 - ko Aqua, 비취, 등나무, 호박, 구름, 자정 ; Apparence = 모양 ; étape (objectifs) = 단계
+- ar Aqua, يشم, الوستارية, كهرماني, سحابة, منتصف الليل ; Apparence = المظهر ; Agenda (vue) = جدول المواعيد
 
 Thèmes Nuit étoilée / Cocon / Zen (Énergie = traduction existante de « Énergie ») :
 - es Noche estrellada, Capullo, Zen · pt Noite estrelada, Casulo, Zen · de Sternennacht, Kokon, Zen · it Notte stellata, Bozzolo, Zen · nl Sterrennacht, Cocon, Zen · pl Gwiaździsta noc, Kokon, Zen
 - ru Звёздная ночь, Кокон, Дзен · uk Зоряна ніч, Кокон, Дзен · tr Yıldızlı gece, Koza, Zen · hi तारों भरी रात, कोकून, ज़ेन · id Malam berbintang, Kepompong, Zen · vi Đêm đầy sao, Kén ấm, Thiền
-- zh 星夜, 茧居, 禅意 · ja 星降る夜, コクーン, 禅 · ko 별이 빛나는 밤, 코쿤, 젠
+- zh 星夜, 茧居, 禅意 · ja 星降る夜, コクーン, 禅 · ko 별이 빛나는 밤, 코쿤, 젠 · ar ليلة مرصعة بالنجوم, شرنقة, زن
 Rendez-vous : ja 約束, zh 约会, ko 약속 ; agenda du planificateur : ja 予定, zh 日程, ko 일정 목록.
-Étape de projet (milestone) = même mot que les étapes d'objectif (es etapa, de Etappe, it tappa, nl mijlpaal, pl etap, ru этап, uk етап, tr aşama, hi पड़ाव, id tahapan, vi mốc, zh 阶段, ja ステップ, ko 단계).
+Étape de projet (milestone) = même mot que les étapes d'objectif (es etapa, de Etappe, it tappa, nl mijlpaal, pl etap, ru этап, uk етап, tr aşama, hi पड़ाव, id tahapan, vi mốc, zh 阶段, ja ステップ, ko 단계, ar مرحلة).
 « Semaine {week} · {from} – {to} » : garder « · » entouré d'espaces (le code coupe sur « · »).
 Thèmes Ardoise / Velours / Terracotta (son « Terre cuite ») :
 - es Pizarra, Terciopelo, Terracota · pt Ardósia, Veludo, Terracota · de Schiefer, Samt, Terrakotta · it Ardesia, Velluto, Terracotta · nl Leisteen, Fluweel, Terracotta · pl Łupek, Aksamit, Terakota
 - ru Сланец, Бархат, Терракота · uk Сланець, Оксамит, Теракота · tr Arduvaz, Kadife, Pişmiş toprak · hi स्लेट, मखमल, टेराकोटा · id Batu tulis, Beludru, Terakota · vi Đá phiến, Nhung, Đất nung
-- zh 石板, 丝绒, 陶土 · ja スレート, ベルベット, テラコッタ · ko 슬레이트, 벨벳, 테라코타
+- zh 石板, 丝绒, 陶土 · ja スレート, ベルベット, テラコッタ · ko 슬레이트, 벨벳, 테라코타 · ar أردواز, مخمل, التيراكوتا
 Mot de confirmation « SUPPRIMER » (comparé après toUpperCase) : éviter i/ı en turc (« KALDIR »), mot en majuscules dans les langues à casse.
 Touche Entrée : es « Intro » (corrigé), de « Eingabe », it « Invio », autres « Enter ». Toujours « Ctrl » (pas « Strg »).
+Arabe (ar, de droite à gauche) : ton formel de Windows en arabe, boutons au nom d'action (« حفظ », « إلغاء », « إنشاء »). Chiffres latins (locale `ar-u-ca-gregory-nu-latn`), calendrier grégorien. Pluriels : six formes (zero, one, two, few, many, other) ; le texte écrit pour un seul élément ne sert que pour 1. Touches en anglais (Enter, Esc, Shift, Ctrl). « Déplacer à gauche / à droite » (Kanban, catégories) se traduit à l'inverse (اليمين / اليسار), car la mise en page est retournée ; un tableau de note : « قبل » / « بعد ». Exemples de saisie : « الاتصال بالورشة 24/10 14:00 #سيارة !!! ». Boîte de réception = الوارد, rayon (liste de courses) = رف.

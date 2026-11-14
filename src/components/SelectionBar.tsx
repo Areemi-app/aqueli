@@ -7,7 +7,7 @@ import { Icon } from "./Icon";
 import { ICONS } from "./icons";
 import { tidyEntries, useContextMenu, type MenuAction, type MenuEntry } from "./ContextMenu";
 import { NO_SELECTION, pick, pickAll, pickMode, prune, type Selection } from "../lib/selection";
-import { tr } from "../i18n/i18n";
+import { isRtl, tr } from "../i18n/i18n";
 
 interface PickGesture {
   ctrlKey: boolean;
@@ -125,7 +125,7 @@ export function SelectionBar({ count, label, actions, onClear }: SelectionBarPro
             onClick={(e: ReactMouseEvent<HTMLButtonElement>) => {
               if (!a.menu) return a.run();
               const box = e.currentTarget.getBoundingClientRect();
-              openMenu({ clientX: box.left, clientY: box.top - 4, currentTarget: e.currentTarget, preventDefault: () => {}, stopPropagation: () => {} }, a.menu());
+              openMenu({ clientX: isRtl() ? box.right : box.left, clientY: box.top - 4, currentTarget: e.currentTarget, preventDefault: () => {}, stopPropagation: () => {} }, a.menu());
             }}
           >
             {a.icon && <Icon d={a.icon} size={14} stroke={2.2} />}

@@ -17,7 +17,7 @@
 }
 
 .cal-header .screen-title {
-  margin-right: 4px;
+  margin-inline-end: 4px;
 }
 
 .cal-nav {
@@ -186,7 +186,7 @@
   left: 50%;
   width: 4px;
   height: 4px;
-  margin-left: -2px;
+  margin-inline-start: -2px;
   border-radius: 2px;
   background: var(--aq-accent);
 }
@@ -209,7 +209,8 @@
   flex-shrink: 0;
   display: grid;
   grid-template-columns: var(--tg-gutter) repeat(var(--tg-cols), minmax(0, 1fr));
-  padding: 8px 10px 6px 0;
+  padding-block: 8px 6px;
+  padding-inline: 0 10px;
   border-bottom: 1px solid var(--aq-line);
 }
 
@@ -292,7 +293,8 @@
   grid-template-columns: var(--tg-gutter) repeat(var(--tg-cols), minmax(0, 1fr));
   grid-template-rows: repeat(var(--tg-rows), 24px);
   gap: 3px 0;
-  padding: 5px 10px 5px 0;
+  padding-block: 5px;
+  padding-inline: 0 10px;
   border-bottom: 1px solid var(--aq-line);
 }
 
@@ -386,7 +388,7 @@
 /* Obligations : échéance teintée de la catégorie, date limite de résiliation en alerte. */
 .tg-chip[data-kind="obligation"],
 .mv-chip[data-kind="obligation"] {
-  border-left: 3px solid var(--ev-color);
+  border-inline-start: 3px solid var(--ev-color);
   background: color-mix(in srgb, var(--ev-color) 22%, var(--aq-card));
   color: var(--aq-ink);
   cursor: pointer;
@@ -416,13 +418,13 @@
 }
 
 .tg-chip[data-clip-start] {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-start-start-radius: 2px;
+  border-end-start-radius: 2px;
 }
 
 .tg-chip[data-clip-end] {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-start-end-radius: 2px;
+  border-end-end-radius: 2px;
 }
 
 .tg-chip[data-dragging],
@@ -441,7 +443,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding-right: 10px;
+  padding-inline-end: 10px;
 }
 
 .tg-body {
@@ -452,7 +454,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  border-left: 1px solid var(--aq-line);
+  border-inline-start: 1px solid var(--aq-line);
 }
 
 .tg-col[data-weekend] {
@@ -465,8 +467,8 @@
 
 .tg-hour {
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   height: 48px;
   pointer-events: none;
 }
@@ -475,15 +477,15 @@
   content: "";
   position: absolute;
   top: 0;
-  left: var(--tg-gutter);
-  right: 0;
+  inset-inline-start: var(--tg-gutter);
+  inset-inline-end: 0;
   border-top: 1px solid var(--aq-line);
 }
 
 .tg-hour-label {
   position: absolute;
   top: -7px;
-  left: 8px;
+  inset-inline-start: 8px;
   font-size: 11px;
   font-weight: 600;
   color: var(--aq-soft);
@@ -501,7 +503,7 @@
   content: "";
   position: absolute;
   top: -5px;
-  left: -4px;
+  inset-inline-start: -4px;
   width: 8px;
   height: 8px;
   border-radius: 4px;
@@ -602,8 +604,8 @@
 
 .tg-resize {
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   height: 6px;
   cursor: ns-resize;
@@ -641,7 +643,7 @@
   grid-template-columns: repeat(7, minmax(0, 1fr));
   grid-template-rows: repeat(6, minmax(0, 1fr));
   border-top: 1px solid var(--aq-line);
-  border-left: 1px solid var(--aq-line);
+  border-inline-start: 1px solid var(--aq-line);
 }
 
 .mv-cell {
@@ -652,7 +654,7 @@
   gap: 2px;
   padding: 3px 4px;
   overflow: hidden;
-  border-right: 1px solid var(--aq-line);
+  border-inline-end: 1px solid var(--aq-line);
   border-bottom: 1px solid var(--aq-line);
 }
 
@@ -761,7 +763,7 @@
 .mv-more[data-compact] {
   position: absolute;
   top: 4px;
-  right: 4px;
+  inset-inline-end: 4px;
   min-width: 20px;
   height: 18px;
   padding: 0 5px;
@@ -811,7 +813,8 @@
   overflow-y: auto;
   list-style: none;
   margin: 0;
-  padding: 0 2px 2px 0;
+  padding-block: 0 2px;
+  padding-inline: 0 2px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -915,7 +918,7 @@
   background: var(--aq-row-gloss), color-mix(in srgb, var(--ev-color) var(--aq-row-mix), var(--aq-tile));
   color: var(--aq-ink);
   font-family: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -1130,8 +1133,8 @@
 .mv-period {
   position: absolute;
   top: 8px;
-  left: 34px;
-  right: 6px;
+  inset-inline-start: 34px;
+  inset-inline-end: 6px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1216,7 +1219,7 @@
 .av-period {
   margin: 0;
   padding: 5px 12px;
-  border-left: 3px solid var(--period-color);
+  border-inline-start: 3px solid var(--period-color);
   border-radius: 6px;
   background: color-mix(in srgb, var(--period-color) 10%, transparent);
   color: var(--aq-ink);
@@ -1226,7 +1229,7 @@
 
 /* Case trop basse : le compteur d'éléments garde sa place à droite du nom de la période. */
 .mv-cell:has(.mv-more[data-compact]) .mv-period {
-  right: 30px;
+  inset-inline-end: 30px;
 }
 
 /* ——— Affichage du calendrier (src/calendar/calendarSettings.ts) ——— */
@@ -1234,8 +1237,8 @@
 /* Hors des heures de travail : la colonne est légèrement grisée. */
 .tg-off {
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   background: color-mix(in srgb, var(--aq-soft) 7%, transparent);
   pointer-events: none;
 }
@@ -1247,7 +1250,7 @@
 
 .mv-week {
   position: absolute;
-  right: 6px;
+  inset-inline-end: 6px;
   bottom: 4px;
   color: var(--aq-soft);
   font-size: 10px;

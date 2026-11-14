@@ -13,6 +13,7 @@ import { refreshLastBackup } from "./backupState";
 import { backupsApi, formatSize, ORIGIN_LABELS, type BackupInfo, type BackupOrigin, type BackupStatus } from "./backupsApi";
 import { backupDate, RestoreDialog } from "./RestoreDialog";
 import { locale, tr, trn } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 /** Sauvegardes affichées ; les autres restent dans le dossier. */
 export const SHOWN_BACKUPS = 5;
@@ -70,7 +71,7 @@ export function BackupsPanel() {
     setBusy(true);
     try {
       const { external } = await backupsApi.create();
-      notify(external ? tr("Sauvegarde faite, sur ce PC et sur la destination externe.") : tr("Sauvegarde faite."));
+      notify(external ? (isLinux ? tr("Sauvegarde faite, sur cet ordinateur et sur la destination externe.") : tr("Sauvegarde faite, sur ce PC et sur la destination externe.")) : tr("Sauvegarde faite."));
       refresh();
     } catch (err) {
       fail(err);
@@ -227,7 +228,7 @@ export function BackupsPanel() {
                   {status.lastExternal ? tr(" · dernière copie le {shortDate}", { shortDate: shortDate(status.lastExternal) }) : ""}
                 </>
               ) : (
-                tr("Aucune. Une clé USB ou un disque externe protège les sauvegardes d'une panne du PC.")
+                isLinux ? tr("Aucune. Une clé USB ou un disque externe protège les sauvegardes d'une panne de l'ordinateur.") : tr("Aucune. Une clé USB ou un disque externe protège les sauvegardes d'une panne du PC.")
               )}
             </span>
           </div>
@@ -255,7 +256,7 @@ export function BackupsPanel() {
         <div className="setting-row">
           <div className="setting-text">
             <span className="setting-label">{tr("Exporter le compte")}</span>
-            <span className="setting-desc">{tr("Un seul fichier chiffré, à restaurer ici ou sur un autre PC avec le mot de passe actuel.")}</span>
+            <span className="setting-desc">{isLinux ? tr("Un seul fichier chiffré, à restaurer ici ou sur un autre ordinateur avec le mot de passe actuel.") : tr("Un seul fichier chiffré, à restaurer ici ou sur un autre PC avec le mot de passe actuel.")}</span>
           </div>
           <button type="button" className="btn-glass btn-glass--sm" onClick={() => void exportAccount()}>
             {tr("Exporter…")}
@@ -264,7 +265,7 @@ export function BackupsPanel() {
         <div className="setting-row">
           <div className="setting-text">
             <span className="setting-label">{tr("Restaurer depuis un fichier")}</span>
-            <span className="setting-desc">{tr("Sauvegarde plus ancienne, d'une clé USB, d'un disque ou d'un autre PC.")}</span>
+            <span className="setting-desc">{isLinux ? tr("Sauvegarde plus ancienne, d'une clé USB, d'un disque ou d'un autre ordinateur.") : tr("Sauvegarde plus ancienne, d'une clé USB, d'un disque ou d'un autre PC.")}</span>
           </div>
           <button type="button" className="btn-glass btn-glass--sm" onClick={() => void restoreFromFile()}>
             {tr("Choisir…")}

@@ -13,6 +13,7 @@ import { accountsApi } from "./accountsApi";
 import { accountLabel, openAccount, useAccounts } from "./AccountSwitcher";
 import { AvatarImage } from "./AvatarImage";
 import { AvatarPicker } from "./AvatarPicker";
+import { isLinux } from "../lib/platform";
 
 /**
  * Pseudo et image de profil, enregistrés aussitôt (le pseudo en quittant le champ). La fenêtre
@@ -150,7 +151,7 @@ export function ProfileSection() {
 export function AccountsSection() {
   return (
     <div className="settings-section">
-      <h2 className="settings-heading">{tr("Comptes de ce PC")}</h2>
+      <h2 className="settings-heading">{isLinux ? tr("Comptes de cet ordinateur") : tr("Comptes de ce PC")}</h2>
       <div className="settings-card glass">
         <AccountsCard />
       </div>

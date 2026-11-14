@@ -65,7 +65,8 @@ unsafe extern "system" fn window_proc(
     let session_locked = msg == WM_WTSSESSION_CHANGE && wparam.0 as u32 == WTS_SESSION_LOCK;
     let suspending = msg == WM_POWERBROADCAST && wparam.0 as u32 == PBT_APMSUSPEND;
     if session_locked || suspending {
-        if let Some(app) = APP.get() {
+        // Sauf si la personne a choisi de ne pas verrouiller avec Windows (Paramètres › Sécurité).
+        if let Some(app) = APP.get().filter(|app| super::background::settings(app).lock_with_windows) {
             lock_everything(app);
         }
     }

@@ -19,6 +19,7 @@ fn table_of(kind: &str) -> Option<&'static str> {
         "dossiers-notes" => Some("note_folders"),
         "categories-budget" => Some("budget_categories"),
         "categories-contacts" => Some("contact_groups"),
+        "epargne" => Some("savings_goals"),
         _ => None,
     }
 }

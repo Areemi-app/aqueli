@@ -14,6 +14,7 @@ import { getModule, type ModuleKey } from "../modules/modules";
 import type { TourRequestId } from "../tour/tourRequest";
 import { SHORTCUTS_TOPIC } from "./helpRoutes";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 export { SHORTCUTS_TOPIC, topicForRoute } from "./helpRoutes";
 export { fillShortcuts } from "./shortcutTokens";
@@ -60,7 +61,7 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
     title: tr("Premiers pas"),
     ...plain(ICONS.bulb),
     group: "debuter",
-    intro: tr("Aqueli rassemble vos tâches, votre agenda, vos notes et votre suivi personnel dans une seule fenêtre. Tout reste sur ce PC, chiffré, sans connexion à Internet."),
+    intro: isLinux ? tr("Aqueli rassemble vos tâches, votre agenda, vos notes et votre suivi personnel dans une seule fenêtre. Tout reste sur cet ordinateur, chiffré, sans connexion à Internet.") : tr("Aqueli rassemble vos tâches, votre agenda, vos notes et votre suivi personnel dans une seule fenêtre. Tout reste sur ce PC, chiffré, sans connexion à Internet."),
     basics: [
       {
         title: tr("Se repérer dans la fenêtre"),
@@ -137,6 +138,13 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
       {
         title: tr("Garder un élément à portée de main"),
         text: [tr("Faites un clic droit sur un élément, puis « Ajouter à la barre latérale ». Il rejoint la rubrique « Épinglés » et s'ouvre ensuite d'un clic.")],
+      },
+      {
+        title: tr("Réduire la barre latérale"),
+        text: [
+          tr("Le bouton du bas, ou {sidebar}, la réduit à ses icônes pour laisser plus de place à l'écran. Elle se déploie alors au passage de la souris."),
+          tr("Paramètres › Modules propose aussi de la masquer sur le bord de la fenêtre. Il n'en reste qu'un mince liseré, qui s'ouvre quand la souris s'en approche."),
+        ],
       },
       {
         title: tr("Rappels et aide"),
@@ -243,6 +251,13 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
         text: [
           tr("« @Léa » dans la phrase relie la tâche à la fiche de Léa, et son nom reste dans le titre."),
           tr("Si plusieurs contacts portent ce prénom, écrivez le nom complet, comme « @Léa_Bernard »."),
+        ],
+      },
+      {
+        title: tr("Sous-tâches sur plusieurs niveaux"),
+        text: [
+          tr("Une sous-tâche peut en contenir d'autres, sur cinq niveaux. Alt+Maj+→ la range sous celle du dessus, et Alt+Maj+← la remonte d'un niveau."),
+          tr("Le clic droit propose aussi « Ajouter une sous-tâche dedans ». La flèche devant une sous-tâche replie ce qu'elle contient. Cocher une sous-tâche coche tout ce qu'elle contient."),
         ],
       },
       {
@@ -726,7 +741,7 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
   },
   {
     ...moduleTopic("budget"),
-    intro: tr("Le Budget suit vos dépenses et vos revenus, mois par mois, uniquement sur ce PC."),
+    intro: isLinux ? tr("Le Budget suit vos dépenses et vos revenus, mois par mois, uniquement sur cet ordinateur.") : tr("Le Budget suit vos dépenses et vos revenus, mois par mois, uniquement sur ce PC."),
     basics: [
       {
         title: tr("Noter une opération"),
@@ -742,6 +757,13 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
       {
         title: tr("Le mois d'un coup d'œil"),
         text: [tr("Sous les totaux s'affichent les charges fixes, les revenus à venir et ce qui reste par jour jusqu'à la fin du mois.")],
+      },
+      {
+        title: tr("Épargner pour un projet"),
+        text: [
+          tr("La carte « Épargne », à droite, réunit vos objectifs : des vacances, un apport, un coussin de sécurité. Chacun a un montant à atteindre et, si vous le souhaitez, une date."),
+          tr("« Mettre de côté » ajoute un versement, « Retirer » en déduit un. Avec une date, Aqueli calcule ce qu'il reste à épargner chaque mois. Ces versements ne comptent pas dans les dépenses du mois."),
+        ],
       },
     ],
     advanced: [
@@ -820,7 +842,11 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
     advanced: [
       {
         title: tr("Le dossier d'import"),
-        text: [tr("Un fichier déposé dans le dossier Documents\\Aqueli\\Import est repéré en quelques secondes, et un message propose de l'importer. Paramètres › Import liste les fichiers en attente.")],
+        text: [
+          isLinux
+            ? tr("Un fichier déposé dans le dossier Documents/Aqueli/Import est repéré en quelques secondes, et un message propose de l'importer. Paramètres › Import liste les fichiers en attente.")
+            : tr("Un fichier déposé dans le dossier Documents\\Aqueli\\Import est repéré en quelques secondes, et un message propose de l'importer. Paramètres › Import liste les fichiers en attente."),
+        ],
       },
       {
         title: tr("Imprimer"),
@@ -847,18 +873,21 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
     title: tr("Sécurité et sauvegardes"),
     ...plain(ICONS.lock),
     group: "reglages",
-    intro: tr("Vos données sont chiffrées sur ce PC, et ne sortent de votre compte que lorsque vous le décidez."),
+    intro: isLinux ? tr("Vos données sont chiffrées sur cet ordinateur, et ne sortent de votre compte que lorsque vous le décidez.") : tr("Vos données sont chiffrées sur ce PC, et ne sortent de votre compte que lorsque vous le décidez."),
     basics: [
       {
         title: tr("Verrouiller"),
         text: [
           tr("Le cadenas de la barre de titre, ou {lock}, verrouille Aqueli tout de suite."),
-          tr("Aqueli se verrouille aussi de lui-même après un moment d'inactivité, à la mise en veille et au verrouillage de Windows."),
+          isLinux
+            ? tr("Aqueli se verrouille aussi de lui-même après un moment d'inactivité, à la mise en veille et au verrouillage de la session.")
+            : tr("Aqueli se verrouille aussi de lui-même après un moment d'inactivité, à la mise en veille et au verrouillage de Windows."),
+          tr("Paramètres › Sécurité règle chacun de ces verrouillages. Le délai d'inactivité peut aussi être « Jamais »."),
         ],
       },
       {
         title: tr("Déverrouiller"),
-        text: [tr("Windows Hello déverrouille au quotidien. Le mot de passe reste demandé après chaque démarrage de Windows.")],
+        text: [isLinux ? tr("Votre mot de passe déverrouille Aqueli.") : tr("Windows Hello déverrouille au quotidien. Le mot de passe reste demandé après chaque démarrage de Windows.")],
       },
       {
         title: tr("Les sauvegardes"),
@@ -867,15 +896,15 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
       {
         title: tr("La clé de récupération"),
         text: [
-          tr("C'est le seul moyen de retrouver votre compte si vous oubliez votre mot de passe. Conservez-la en lieu sûr, hors de ce PC."),
+          isLinux ? tr("C'est le seul moyen de retrouver votre compte si vous oubliez votre mot de passe. Conservez-la en lieu sûr, hors de cet ordinateur.") : tr("C'est le seul moyen de retrouver votre compte si vous oubliez votre mot de passe. Conservez-la en lieu sûr, hors de ce PC."),
           tr("Aqueli n'utilise ni adresse e-mail ni service en ligne : personne d'autre ne peut rouvrir votre compte à votre place."),
         ],
       },
     ],
     advanced: [
       {
-        title: tr("Une copie hors du PC"),
-        text: [tr("Une destination externe, clé USB ou disque, protège vos données d'une panne du PC. Elle se choisit dans Paramètres › Sauvegardes.")],
+        title: isLinux ? tr("Une copie hors de l'ordinateur") : tr("Une copie hors du PC"),
+        text: [isLinux ? tr("Une destination externe, clé USB ou disque, protège vos données d'une panne de l'ordinateur. Elle se choisit dans Paramètres › Sauvegardes.") : tr("Une destination externe, clé USB ou disque, protège vos données d'une panne du PC. Elle se choisit dans Paramètres › Sauvegardes.")],
       },
       {
         title: tr("Restaurer"),
@@ -889,17 +918,24 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
         ],
       },
       {
-        title: tr("Plusieurs comptes sur ce PC"),
+        title: isLinux ? tr("Plusieurs comptes sur cet ordinateur") : tr("Plusieurs comptes sur ce PC"),
         text: [
           tr("Chaque personne de la maison peut avoir son compte, avec son pseudo, son mot de passe, sa clé de récupération et ses données chiffrées à part."),
           tr("« Ajouter un compte », en bas de l'écran de verrouillage ou dans Paramètres › Sécurité, en crée un. Un clic sur un autre compte de l'écran de verrouillage l'ouvre, et Aqueli redémarre sur lui."),
-          tr("Les rappels et la capture rapide suivent le compte ouvert. Chaque compte ajouté a son propre dossier d'import, à son nom, dans Documents\\Aqueli."),
+          isLinux
+            ? tr("Les rappels et la capture rapide suivent le compte ouvert. Chaque compte ajouté a son propre dossier d'import, à son nom, dans Documents/Aqueli.")
+            : tr("Les rappels et la capture rapide suivent le compte ouvert. Chaque compte ajouté a son propre dossier d'import, à son nom, dans Documents\\Aqueli."),
         ],
       },
-      {
-        title: tr("Mode discret"),
-        text: [tr("Le mode discret, dans Paramètres › Sécurité, cache le contenu d'Aqueli dans les captures et les partages d'écran.")],
-      },
+      // Le mode discret n'existe que sous Windows.
+      ...(isLinux
+        ? []
+        : [
+            {
+              title: tr("Mode discret"),
+              text: [tr("Le mode discret, dans Paramètres › Sécurité, cache le contenu d'Aqueli dans les captures et les partages d'écran.")],
+            },
+          ]),
       {
         title: tr("Journal de sécurité"),
         text: [tr("Paramètres › Sécurité garde la trace des déverrouillages, des essais erronés et des exports.")],
@@ -909,8 +945,15 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
         text: [tr("« Déplacer… », dans Paramètres › Sauvegardes, copie vos données vers un autre dossier ou un autre disque, vérifie la copie, efface l'ancien emplacement, puis redémarre Aqueli. Ce disque doit rester branché.")],
       },
       {
+        title: tr("Version portable"),
+        text: [
+          tr("Aqueli existe aussi en fichier .zip, sans installation. Extrayez le dossier, par exemple sur une clé USB, puis ouvrez Aqueli.exe."),
+          tr("Les données, les réglages et le dossier d'import restent dans ce dossier. Pour changer de PC, quittez Aqueli par son icône près de l'horloge, puis copiez le dossier entier."),
+        ],
+      },
+      {
         title: tr("Supprimer le compte"),
-        text: [tr("Paramètres › Sécurité supprime le compte ouvert après votre mot de passe et un mot de confirmation. Les fichiers sont écrasés puis effacés. Les autres comptes de ce PC et les sauvegardes copiées ailleurs ne sont pas touchés.")],
+        text: [isLinux ? tr("Paramètres › Sécurité supprime le compte ouvert après votre mot de passe et un mot de confirmation. Les fichiers sont écrasés puis effacés. Les autres comptes de cet ordinateur et les sauvegardes copiées ailleurs ne sont pas touchés.") : tr("Paramètres › Sécurité supprime le compte ouvert après votre mot de passe et un mot de confirmation. Les fichiers sont écrasés puis effacés. Les autres comptes de ce PC et les sauvegardes copiées ailleurs ne sont pas touchés.")],
       },
     ],
   },
@@ -931,7 +974,7 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
       },
       {
         title: tr("La langue"),
-        text: [tr("Paramètres › Langue propose 17 langues. Les dates et les nombres suivent la langue choisie.")],
+        text: [tr("Paramètres › Langue propose 18 langues. Les dates et les nombres suivent la langue choisie.")],
       },
       {
         title: tr("Les sons"),
@@ -949,7 +992,9 @@ export const HELP_TOPICS: readonly HelpTopic[] = [
       },
       {
         title: tr("Accessibilité"),
-        text: [tr("Paramètres › Accessibilité réduit les animations et la transparence, renforce le contraste et agrandit le texte. Aqueli suit aussi les réglages de Windows.")],
+        text: [isLinux
+            ? tr("Paramètres › Accessibilité réduit les animations et la transparence, et renforce le contraste. Aqueli suit aussi les réglages du système.")
+            : tr("Paramètres › Accessibilité réduit les animations et la transparence, et renforce le contraste. Aqueli suit aussi les réglages de Windows."), tr("« Taille de l'interface », sur la même page, rend toute la fenêtre plus petite ou plus grande, de 75 % à 130 %.")],
       },
       {
         title: tr("Vos raccourcis"),

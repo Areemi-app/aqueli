@@ -42,7 +42,7 @@ import { SlashMenu } from "./SlashMenu";
 import { outlineOf, readingMinutes, type OutlineEntry } from "./outline";
 import type { SlashHandlers, SlashMenuState } from "./slash";
 import { Toolbar } from "./Toolbar";
-import { tr, trn } from "../../i18n/i18n";
+import { isRtl, tr, trn } from "../../i18n/i18n";
 
 /** Délai d'enregistrement après la dernière frappe. */
 const SAVE_DELAY_MS = 700;
@@ -486,7 +486,7 @@ function NoteEditorBody({ note, onOpen, focusTitle, fresh, onDetach, onOpenConta
             onClick={(e) => {
               const r = e.currentTarget.getBoundingClientRect();
               openMenu(
-                { clientX: r.right - 220, clientY: r.bottom + 4, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
+                { clientX: isRtl() ? r.left + 220 : r.right - 220, clientY: r.bottom + 4, currentTarget: e.currentTarget, preventDefault: () => undefined, stopPropagation: () => undefined },
                 noteMenu(summary, {
                   move: () => setDialog("move"),
                   saveAsTemplate: () => setDialog("template"),

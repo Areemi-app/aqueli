@@ -1,0 +1,30 @@
+Aqueli - portable version
+
+This file makes Aqueli portable. Keep it next to Aqueli.exe.
+
+Everything stays in this folder:
+  Data         your accounts, encrypted database, settings and backups
+  Documents    the Import folder and the import guide
+
+To use Aqueli on another PC or from a USB drive, quit Aqueli first
+(right-click its icon near the clock, then "Quit Aqueli"), then copy the whole folder.
+Your password always opens your account. Turn Windows Hello on again
+on each PC, in Settings > Security.
+
+Aqueli is free software (GPL-3.0-or-later), made by Areemi.
+https://github.com/Areemi-app/aqueli
+
+------------------------------------------------------------------------------
+
+Aqueli - version portable
+
+Ce fichier rend Aqueli portable. Gardez-le à côté d'Aqueli.exe.
+
+Tout reste dans ce dossier :
+  Data         vos comptes, la base chiffrée, les réglages et les sauvegardes
+  Documents    le dossier d'import et le guide d'import
+
+Pour utiliser Aqueli sur un autre PC ou depuis une clé USB, quittez d'abord Aqueli
+(clic droit sur son icône près de l'horloge, puis « Quitter Aqueli »), puis copiez le dossier entier.
+Votre mot de passe ouvre toujours votre compte. Réactivez Windows Hello
+sur chaque PC, dans Paramètres › Sécurité.

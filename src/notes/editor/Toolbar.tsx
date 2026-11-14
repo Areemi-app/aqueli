@@ -7,7 +7,7 @@ import { ICONS } from "../../components/icons";
 import { Select } from "../../components/SelectRow";
 import { useDismiss } from "../../lib/useDismiss";
 import { HIGHLIGHTS } from "./extensions";
-import { tr } from "../../i18n/i18n";
+import { isRtl, readingKey, tr } from "../../i18n/i18n";
 
 type Block = "p" | "h1" | "h2" | "h3";
 const BLOCKS: { value: Block; label: string }[] = [
@@ -26,7 +26,7 @@ interface ToolbarProps {
 /** Ouvre un menu sous le bouton, à la souris comme au clavier. */
 function below(button: HTMLElement) {
   const r = button.getBoundingClientRect();
-  return { clientX: r.left, clientY: r.bottom + 4, currentTarget: button, preventDefault: () => undefined, stopPropagation: () => undefined };
+  return { clientX: isRtl() ? r.right : r.left, clientY: r.bottom + 4, currentTarget: button, preventDefault: () => undefined, stopPropagation: () => undefined };
 }
 
 /** Barre de mise en forme de l'éditeur de notes. Flèches gauche et droite : bouton voisin. */
@@ -81,7 +81,7 @@ export function Toolbar({ editor, onImage }: ToolbarProps) {
     const items = [...e.currentTarget.querySelectorAll<HTMLElement>(".note-tool, select")];
     const index = items.indexOf(document.activeElement as HTMLElement);
     const next =
-      e.key === "Home" ? 0 : e.key === "End" ? items.length - 1 : (index + (e.key === "ArrowRight" ? 1 : -1) + items.length) % items.length;
+      e.key === "Home" ? 0 : e.key === "End" ? items.length - 1 : (index + (readingKey(e.key) === "ArrowRight" ? 1 : -1) + items.length) % items.length;
     items[next]?.focus();
     e.preventDefault();
   };

@@ -13,7 +13,7 @@ import { CalendarDisplaySettings } from "./CalendarDisplaySettings";
 import { TRADITIONS, type TraditionId } from "./traditions";
 import { tr } from "../i18n/i18n";
 
-const COUNTRY_GROUPS: Record<string, string> = { France: tr("France"), Europe: tr("Europe"), "Amérique du Nord": tr("Amérique du Nord"), Afrique: tr("Afrique") };
+const COUNTRY_GROUPS: Record<string, string> = { France: tr("France"), Europe: tr("Europe"), "Amérique du Nord": tr("Amérique du Nord"), Afrique: tr("Afrique"), Océanie: tr("Océanie") };
 const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.id, label: c.name, ...(c.group ? { group: COUNTRY_GROUPS[c.group] } : {}) }));
 
 /** Ce que chaque tradition ajoute au calendrier. */

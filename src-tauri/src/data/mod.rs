@@ -19,6 +19,7 @@ pub mod spaces;
 pub mod symbols;
 pub mod recurrence;
 pub mod reviews;
+pub mod savings;
 pub mod security;
 pub mod settings;
 pub mod tasks;

@@ -1,7 +1,8 @@
 /**
  * Paramètres › Sauvegardes › Emplacement des données (cahier des charges § 9) : le dossier où
  * vivent les données, à déplacer vers un autre disque ou à ramener au dossier d'origine.
- * Mot de passe exigé ; Aqueli redémarre ensuite sur le nouvel emplacement.
+ * Mot de passe exigé ; Aqueli redémarre ensuite sur le nouvel emplacement. La version portable
+ * garde ses données dans son dossier, sans déplacement.
  */
 import { useEffect, useId, useState, type FormEvent } from "react";
 import { Dialog } from "../components/Dialog";
@@ -12,6 +13,7 @@ import { stopSavingPrefs } from "../lib/storage";
 import { vaultApi, type DataPlace, type VaultError } from "../vault/api";
 import { vaultErrorMessage } from "../vault/messages";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 /** Emplacement des données, lu une fois. */
 export function useDataPlace(): DataPlace | null {
@@ -70,7 +72,9 @@ function MoveDialog({ toDefault, onClose }: { toDefault: boolean; onClose: () =>
         <form className="settings-form" onSubmit={(e) => void submit(e)} noValidate>
           <p className="onb-text">
             {toDefault
-              ? tr("Les données reviennent dans le dossier d'origine de ce PC (%APPDATA%\\Aqueli).")
+              ? isLinux
+                ? tr("Les données reviennent dans le dossier d'origine de cet ordinateur (~/.local/share/Aqueli).")
+                : tr("Les données reviennent dans le dossier d'origine de ce PC (%APPDATA%\\Aqueli).")
               : tr("Les données sont copiées dans le dossier choisi, puis vérifiées. Elles sont ensuite effacées de l'emplacement actuel.")}{" "}
             {tr("Aqueli redémarre ensuite.")}
           </p>
@@ -122,19 +126,25 @@ export function DataLocationSection() {
           <div className="setting-text">
             <span className="setting-label">{tr("Dossier des données")}</span>
             <span className="setting-desc data-path">{place.path}</span>
-            {!place.movable && <span className="setting-desc">{tr("Déplacement indisponible dans cette version.")}</span>}
-          </div>
-          <div className="data-place-actions">
-            {place.moved && (
-              <button type="button" className="btn-glass btn-glass--sm" disabled={!place.movable} onClick={() => setDialog("origine")}>
-                {tr("Revenir au dossier d'origine…")}
-              </button>
+            {place.portable ? (
+              <span className="setting-desc">{tr("Version portable. Les données restent dans le dossier d'Aqueli.")}</span>
+            ) : (
+              !place.movable && <span className="setting-desc">{tr("Déplacement indisponible dans cette version.")}</span>
             )}
-            <button type="button" className="btn-glass btn-glass--sm" disabled={!place.movable} onClick={() => setDialog("choisir")}>
-              <Icon d={ICONS.folder} size={14} stroke={2.2} />
-              {tr("Déplacer…")}
-            </button>
           </div>
+          {!place.portable && (
+            <div className="data-place-actions">
+              {place.moved && (
+                <button type="button" className="btn-glass btn-glass--sm" disabled={!place.movable} onClick={() => setDialog("origine")}>
+                  {tr("Revenir au dossier d'origine…")}
+                </button>
+              )}
+              <button type="button" className="btn-glass btn-glass--sm" disabled={!place.movable} onClick={() => setDialog("choisir")}>
+                <Icon d={ICONS.folder} size={14} stroke={2.2} />
+                {tr("Déplacer…")}
+              </button>
+            </div>
+          )}
         </div>
       </div>
       {dialog && <MoveDialog toDefault={dialog === "origine"} onClose={() => setDialog(null)} />}

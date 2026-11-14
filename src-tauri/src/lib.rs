@@ -5,6 +5,7 @@ mod backups;
 mod capture;
 mod focus_mini;
 mod note_window;
+mod portable;
 mod commands;
 mod data;
 mod data_location;
@@ -36,39 +37,75 @@ pub(crate) fn unix_now() -> i64 {
     std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map_or(0, |d| d.as_secs() as i64)
 }
 
-/// Aqueli a été lancé au démarrage de Windows, sans fenêtre.
+/// Aqueli a été lancé au démarrage de Windows, sans fenêtre, ou pour la seule capture rapide.
 fn started_hidden() -> bool {
-    std::env::args().any(|a| a == "--arriere-plan")
+    std::env::args().any(|a| a == "--arriere-plan" || a == hotkey::CAPTURE_ARG)
+}
+
+/// Lancé (ou relancé) pour ouvrir la capture rapide : raccourci du bureau sous Wayland.
+fn asks_capture(args: &[String]) -> bool {
+    args.iter().any(|a| a == hotkey::CAPTURE_ARG)
 }
 
 /// Nom du dossier des données, dans %APPDATA%.
 const DATA_FOLDER: &str = "Aqueli";
 
 /// Dossier des données : %APPDATA%\Aqueli (cahier des charges § 9), repris de l'ancien nom
-/// au besoin, ou l'emplacement choisi dans les Paramètres (data_location.rs). En développement
-/// seulement, AQUELI_DATA_DIR permet de tester sur un dossier jetable (sans déplacement possible).
+/// au besoin, ou l'emplacement choisi dans les Paramètres (data_location.rs) ; « Data » à côté
+/// d'Aqueli.exe pour la version portable (portable.rs). En développement seulement,
+/// AQUELI_DATA_DIR permet de tester sur un dossier jetable (sans déplacement possible).
 fn data_place(app: &tauri::App) -> Result<data_location::Place, Box<dyn std::error::Error>> {
+    let fixed = |dir: std::path::PathBuf, portable: bool| {
+        let location = data_location::Location { dir: dir.clone(), moved: false };
+        data_location::Place { default_dir: dir, location, movable: false, portable }
+    };
     #[cfg(debug_assertions)]
     if let Some(dir) = std::env::var_os("AQUELI_DATA_DIR") {
-        let dir = std::path::PathBuf::from(dir);
-        let location = data_location::Location { dir: dir.clone(), moved: false };
-        return Ok(data_location::Place { default_dir: dir, location, movable: false });
+        return Ok(fixed(dir.into(), false));
+    }
+    if let Some(folder) = portable::folder() {
+        return Ok(fixed(portable::data_dir(folder), true));
     }
     let base = app.path().data_dir()?;
     let default_dir = legacy::adopt_dir(&base.join(legacy::OLD_DATA_FOLDER), &base.join(DATA_FOLDER));
     let location = data_location::resolve(&default_dir);
-    Ok(data_location::Place { default_dir, location, movable: true })
+    Ok(data_location::Place { default_dir, location, movable: true, portable: false })
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let context = tauri::generate_context!();
-    // Position de la fenêtre et préférences d'affichage enregistrées sous l'ancien nom.
-    legacy::adopt_app_folders(&context.config().identifier);
+    // Pilote NVIDIA sous Linux : le rendu de WebKitGTK par « DMA-BUF » laisse souvent la fenêtre
+    // vide ; le rendu classique le remplace (sauf réglage contraire de la personne).
+    #[cfg(target_os = "linux")]
+    if std::path::Path::new("/proc/driver/nvidia").exists() && std::env::var_os("WEBKIT_DISABLE_DMABUF_RENDERER").is_none() {
+        std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+    }
+    // Version portable ouverte depuis le .zip, ou dans un dossier en lecture seule : rien ne démarre.
+    if let Err(problem) = portable::check() {
+        portable::explain(problem);
+        return;
+    }
+    let mut context = tauri::generate_context!();
+    if let Some(folder) = portable::folder() {
+        // Position des fenêtres et données de WebView2 dans le dossier portable, et identifiant à
+        // part pour s'ouvrir à côté d'une version installée.
+        let config = context.config_mut();
+        config.app.app_directories_override = Some(tauri::utils::config::AppDirectoriesOverride::Root(portable::app_dir(folder)));
+        config.identifier = portable::IDENTIFIER.into();
+    } else {
+        // Position de la fenêtre et préférences d'affichage enregistrées sous l'ancien nom.
+        legacy::adopt_app_folders(&context.config().identifier);
+    }
 
     tauri::Builder::default()
         // Doit être la première extension : un second lancement ne fait que ramener la fenêtre.
-        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| background::show_main(app)))
+        .plugin(tauri_plugin_single_instance::init(|app, args, _cwd| {
+            if asks_capture(&args) {
+                capture::show(app);
+            } else {
+                background::show_main(app);
+            }
+        }))
         // Taille, position et état agrandi retenus d'une ouverture à l'autre.
         // La fenêtre reste cachée jusqu'à ce que l'interface soit dessinée (pas de flash blanc).
         .plugin(
@@ -103,16 +140,31 @@ pub fn run() {
             app.manage(backups::PickedFile::default());
             app.manage(import::ChosenFiles::default());
 
-            // Notifications Windows : nom et icône d'Aqueli.
-            #[cfg(windows)]
-            {
-                // À la racine : commune à tous les comptes.
+            // Notifications : nom et icône d'Aqueli, à la racine (commune à tous les comptes).
+            #[cfg(any(windows, target_os = "linux"))]
+            let icon = {
                 let icon = root.join("icone-notifications.png");
                 if !icon.exists() && !missing {
                     let _ = std::fs::create_dir_all(&root);
                     let _ = files::write_atomic(&icon, include_bytes!("../icons/128x128.png"));
                 }
+                icon
+            };
+            #[cfg(target_os = "linux")]
+            {
+                system::notify_linux::set_icon(&icon);
+                // Version portable lancée avec la session : le lancement suit le dossier déplacé.
+                if portable::is_portable() && system::autostart::is_enabled() {
+                    let _ = system::autostart::set(true);
+                }
+            }
+            #[cfg(windows)]
+            {
                 system::notify::register(&icon);
+                // Version portable lancée avec Windows : le lancement suit le dossier déplacé.
+                if portable::is_portable() && system::autostart::is_enabled() {
+                    let _ = system::autostart::set(true);
+                }
             }
             background::install_tray(app)?;
             background::start_reminders(app.handle().clone());
@@ -128,13 +180,19 @@ pub fn run() {
                 diagnostic::note(app.handle(), "capture rapide : raccourci indisponible");
             }
             let handle = app.handle().clone();
+            let capture_now = asks_capture(&std::env::args().collect::<Vec<_>>());
             std::thread::spawn(move || {
-                std::thread::sleep(Duration::from_secs(4));
+                std::thread::sleep(Duration::from_millis(if capture_now { 500 } else { 4000 }));
                 let target = handle.clone();
                 let _ = handle.run_on_main_thread(move || {
-                    let _ = capture::prepare(&target);
+                    if capture_now {
+                        capture::show(&target);
+                    } else {
+                        let _ = capture::prepare(&target);
+                    }
                 });
             });
+            #[cfg_attr(not(windows), allow(unused_mut))]
             let mut vault = Vault::new(dir);
             // Windows Hello n'est accepté que dans la session Windows du dernier mot de passe.
             #[cfg(windows)]
@@ -146,6 +204,9 @@ pub fn run() {
             if let Some(window) = app.get_webview_window("main") {
                 system::session::watch(app.handle(), &window);
             }
+            // Sous Linux : verrouillage de la session et veille, d'après logind.
+            #[cfg(target_os = "linux")]
+            system::session::watch(app.handle());
 
             // Fermer la fenêtre la cache (et verrouille) : Aqueli reste en arrière-plan.
             if let Some(window) = app.get_webview_window("main") {
@@ -194,6 +255,7 @@ pub fn run() {
             commands::capture_show,
             commands::hotkey_get,
             commands::hotkey_set,
+            commands::hotkey_desktop,
             commands::backups_status,
             commands::backups_list,
             commands::backups_create,
@@ -323,6 +385,14 @@ pub fn run() {
             commands::transactions_delete,
             commands::transactions_restore,
             commands::transactions_generate,
+            commands::savings_list,
+            commands::savings_create,
+            commands::savings_update,
+            commands::savings_delete,
+            commands::savings_restore,
+            commands::savings_entries_list,
+            commands::savings_entries_create,
+            commands::savings_entries_delete,
             commands::goals_list,
             commands::goals_create,
             commands::goals_update,

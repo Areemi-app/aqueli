@@ -26,7 +26,7 @@ import { ageAt, contactName, daysUntilBirthday, INFO_STYLE, MAX_FIELDS, nextBirt
 import { Avatar } from "./ContactEditor";
 import { useContacts } from "./ContactsProvider";
 import { KeepInTouch } from "./KeepInTouch";
-import { locale, tr, trValue } from "../i18n/i18n";
+import { isRtl, locale, tr, trValue } from "../i18n/i18n";
 
 /** Copie dans le presse-papiers, avec un message. */
 export function useCopy(): (text: string, done: string) => void {
@@ -132,7 +132,8 @@ function CardStyler({ contact }: { contact: Contact }) {
   const { update, contacts } = useContacts();
   const bulk = useBulk();
   // Position du panneau, sous le bouton ; affiché par-dessus tout (la carte rogne ses bords).
-  const [at, setAt] = useState<{ top: number; right: number } | null>(null);
+  /** Sous le bouton, calé sur son bord de fin (droit, ou gauche de droite à gauche). */
+  const [at, setAt] = useState<{ top: number; end: number } | null>(null);
   const button = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const open = at !== null;
@@ -155,7 +156,7 @@ function CardStyler({ contact }: { contact: Contact }) {
   const toggle = () => {
     if (open) return setAt(null);
     const r = button.current?.getBoundingClientRect();
-    if (r) setAt({ top: r.bottom + 6, right: Math.max(8, window.innerWidth - r.right) });
+    if (r) setAt({ top: r.bottom + 6, end: Math.max(8, isRtl() ? r.left : window.innerWidth - r.right) });
   };
   const others = contacts.filter((c) => c.id !== contact.id && themeOf(c).id !== current.id);
   return (
@@ -168,7 +169,7 @@ function CardStyler({ contact }: { contact: Contact }) {
           <div
             ref={panel}
             className="card-styler glass-popover"
-            style={{ top: at.top, right: at.right, maxHeight: `calc(100vh - ${at.top + 16}px)` }}
+            style={{ top: at.top, insetInlineEnd: at.end, maxHeight: `calc(100vh - ${at.top + 16}px)` }}
             role="dialog"
             aria-label={tr("Thème de la carte")}
             onKeyDown={(e) => {

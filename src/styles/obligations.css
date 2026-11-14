@@ -61,7 +61,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 8px 0 10px;
+  padding-block: 0;
+  padding-inline: 10px 8px;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
   background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
@@ -91,7 +92,7 @@
   background: transparent;
   color: var(--aq-ink);
   font-family: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -142,7 +143,7 @@
 .obl-due {
   flex-shrink: 0;
   min-width: 104px;
-  text-align: right;
+  text-align: end;
   font-size: 12.5px;
   font-weight: 600;
   color: var(--aq-soft);
@@ -229,7 +230,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin: 8px 0 8px 40px;
+  margin-block: 8px;
+  margin-inline: 40px 0;
   padding: 10px 12px;
   border-radius: 14px;
   background: var(--aq-tint);
@@ -280,7 +282,7 @@
   height: 7px;
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
-  transform: rotate(-45deg);
+  transform: scale(var(--aq-dir), 1) rotate(-45deg);
   transition: transform var(--aq-fast) ease;
 }
 
@@ -431,7 +433,7 @@
   min-width: 80px;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  text-align: right;
+  text-align: end;
 }
 
 .obl-auto {
@@ -444,12 +446,13 @@
 }
 
 .obl-amount-input {
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 
 .obl-currency {
-  padding: 0 8px 0 6px;
+  padding-block: 0;
+  padding-inline: 6px 8px;
   font-weight: 700;
   color: var(--aq-soft);
 }
@@ -519,14 +522,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 8px 0 2px;
+  padding-block: 0;
+  padding-inline: 2px 8px;
   border: 0;
   background: transparent;
   color: var(--aq-ink);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -539,7 +543,7 @@
 .frise-track {
   position: relative;
   align-self: stretch;
-  background: repeating-linear-gradient(to right, var(--aq-line) 0 1px, transparent 1px calc(100% / 12));
+  background: repeating-linear-gradient(calc(90deg * var(--aq-dir)), var(--aq-line) 0 1px, transparent 1px calc(100% / 12));
 }
 
 .frise-track--months {
@@ -582,7 +586,8 @@
   top: 50%;
   width: 14px;
   height: 14px;
-  margin: -7px 0 0 -7px;
+  margin-block: -7px 0;
+  margin-inline: -7px 0;
   padding: 0;
   border: 2px solid var(--aq-card-solid);
   border-radius: 7px;
@@ -611,7 +616,8 @@
   top: 50%;
   width: 11px;
   height: 11px;
-  margin: -5.5px 0 0 -5.5px;
+  margin-block: -5.5px 0;
+  margin-inline: -5.5px 0;
   border: 2px solid var(--aq-warn);
   background: var(--aq-warn-bg);
   transform: rotate(45deg);
@@ -621,6 +627,6 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  border-left: 2px solid var(--aq-danger);
+  border-inline-start: 2px solid var(--aq-danger);
   opacity: 0.6;
 }

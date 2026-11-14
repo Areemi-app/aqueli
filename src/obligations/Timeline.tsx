@@ -81,7 +81,7 @@ export function Timeline({ obligations, year, onYear, today, open, item, id, lab
                 <span className="frise-title">{o.title}</span>
               </button>
               <div className="frise-track">
-                {todayLeft !== null && <span className="frise-today" style={{ left: `${todayLeft}%` }} aria-hidden="true" />}
+                {todayLeft !== null && <span className="frise-today" style={{ insetInlineStart: `${todayLeft}%` }} aria-hidden="true" />}
                 {dates.map((d) => (
                   <button
                     key={d}
@@ -89,7 +89,7 @@ export function Timeline({ obligations, year, onYear, today, open, item, id, lab
                     className="frise-dot"
                     data-paid={o.status === "paye" || undefined}
                     data-late={(o.status === "a-faire" && d < today) || undefined}
-                    style={{ left: `${position(d)}%` }}
+                    style={{ insetInlineStart: `${position(d)}%` }}
                     title={`${o.title} · ${formatShortDay(d, today)}${o.amountCents !== null ? ` · ${formatAmount(o.amountCents)}` : ""}`}
                     aria-label={tr("{title}, échéance {formatShortDay}", { title: o.title, formatShortDay: formatShortDay(d, today) })}
                     onClick={() => open(o)}
@@ -99,7 +99,7 @@ export function Timeline({ obligations, year, onYear, today, open, item, id, lab
                 {cancel && (
                   <span
                     className="frise-cancel"
-                    style={{ left: `${position(cancel)}%` }}
+                    style={{ insetInlineStart: `${position(cancel)}%` }}
                     title={tr("Date limite de résiliation : {formatShortDay}", { formatShortDay: formatShortDay(cancel, today) })}
                     role="img"
                     aria-label={tr("Date limite de résiliation : {formatShortDay}", { formatShortDay: formatShortDay(cancel, today) })}

@@ -18,7 +18,7 @@ export function taskRows(t: Task, today: DayKey, spaceName?: (id: string | null)
   ].filter((x): x is string => !!x);
   return [
     { text: t.title, checked: done, meta: meta.join(" · ") || undefined, tone: late ? "late" : undefined },
-    ...t.subtasks.map((s) => ({ text: s.title, checked: s.done, indent: true })),
+    ...t.subtasks.map((s) => ({ text: s.title, checked: s.done, indent: s.level ? s.level + 1 : true })),
   ];
 }
 

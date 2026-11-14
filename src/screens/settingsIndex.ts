@@ -6,6 +6,7 @@
 import { ICONS } from "../components/icons";
 import { fold } from "../lib/fold";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 export type SettingsTab =
   | "apparence"
@@ -58,7 +59,7 @@ export const SETTINGS_GROUPS: readonly { label: string; pages: readonly Settings
     pages: [
       { id: "sauvegardes", label: tr("Sauvegardes"), icon: ICONS.save, color: "#16a3a3", hint: tr("Sauvegardes, emplacement des données") },
       { id: "import", label: tr("Import"), icon: ICONS.importFile, color: "#e0671f", hint: tr("Dossier d'import, guide") },
-      { id: "securite", label: tr("Sécurité"), icon: ICONS.shield, color: "#1f9a6e", hint: tr("Mot de passe, verrouillage, Windows Hello") },
+      { id: "securite", label: tr("Sécurité"), icon: ICONS.shield, color: "#1f9a6e", hint: isLinux ? tr("Mot de passe, verrouillage") : tr("Mot de passe, verrouillage, Windows Hello") },
     ],
   },
   {
@@ -89,7 +90,7 @@ export const SETTINGS_INDEX: readonly SettingEntry[] = [
   { tab: "apparence", label: tr("Thème préféré"), keywords: tr("favori") },
   { tab: "apparence", label: tr("Bannière illustrée"), keywords: tr("image dessin decor frise barre titre") },
   { tab: "apparence", label: tr("Changer de thème automatiquement"), keywords: tr("automatique fetes saisons heure") },
-  { tab: "apparence", label: tr("Mode sombre de Windows"), keywords: tr("nuit noir dark") },
+  { tab: "apparence", label: isLinux ? tr("Mode sombre du système") : tr("Mode sombre de Windows"), keywords: tr("nuit noir dark") },
   { tab: "apparence", label: tr("Rotation aléatoire"), keywords: tr("hasard changer") },
   { tab: "apparence", label: tr("Planning des thèmes"), keywords: tr("periode calendrier") },
   { tab: "apparence", label: tr("Éditeur de thème"), keywords: tr("personnaliser fond ecran image accent flou") },
@@ -98,13 +99,14 @@ export const SETTINGS_INDEX: readonly SettingEntry[] = [
   { tab: "accessibilite", label: tr("Réduire les animations"), keywords: tr("mouvement") },
   { tab: "accessibilite", label: tr("Contraste élevé"), keywords: tr("lisibilite vue") },
   { tab: "accessibilite", label: tr("Réduire la transparence"), keywords: tr("verre flou opaque") },
-  { tab: "accessibilite", label: tr("Taille du texte"), keywords: tr("police zoom agrandir lettres") },
+  { tab: "accessibilite", label: tr("Taille de l'interface"), keywords: tr("taille du texte police zoom agrandir reduire echelle compact elements") },
   { tab: "clavier", label: tr("Capture rapide"), keywords: tr("raccourci global ctrl alt") },
   { tab: "clavier", label: tr("Raccourci"), keywords: tr("touches clavier modifier") },
   { tab: "langue", label: tr("Langue de l'interface"), keywords: "english anglais français francais language español deutsch italiano português русский 中文 日本語 한국어 हिन्दी" },
   { tab: "a-propos", label: tr("Soutenir Aqueli"), keywords: tr("don soutien ko-fi auteur licence") },
   { tab: "espaces", label: tr("Espaces"), keywords: tr("perso travail sante famille creer renommer") },
   { tab: "modules", label: tr("Barre latérale"), keywords: tr("masquer afficher modules ordre") },
+  { tab: "modules", label: tr("Forme de la barre latérale"), keywords: tr("compacte survol icones replier cacher bord masquer") },
   { tab: "calendrier", label: tr("Heures de travail"), keywords: tr("journee bureau horaires griser") },
   { tab: "calendrier", label: tr("Durée d'un nouvel événement"), keywords: tr("evenement longueur rendez-vous") },
   { tab: "calendrier", label: tr("Rappel d'un nouvel événement"), keywords: tr("notification alerte evenement") },
@@ -117,7 +119,7 @@ export const SETTINGS_INDEX: readonly SettingEntry[] = [
   { tab: "rappels", label: tr("Notification d'essai"), keywords: tr("tester notification") },
   { tab: "rappels", label: tr("Afficher le titre des tâches quand Aqueli est verrouillé"), keywords: tr("confidentialite notification") },
   { tab: "rappels", label: tr("Garder Aqueli en arrière-plan à la fermeture"), keywords: tr("icone horloge zone notification fermer") },
-  { tab: "rappels", label: tr("Lancer Aqueli au démarrage de Windows"), keywords: tr("demarrage automatique") },
+  { tab: "rappels", label: isLinux ? tr("Lancer Aqueli à l'ouverture de la session") : tr("Lancer Aqueli au démarrage de Windows"), keywords: tr("demarrage automatique") },
   { tab: "rappels", label: tr("Rappels des obligations"), keywords: tr("factures echeances") },
   { tab: "rappels", label: tr("Anniversaires"), keywords: tr("contacts rappel") },
   { tab: "rappels", label: tr("Rappel d'écriture"), keywords: tr("journal page du jour notification") },
@@ -134,12 +136,15 @@ export const SETTINGS_INDEX: readonly SettingEntry[] = [
   { tab: "import", label: tr("Guide d'import"), keywords: tr("aide modele exemple colonnes") },
   { tab: "securite", label: tr("Pseudo"), keywords: tr("nom prenom profil accueil bonjour ecran de verrouillage") },
   { tab: "securite", label: tr("Image de profil"), keywords: tr("avatar photo portrait image compte") },
-  { tab: "securite", label: tr("Comptes de ce PC"), keywords: tr("ajouter changer autre compte utilisateur famille") },
-  { tab: "securite", label: tr("Verrouiller automatiquement après"), keywords: tr("delai inactivite verrouillage") },
-  { tab: "securite", label: tr("Déverrouiller avec Windows Hello"), keywords: tr("visage empreinte code pin") },
+  { tab: "securite", label: isLinux ? tr("Comptes de cet ordinateur") : tr("Comptes de ce PC"), keywords: tr("ajouter changer autre compte utilisateur famille") },
+  { tab: "securite", label: tr("Verrouiller automatiquement après"), keywords: tr("delai inactivite verrouillage jamais") },
+  { tab: "securite", label: isLinux ? tr("Verrouiller avec la session") : tr("Verrouiller avec Windows"), keywords: tr("veille windows+l session verrouillage") },
+  { tab: "securite", label: tr("Verrouiller en fermant la fenêtre"), keywords: tr("fermeture arriere-plan verrouillage") },
+  // Windows Hello et le mode discret n'existent que sous Windows.
+  ...(isLinux ? [] : [{ tab: "securite" as const, label: tr("Déverrouiller avec Windows Hello"), keywords: tr("visage empreinte code pin") }]),
   { tab: "securite", label: tr("Mot de passe"), keywords: tr("changer modifier") },
   { tab: "securite", label: tr("Clé de récupération"), keywords: tr("oubli perdu nouvelle cle") },
-  { tab: "securite", label: tr("Mode discret"), keywords: tr("capture ecran partage confidentialite") },
+  ...(isLinux ? [] : [{ tab: "securite" as const, label: tr("Mode discret"), keywords: tr("capture ecran partage confidentialite") }]),
   { tab: "securite", label: tr("Journal de sécurité"), keywords: tr("historique connexions") },
   { tab: "securite", label: tr("Suppression du compte"), keywords: tr("supprimer effacer tout") },
   { tab: "aide", label: tr("Aide intégrée"), keywords: tr("f1 mode d'emploi") },

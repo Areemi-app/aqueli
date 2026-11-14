@@ -71,7 +71,7 @@ import {
   type PeriodUnit,
   type Review,
 } from "./review";
-import { locale, tr, trn } from "../i18n/i18n";
+import { locale, readingKey, tr, trn } from "../i18n/i18n";
 import { Sentences } from "../components/Sentences";
 
 type Tab = "revue" | "statistiques" | "rapport";
@@ -1105,7 +1105,7 @@ export function ReviewScreen() {
     rapport: periodTitle(periodOf("mois", today)),
   };
   const onDoorKeys = (e: KeyboardEvent<HTMLDivElement>) => {
-    const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    const step = readingKey(e.key) === "ArrowRight" ? 1 : readingKey(e.key) === "ArrowLeft" ? -1 : 0;
     if (!step) return;
     e.preventDefault();
     const i = (DOORS.findIndex((d) => d.id === tab) + step + DOORS.length) % DOORS.length;

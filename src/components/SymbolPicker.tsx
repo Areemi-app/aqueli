@@ -15,7 +15,7 @@ import { Icon } from "./Icon";
 import { ICONS } from "./icons";
 import { useAnchoredPopover } from "./popover";
 import { SYMBOL_CATEGORIES, SYMBOLS, symbolOf, type SymbolDef } from "./symbols";
-import { tr, trn } from "../i18n/i18n";
+import { readingKey, tr, trn } from "../i18n/i18n";
 
 const RECENT_KEY = "symbolesRecents";
 /** Symboles récents gardés (et montrés en tête du sélecteur). */
@@ -56,8 +56,8 @@ function gridMove(e: KeyboardEvent<HTMLElement>, container: HTMLElement): HTMLBu
   if (index < 0) return null;
   const current = buttons[index]!;
   let next: HTMLButtonElement | undefined;
-  if (e.key === "ArrowRight") next = buttons[index + 1];
-  else if (e.key === "ArrowLeft") next = buttons[index - 1];
+  if (readingKey(e.key) === "ArrowRight") next = buttons[index + 1];
+  else if (readingKey(e.key) === "ArrowLeft") next = buttons[index - 1];
   else if (e.key === "Home") next = buttons[0];
   else if (e.key === "End") next = buttons[buttons.length - 1];
   else if (e.key === "ArrowDown" || e.key === "ArrowUp") {

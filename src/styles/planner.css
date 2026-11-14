@@ -41,7 +41,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 2px 4px 4px 2px;
+  padding-block: 2px 4px;
+  padding-inline: 2px 4px;
 }
 
 .planner-group {
@@ -66,7 +67,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 6px 0 10px;
+  padding-block: 0;
+  padding-inline: 10px 6px;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
   background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
@@ -151,8 +153,8 @@
 
 .agenda-hour {
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   height: 64px;
   pointer-events: none;
 }
@@ -161,8 +163,8 @@
 .agenda-hour::after {
   content: "";
   position: absolute;
-  left: var(--agenda-gutter);
-  right: 0;
+  inset-inline-start: var(--agenda-gutter);
+  inset-inline-end: 0;
   border-top: 1px solid var(--aq-line);
 }
 
@@ -180,7 +182,7 @@
 .agenda-hour-label {
   position: absolute;
   top: 4px;
-  left: 12px;
+  inset-inline-start: 12px;
   font-size: 11.5px;
   font-weight: 600;
   color: var(--aq-soft);
@@ -190,8 +192,8 @@
 /* Avant 7 h et après 22 h. */
 .agenda-off {
   position: absolute;
-  left: var(--agenda-gutter);
-  right: 0;
+  inset-inline-start: var(--agenda-gutter);
+  inset-inline-end: 0;
   background: color-mix(in srgb, var(--aq-ink) 4%, transparent);
   pointer-events: none;
 }
@@ -199,8 +201,8 @@
 .agenda-now {
   position: absolute;
   z-index: 3;
-  left: calc(var(--agenda-gutter) - 4px);
-  right: 0;
+  inset-inline-start: calc(var(--agenda-gutter) - 4px);
+  inset-inline-end: 0;
   border-top: 2px solid var(--aq-danger);
   pointer-events: none;
 }
@@ -209,7 +211,7 @@
   content: "";
   position: absolute;
   top: -5px;
-  left: -4px;
+  inset-inline-start: -4px;
   width: 8px;
   height: 8px;
   border-radius: 4px;
@@ -223,7 +225,8 @@
   display: flex;
   flex-direction: column;
   gap: 1px;
-  padding: 4px 26px 4px 11px;
+  padding-block: 4px;
+  padding-inline: 11px 26px;
   overflow: hidden;
   border-radius: 10px;
   border: 1px solid color-mix(in srgb, var(--row-color) 45%, transparent);
@@ -284,7 +287,7 @@
 .agenda-block-remove {
   position: absolute;
   top: 4px;
-  right: 4px;
+  inset-inline-end: 4px;
   width: 18px;
   height: 18px;
   padding: 0;
@@ -386,8 +389,8 @@
 /* Poignée du bas : tirer pour changer la durée. */
 .agenda-resize {
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   height: 7px;
   cursor: ns-resize;
@@ -401,7 +404,7 @@
   bottom: 2px;
   width: 18px;
   height: 3px;
-  margin-left: -9px;
+  margin-inline-start: -9px;
   border-radius: 2px;
   background: color-mix(in srgb, var(--row-color) 70%, transparent);
   opacity: 0;

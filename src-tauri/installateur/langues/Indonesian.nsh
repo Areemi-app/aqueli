@@ -1,6 +1,6 @@
 ; Textes de l'installateur d'Aqueli, langue « Indonesian » (remplacent ceux de Tauri, au ton sobre de
 ; l'application ; les cinq derniers servent aux pages d'accueil et de fin, voir crochets.nsh).
-; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 17 fichiers d'accord.
+; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 18 fichiers d'accord.
 LangString addOrReinstall ${LANG_INDONESIAN} "Tambah atau pasang ulang komponen"
 LangString alreadyInstalled ${LANG_INDONESIAN} "Sudah terpasang"
 LangString alreadyInstalledLong ${LANG_INDONESIAN} "Aqueli ${VERSION} sudah terpasang. Pilih operasi yang ingin dilakukan, lalu klik Lanjut."

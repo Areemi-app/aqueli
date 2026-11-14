@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Aqueli",
-  "version": "1.21.6",
+  "version": "2.0.0",
   "identifier": "fr.aqueli.desktop",
   "build": {
     "frontendDist": "../dist",
@@ -40,20 +40,27 @@
     "publisher": "Aqueli",
     "copyright": "Aqueli",
     "category": "Productivity",
-    "shortDescription": "Productivité personnelle, locale et hors ligne",
-    "longDescription": "Aqueli réunit tâches, agenda, obligations et notes dans une seule application, entièrement hors ligne et chiffrée.",
+    "shortDescription": "Personal productivity, local and offline",
+    "longDescription": "Aqueli brings tasks, calendar, bills, notes, habits and budget together in one application, fully offline and encrypted.",
     "icon": [
+      "icons/icon.png",
       "icons/32x32.png",
+      "icons/64x64.png",
       "icons/128x128.png",
-      "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "linux": {
+      "deb": {
+        "section": "utils",
+        "desktopTemplate": "linux/aqueli.desktop"
+      }
+    },
     "windows": {
       "webviewInstallMode": { "type": "skip" },
       "nsis": {
         "installMode": "currentUser",
-        "languages": ["English", "French", "Arabic", "Spanish", "PortugueseBR", "German", "Italian", "Dutch", "Polish", "Russian", "Ukrainian", "Turkish", "Hindi", "Indonesian", "Vietnamese", "SimpChinese", "Japanese", "Korean"],
+        "languages": ["English", "French", "Spanish", "PortugueseBR", "German", "Italian", "Dutch", "Polish", "Russian", "Ukrainian", "Turkish", "Arabic", "Hindi", "Indonesian", "Vietnamese", "SimpChinese", "Japanese", "Korean"],
         "displayLanguageSelector": true,
         "installerIcon": "icons/icon.ico",
         "uninstallerIcon": "icons/icon.ico",
@@ -63,7 +70,6 @@
         "customLanguageFiles": {
           "English": "installateur/langues/English.nsh",
           "French": "installateur/langues/French.nsh",
-          "Arabic": "installateur/langues/Arabic.nsh",
           "Spanish": "installateur/langues/Spanish.nsh",
           "PortugueseBR": "installateur/langues/PortugueseBR.nsh",
           "German": "installateur/langues/German.nsh",
@@ -73,6 +79,7 @@
           "Russian": "installateur/langues/Russian.nsh",
           "Ukrainian": "installateur/langues/Ukrainian.nsh",
           "Turkish": "installateur/langues/Turkish.nsh",
+          "Arabic": "installateur/langues/Arabic.nsh",
           "Hindi": "installateur/langues/Hindi.nsh",
           "Indonesian": "installateur/langues/Indonesian.nsh",
           "Vietnamese": "installateur/langues/Vietnamese.nsh",

@@ -3,6 +3,7 @@
  * du modèle d'import « Tâches » : le fichier se retravaille puis se réimporte tel quel. Colonnes et
  * valeurs en français, ou en anglais dans toute autre langue ; l'import lit les deux. Fonctions pures.
  */
+import { subtaskLine } from "./subtaskTree";
 import type { Space } from "../spaces/spaces";
 import { lang, trExport } from "../i18n/i18n";
 import { recurrenceLabel, recurrenceLabelEn } from "./recurrence";
@@ -42,7 +43,8 @@ export function toTasksCsv(tasks: readonly Task[], spaces: readonly Pick<Space, 
       // Un rappel n'a de sens qu'avec une échéance ; « aucun » évite le rappel par défaut à la réimportation.
       !t.dueDate ? "" : t.reminder === null ? (t.dueTime ? (en() ? "none" : "aucun") : "") : t.reminder === 0 ? (en() ? "on time" : "à l'heure") : durationText(t.reminder),
       t.recurrence ? (en() ? recurrenceLabelEn(t.recurrence) : recurrenceLabel(t.recurrence)) : "",
-      t.subtasks.map((s) => s.title.replace(/;/g, ",")).join("; "),
+      // Un « > » par niveau, relu par l'import (src/tasks/subtaskTree.ts).
+      t.subtasks.map((s) => subtaskLine({ ...s, title: s.title.replace(/;/g, ",") })).join("; "),
       t.notes,
       t.id,
     ]

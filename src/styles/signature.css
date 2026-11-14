@@ -27,7 +27,7 @@
 }
 
 [data-skin="signature"] .titlebar-name {
-  margin-right: 6px;
+  margin-inline-end: 6px;
   color: var(--aq-sky-ink);
   font-size: 23px;
   font-weight: 750;
@@ -223,8 +223,8 @@
   content: "";
   position: absolute;
   z-index: -1;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   height: 40%;
   pointer-events: none;
@@ -298,7 +298,7 @@
   height: 6px;
   border-top: 2px solid currentColor;
   border-right: 2px solid currentColor;
-  transform: rotate(45deg);
+  transform: scale(var(--aq-dir), 1) rotate(45deg);
 }
 
 /* Cartes vides : grosse perle brillante, phrase en clair. */
@@ -334,11 +334,14 @@
 [data-skin="signature"] .pinned-note::after {
   content: "";
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   width: 38px;
   height: 38px;
-  border-radius: 0 0 0 12px;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-end-start-radius: 12px;
   background:
     linear-gradient(315deg, transparent 47%, color-mix(in srgb, var(--aq-ink) 16%, transparent) 50%, transparent 56%),
     linear-gradient(315deg, transparent 50%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.2) 100%),
@@ -373,8 +376,8 @@
 [data-skin="signature"] .statusbar {
   position: absolute;
   z-index: 5;
-  left: calc(232px + 32px);
-  right: 16px;
+  inset-inline-start: calc(232px + 32px);
+  inset-inline-end: 16px;
   bottom: 14px;
   height: 40px;
   gap: 14px;
@@ -407,11 +410,24 @@
   color: var(--aq-accent);
 }
 
+/* Barre latérale réduite aux icônes : la barre d'état s'aligne sur le rail. */
+[data-skin="signature"][data-sidebar="reduite"] .statusbar {
+  inset-inline-start: calc(58px + 32px);
+}
+
+[data-skin="signature"][data-sidebar="masquee"] .statusbar {
+  inset-inline-start: calc(12px + 32px);
+}
+
 @media (max-width: 899px) {
   [data-skin="signature"] .statusbar {
-    left: calc(58px + 24px);
-    right: 12px;
+    inset-inline-start: calc(58px + 24px);
+    inset-inline-end: 12px;
     bottom: 10px;
+  }
+
+  [data-skin="signature"][data-sidebar="masquee"] .statusbar {
+    inset-inline-start: calc(12px + 24px);
   }
 }
 

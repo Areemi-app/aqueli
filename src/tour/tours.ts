@@ -11,6 +11,7 @@
 import type { ModuleKey } from "../modules/modules";
 import type { RouteId } from "../navigation/routes";
 import { tr } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 export interface TourStep {
   /** Sélecteurs de l'élément éclairé, essayés dans l'ordre ; absent : bulle au centre. */
@@ -71,7 +72,9 @@ export const GENERAL_TOUR: Tour = {
     {
       target: ["[data-tour=verrouiller]"],
       title: tr("Verrouillage"),
-      text: tr("Quand vous vous éloignez de l'ordinateur, le cadenas ou {lock} met Aqueli sous clé. Pour revenir, il faudra votre mot de passe ou Windows Hello. Aqueli se verrouille aussi de lui-même après un moment d'inactivité, et ce délai se règle dans Paramètres › Sécurité."),
+      text: isLinux
+        ? tr("Quand vous vous éloignez de l'ordinateur, le cadenas ou {lock} met Aqueli sous clé. Pour revenir, il faudra votre mot de passe. Aqueli se verrouille aussi de lui-même après un moment d'inactivité, et ce délai se règle dans Paramètres › Sécurité.")
+        : tr("Quand vous vous éloignez de l'ordinateur, le cadenas ou {lock} met Aqueli sous clé. Pour revenir, il faudra votre mot de passe ou Windows Hello. Aqueli se verrouille aussi de lui-même après un moment d'inactivité, et ce délai se règle dans Paramètres › Sécurité."),
     },
     {
       target: [".nav-featured"],

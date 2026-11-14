@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 14px;
   min-height: 100%;
-  padding-right: 2px;
+  padding-inline-end: 2px;
 }
 
 /* Écrans qui défilent d'un bloc : ils grandissent avec leur contenu, pour que la marge du bas
@@ -121,7 +121,7 @@
   position: absolute;
   z-index: 2;
   top: 10px;
-  right: 10px;
+  inset-inline-end: 10px;
   display: flex;
   gap: 6px;
 }
@@ -158,7 +158,7 @@
 .home-editbar-hint {
   flex: 1;
   min-width: 160px;
-  text-align: right;
+  text-align: end;
   font-size: 13px;
   color: var(--aq-soft);
 }
@@ -404,7 +404,8 @@
   align-self: flex-start;
   max-width: 100%;
   margin: 0;
-  padding: 8px 14px 8px 38px;
+  padding-block: 8px;
+  padding-inline: 38px 14px;
   border: 1px solid color-mix(in oklch, var(--aq-accent) 32%, transparent);
   border-radius: 14px;
   background: color-mix(in oklch, var(--aq-accent) 8%, var(--aq-card-solid));
@@ -420,7 +421,7 @@
 .trash-intro::before {
   content: "i";
   position: absolute;
-  left: 12px;
+  inset-inline-start: 12px;
   top: 9px;
   width: 18px;
   height: 18px;
@@ -460,8 +461,8 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding-right: 16px;
-  border-right: 1px solid var(--aq-line);
+  padding-inline-end: 16px;
+  border-inline-end: 1px solid var(--aq-line);
 }
 
 .theme-families {
@@ -483,7 +484,7 @@
   font: inherit;
   font-size: 13.5px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: background var(--aq-fast) ease;
 }
@@ -584,7 +585,7 @@
   .theme-families-col {
     width: auto;
     padding: 0 0 12px;
-    border-right: 0;
+    border-inline-end: 0;
     border-bottom: 1px solid var(--aq-line);
   }
 
@@ -621,15 +622,15 @@
   overflow-y: hidden;
   scrollbar-width: thin;
   /* Les bords s'estompent quand il reste des thèmes de ce côté. */
-  mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(calc(90deg * var(--aq-dir)), transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
 }
 
 .theme-strip[data-start] .theme-strip-scroll {
-  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(calc(90deg * var(--aq-dir)), #000 0, #000 calc(100% - 28px), transparent 100%);
 }
 
 .theme-strip[data-end] .theme-strip-scroll {
-  mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 100%);
+  mask-image: linear-gradient(calc(90deg * var(--aq-dir)), transparent 0, #000 28px, #000 100%);
 }
 
 .theme-strip[data-start][data-end] .theme-strip-scroll {
@@ -656,11 +657,11 @@
 }
 
 .theme-strip-arrow[data-side="avant"] {
-  left: -12px;
+  inset-inline-start: -12px;
 }
 
 .theme-strip-arrow[data-side="apres"] {
-  right: -12px;
+  inset-inline-end: -12px;
 }
 
 .theme-strip-arrow:hover {
@@ -708,7 +709,7 @@
 /* Onglets avec pastilles et nombre (familles de thèmes). */
 .segment-dots {
   display: inline-flex;
-  margin-right: 7px;
+  margin-inline-end: 7px;
   vertical-align: -1px;
 }
 
@@ -721,11 +722,11 @@
 }
 
 .segment-dot + .segment-dot {
-  margin-left: -4px;
+  margin-inline-start: -4px;
 }
 
 .segment-count {
-  margin-left: 6px;
+  margin-inline-start: 6px;
   padding: 0 6px;
   border-radius: 8px;
   background: var(--aq-tint);
@@ -753,7 +754,7 @@
   backdrop-filter: blur(var(--aq-blur));
   box-shadow: var(--aq-shadow);
   color: var(--aq-ink);
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition:
     transform var(--aq-normal) var(--aq-ease),
@@ -776,7 +777,7 @@ button.theme-card:hover {
 .theme-card-check {
   position: absolute;
   top: 30px;
-  right: 10px;
+  inset-inline-end: 10px;
   width: 26px;
   height: 26px;
   display: flex;
@@ -909,8 +910,8 @@ button.theme-card:hover {
   position: absolute;
   inset: 0;
   background: var(--banner) center bottom / cover no-repeat;
-  -webkit-mask-image: linear-gradient(to right, transparent 18%, #000 40%, #000 92%, transparent);
-  mask-image: linear-gradient(to right, transparent 18%, #000 40%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(calc(90deg * var(--aq-dir)), transparent 18%, #000 40%, #000 92%, transparent);
+  mask-image: linear-gradient(calc(90deg * var(--aq-dir)), transparent 18%, #000 40%, #000 92%, transparent);
   pointer-events: none;
 }
 
@@ -920,7 +921,7 @@ button.theme-card:hover {
 
 .tp-bar {
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 0;
   width: 100%;
   height: 22px;
@@ -952,7 +953,7 @@ button.theme-card:hover {
 }
 
 .tp-card--main {
-  left: 12px;
+  inset-inline-start: 12px;
   top: 32px;
   width: 176px;
   height: 136px;
@@ -961,7 +962,7 @@ button.theme-card:hover {
 }
 
 .tp-card--focus {
-  left: 198px;
+  inset-inline-start: 198px;
   top: 32px;
   width: 90px;
   height: 60px;
@@ -1069,7 +1070,8 @@ button.theme-card:hover {
 
 .space-row {
   gap: 14px;
-  padding: 10px 14px 10px 18px;
+  padding-block: 10px;
+  padding-inline: 18px 14px;
 }
 
 .space-name-cell {
@@ -1412,7 +1414,8 @@ button.theme-card:hover {
   align-items: center;
   gap: 8px;
   min-width: 0;
-  padding: 5px 10px 5px 6px;
+  padding-block: 5px;
+  padding-inline: 6px 10px;
   border: 1px solid var(--aq-row-edge, var(--aq-border));
   border-radius: 999px;
   background: var(--aq-row, var(--aq-tile));
@@ -1486,7 +1489,7 @@ button.theme-card:hover {
 }
 
 .sound-listen {
-  margin-right: 14px;
+  margin-inline-end: 14px;
 }
 
 .range {
@@ -1494,7 +1497,7 @@ button.theme-card:hover {
   height: 8px;
   appearance: none;
   border-radius: 4px;
-  background: linear-gradient(90deg, var(--aq-accent) 0 var(--range-fill), var(--aq-tint) var(--range-fill) 100%);
+  background: linear-gradient(calc(90deg * var(--aq-dir)), var(--aq-accent) 0 var(--range-fill), var(--aq-tint) var(--range-fill) 100%);
   box-shadow: var(--aq-field-inset);
   cursor: pointer;
 }
@@ -1522,7 +1525,7 @@ button.theme-card:hover {
 
 .range-value {
   width: 48px;
-  text-align: right;
+  text-align: end;
   color: var(--aq-soft);
   font-size: 13px;
   font-weight: 700;
@@ -1762,7 +1765,8 @@ button.theme-card:hover {
   align-items: center;
   gap: 12px;
   min-height: 52px;
-  padding: 6px 10px 6px 8px;
+  padding-block: 6px;
+  padding-inline: 8px 10px;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--row-color) var(--aq-row-edge), transparent);
   background: var(--aq-row-gloss), color-mix(in srgb, var(--row-color) var(--aq-row-mix), var(--aq-tile));
@@ -1901,7 +1905,7 @@ button.theme-card:hover {
 @keyframes theme-editor-in {
   from {
     opacity: 0;
-    transform: translateX(24px);
+    transform: translateX(calc(24px * var(--aq-dir)));
   }
 }
 
@@ -1984,7 +1988,7 @@ button.theme-card:hover {
   border-radius: 16px;
   color: var(--aq-ink);
   font: inherit;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: box-shadow var(--aq-fast) ease;
 }
@@ -2100,7 +2104,7 @@ button.theme-card:hover {
   font: inherit;
   font-size: 13.5px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
   transition: background var(--aq-fast) ease;
 }
@@ -2128,7 +2132,7 @@ button.theme-card:hover {
 .settings-nav-item[aria-current="page"]::before {
   content: "";
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 9px;
   bottom: 9px;
   width: 3px;
@@ -2189,7 +2193,7 @@ button.theme-card:hover {
 }
 
 .settings-result .time-note {
-  padding-left: 18px;
+  padding-inline-start: 18px;
 }
 
 /* Sections de la page : bande de verre qui reste en haut pendant le défilement (le texte passe
@@ -2304,4 +2308,24 @@ button.theme-card:hover {
   color: var(--aq-soft);
   font-size: 13px;
   font-weight: 500;
+}
+
+/* Sous Wayland : commande à associer à un raccourci du bureau. */
+.shortcut-command {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.shortcut-command code {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--aq-button-border);
+  background: var(--aq-button);
+  color: var(--aq-button-ink);
+  font-family: "Cascadia Mono", "DejaVu Sans Mono", Consolas, monospace;
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+  user-select: all;
 }

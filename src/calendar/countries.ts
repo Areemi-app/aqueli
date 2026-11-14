@@ -6,6 +6,7 @@
  */
 import { addDays, weekday, type DayKey } from "../tasks/day";
 import { at, byDay, easter, HUE, nthWeekday, on, weekdayFrom, type Holiday } from "./holidays";
+import { australianHolidays, type AustralianState } from "./australia";
 import { lunarDays } from "./lunar";
 import { tr } from "../i18n/i18n";
 
@@ -35,20 +36,31 @@ export type CountryId =
   | "dz"
   | "tn"
   | "sn"
-  | "ci";
+  | "ci"
+  | "au-nsw"
+  | "au-vic"
+  | "au-qld"
+  | "au-sa"
+  | "au-wa"
+  | "au-tas"
+  | "au-act"
+  | "au-nt";
 
 export interface Country {
   id: CountryId;
   name: string;
-  group: "" | "France" | "Europe" | "Amérique du Nord" | "Afrique";
+  group: "" | "France" | "Europe" | "Amérique du Nord" | "Afrique" | "Océanie";
   holidays: (year: number) => Holiday[];
   /** Vacances scolaires par zone (France métropolitaine). */
   school?: boolean;
   /** Fête des mères et des pères, quand l'usage du pays est connu. */
   mothers?: (year: number) => DayKey;
   fathers?: (year: number) => DayKey;
-  /** Changement d'heure : « europe » (derniers dimanches de mars et d'octobre), « amerique ». */
-  clock?: "europe" | "amerique";
+  /**
+   * Changement d'heure : « europe » (derniers dimanches de mars et d'octobre), « amerique »,
+   * « australie » (premiers dimanches d'octobre et d'avril).
+   */
+  clock?: "europe" | "amerique" | "australie";
 }
 
 export const MOON_NOTE = tr("Date indicative : elle peut varier d'un jour selon l'observation de la lune.");
@@ -518,7 +530,31 @@ export const COUNTRIES: readonly Country[] = [
       ...hijri(y, 3, 12, tr("Maouloud"), HUE.cyan),
     ],
   },
+  ...australianStates(),
 ];
+
+/** Australie : un choix par État ou territoire, chacun ayant ses jours fériés. */
+function australianStates(): Country[] {
+  const states: [AustralianState, string, boolean][] = [
+    ["nsw", tr("Australie – Nouvelle-Galles du Sud"), true],
+    ["vic", tr("Australie – Victoria"), true],
+    ["qld", tr("Australie – Queensland"), false],
+    ["sa", tr("Australie – Australie-Méridionale"), true],
+    ["wa", tr("Australie – Australie-Occidentale"), false],
+    ["tas", tr("Australie – Tasmanie"), true],
+    ["act", tr("Australie – Territoire de la capitale australienne"), true],
+    ["nt", tr("Australie – Territoire du Nord"), false],
+  ];
+  return states.map(([state, name, summerTime]) => ({
+    id: `au-${state}` as CountryId,
+    name,
+    group: "Océanie",
+    holidays: (y: number) => australianHolidays(state, y),
+    mothers: (y: number) => nthWeekday(y, 5, 0, 2),
+    fathers: (y: number) => nthWeekday(y, 9, 0, 1),
+    ...(summerTime ? { clock: "australie" as const } : {}),
+  }));
+}
 
 export const DEFAULT_COUNTRY: CountryId = "fr";
 

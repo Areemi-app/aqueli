@@ -1,6 +1,6 @@
 ; Textes de l'installateur d'Aqueli, langue « Ukrainian » (remplacent ceux de Tauri, au ton sobre de
 ; l'application ; les cinq derniers servent aux pages d'accueil et de fin, voir crochets.nsh).
-; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 17 fichiers d'accord.
+; UTF-8 sans BOM : Tauri l'ajoute en le recopiant. Généré avec les autres langues : garder les 18 fichiers d'accord.
 LangString addOrReinstall ${LANG_UKRAINIAN} "Додати або перевстановити компоненти"
 LangString alreadyInstalled ${LANG_UKRAINIAN} "Уже встановлено"
 LangString alreadyInstalledLong ${LANG_UKRAINIAN} "Aqueli ${VERSION} уже встановлено. Виберіть потрібну дію та натисніть «Далі»."

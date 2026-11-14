@@ -5,6 +5,7 @@ import { Icon } from "../components/Icon";
 import { dataErrorMessage, type DataError } from "../lib/dataError";
 import { describeEvent, securityLog, whenLabel, type SecurityEvent, type SecurityLog } from "./securityLog";
 import { tr, trn } from "../i18n/i18n";
+import { isLinux } from "../lib/platform";
 
 /** Événements montrés dans les Paramètres ; les autres sont dans « N de plus ». */
 const SHOWN = 6;
@@ -56,7 +57,7 @@ export function SecurityLogSection() {
     <div className="settings-section">
       <h2 className="settings-heading">{tr("Journal de sécurité")}</h2>
       <div className="settings-card settings-card--padded glass">
-        <p className="settings-intro">{tr("Déverrouillages, essais erronés, exports et changements de mot de passe, enregistrés sur ce PC.")}</p>
+        <p className="settings-intro">{isLinux ? tr("Déverrouillages, essais erronés, exports et changements de mot de passe, enregistrés sur cet ordinateur.") : tr("Déverrouillages, essais erronés, exports et changements de mot de passe, enregistrés sur ce PC.")}</p>
         {error && (
           <p className="form-error" role="alert">
             {error}

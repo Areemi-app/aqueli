@@ -16512,11 +16512,6 @@
   "en": "Keep Aqueli in the background when closed"
  },
  {
-  "id": "1e1xtns",
-  "fr": "Aqueli se verrouille et reste près de l'horloge. Les rappels continuent d'arriver. « Quitter Aqueli », depuis l'icône, l'arrête.",
-  "en": "Aqueli locks and stays near the clock. Reminders keep arriving. “Quit Aqueli”, from the icon, stops it."
- },
- {
   "id": "1t2srmp",
   "fr": "Lancer Aqueli au démarrage de Windows",
   "en": "Start Aqueli when Windows starts"
@@ -16897,16 +16892,6 @@
   "en": "glass blur opaque"
  },
  {
-  "id": "1hwjmv1",
-  "fr": "Taille du texte",
-  "en": "Text size"
- },
- {
-  "id": "1b7thzt",
-  "fr": "police zoom agrandir lettres",
-  "en": "font zoom enlarge letters"
- },
- {
   "id": "12ksekz",
   "fr": "raccourci global ctrl alt",
   "en": "global shortcut ctrl alt"
@@ -17067,11 +17052,6 @@
   "en": "help template example columns"
  },
  {
-  "id": "085wa39",
-  "fr": "delai inactivite verrouillage",
-  "en": "delay inactivity lock"
- },
- {
   "id": "1ygrhd7",
   "fr": "visage empreinte code pin",
   "en": "face fingerprint pin code"
@@ -17170,11 +17150,6 @@
   "id": "1ts7lyv",
   "fr": "Compris dans le contraste élevé.",
   "en": "Included in high contrast."
- },
- {
-  "id": "1kzcqer",
-  "fr": "S'applique à toute la fenêtre. Ctrl + molette permet aussi de zoomer.",
-  "en": "Applies to the whole window. Ctrl + wheel also zooms."
  },
  {
   "id": "17jbtos",
@@ -22693,11 +22668,6 @@
   "en": "Language"
  },
  {
-  "id": "0o3c77s",
-  "fr": "Paramètres › Langue propose 17 langues. Les dates et les nombres suivent la langue choisie.",
-  "en": "Settings › Language offers 17 languages. Dates and numbers follow the language you choose."
- },
- {
   "id": "1p651qs",
   "fr": "Les sons",
   "en": "Sounds"
@@ -22726,11 +22696,6 @@
   "id": "1d76tt4",
   "fr": "Chaque thème a sa frise dessinée dans la barre de titre. Elle se désactive dans Paramètres › Apparence.",
   "en": "Each theme has its own drawn frieze in the title bar. It can be turned off in Settings › Appearance."
- },
- {
-  "id": "116ztrj",
-  "fr": "Paramètres › Accessibilité réduit les animations et la transparence, renforce le contraste et agrandit le texte. Aqueli suit aussi les réglages de Windows.",
-  "en": "Settings › Accessibility reduces animations and transparency, increases contrast and enlarges text. Aqueli also follows the Windows settings."
  },
  {
   "id": "1n352op",
@@ -23318,5 +23283,855 @@
   "id": "1fvg5h6",
   "fr": "Cercles",
   "en": "Circles"
+ },
+ {
+  "id": "1mmekbm",
+  "fr": "Jamais",
+  "en": "Never"
+ },
+ {
+  "id": "1kfr6zu",
+  "fr": "Verrouiller avec Windows",
+  "en": "Lock with Windows"
+ },
+ {
+  "id": "1xo7lv6",
+  "fr": "Aqueli se verrouille avec Windows (Windows+L) et à la mise en veille.",
+  "en": "Aqueli locks when Windows locks (Windows+L) and when the PC goes to sleep."
+ },
+ {
+  "id": "0ewm1c7",
+  "fr": "Verrouiller en fermant la fenêtre",
+  "en": "Lock when the window closes"
+ },
+ {
+  "id": "029thr7",
+  "fr": "Aqueli se verrouille quand sa fenêtre se ferme et qu'il reste en arrière-plan.",
+  "en": "Aqueli locks when its window closes and it stays in the background."
+ },
+ {
+  "id": "1t1fv5a",
+  "fr": "Paramètres › Sécurité règle chacun de ces verrouillages. Le délai d'inactivité peut aussi être « Jamais ».",
+  "en": "Settings › Security controls each of these locks. The inactivity delay can also be set to “Never”."
+ },
+ {
+  "id": "1f73t1f",
+  "fr": "Aqueli reste près de l'horloge et les rappels continuent d'arriver. « Quitter Aqueli », depuis l'icône, l'arrête.",
+  "en": "Aqueli stays next to the clock and reminders keep arriving. “Quit Aqueli”, from the icon, stops it."
+ },
+ {
+  "id": "0afmaok",
+  "fr": "delai inactivite verrouillage jamais",
+  "en": "delay inactivity lock never"
+ },
+ {
+  "id": "0isdlbr",
+  "fr": "veille windows+l session verrouillage",
+  "en": "sleep windows+l session lock"
+ },
+ {
+  "id": "17otbqt",
+  "fr": "fermeture arriere-plan verrouillage",
+  "en": "close background lock"
+ },
+ {
+  "id": "1k0bhpn",
+  "fr": "Océanie",
+  "en": "Oceania"
+ },
+ {
+  "id": "1d7jnl1",
+  "fr": "{name} (jour de remplacement)",
+  "en": "{name} (additional day)"
+ },
+ {
+  "id": "1v633e3",
+  "fr": "Fête nationale de l'Australie",
+  "en": "Australia Day"
+ },
+ {
+  "id": "1g1q6i9",
+  "fr": "Samedi de Pâques",
+  "en": "Easter Saturday"
+ },
+ {
+  "id": "15g58yp",
+  "fr": "Dimanche de Pâques",
+  "en": "Easter Sunday"
+ },
+ {
+  "id": "083jj3c",
+  "fr": "Jour de l'ANZAC",
+  "en": "Anzac Day"
+ },
+ {
+  "id": "0pgfvab",
+  "fr": "Anniversaire du roi",
+  "en": "King's Birthday"
+ },
+ {
+  "id": "1el75a2",
+  "fr": "Vendredi de la finale de l'AFL",
+  "en": "Friday before the AFL Grand Final"
+ },
+ {
+  "id": "1cecr23",
+  "fr": "Date fixée chaque année par l'AFL.",
+  "en": "Date set each year by the AFL."
+ },
+ {
+  "id": "0fegoyo",
+  "fr": "Melbourne Cup",
+  "en": "Melbourne Cup"
+ },
+ {
+  "id": "0lmtn8c",
+  "fr": "Férié dans l'agglomération de Melbourne.",
+  "en": "Public holiday in metropolitan Melbourne."
+ },
+ {
+  "id": "0zy06sz",
+  "fr": "Veille de Noël",
+  "en": "Christmas Eve"
+ },
+ {
+  "id": "0h2lx98",
+  "fr": "Férié de 18 h à minuit.",
+  "en": "Public holiday from 6 pm to midnight."
+ },
+ {
+  "id": "018ap7b",
+  "fr": "Férié de 19 h à minuit.",
+  "en": "Public holiday from 7 pm to midnight."
+ },
+ {
+  "id": "1y4oixg",
+  "fr": "Adelaide Cup",
+  "en": "Adelaide Cup Day"
+ },
+ {
+  "id": "1pz74p4",
+  "fr": "Fête de l'Australie-Occidentale",
+  "en": "Western Australia Day"
+ },
+ {
+  "id": "1pmwt2t",
+  "fr": "Eight Hours Day",
+  "en": "Eight Hours Day"
+ },
+ {
+  "id": "05kkled",
+  "fr": "Fête de Canberra",
+  "en": "Canberra Day"
+ },
+ {
+  "id": "1m0gj8u",
+  "fr": "Journée de la réconciliation",
+  "en": "Reconciliation Day"
+ },
+ {
+  "id": "0uzftnk",
+  "fr": "May Day",
+  "en": "May Day"
+ },
+ {
+  "id": "0k0pj5l",
+  "fr": "Picnic Day",
+  "en": "Picnic Day"
+ },
+ {
+  "id": "14h1lvt",
+  "fr": "Proclamation Day et lendemain de Noël",
+  "en": "Proclamation Day and Boxing Day"
+ },
+ {
+  "id": "10hy4v4",
+  "fr": "Australie – Nouvelle-Galles du Sud",
+  "en": "Australia – New South Wales"
+ },
+ {
+  "id": "0n105ax",
+  "fr": "Australie – Victoria",
+  "en": "Australia – Victoria"
+ },
+ {
+  "id": "1pbsn7e",
+  "fr": "Australie – Queensland",
+  "en": "Australia – Queensland"
+ },
+ {
+  "id": "0m79uro",
+  "fr": "Australie – Australie-Méridionale",
+  "en": "Australia – South Australia"
+ },
+ {
+  "id": "10d1ida",
+  "fr": "Australie – Australie-Occidentale",
+  "en": "Australia – Western Australia"
+ },
+ {
+  "id": "1d8xklq",
+  "fr": "Australie – Tasmanie",
+  "en": "Australia – Tasmania"
+ },
+ {
+  "id": "1gqwgyh",
+  "fr": "Australie – Territoire de la capitale australienne",
+  "en": "Australia – Australian Capital Territory"
+ },
+ {
+  "id": "125ha7v",
+  "fr": "Australie – Territoire du Nord",
+  "en": "Australia – Northern Territory"
+ },
+ {
+  "id": "0x6u5dt",
+  "fr": "Très petite (75 %)",
+  "en": "Very small (75%)"
+ },
+ {
+  "id": "1honihc",
+  "fr": "Compacte (85 %)",
+  "en": "Compact (85%)"
+ },
+ {
+  "id": "12sh763",
+  "fr": "Taille de l'interface",
+  "en": "Interface size"
+ },
+ {
+  "id": "0vakmkt",
+  "fr": "Agrandit ou réduit toute la fenêtre : textes, boutons et panneaux. Ctrl + molette permet aussi de zoomer.",
+  "en": "Makes the whole window larger or smaller: text, buttons and panels. Ctrl + mouse wheel also zooms."
+ },
+ {
+  "id": "1mrjxzg",
+  "fr": "taille du texte police zoom agrandir reduire echelle compact elements",
+  "en": "text size font zoom enlarge shrink scale compact elements"
+ },
+ {
+  "id": "1wyul1g",
+  "fr": "Paramètres › Accessibilité réduit les animations et la transparence, et renforce le contraste. Aqueli suit aussi les réglages de Windows.",
+  "en": "Settings › Accessibility reduces animation and transparency, and increases contrast. Aqueli also follows your Windows settings."
+ },
+ {
+  "id": "1c3dozc",
+  "fr": "« Taille de l'interface », sur la même page, rend toute la fenêtre plus petite ou plus grande, de 75 % à 130 %.",
+  "en": "“Interface size”, on the same page, makes the whole window smaller or larger, from 75% to 130%."
+ },
+ {
+  "id": "0o7hask",
+  "fr": "Réduire ou agrandir la barre latérale",
+  "en": "Collapse or expand the sidebar"
+ },
+ {
+  "id": "1jgcaiq",
+  "fr": "Le bouton du bas, ou {sidebar}, la réduit à ses icônes pour laisser plus de place à l'écran. Elle se déploie alors au passage de la souris.",
+  "en": "The button at the bottom, or {sidebar}, shrinks it to its icons to leave more room for the screen. It then opens when the mouse passes over it."
+ },
+ {
+  "id": "03mtm70",
+  "fr": "Réduire la barre latérale",
+  "en": "Collapse the sidebar"
+ },
+ {
+  "id": "1vhmk21",
+  "fr": "Garder la barre latérale ouverte",
+  "en": "Keep the sidebar open"
+ },
+ {
+  "id": "02u2au7",
+  "fr": "barre latérale",
+  "en": "sidebar"
+ },
+ {
+  "id": "17x6j33",
+  "fr": "icônes",
+  "en": "icons"
+ },
+ {
+  "id": "1n57oh9",
+  "fr": "masquer",
+  "en": "hide"
+ },
+ {
+  "id": "18qs2qu",
+  "fr": "compact",
+  "en": "compact"
+ },
+ {
+  "id": "0tzj396",
+  "fr": "survol",
+  "en": "hover"
+ },
+ {
+  "id": "0ncff3m",
+  "fr": "Réduire la barre",
+  "en": "Collapse sidebar"
+ },
+ {
+  "id": "1ll46p6",
+  "fr": "Garder ouverte",
+  "en": "Keep open"
+ },
+ {
+  "id": "1fwq7hx",
+  "fr": "Sous-tâches sur plusieurs niveaux",
+  "en": "Subtasks on several levels"
+ },
+ {
+  "id": "08p8iuk",
+  "fr": "Une sous-tâche peut en contenir d'autres, sur cinq niveaux. Alt+Maj+→ la range sous celle du dessus, et Alt+Maj+← la remonte d'un niveau.",
+  "en": "A subtask can contain others, on up to five levels. Alt+Shift+→ moves it under the one above, and Alt+Shift+← moves it up a level."
+ },
+ {
+  "id": "033xygg",
+  "fr": "Le clic droit propose aussi « Ajouter une sous-tâche dedans ». La flèche devant une sous-tâche replie ce qu'elle contient. Cocher une sous-tâche coche tout ce qu'elle contient.",
+  "en": "Right-clicking also offers “Add a subtask inside”. The arrow in front of a subtask folds what it contains. Ticking a subtask ticks everything it contains."
+ },
+ {
+  "id": "1kfthou",
+  "fr": "Alt+Maj+→",
+  "en": "Alt+Shift+→"
+ },
+ {
+  "id": "1jvuaaw",
+  "fr": "Alt+Maj+←",
+  "en": "Alt+Shift+←"
+ },
+ {
+  "id": "10bdnve",
+  "fr": "Nouvelle sous-tâche",
+  "en": "New subtask"
+ },
+ {
+  "id": "1rdip65",
+  "fr": "Ajouter une sous-tâche dedans",
+  "en": "Add a subtask inside"
+ },
+ {
+  "id": "0helzw9",
+  "fr": "Augmenter le retrait",
+  "en": "Increase indent"
+ },
+ {
+  "id": "0l5xvu2",
+  "fr": "Diminuer le retrait",
+  "en": "Decrease indent"
+ },
+ {
+  "id": "1rz5roe",
+  "fr": "Déplier « {title} »",
+  "en": "Expand “{title}”"
+ },
+ {
+  "id": "0fzcc1w",
+  "fr": "Replier « {title} »",
+  "en": "Collapse “{title}”"
+ },
+ {
+  "id": "0lqds9x",
+  "fr": "Sous-tâche : la ranger sous celle du dessus",
+  "en": "Subtask: move it under the one above"
+ },
+ {
+  "id": "11nzmn5",
+  "fr": "Sous-tâche : la remonter d'un niveau",
+  "en": "Subtask: move it up a level"
+ },
+ {
+  "id": "0cbo5sh",
+  "fr": "Retirer|argent",
+  "en": "Withdraw"
+ },
+ {
+  "id": "0ajm5h7",
+  "fr": "Objectif d'épargne supprimé.",
+  "en": "Savings goal deleted."
+ },
+ {
+  "id": "0rrh4qt",
+  "fr": "suppression de l'objectif d'épargne",
+  "en": "deletion of the savings goal"
+ },
+ {
+  "id": "1385i86",
+  "fr": "suppression du versement",
+  "en": "deletion of the deposit"
+ },
+ {
+  "id": "038j3z7",
+  "fr": "ajout de l'objectif d'épargne",
+  "en": "addition of the savings goal"
+ },
+ {
+  "id": "1k5agk0",
+  "fr": "modification de l'objectif d'épargne",
+  "en": "change to the savings goal"
+ },
+ {
+  "id": "1pvedp0",
+  "fr": "déplacement de l'objectif d'épargne",
+  "en": "move of the savings goal"
+ },
+ {
+  "id": "1w39jog",
+  "fr": "ajout du versement",
+  "en": "addition of the deposit"
+ },
+ {
+  "id": "124zxe2",
+  "fr": "ajout du retrait",
+  "en": "addition of the withdrawal"
+ },
+ {
+  "id": "0b1allp",
+  "fr": "Nouvel objectif d'épargne",
+  "en": "New savings goal"
+ },
+ {
+  "id": "0bv2pqm",
+  "fr": "Objectif atteint",
+  "en": "Goal reached"
+ },
+ {
+  "id": "02kktvx",
+  "fr": "Date dépassée · reste {amount}",
+  "en": "Date passed · {amount} to go"
+ },
+ {
+  "id": "0guczvr",
+  "fr": "{amount} par mois jusqu'au {date}",
+  "en": "{amount} a month until {date}"
+ },
+ {
+  "id": "0tafye3",
+  "fr": "Saisissez un montant.",
+  "en": "Enter an amount."
+ },
+ {
+  "id": "1b5a8ui",
+  "fr": "Retirer · {name}",
+  "en": "Withdraw · {name}"
+ },
+ {
+  "id": "0fgyn4n",
+  "fr": "Mettre de côté · {name}",
+  "en": "Set aside · {name}"
+ },
+ {
+  "id": "0bo2dfg",
+  "fr": "Réparation, imprévu…",
+  "en": "Repair, unexpected expense…"
+ },
+ {
+  "id": "0s9g4em",
+  "fr": "Prime, reste du mois…",
+  "en": "Bonus, money left over this month…"
+ },
+ {
+  "id": "0niun7b",
+  "fr": "Mettre de côté",
+  "en": "Set aside"
+ },
+ {
+  "id": "0lwvyut",
+  "fr": "Saisissez le montant à atteindre.",
+  "en": "Enter the amount to reach."
+ },
+ {
+  "id": "0dw5eka",
+  "fr": "Vacances, apport, coussin de sécurité…",
+  "en": "Holiday, deposit, emergency fund…"
+ },
+ {
+  "id": "14smq0i",
+  "fr": "Montant à atteindre",
+  "en": "Amount to reach"
+ },
+ {
+  "id": "1kf65y1",
+  "fr": "Date visée",
+  "en": "Target date"
+ },
+ {
+  "id": "1lfcdwj",
+  "fr": "Versements",
+  "en": "Deposits"
+ },
+ {
+  "id": "1aqz3lz",
+  "fr": "sur {amount}",
+  "en": "of {amount}"
+ },
+ {
+  "id": "1ecu8v4",
+  "fr": "Aucun versement.",
+  "en": "No deposits."
+ },
+ {
+  "id": "1c6uj6h",
+  "fr": "Supprimer ce versement",
+  "en": "Delete this deposit"
+ },
+ {
+  "id": "0ag4gmm",
+  "fr": "Aucun objectif d'épargne.",
+  "en": "No savings goals."
+ },
+ {
+  "id": "0jxjymb",
+  "fr": "Mettre de côté…",
+  "en": "Set aside…"
+ },
+ {
+  "id": "16fpri6",
+  "fr": "Retirer…",
+  "en": "Withdraw…"
+ },
+ {
+  "id": "0n54kk6",
+  "fr": "Épargner pour un projet",
+  "en": "Saving for a project"
+ },
+ {
+  "id": "1hn7iv3",
+  "fr": "La carte « Épargne », à droite, réunit vos objectifs : des vacances, un apport, un coussin de sécurité. Chacun a un montant à atteindre et, si vous le souhaitez, une date.",
+  "en": "The “Savings” card, on the right, brings your goals together: a holiday, a deposit, an emergency fund. Each one has an amount to reach and, if you like, a date."
+ },
+ {
+  "id": "0f1ry9g",
+  "fr": "« Mettre de côté » ajoute un versement, « Retirer » en déduit un. Avec une date, Aqueli calcule ce qu'il reste à épargner chaque mois. Ces versements ne comptent pas dans les dépenses du mois.",
+  "en": "“Set aside” adds a deposit and “Withdraw” takes money out. With a date, Aqueli works out how much is left to save each month. These deposits don't count as spending for the month."
+ },
+ {
+  "id": "177kpt1",
+  "fr": "épargne",
+  "en": "savings"
+ },
+ {
+  "id": "1hwyldn",
+  "fr": "économies",
+  "en": "saving"
+ },
+ {
+  "id": "1udg7e5",
+  "fr": "tirelire",
+  "en": "piggy bank"
+ },
+ {
+  "id": "1u34bpz",
+  "fr": "mettre de côté",
+  "en": "set aside"
+ },
+ {
+  "id": "1gihprk",
+  "fr": "Épargne · {saved} sur {target}",
+  "en": "Savings · {saved} of {target}"
+ },
+ {
+  "id": "0ypqj4w",
+  "fr": "Épargne « {name} »",
+  "en": "Savings “{name}”"
+ },
+ {
+  "id": "0ygr38d",
+  "fr": "Version portable. Les données restent dans le dossier d'Aqueli.",
+  "en": "Portable version. The data stays in the Aqueli folder."
+ },
+ {
+  "id": "002515m",
+  "fr": "Version portable",
+  "en": "Portable version"
+ },
+ {
+  "id": "1ql28mc",
+  "fr": "Aqueli existe aussi en fichier .zip, sans installation. Extrayez le dossier, par exemple sur une clé USB, puis ouvrez Aqueli.exe.",
+  "en": "Aqueli also comes as a .zip file, with no installation. Extract the folder, for example to a USB drive, then open Aqueli.exe."
+ },
+ {
+  "id": "0wfabhe",
+  "fr": "Les données, les réglages et le dossier d'import restent dans ce dossier. Pour changer de PC, quittez Aqueli par son icône près de l'horloge, puis copiez le dossier entier.",
+  "en": "The data, settings and import folder stay in that folder. To move to another PC, quit Aqueli from its icon near the clock, then copy the whole folder."
+ },
+ {
+  "id": "1okrxii",
+  "fr": "Forme de la barre latérale",
+  "en": "Sidebar style"
+ },
+ {
+  "id": "0p560ku",
+  "fr": "Réduite ou masquée, elle se déploie au passage de la souris, par-dessus l'écran affiché. {keys} l'ouvre ou la replie.",
+  "en": "Shrunk or hidden, it opens when the mouse passes over it, on top of the current screen. {keys} opens or folds it."
+ },
+ {
+  "id": "0c9of21",
+  "fr": "Ouverte",
+  "en": "Open"
+ },
+ {
+  "id": "1e2vpbb",
+  "fr": "Réduite aux icônes",
+  "en": "Shrunk to icons"
+ },
+ {
+  "id": "0ejemji",
+  "fr": "Masquée sur le bord",
+  "en": "Hidden at the edge"
+ },
+ {
+  "id": "0k8lzha",
+  "fr": "Paramètres › Modules propose aussi de la masquer sur le bord de la fenêtre. Il n'en reste qu'un mince liseré, qui s'ouvre quand la souris s'en approche.",
+  "en": "Settings › Modules can also hide it at the edge of the window. Only a thin strip remains, which opens when the mouse comes near it."
+ },
+ {
+  "id": "0fdmcl9",
+  "fr": "compacte survol icones replier cacher bord masquer",
+  "en": "compact hover icons collapse hide edge"
+ },
+ {
+  "id": "1qjkphr",
+  "fr": "Paramètres › Langue propose 18 langues. Les dates et les nombres suivent la langue choisie.",
+  "en": "Settings › Language offers 18 languages. Dates and numbers follow the language you choose."
+ },
+ {
+  "id": "1ctt97y",
+  "fr": "Verrouillé avec la session · données chiffrées",
+  "en": "Locked with the session · encrypted data"
+ },
+ {
+  "id": "05c0nja",
+  "fr": "mode sombre du système",
+  "en": "system dark mode"
+ },
+ {
+  "id": "1ctpxae",
+  "fr": "Mode sombre du système",
+  "en": "System dark mode"
+ },
+ {
+  "id": "12f5hvi",
+  "fr": "Verrouiller avec la session",
+  "en": "Lock with the session"
+ },
+ {
+  "id": "000hk2v",
+  "fr": "Lancer Aqueli à l'ouverture de la session",
+  "en": "Start Aqueli when you log in"
+ },
+ {
+  "id": "0ign1jq",
+  "fr": "Réglage du système impossible à modifier.",
+  "en": "System setting cannot be changed."
+ },
+ {
+  "id": "0ukw9i1",
+  "fr": "Activé par un paramètre du système.",
+  "en": "Turned on by a system setting."
+ },
+ {
+  "id": "1f2ji1x",
+  "fr": "Mot de passe, verrouillage",
+  "en": "Password, lock"
+ },
+ {
+  "id": "0fue1yi",
+  "fr": "Aqueli se verrouille avec la session (Super+L) et à la mise en veille.",
+  "en": "Aqueli locks when the session locks (Super+L) and when the computer goes to sleep."
+ },
+ {
+  "id": "1kypln9",
+  "fr": "Combinaison refusée : Ctrl, Alt ou Super, avec une lettre, un chiffre, Espace ou F1 à F12.",
+  "en": "Combination refused: Ctrl, Alt or Super, with a letter, a digit, Space or F1 to F12."
+ },
+ {
+  "id": "1ol6smp",
+  "fr": "Ordre de priorité : fêtes › humeur › nuit › mode sombre du système › saisons.",
+  "en": "Order of priority: celebrations › mood › night › system dark mode › seasons."
+ },
+ {
+  "id": "05hdg61",
+  "fr": "Nuit étoilée (ou Minuit pour les thèmes Signature) quand le système est en mode sombre.",
+  "en": "Starry Night (or Midnight for the Signature themes) when the system is in dark mode."
+ },
+ {
+  "id": "0ni71s2",
+  "fr": "Un fichier déposé dans le dossier Documents/Aqueli/Import est repéré en quelques secondes, et un message propose de l'importer. Paramètres › Import liste les fichiers en attente.",
+  "en": "A file placed in the Documents/Aqueli/Import folder is spotted within seconds, and a message offers to import it. Settings › Import lists the files waiting."
+ },
+ {
+  "id": "019bj6y",
+  "fr": "Les rappels et la capture rapide suivent le compte ouvert. Chaque compte ajouté a son propre dossier d'import, à son nom, dans Documents/Aqueli.",
+  "en": "Reminders and quick capture follow the open account. Each added account has its own import folder, under its name, in Documents/Aqueli."
+ },
+ {
+  "id": "08lff7h",
+  "fr": "Votre mot de passe déverrouille Aqueli.",
+  "en": "Your password unlocks Aqueli."
+ },
+ {
+  "id": "08pl4iq",
+  "fr": "Aqueli se verrouille aussi de lui-même après un moment d'inactivité, à la mise en veille et au verrouillage de la session.",
+  "en": "Aqueli also locks by itself after a while without use, when the computer goes to sleep and when the session locks."
+ },
+ {
+  "id": "0vs15le",
+  "fr": "Paramètres › Accessibilité réduit les animations et la transparence, et renforce le contraste. Aqueli suit aussi les réglages du système.",
+  "en": "Settings › Accessibility reduces animation and transparency, and increases contrast. Aqueli also follows your system settings."
+ },
+ {
+  "id": "1phc4jr",
+  "fr": "Pour modifier un raccourci d'Aqueli, cliquez sur « Modifier », puis saisissez la nouvelle combinaison. Les raccourcis du système et de la saisie restent fixes (Ctrl+Z, Ctrl+C, Entrée, Suppr, F2, Échap…).",
+  "en": "To change an Aqueli shortcut, click “Edit”, then press the new combination. System and typing shortcuts stay fixed (Ctrl+Z, Ctrl+C, Enter, Delete, F2, Esc…)."
+ },
+ {
+  "id": "03tnifb",
+  "fr": "Quand vous vous éloignez de l'ordinateur, le cadenas ou {lock} met Aqueli sous clé. Pour revenir, il faudra votre mot de passe. Aqueli se verrouille aussi de lui-même après un moment d'inactivité, et ce délai se règle dans Paramètres › Sécurité.",
+  "en": "When you step away from the computer, the padlock or {lock} puts Aqueli under lock and key. To come back, you will need your password. Aqueli also locks itself after a period of inactivity, and this delay is set in Settings › Security."
+ },
+ {
+  "id": "0j2c0sr",
+  "fr": "Sauvegarde faite, sur cet ordinateur et sur la destination externe.",
+  "en": "Backup complete, on this computer and on the external destination."
+ },
+ {
+  "id": "0rggc5y",
+  "fr": "Aucune. Une clé USB ou un disque externe protège les sauvegardes d'une panne de l'ordinateur.",
+  "en": "None. A USB stick or an external drive protects backups from a computer failure."
+ },
+ {
+  "id": "11o5sr2",
+  "fr": "Un seul fichier chiffré, à restaurer ici ou sur un autre ordinateur avec le mot de passe actuel.",
+  "en": "A single encrypted file, to restore here or on another computer with the current password."
+ },
+ {
+  "id": "1l273kp",
+  "fr": "Sauvegarde plus ancienne, d'une clé USB, d'un disque ou d'un autre ordinateur.",
+  "en": "An older backup, from a USB stick, a drive or another computer."
+ },
+ {
+  "id": "1z137jy",
+  "fr": "Les données reviennent dans le dossier d'origine de cet ordinateur (~/.local/share/Aqueli).",
+  "en": "The data returns to the original folder on this computer (~/.local/share/Aqueli)."
+ },
+ {
+  "id": "0jua7qs",
+  "fr": "Le compte de la sauvegarde s'ouvre sur cet ordinateur, avec son mot de passe et sa clé de récupération.",
+  "en": "The account from the backup opens on this computer, with its password and recovery key."
+ },
+ {
+  "id": "19f47x4",
+  "fr": "Depuis un fichier de cet ordinateur",
+  "en": "From a file on this computer"
+ },
+ {
+  "id": "0vi8z33",
+  "fr": "Tâches, agenda, obligations et notes réunis dans une seule application. Vos données sont chiffrées et restent sur cet ordinateur.",
+  "en": "Tasks, calendar, obligations and notes together in a single application. Your data is encrypted and stays on this computer."
+ },
+ {
+  "id": "03bt6sr",
+  "fr": "Toutes les données de ce compte seront effacées de cet ordinateur. Cette action est définitive.",
+  "en": "All data in this account will be erased from this computer. This action is permanent."
+ },
+ {
+  "id": "1kips4e",
+  "fr": "Supprimer aussi les sauvegardes enregistrées sur cet ordinateur",
+  "en": "Also delete the backups saved on this computer"
+ },
+ {
+  "id": "1pmew06",
+  "fr": "Efface définitivement le compte et toutes ses données de cet ordinateur. Les fichiers sont écrasés avant d'être supprimés.",
+  "en": "Permanently erases the account and all its data from this computer. Files are overwritten before being deleted."
+ },
+ {
+  "id": "0cfyjch",
+  "fr": "Déverrouillages, essais erronés, exports et changements de mot de passe, enregistrés sur cet ordinateur.",
+  "en": "Unlocks, failed attempts, exports and password changes, recorded on this computer."
+ },
+ {
+  "id": "0byz5hp",
+  "fr": "Aucun compte Aqueli sur cet ordinateur.",
+  "en": "No Aqueli account on this computer."
+ },
+ {
+  "id": "0pbrt13",
+  "fr": "Un compte Aqueli existe déjà sur cet ordinateur.",
+  "en": "An Aqueli account already exists on this computer."
+ },
+ {
+  "id": "1ke81b5",
+  "fr": "Aqueli rassemble vos tâches, votre agenda, vos notes et votre suivi personnel dans une seule fenêtre. Tout reste sur cet ordinateur, chiffré, sans connexion à Internet.",
+  "en": "Aqueli brings your tasks, calendar, notes and personal tracking together in a single window. Everything stays on this computer, encrypted, with no Internet connection."
+ },
+ {
+  "id": "0raxu1l",
+  "fr": "Le Budget suit vos dépenses et vos revenus, mois par mois, uniquement sur cet ordinateur.",
+  "en": "Budget follows your spending and income, month by month, on this computer only."
+ },
+ {
+  "id": "0wthrp9",
+  "fr": "Vos données sont chiffrées sur cet ordinateur, et ne sortent de votre compte que lorsque vous le décidez.",
+  "en": "Your data is encrypted on this computer, and only leaves your account when you decide."
+ },
+ {
+  "id": "0nmz4e7",
+  "fr": "C'est le seul moyen de retrouver votre compte si vous oubliez votre mot de passe. Conservez-la en lieu sûr, hors de cet ordinateur.",
+  "en": "It is the only way to get back into your account if you forget your password. Keep it somewhere safe, away from this computer."
+ },
+ {
+  "id": "11mwsei",
+  "fr": "Une copie hors de l'ordinateur",
+  "en": "A copy away from the computer"
+ },
+ {
+  "id": "0yxp32c",
+  "fr": "Une destination externe, clé USB ou disque, protège vos données d'une panne de l'ordinateur. Elle se choisit dans Paramètres › Sauvegardes.",
+  "en": "An external destination, a USB stick or a drive, protects your data if the computer breaks down. It is chosen in Settings › Backups."
+ },
+ {
+  "id": "072z8fo",
+  "fr": "Comptes de cet ordinateur",
+  "en": "Accounts on this computer"
+ },
+ {
+  "id": "0butdyx",
+  "fr": "Plusieurs comptes sur cet ordinateur",
+  "en": "Several accounts on this computer"
+ },
+ {
+  "id": "1k7f8sk",
+  "fr": "Paramètres › Sécurité supprime le compte ouvert après votre mot de passe et un mot de confirmation. Les fichiers sont écrasés puis effacés. Les autres comptes de cet ordinateur et les sauvegardes copiées ailleurs ne sont pas touchés.",
+  "en": "Settings › Security deletes the open account after your password and a confirmation word. The files are overwritten, then erased. Other accounts on this computer and backups copied elsewhere are not affected."
+ },
+ {
+  "id": "1sta8sv",
+  "fr": "Revenir aux comptes de cet ordinateur",
+  "en": "Back to the accounts on this computer"
+ },
+ {
+  "id": "1ah5hal",
+  "fr": "Ce compte n'existe plus sur cet ordinateur.",
+  "en": "This account no longer exists on this computer."
+ },
+ {
+  "id": "03wnuyz",
+  "fr": "Cet ordinateur compte déjà {max} comptes, le nombre maximal.",
+  "en": "This computer already has {max} accounts, the maximum."
+ },
+ {
+  "id": "0q3fbey",
+  "fr": "Commande copiée.",
+  "en": "Command copied."
+ },
+ {
+  "id": "07sdqrd",
+  "fr": "Le bureau gère ce raccourci. Il se modifie dans ses paramètres.",
+  "en": "The desktop manages this shortcut. It can be changed in the desktop settings."
+ },
+ {
+  "id": "16btmvc",
+  "fr": "Le bureau n'a pas accepté ce raccourci. Créez-le dans ses paramètres, avec la commande ci-dessous.",
+  "en": "The desktop has not accepted this shortcut. Create it in the desktop settings, with the command below."
  }
 ]

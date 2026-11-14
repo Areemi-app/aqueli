@@ -22,10 +22,6 @@
 /* Écritures non latines : Figtree garde le latin et les chiffres, puis la police de Windows faite
    pour chaque écriture (chinois, japonais et coréen chacun la sienne, pour la forme juste des
    caractères communs). Le cyrillique et le vietnamien passent par Segoe UI. */
-:root:lang(ar) {
-  --aq-font: "Figtree Variable", "Segoe UI", "Tahoma", sans-serif;
-}
-
 :root:lang(zh) {
   --aq-font: "Figtree Variable", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
 }
@@ -74,13 +70,31 @@ textarea,
   unicode-bidi: plaintext;
 }
 
-/* Un sens choisi vaut aussi pour tout ce que l'élément contient (texte d'un élément de liste). */
-:where([dir="rtl"] *, [dir="ltr"] *) {
+/* Un sens choisi vaut aussi pour tout ce que l'élément contient (texte d'un élément de liste). Le
+   `dir` de la racine, posé pour l'arabe, ne compte pas : il retourne la mise en page seulement. */
+:where(body [dir="rtl"] *, body [dir="ltr"] *) {
   unicode-bidi: normal;
 }
 
-:where([dir="rtl"], [dir="ltr"]) {
+:where(body [dir="rtl"], body [dir="ltr"]) {
   unicode-bidi: isolate;
+}
+
+/* Sens de la mise en page : 1 de gauche à droite, -1 de droite à gauche (arabe, src/i18n/i18n.ts).
+   Marges et positions sont logiques (margin-inline-start…) ; ce qui pointe ou glisse vers la fin
+   de la ligne (chevrons, interrupteurs, fondus) se retourne avec cette variable. */
+:root {
+  --aq-dir: 1;
+}
+
+:root[dir="rtl"] {
+  --aq-dir: -1;
+}
+
+/* Flèches et chevrons des icônes (src/components/Icon.tsx) : « précédent » pointe vers la droite.
+   Les graphiques, sans texte dans leur dessin, suivent leurs légendes : le temps va vers la gauche. */
+:root[dir="rtl"] :is(svg[data-mirror], .chart-svg, .goal-chart, .journal-chart) {
+  scale: -1 1;
 }
 
 button,
